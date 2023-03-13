@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33103.201
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OGC.Net", "OGC.Net\OGC.Net.csproj", "{35FFC3A2-FD07-4DC3-84E5-7F47E1F6D124}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMap.NET.Core", "GMap.NET\GMap.NET\GMap.NET.Core\GMap.NET.Core.csproj", "{7C69A8BA-6959-4EF3-A167-4EB6E2709457}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GMap.NET.WindowsForms", "GMap.NET\GMap.NET\GMap.NET.WindowsForms\GMap.NET.WindowsForms.csproj", "{B0852EF5-DD0C-45BC-9DFC-163BCA5AA9BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35FFC3A2-FD07-4DC3-84E5-7F47E1F6D124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35FFC3A2-FD07-4DC3-84E5-7F47E1F6D124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35FFC3A2-FD07-4DC3-84E5-7F47E1F6D124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35FFC3A2-FD07-4DC3-84E5-7F47E1F6D124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C69A8BA-6959-4EF3-A167-4EB6E2709457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C69A8BA-6959-4EF3-A167-4EB6E2709457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C69A8BA-6959-4EF3-A167-4EB6E2709457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C69A8BA-6959-4EF3-A167-4EB6E2709457}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0852EF5-DD0C-45BC-9DFC-163BCA5AA9BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0852EF5-DD0C-45BC-9DFC-163BCA5AA9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0852EF5-DD0C-45BC-9DFC-163BCA5AA9BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0852EF5-DD0C-45BC-9DFC-163BCA5AA9BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {743AFFD4-2F7E-499B-A73A-7523EE1FEDE6}
+	EndGlobalSection
+EndGlobal
