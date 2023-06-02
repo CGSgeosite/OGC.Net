@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FeatureCollection remarks="文档树根元素标签（默认：FeatureCollection），可携带文档树状态属性（status 默认值：0）" status="0">
+	<!-- 
+	可选项 status 约定如下：
+	持久化位 暗数据位 完整性位  |  值：含义
+	======== ======== ========  |  ========================================================
+	0        0        0         |  0：非持久化数据（参与对等）    明数据    ✘  无值或失败    
+	0        0        1         |  1：非持久化数据（参与对等）    明数据    ✔  正常          
+	0        1        0         |  2：非持久化数据（参与对等）    暗数据    ✘  失败          
+	0        1        1         |  3：非持久化数据（参与对等）    暗数据    ✔  正常          
+	1        0        0         |  4：持久化数据（不参与对等）    明数据    ✘  失败          
+	1        0        1         |  5：持久化数据（不参与对等）    明数据    ✔  正常          
+	1        1        0         |  6：持久化数据（不参与对等）    暗数据    ✘  失败          
+	1        1        1         |  7：持久化数据（不参与对等）    暗数据    ✔  正常 
+	-->
+	<name remarks="根节点名称（必选项，不应出现特殊字符【诸如：( )@,】，亦不可为纯数字）">根节点名称</name>
+	<property remarks="属性描述（可选项）">【文本或xml】描述</property>
+	<relation remarks="关系描述（可选项）">
+		<action remarks="可选项，事务活动容器"></action>
+		<detail remarks="可选项，关系描述容器"></detail>
+	</relation>
+	<layer remarks="矢量要素层，主要面向【OGC-WFS】服务，分类标签（默认：layer）支持多级嵌套，每级类别必须具有name元素！">
+		<name remarks="类别名称（必选项，不应出现特殊字符【诸如：( )@,】，亦不可为数字打头）">名称</name>
+		<property remarks="属性描述（可选项）">【文本或xml】描述，可嵌入图例【LegendURL】元素</property>
+		<relation remarks="关系描述（可选项）">
+			<action remarks="可选项，事务活动容器"></action>
+			<detail remarks="可选项，关系描述容器"></detail>
+		</relation>
+		<!-- member节属性说明：
+        type属性：要素类型，可为：Point（点）、Line（线）、Polygon（面）、Image（贴图）、Tile（瓦片）、省略或空白（非空间要素）；
+        id属性：实体标识码，在文档内具有唯一性，入库时将重新赋值，忽略此处定义！
+        frequency属性：访问频度，省略时默认为：0，此值将影响检索排序；
+        rank属性：要素权限，可供后续处理软件识别利用 -->
+		<member remarks="实体要素标签（默认：member，亦可为：featureMember）" type="Point" id="要素标识码" rank="访问级别号(0：可编辑; 1：可查看属性; 2：可浏览提示）" timeStamp="时间戳" temporal="生命期：±年:月:日T时:分:秒" frequency="0">
+			<name>实体要素名称（可选项）</name>
+			<!-- 几何坐标节，此标签可具有多个 -->
+			<geometry remarks="几何坐标(geometry/geometryProperty)标签（支持wkt、json或kml标签）" format="JSON/WKT/WKB/KML" type="Point/MultiPoint" centroid="?" boundary="?">
+				单点（WKT）：(十进制经度 十进制纬度 [高程])
+				单点（JSON）：[十进制经度,十进制纬度,高程]
+				多点（WKT）：(十进制经度 十进制纬度 [高程],十进制经度 十进制纬度 [高程],...)
+				多点（JSON）：[[十进制经度,十进制纬度,高程],[十进制经度,十进制纬度,高程],...]
+			</geometry>
+			<property remarks="属性描述（可选项）">
+				<字段名称 remarks="内容型">字段内容</字段名称>
+				<字段名称 remarks="分类型">
+					<字段名称 remarks="分类型">
+						<字段名称 remarks="分类型">
+							<字段名称 remarks="内容型">字段内容</字段名称>
+						</字段名称>
+					</字段名称>
+				</字段名称>
+			</property>
+			<style remarks="要素样式，可自行定制，通常符合W3C-CSS。以下是默认约定">
+				<marker remarks="点实体要素子图编号(0~?)，默认取0，子图图案均可在服务器端自定义；还可为图片的url或SVG">0</marker>
+				<angle remarks="顺时针旋转角，0~360 默认0">0</angle>
+				<opacity remarks="透明度 0~100 默认100">100</opacity>
+				<sizeX remarks="横向像素宽度 默认31">31</sizeX>
+				<sizeY remarks="纵向像素高度 默认31">31</sizeY>
+				<anchorX remarks="自左上角起算的锚点横向像素偏移量 默认16">16</anchorX>
+				<anchorY remarks="自左上角起算的锚点纵向像素偏移量 默认16">16</anchorY>
+				<shadowSizeX remarks="阴影图案的横向宽度像素尺寸 默认31">31</shadowSizeX>
+				<shadowSizeY remarks="阴影图案的纵向高度像素尺寸 默认31">31</shadowSizeY>
+				<shadowAnchorX remarks="自左上角起算的阴影图案锚点横向像素偏移量 默认16">16</shadowAnchorX>
+				<shadowAnchorY remarks="自左上角起算的阴影图案锚点横向像素偏移量 默认16">16</shadowAnchorY>
+			</style>
+			<relation remarks="关系描述（可选项）">
+				<action remarks="可选项，事务活动容器"></action>
+				<detail remarks="可选项，关系描述容器"></detail>
+			</relation>
+		</member>
+		<member type="Line" id="要素标识码" rank="访问级别号(0：可编辑; 1：可查看属性; 2：可浏览提示）" timeStamp="时间戳" temporal="生命期：±年:月:日T时:分:秒" frequency="0">
+			<name>实体要素名称（可选项）</name>
+			<!-- 几何坐标节，此标签可具有多个 -->
+			<geometry format="JSON/WKT/WKB/KML" type="LineString/MultiLineString" centroid="?" boundary="?">
+				单线（WKT）：(十进制经度 十进制纬度 [高程],十进制经度 十进制纬度 [高程],...)
+				单线（JSON）：[[十进制经度,十进制纬度,高程],[十进制经度,十进制纬度,高程],...]
+				多线（WKT）：((经度 纬度 高程,经度 纬度 高程,经度 纬度 高程),(经度 纬度 高程,经度 纬度 高程,经度 纬度 高程),...)
+				多线（JSON）：[[[经度,纬度,高程],[经度,纬度,高程],[经度,纬度,高程],...],[[经度,纬度,高程],[经度,纬度,高程],[经度,纬度,高程],...]]
+			</geometry>
+			<property>
+				<字段名称 remarks="内容型">字段内容</字段名称>
+				<字段名称 remarks="分类型">
+					<字段名称 remarks="分类型">
+						<字段名称 remarks="分类型">
+							<字段名称 remarks="内容型">字段内容</字段名称>
+						</字段名称>
+					</字段名称>
+				</字段名称>
+			</property>
+			<style>
+				<width remarks="线宽度(1~10) 默认1">1</width>
+				<alpha remarks="线透明度(0~100) 默认100">100</alpha>
+				<rgb remarks="线颜色红绿蓝 默认#ff0000">#ff0000</rgb>
+				<dashArray remarks="达西线型"></dashArray>
+				<lineCap></lineCap>
+				<lineJoin></lineJoin>
+			</style>
+			<relation>
+				<action remarks="可选项，事务活动容器"></action>
+				<detail remarks="可选项，关系描述容器"></detail>
+			</relation>
+		</member>
+		<member type="Polygon" id="要素标识码" rank="访问级别号(0：可编辑; 1：可查看属性; 2：可浏览提示）" timeStamp="时间戳" temporal="生命期：±年:月:日T时:分:秒" frequency="0">
+			<name>实体要素名称（可选项）</name>
+			<!-- 几何坐标节，此标签可具有多个 -->
+			<geometry format="JSON/WKT/WKB/KML" type="Polygon/MultiPolygon" centroid="?" boundary="?">
+				单面（WKT）：((起点经度 起点纬度,经度 纬度,经度 纬度,...,起点经度 起点纬度))
+				单面（JSON）：[[[起点经度,起点纬度],[经度,纬度],[经度,纬度],...,[起点经度,起点纬度]]]
+				母子面（WKT）：((母起点经度 母起点纬度,经度 纬度,经度 纬度,...,母起点经度 母起点纬度),(子起点经度 子起点纬度,经度 纬度,经度 纬度,...,子起点经度 子起点纬度)...) 或者 POLYGON((母起点经度 母起点纬度,经度 纬度,经度 纬度,...,母起点经度 母起点纬度),(子起点经度 子起点纬度,经度 纬度,经度 纬度,...,子起点经度 子起点纬度)...)
+				母子面（JSON）：[[[母起点经度,母起点纬度],[经度,纬度],[经度,纬度],...,[母起点经度,母起点纬度]],[[子起点经度,子起点纬度],[经度,纬度],[经度,纬度],...,[子起点经度,子起点纬度]]] 或者 {"type":"Polygon","coordinates":[[[母起点经度,母起点纬度],[经度,纬度],[经度,纬度],...,[母起点经度,母起点纬度]],[[子起点经度,子起点纬度],[经度,纬度],[经度,纬度],...,[子起点经度,子起点纬度]]]
+				多面（WKT）：(((起点经度 起点纬度,经度 纬度,经度 纬度,...,起点经度 起点纬度),(子起点经度 子起点纬度,经度 纬度,经度 纬度,...,子起点经度 子起点纬度)), ((起点经度 起点纬度,经度 纬度,经度 纬度,...,起点经度 起点纬度)) ...) 或者 MULTIPOLYGON(((起点经度 起点纬度,经度 纬度,经度 纬度,...,起点经度 起点纬度),(子起点经度 子起点纬度,经度 纬度,经度 纬度,...,子起点经度 子起点纬度)), ((起点经度 起点纬度,经度 纬度,经度 纬度,...,起点经度 起点纬度)) ...)
+				多面（JSON）：[[[[起点经度,起点纬度],[经度,纬度],[经度,纬度],...,[起点经度,起点纬度]],[[子起点经度,子起点纬度],[经度,纬度],[经度,纬度],...,[子起点经度,子起点纬度]]],[[[起点经度,起点纬度],[经度,纬度],[经度,纬度],...,[起点经度,起点纬度]]]] 或者 {"type":"MultiPolygon","coordinates":[[[[起点经度,起点纬度],[经度,纬度],[经度,纬度],...,[起点经度,起点纬度]],[[子起点经度,子起点纬度],[经度,纬度],[经度,纬度],...,[子起点经度,子起点纬度]]],[[[起点经度,起点纬度],[经度,纬度],[经度,纬度],...,[起点经度,起点纬度]]]]
+			</geometry>
+			<property>
+				<字段名称 remarks="字段别名">字段内容</字段名称>
+				<字段名称 remarks="字段别名">
+					<字段名称 remarks="字段别名">
+						<字段名称 remarks="字段别名">
+							<字段名称 remarks="字段别名">字段内容</字段名称>
+						</字段名称>
+					</字段名称>
+				</字段名称>
+			</property>
+			<style>
+				<width remarks="边界线宽度(1~10) 默认1">1</width>
+				<alpha remarks="边界线透明度(0~100) 默认100">100</alpha>
+				<rgb remarks="边界线颜色红绿蓝  默认#ff0000">#ff0000</rgb>
+				<fillalpha remarks="面透明度(0~100) 默认20">20</fillalpha>
+				<fillrgb remarks="面颜色 默认#0000ff">#0000ff</fillrgb>
+				<dashArray remarks="达西线型"></dashArray>
+				<lineCap remarks=""></lineCap>
+				<lineJoin remarks=""></lineJoin>
+			</style>
+			<relation>
+				<action remarks="可选项，事务活动容器"></action>
+				<detail remarks="可选项，关系描述容器"></detail>
+			</relation>
+		</member>
+		<member remarks="贴图要素" type="Image" id="要素标识码" rank="访问级别号(0：可编辑; 1：可查看属性; 2：可浏览提示）" timeStamp="时间戳" temporal="生命期：±年:月:日T时:分:秒" frequency="0">
+			<name>实体要素名称（可选项）</name>
+			<Image remarks="贴图访问地址标签（支持Image或者Icon大小写）">
+				<href remarks="形如：http://www.?.com/?.jpg，建议的格式为：jpg png gif"></href>
+			</Image>
+			<boundary remarks="贴图要素的几何边界boundary（或者LatLonBox）节存放的是图片边界坐标，必须准确表达">
+				<north remarks="(上北)十进制纬度"></north>
+				<south remarks="(下南)十进制纬度"></south>
+				<west remarks="(左西)十进制经度"></west>
+				<east remarks="(右东)十进制经度"></east>
+			</boundary>
+			<property>
+				<字段名称 remarks="字段别名">字段内容</字段名称>
+				<字段名称 remarks="字段别名">
+					<字段名称 remarks="字段别名">
+						<字段名称 remarks="字段别名">
+							<字段名称 remarks="字段别名">字段内容</字段名称>
+						</字段名称>
+					</字段名称>
+				</字段名称>
+			</property>
+			<style remarks="要素样式（亦可采取属性方式嵌入Icon节），以下是默认约定">
+				<angle remarks="0~360 默认0 以边框左上角为原点顺时针旋转">0</angle>
+				<opacity remarks="0~100 默认100">100</opacity>
+			</style>
+			<relation>
+				<action remarks="可选项，事务活动容器"></action>
+				<detail remarks="可选项，关系描述容器"></detail>
+			</relation>
+		</member>
+		<member remarks="当type省略或者并非点线面贴图和栅格时，便按非空间要素对待" id="要素标识码" rank="访问级别号(0：可编辑; 1：可查看属性; 2：可浏览提示）" timeStamp="时间戳" temporal="生命期：±年:月:日T时:分:秒" frequency="0">
+			<name>实体要素名称（可选项）</name>
+			<property>
+				<字段名称 remarks="内容型">字段内容</字段名称>
+				<字段名称 remarks="分类型">
+					<字段名称 remarks="分类型">
+						<字段名称 remarks="分类型">
+							<字段名称 remarks="内容型">字段内容</字段名称>
+						</字段名称>
+					</字段名称>
+				</字段名称>
+			</property>
+			<style/>
+			<relation>
+				<action remarks="可选项，事务活动容器"></action>
+				<detail remarks="可选项，关系描述容器"></detail>
+			</relation>
+		</member>
+	</layer>
+	<layer remarks="四叉树金字塔式瓦片服务层，主要面向【OGC-WMS】服务，分类标签（默认：layer）支持多级嵌套，每级类别必须具有name元素！">
+		<name>名称</name>
+		<property remarks="注：瓦片服务层的元数据信息应在member父级（最近容器）的property中表述">
+			<minZoom remarks="最小缩放级，默认0">0</minZoom>
+			<maxZoom remarks="最大缩放级，默认18">18</maxZoom>
+			<tileSize remarks="瓦片像素尺寸，默认256">256</tileSize>
+			<format remarks="瓦片响应MIME格式，通常为：png或jpeg，支持：image/png（默认）、image/gif、image/jpeg、image/bmp、image/tiff、image/webp">png</format>
+			<legendURL format="图例MIME格式" href="图例访问地址">
+				<format>图例MIME格式</format>
+				<href>图例访问地址</href>
+			</legendURL>
+			<boundary remarks="边框范围">
+				<north remarks="上北，比如：85.0511287798066">85.0511287798066</north>
+				<south remarks="下南，比如：-85.0511287798066">-85.0511287798066</south>
+				<west remarks="左西，比如：-180">-180.0</west>
+				<east remarks="右东,比如：180">180.0</east>
+			</boundary>
+		</property>
+		<relation>
+			<action remarks="可选项，事务活动容器"></action>
+			<detail remarks="可选项，关系描述容器"></detail>
+		</relation>
+		<member remarks="四叉树金字塔瓦片服务" type="Tile" id="要素标识码" timeStamp="时间戳" temporal="生命期：±年:月:日T时:分:秒" frequency="0">
+			<name>实体要素名称（可选项）</name>
+			<wms remarks="瓦片服务访问地址模板（暂支持【OGC-EPSG:3857】、【BingMap-EPSG:3857】、【DeepZoom-EPSG:0】和【ESRI-EPSG:3857】瓦片编码类型）,此标签具有唯一性。另外，URL模板子域（单字符）替换符需用{s}进行表达"></wms>
+			<property srid="3857" subdomains="" remarks="瓦片的srid既可在property节的属性中（中优先权）表述，亦可在wms节的srid属性中（高优先权）表述。如果wms中的路径存在单字符{s}占位符，必须以属性或元素的方式提供subdomains">
+				<srid remarks="瓦片的srid还可在这里（低优先权）表述，坐标投影参照系（coordinate reference systems），支持 EPSG:3857/4326/0 三者之一">3857</srid>
+				<subdomains remarks="URL模板子域（单字符）替换符（目的是便于实施负载均衡访问策略），比如：01234567、abc"></subdomains>
+			</property>
+			<style/>
+			<relation>
+				<action remarks="可选项，事务活动容器"></action>
+				<detail remarks="可选项，关系描述容器"></detail>
+			</relation>
+		</member>
+	</layer>
+	<layer remarks="四叉树金字塔式瓦片层，主要面向【OGC-WMTS】服务，分类标签（默认：layer）支持多级嵌套，每级类别必须具有name元素！">
+		<name>名称</name>
+		<property remarks="注：瓦片层的元数据信息应在member父级（最近容器）的property中表述，无需添加【format】元素节">
+			<minZoom remarks="最小缩放级，默认0">0</minZoom>
+			<maxZoom remarks="最大缩放级，默认18" >18</maxZoom>
+			<tileSize remarks="瓦片像素尺寸，默认256">256</tileSize>
+			<boundary remarks="边框范围">
+				<north remarks="上北，比如：85.0511287798066">85.0511287798066</north>
+				<south remarks="下南，比如：-85.0511287798066">-85.0511287798066</south>
+				<west remarks="左西，比如：-180">-180.0</west>
+				<east remarks="右东,比如：180">180.0</east>
+			</boundary>
+		</property>
+		<relation>
+			<action remarks="可选项，事务活动容器"></action>
+			<detail remarks="可选项，关系描述容器"></detail>
+		</relation>
+		<member remarks="四叉树金字塔式瓦片" type="Tile" id="要素标识码" timeStamp="时间戳" temporal="生命期：±年:月:日T时:分:秒" frequency="0">
+			<name>实体要素名称（可选项）</name>
+			<!-- 瓦片实际内容，此标签通常具有多个。srid 属性暂支持【3857】（默认）、【4326】、【0】。注：为便于高速提取瓦片，应将某专题不同缩放级的全部瓦片归入一个member内 -->
+			<tile srid="3857" x="图块横向索引" y="图块纵向索引" z="缩放级" remarks="【四叉树金字塔式瓦片】影像wkb编码字符串，必须保证zxy的联合唯一性！"></tile>
+			<property srid="3857" remarks="瓦片的srid既可在property节的属性中（中优先权）表述，亦可在tile节的srid属性中（高优先权）表述">
+				<srid remarks="瓦片的srid还可在这里（低优先权）表述，坐标投影参照系（coordinate reference systems），支持【3857】（默认）、【4326】、【0】三者之一">3857</srid>
+				<bands remarks="波段/通道数">4</bands>
+			</property>
+			<style/>
+			<relation>
+				<action remarks="可选项，事务活动容器"></action>
+				<detail remarks="可选项，关系描述容器"></detail>
+			</relation>
+		</member>
+	</layer>
+	<layer remarks="平铺式栅格瓦片层，主要面向【OGC-WPS】服务，分类标签（默认：layer）支持多级嵌套，每级类别必须具有name元素！">
+		<name>名称</name>
+		<property remarks="注：栅格瓦片层的元数据信息应在member父级（最近容器）的property中表述，无需添加【format】元素节">
+			<minZoom remarks="最小缩放级，默认0">0</minZoom>
+			<maxZoom remarks="最大缩放级，默认18" >18</maxZoom>
+			<tileSize remarks="瓦片像素尺寸，默认256">256</tileSize>
+			<boundary remarks="边框范围">
+				<north remarks="上北，比如：85.0511287798066">85.0511287798066</north>
+				<south remarks="下南，比如：-85.0511287798066">-85.0511287798066</south>
+				<west remarks="左西，比如：-180">-180.0</west>
+				<east remarks="右东,比如：180">180.0</east>
+			</boundary>
+		</property>
+		<relation>
+			<action remarks="可选项，事务活动容器"></action>
+			<detail remarks="可选项，关系描述容器"></detail>
+		</relation>
+		<member type="Tile" id="要素标识码" timeStamp="时间戳" temporal="生命期：±年:月:日T时:分:秒" frequency="0">
+			<name>实体要素名称（可选项）</name>
+			<!-- 栅格瓦片实际内容，此标签应具有多个。srid 属性暂支持【3857】（默认）、【4326】、【0】；平铺式瓦片通常将srid设定为4326。注：为便于高速提取瓦片，应将某专题不同缩放级的全部瓦片归入一个member内 -->
+			<tile srid="4326" x="图块横向索引" y="图块纵向索引" remarks="【平铺式地图瓦片】影像wkb编码字符串，必须保证zxy的联合唯一性！"></tile>
+			<!-- 瓦片的srid既可在property节中表述，亦可在tile节的srid属性中表述 -->
+			<property srid="4326">
+				<srid remarks="坐标投影参照系（coordinate reference systems），支持【3857】（默认）、【4326】、【0】三者之一">4326</srid>
+				<bands remarks="波段/通道数">4</bands>
+			</property>
+			<style/>
+			<relation>
+				<action remarks="可选项，事务活动容器"></action>
+				<detail remarks="可选项，关系描述容器"></detail>
+			</relation>
+		</member>
+	</layer>
+</FeatureCollection>

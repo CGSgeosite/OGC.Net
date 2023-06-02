@@ -1,0 +1,144 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>Geosite</RootNamespace>
+		<ApplicationIcon>OGC.net.ico</ApplicationIcon>
+		<Title>OGC.net</Title>
+		<Version>7.2023.6.1</Version>
+		<Authors>ZhanchangWang</Authors>
+		<Company>CGS</Company>
+		<Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
+		<Description>A free tool for reading ShapeFile, MapGIS, TXT/CSV/Excel, converting them into GML, GeoJSON, ShapeFile, KML and GeositeXML, and pushing vector or raster to PostgreSQL database.</Description>
+		<PackageReleaseNotes>OGC.net for Microsoft.net</PackageReleaseNotes>
+		<PackAsTool>False</PackAsTool>
+		<IsPublishable>True</IsPublishable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <Optimize>False</Optimize>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="GMap.NET\CustomMarkers\**" />
+	  <EmbeddedResource Remove="GMap.NET\CustomMarkers\**" />
+	  <None Remove="GMap.NET\CustomMarkers\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="GdalConfiguration.cs" />
+	  <Compile Remove="GMap.NET\GMapControl.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="OGC.net.ico">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="GDAL" Version="3.6.3">
+	    <GeneratePathProperty>False</GeneratePathProperty>
+	  </PackageReference>
+	  <PackageReference Include="GDAL.Native" Version="3.6.3">
+	    <GeneratePathProperty>False</GeneratePathProperty>
+	  </PackageReference>
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <PackageReference Include="Npgsql" Version="7.0.4" />
+	  <PackageReference Include="RestSharp" Version="110.2.0" />
+	  <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+	  <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
+	  <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+	  <PackageReference Include="System.Text.Encodings.Web" Version="7.0.0" />
+	  <PackageReference Include="System.Text.Json" Version="7.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Properties\Settings.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Settings.settings</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+ <ItemGroup>
+    <None Include="gdal\**" CopyToOutputDirectory="Always" />
+</ItemGroup>
+ <ItemGroup>
+   <Reference Include="GMap.NET.Core">
+     <HintPath>Resources\GMap.NET.Core.dll</HintPath>
+   </Reference>
+   <Reference Include="GMap.NET.WindowsForms">
+     <HintPath>Resources\GMap.NET.WindowsForms.dll</HintPath>
+   </Reference>
+   <Reference Include="OGC.Net.Core">
+     <HintPath>Resources\OGC.Net.Core.dll</HintPath>
+   </Reference>
+ </ItemGroup>
+	<ItemGroup>
+	  <None Update="rtf\api.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\arcgis.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\converttip.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\deepzoom.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\mapcruncher.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\raster.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\readme.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\standard.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\tms.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\wmtstip.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="rtf\wpstip.rtf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="MapGis\Slib\Pcolor.lib">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
+	  <None Update="Schema\Geosite.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>
