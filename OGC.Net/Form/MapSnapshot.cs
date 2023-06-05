@@ -371,7 +371,6 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (marker.IsVisible)
                             {
                                 var markerPosition = marker.Position;
@@ -395,7 +394,6 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (marker.IsVisible && marker.ToolTip != null && marker.IsVisible &&
                                 !string.IsNullOrEmpty(value: marker.ToolTipText))
                             {
@@ -426,7 +424,6 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (route.IsVisible)
                             {
                                 using var routeRender = new GraphicsPath();
@@ -439,20 +436,15 @@ namespace Geosite
                                     px.Offset(dx: -topLeft.X, dy: -topLeft.Y);
                                     var p2 = px;
                                     if (j == 0)
-                                    {
                                         routeRender.AddLine(x1: p2.X, y1: p2.Y, x2: p2.X, y2: p2.Y);
-                                    }
                                     else
                                     {
                                         var p = routeRender.GetLastPoint();
                                         routeRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-
-                                if (routeRender.PointCount > 0)
-                                {
+                                if (routeRender.PointCount > 0) 
                                     gfx.DrawPath(pen: route.Stroke, path: routeRender);
-                                }
                             }
                         }
                     }
@@ -468,7 +460,6 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (polygon.IsVisible)
                             {
                                 using var polygonRender = new GraphicsPath();
@@ -488,7 +479,6 @@ namespace Geosite
                                         polygonRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-
                                 if (polygonRender.PointCount > 0)
                                 {
                                     polygonRender.CloseFigure();
@@ -511,7 +501,6 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (marker.IsVisible)
                             {
                                 var markerPosition = marker.Position;
@@ -535,13 +524,10 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
-                            if (marker.IsVisible && marker.ToolTip != null && marker.IsVisible &&
-                                !string.IsNullOrEmpty(value: marker.ToolTipText))
+                            if (marker.IsVisible && marker.ToolTip != null && marker.IsVisible && !string.IsNullOrEmpty(value: marker.ToolTipText))
                             {
                                 var markerPosition = marker.Position;
-                                var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: markerPosition.Lat,
-                                    lng: markerPosition.Lng, zoom: mapViewInfo.Zoom);
+                                var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: markerPosition.Lat, lng: markerPosition.Lng, zoom: mapViewInfo.Zoom);
                                 px.Offset(dx: 0, dy: 0);
                                 px.Offset(dx: -topLeft.X, dy: -topLeft.Y);
                                 px.Offset(dx: marker.Offset.X, dy: marker.Offset.Y);
@@ -551,7 +537,6 @@ namespace Geosite
                                 marker.ToolTip.OnRender(g: gfx);
                             }
                         }
-
                         gfx.ResetTransform();
                     }
 
@@ -566,33 +551,26 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (route.IsVisible)
                             {
                                 using var routeRender = new GraphicsPath();
                                 for (var j = 0; j < route.Points.Count; j++)
                                 {
                                     var routePoint = route.Points[index: j];
-                                    var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: routePoint.Lat,
-                                        lng: routePoint.Lng, zoom: mapViewInfo.Zoom);
+                                    var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: routePoint.Lat, lng: routePoint.Lng, zoom: mapViewInfo.Zoom);
                                     px.Offset(dx: 0, dy: 0);
                                     px.Offset(dx: -topLeft.X, dy: -topLeft.Y);
                                     var p2 = px;
                                     if (j == 0)
-                                    {
                                         routeRender.AddLine(x1: p2.X, y1: p2.Y, x2: p2.X, y2: p2.Y);
-                                    }
                                     else
                                     {
                                         var p = routeRender.GetLastPoint();
                                         routeRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-
-                                if (routeRender.PointCount > 0)
-                                {
+                                if (routeRender.PointCount > 0) 
                                     gfx.DrawPath(pen: route.Stroke, path: routeRender);
-                                }
                             }
                         }
                     }
@@ -608,7 +586,6 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (polygon.IsVisible)
                             {
                                 using var polygonRender = new GraphicsPath();
@@ -628,7 +605,6 @@ namespace Geosite
                                         polygonRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-
                                 if (polygonRender.PointCount > 0)
                                 {
                                     polygonRender.CloseFigure();
@@ -651,12 +627,10 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (marker.IsVisible)
                             {
                                 var markerPosition = marker.Position;
-                                var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: markerPosition.Lat,
-                                    lng: markerPosition.Lng, zoom: mapViewInfo.Zoom);
+                                var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: markerPosition.Lat, lng: markerPosition.Lng, zoom: mapViewInfo.Zoom);
                                 px.Offset(dx: 0, dy: 0);
                                 px.Offset(dx: -topLeft.X, dy: -topLeft.Y);
                                 px.Offset(dx: marker.Offset.X, dy: marker.Offset.Y);
@@ -675,13 +649,10 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
-                            if (marker.IsVisible && marker.ToolTip != null && marker.IsVisible &&
-                                !string.IsNullOrEmpty(value: marker.ToolTipText))
+                            if (marker.IsVisible && marker.ToolTip != null && marker.IsVisible && !string.IsNullOrEmpty(value: marker.ToolTipText))
                             {
                                 var markerPosition = marker.Position;
-                                var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: markerPosition.Lat,
-                                    lng: markerPosition.Lng, zoom: mapViewInfo.Zoom);
+                                var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: markerPosition.Lat, lng: markerPosition.Lng, zoom: mapViewInfo.Zoom);
                                 px.Offset(dx: 0, dy: 0);
                                 px.Offset(dx: -topLeft.X, dy: -topLeft.Y);
                                 px.Offset(dx: marker.Offset.X, dy: marker.Offset.Y);
@@ -691,7 +662,6 @@ namespace Geosite
                                 marker.ToolTip.OnRender(g: gfx);
                             }
                         }
-
                         gfx.ResetTransform();
                     }
 
@@ -706,7 +676,6 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (route.IsVisible)
                             {
                                 using var routeRender = new GraphicsPath();
@@ -719,20 +688,15 @@ namespace Geosite
                                     px.Offset(dx: -topLeft.X, dy: -topLeft.Y);
                                     var p2 = px;
                                     if (j == 0)
-                                    {
                                         routeRender.AddLine(x1: p2.X, y1: p2.Y, x2: p2.X, y2: p2.Y);
-                                    }
                                     else
                                     {
                                         var p = routeRender.GetLastPoint();
                                         routeRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-
-                                if (routeRender.PointCount > 0)
-                                {
+                                if (routeRender.PointCount > 0) 
                                     gfx.DrawPath(pen: route.Stroke, path: routeRender);
-                                }
                             }
                         }
                     }
@@ -748,15 +712,13 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
                             if (polygon.IsVisible)
                             {
                                 using var polygonRender = new GraphicsPath();
                                 for (var j = 0; j < polygon.Points.Count; j++)
                                 {
                                     var polygonPoint = polygon.Points[index: j];
-                                    var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: polygonPoint.Lat,
-                                        lng: polygonPoint.Lng, zoom: mapViewInfo.Zoom);
+                                    var px = mapViewInfo.Type.Projection.FromLatLngToPixel(lat: polygonPoint.Lat, lng: polygonPoint.Lng, zoom: mapViewInfo.Zoom);
                                     px.Offset(dx: 0, dy: 0);
                                     px.Offset(dx: -topLeft.X, dy: -topLeft.Y);
                                     var p2 = px;
@@ -768,7 +730,6 @@ namespace Geosite
                                         polygonRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-
                                 if (polygonRender.PointCount > 0)
                                 {
                                     polygonRender.CloseFigure();

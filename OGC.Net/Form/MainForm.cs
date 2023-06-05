@@ -227,7 +227,7 @@ namespace Geosite
                                 var locationY = int.Parse(s: splitArray[2]);
                                 if (locationY < 0)
                                     locationY = 0;
-                                //new System.Drawing.Point(x: locationX, y: locationY);
+                                //Location = new System.Drawing.Point(x: locationX, y: locationY);
                                 Location = new Point(x: locationX, y: locationY);
                                 Size = new Size(width: int.Parse(s: splitArray[3]), height: int.Parse(s: splitArray[4]));
                                 break;
@@ -613,22 +613,69 @@ namespace Geosite
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
-                                var row = FileGridView.Rows[index: FileGridView.Rows.Add(values: theFile)];
-                                row.Height = 28;
-                                var projectionButton = row.Cells[index: 1];
-                                projectionButton.ToolTipText = "Unknown";
-                                projectionButton.Value = "?";
-                                var previewButton = row.Cells[index: 2];
-                                previewButton.ToolTipText = theFileFormat;
+                                var fileType = Path.GetExtension(path: theFile).ToLower();
+                                if (fileType == ".mpj")
+                                {
+                                    var mapgisProject = new MapGis.MapGisProject();
+                                    mapgisProject.Open(file: theFile);
+                                    var files= mapgisProject.Content?["files"];
+                                    if (files != null)
+                                    {
+                                        var currentPath = Path.GetDirectoryName(theFile);
+                                        foreach (var file in files)
+                                        {
+                                            var getTheFile = Path.GetFullPath(Path.Combine(currentPath ?? "", (string)file["file"] ?? ""));
+                                            if (File.Exists(getTheFile))
+                                            {
+                                                var theFileType = Path.GetExtension(path: getTheFile).ToLower();
+                                                switch (theFileType)
+                                                {
+                                                    case ".wt":
+                                                    case ".wl":
+                                                    case ".wp":
+                                                    {
+                                                        var row = FileGridView.Rows[index: FileGridView.Rows.Add(values: getTheFile)];
+                                                        row.Height = 28;
+                                                        var projectionButton = row.Cells[index: 1];
+                                                        projectionButton.ToolTipText = "Unknown";
+                                                        projectionButton.Value = "?";
+                                                        var previewButton = row.Cells[index: 2];
+                                                        previewButton.ToolTipText = theFileFormat;
+                                                        break;
+                                                    }
+                                                    default:
+                                                    {
+                                                        FileLoadLogAdd(input: $"[{getTheFile}] in mpj is not supported.");
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                FileLoadLogAdd(input: $"[{getTheFile}] in mpj does not exist.");
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    var row = FileGridView.Rows[index: FileGridView.Rows.Add(values: theFile)];
+                                    row.Height = 28;
+                                    var projectionButton = row.Cells[index: 1];
+                                    projectionButton.ToolTipText = "Unknown";
+                                    projectionButton.Value = "?";
+                                    var previewButton = row.Cells[index: 2];
+                                    previewButton.ToolTipText = theFileFormat;
+                                }
                             }
                         switch (openFileDialog.FilterIndex)
                         {
                             case 2:
-                                {
-                                    SaveAsFormat.Items.Add(item: @"JSON(*.json)");
-                                    SaveAsFormat.SelectedIndex = 0;
-                                    break;
-                                }
+                                //{
+                                //    SaveAsFormat.Items.Add(item: @"JSON(*.json)");
+                                //    SaveAsFormat.SelectedIndex = 0;
+                                //    break;
+                                //}
                             case 1:
                             case 3:
                             case 4:
@@ -658,7 +705,7 @@ namespace Geosite
             }
             catch (Exception error)
             {
-                DatabaseLogAdd(input: statusText.Text = error.Message);
+                FileLoadLogAdd(input: statusText.Text = error.Message);
             }
             FileCheck();
         }
@@ -701,16 +748,67 @@ namespace Geosite
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
-                                var row = FileGridView.Rows[index: FileGridView.Rows.Add(values: theFile)];
-                                row.Height = 28;
-                                var projectionButton = row.Cells[index: 1];
-                                projectionButton.ToolTipText = "Unknown";
-                                projectionButton.Value = "?";
-                                var previewButton = row.Cells[index: 2];
-                                previewButton.ToolTipText = theFileFormat;
+                                var fileType = Path.GetExtension(path: theFile).ToLower();
+                                if (fileType == ".mpj")
+                                {
+                                    var mapgisProject = new MapGis.MapGisProject();
+                                    mapgisProject.Open(file: theFile);
+                                    var files = mapgisProject.Content?["files"];
+                                    if (files != null)
+                                    {
+                                        var currentPath = Path.GetDirectoryName(theFile);
+                                        foreach (var file in files)
+                                        {
+                                            var getTheFile = Path.GetFullPath(Path.Combine(currentPath ?? "", (string)file["file"] ?? ""));
+                                            if (File.Exists(getTheFile))
+                                            {
+                                                var theFileType = Path.GetExtension(path: getTheFile).ToLower();
+                                                switch (theFileType)
+                                                {
+                                                    case ".wt":
+                                                    case ".wl":
+                                                    case ".wp":
+                                                        {
+                                                            var row = FileGridView.Rows[index: FileGridView.Rows.Add(values: getTheFile)];
+                                                            row.Height = 28;
+                                                            var projectionButton = row.Cells[index: 1];
+                                                            projectionButton.ToolTipText = "Unknown";
+                                                            projectionButton.Value = "?";
+                                                            var previewButton = row.Cells[index: 2];
+                                                            previewButton.ToolTipText = theFileFormat;
+                                                            break;
+                                                        }
+                                                    default:
+                                                        {
+                                                            FileLoadLogAdd(input: $"[{getTheFile}] in mpj is not supported.");
+                                                            break;
+                                                        }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                FileLoadLogAdd(input: $"[{getTheFile}] in mpj does not exist.");
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    var row = FileGridView.Rows[index: FileGridView.Rows.Add(values: theFile)];
+                                    row.Height = 28;
+                                    var projectionButton = row.Cells[index: 1];
+                                    projectionButton.ToolTipText = "Unknown";
+                                    projectionButton.Value = "?";
+                                    var previewButton = row.Cells[index: 2];
+                                    previewButton.ToolTipText = theFileFormat;
+                                }
                             }
                         switch (openFileDialog.FilterIndex)
                         {
+                            case 2:
+                                //SaveAsFormat.Items.Add(item: @"JSON(*.json)");
+                                //SaveAsFormat.SelectedIndex = 0;
+                                //break;
                             case 1:
                                 SaveAsFormat.Items.Add(item: @"ESRI ShapeFile(*.shp)");
                                 SaveAsFormat.Items.Add(item: @"GeoJSON(*.geojson)");
@@ -719,17 +817,13 @@ namespace Geosite
                                 SaveAsFormat.Items.Add(item: @"GeositeXML(*.xml)");
                                 SaveAsFormat.SelectedIndex = 0;
                                 break;
-                            case 2:
-                                SaveAsFormat.Items.Add(item: @"JSON(*.json)");
-                                SaveAsFormat.SelectedIndex = 0;
-                                break;
                         }
                     }
                 }
             }
             catch (Exception error)
             {
-                DatabaseLogAdd(input: statusText.Text = error.Message);
+                FileLoadLogAdd(input: statusText.Text = error.Message);
             }
             FileCheck();
         }
@@ -795,7 +889,7 @@ namespace Geosite
             }
             catch (Exception error)
             {
-                DatabaseLogAdd(input: statusText.Text = error.Message);
+                FileLoadLogAdd(input: statusText.Text = error.Message);
             }
             FileCheck();
         }
@@ -861,7 +955,7 @@ namespace Geosite
             }
             catch (Exception error)
             {
-                DatabaseLogAdd(input: statusText.Text = error.Message);
+                FileLoadLogAdd(input: statusText.Text = error.Message);
             }
             FileCheck();
         }
@@ -924,7 +1018,7 @@ namespace Geosite
             }
             catch (Exception error)
             {
-                DatabaseLogAdd(input: statusText.Text = error.Message);
+                FileLoadLogAdd(input: statusText.Text = error.Message);
             }
             FileCheck();
         }
@@ -989,7 +1083,7 @@ namespace Geosite
             }
             catch (Exception error)
             {
-                DatabaseLogAdd(input: statusText.Text = error.Message);
+                FileLoadLogAdd(input: statusText.Text = error.Message);
             }
             FileCheck();
         }
@@ -1051,7 +1145,7 @@ namespace Geosite
             }
             catch (Exception error)
             {
-                DatabaseLogAdd(input: statusText.Text = error.Message);
+                FileLoadLogAdd(input: statusText.Text = error.Message);
             }
             FileCheck();
         }
@@ -1276,23 +1370,23 @@ namespace Geosite
                                     }
                                     break;
                                 }
-                            case ".mpj":
-                                {
-                                    var mapgisProject = new MapGis.MapGisProject();
-                                    var localI = i + 1;
-                                    mapgisProject.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
-                                    {
-                                        object userStatus = !string.IsNullOrWhiteSpace(value: thisEvent.Message)
-                                            ? sourceFiles.Length > 1
-                                                ? $"[{localI}/{sourceFiles.Length}] {thisEvent.Message}"
-                                                : thisEvent.Message
-                                            : null;
-                                        fileBackgroundWorker.ReportProgress(percentProgress: thisEvent.Progress ?? -1, userState: userStatus ?? string.Empty);
-                                    };
-                                    mapgisProject.Open(file: sourceFile);
-                                    mapgisProject.Export(saveAs: targetFile);
-                                    break;
-                                }
+                            //case ".mpj":
+                            //    {
+                            //        var mapgisProject = new MapGis.MapGisProject();
+                            //        var localI = i + 1;
+                            //        mapgisProject.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
+                            //        {
+                            //            object userStatus = !string.IsNullOrWhiteSpace(value: thisEvent.Message)
+                            //                ? sourceFiles.Length > 1
+                            //                    ? $"[{localI}/{sourceFiles.Length}] {thisEvent.Message}"
+                            //                    : thisEvent.Message
+                            //                : null;
+                            //            fileBackgroundWorker.ReportProgress(percentProgress: thisEvent.Progress ?? -1, userState: userStatus ?? string.Empty);
+                            //        };
+                            //        mapgisProject.Open(file: sourceFile);
+                            //        mapgisProject.Export(saveAs: targetFile); 
+                            //        break;
+                            //    }
                             case ".txt":
                             case ".csv":
                             case ".xls":
@@ -4028,33 +4122,88 @@ namespace Geosite
             var oldPath = RegEdit.Getkey(keyname: pathKey);
             var openFileDialog = new OpenFileDialog
             {
-                Filter = @"MapGIS|*.wt;*.wl;*.wp|ShapeFile|*.shp|Excel Tab Delimited|*.txt|Excel Comma Delimited|*.csv|Excel|*.xls;*.xlsx;*.xlsb|GoogleEarth(*.kml)|*.kml|GeositeXML|*.xml|GeoJson|*.geojson",
+                Filter = @"MapGIS|*.wt;*.wl;*.wp|MapGIS|*.mpj|ShapeFile|*.shp|Excel Tab Delimited|*.txt|Excel Comma Delimited|*.csv|Excel|*.xls;*.xlsx;*.xlsb|GoogleEarth(*.kml)|*.kml|GeositeXML|*.xml|GeoJson|*.geojson",
                 FilterIndex = filterIndex,
                 Multiselect = true
             };
             if (Directory.Exists(path: oldPath))
                 openFileDialog.InitialDirectory = oldPath;
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            if (openFileDialog.ShowDialog() != DialogResult.OK) 
                 return;
             RegEdit.Setkey(keyname: key, defaultvalue: $"{openFileDialog.FilterIndex}");
             RegEdit.Setkey(keyname: pathKey, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
             foreach (var path in openFileDialog.FileNames)
             {
-                var theme = Path.GetFileNameWithoutExtension(path: path);
-                int rowIndex;
-                try
+                var fileType = Path.GetExtension(path: path).ToLower();
+                if (fileType == ".mpj")
                 {
-                    rowIndex = vectorFilePool.Rows.Add(values: new object[] { new XElement(name: theme).Name.LocalName, path });
+                    var mapgisProject = new MapGis.MapGisProject();
+                    mapgisProject.Open(file: path);
+                    var files = mapgisProject.Content?["files"];
+                    if (files != null)
+                    {
+                        var currentPath = Path.GetDirectoryName(path);
+                        foreach (var file in files)
+                        {
+                            var getTheFile = Path.GetFullPath(Path.Combine(currentPath ?? "", (string)file["file"] ?? ""));
+                            if (File.Exists(getTheFile))
+                            {
+                                var theFileType = Path.GetExtension(path: getTheFile).ToLower();
+                                switch (theFileType)
+                                {
+                                    case ".wt":
+                                    case ".wl":
+                                    case ".wp":
+                                        {
+                                            var theme = Path.GetFileNameWithoutExtension(path: getTheFile);
+                                            int rowIndex;
+                                            try
+                                            {
+                                                rowIndex = vectorFilePool.Rows.Add(values: new object[] { new XElement(name: theme).Name.LocalName, getTheFile });
+                                            }
+                                            catch
+                                            {
+                                                rowIndex = vectorFilePool.Rows.Add(values: new object[] { $"Untitled_{theme}", getTheFile });
+                                            }
+                                            var row = vectorFilePool.Rows[rowIndex];
+                                            row.Height = 28;
+                                            var projectionButton = row.Cells[index: 2]; //0=Layer 1=URI 2=Projection 3=※（Status）
+                                            projectionButton.ToolTipText = "Unknown";
+                                            projectionButton.Value = "?";
+                                            break;
+                                        }
+                                    default:
+                                        {
+                                            DatabaseLogAdd(input: $"[{getTheFile}] in mpj is not supported.");
+                                            break;
+                                        }
+                                }
+                            }
+                            else
+                            {
+                                DatabaseLogAdd(input: $"[{getTheFile}] in mpj does not exist.");
+                            }
+                        }
+                    }
                 }
-                catch
+                else
                 {
-                    rowIndex = vectorFilePool.Rows.Add(values: new object[] { $"Untitled_{theme}", path });
+                    var theme = Path.GetFileNameWithoutExtension(path: path);
+                    int rowIndex;
+                    try
+                    {
+                        rowIndex = vectorFilePool.Rows.Add(values: new object[] { new XElement(name: theme).Name.LocalName, path });
+                    }
+                    catch
+                    {
+                        rowIndex = vectorFilePool.Rows.Add(values: new object[] { $"Untitled_{theme}", path });
+                    }
+                    var row = vectorFilePool.Rows[rowIndex];
+                    row.Height = 28;
+                    var projectionButton = row.Cells[index: 2]; //0=Layer 1=URI 2=Projection 3=※（Status）
+                    projectionButton.ToolTipText = "Unknown";
+                    projectionButton.Value = "?";
                 }
-                var row = vectorFilePool.Rows[rowIndex];
-                row.Height = 28;
-                var projectionButton = row.Cells[index: 2]; //0=Layer 1=URI 2=Projection 3=※（Status）
-                projectionButton.ToolTipText = "Unknown";
-                projectionButton.Value = "?";
             }
         }
 
@@ -9159,84 +9308,490 @@ namespace Geosite
             switch (theSender.Text)
             {
                 case "Zoom to Layer":
-                    {
-                        var left = double.MaxValue;
-                        var top = double.MinValue;
-                        var right = double.MinValue;
-                        var bottom = double.MaxValue;
-                        var hasFeature = false;
-                        foreach (var rect in new List<RectLatLng?>
+                {
+                    var left = double.MaxValue;
+                    var top = double.MinValue;
+                    var right = double.MinValue;
+                    var bottom = double.MaxValue;
+                    var hasFeature = false;
+                    foreach (var rect in new List<RectLatLng?>
                              {
                                  MapBox.GetRectOfAllMarkers(overlayId: null),
                                  MapBox.GetRectOfAllRoutes(overlayId: null),
                                  Functions.GetRectOfAllPolygons(overlayId: null, mapControl: MapBox)
                              }.Where(predicate: rect => rect != null))
-                        {
-                            if (rect.Value.Left < left)
-                                left = rect.Value.Left;
-                            if (rect.Value.Top > top)
-                                top = rect.Value.Top;
-                            if (rect.Value.Right > right)
-                                right = rect.Value.Right;
-                            if (rect.Value.Bottom < bottom)
-                                bottom = rect.Value.Bottom;
-                            hasFeature = true;
-                        }
-                        if (hasFeature)
-                            MapBox.SetZoomToFitRect(rect: RectLatLng.FromLTRB(leftLng: left, topLat: top, rightLng: right, bottomLat: bottom));
-                        break;
+                    {
+                        if (rect.Value.Left < left)
+                            left = rect.Value.Left;
+                        if (rect.Value.Top > top)
+                            top = rect.Value.Top;
+                        if (rect.Value.Right > right)
+                            right = rect.Value.Right;
+                        if (rect.Value.Bottom < bottom)
+                            bottom = rect.Value.Bottom;
+                        hasFeature = true;
                     }
+
+                    if (hasFeature)
+                        MapBox.SetZoomToFitRect(rect: RectLatLng.FromLTRB(leftLng: left, topLat: top, rightLng: right,
+                            bottomLat: bottom));
+                    break;
+                }
                 case "Clear Layer":
-                    {
-                        MapView.Features.Markers.Clear();
-                        MapView.Features.Routes.Clear();
-                        MapView.Features.Polygons.Clear();
-                        TopologyCheckerForm.Features.Markers.Clear();
-                        TopologyCheckerForm.Features.Routes.Clear();
-                        TopologyCheckerForm.Features.Polygons.Clear();
-                        GMapProvider.OverlayTiles = new List<GMapProvider>();
-                        MapBox.ReloadMap();
-                        break;
-                    }
+                {
+                    MapView.Features.Markers.Clear();
+                    MapView.Features.Routes.Clear();
+                    MapView.Features.Polygons.Clear();
+                    TopologyCheckerForm.Features.Markers.Clear();
+                    TopologyCheckerForm.Features.Routes.Clear();
+                    TopologyCheckerForm.Features.Polygons.Clear();
+                    GMapProvider.OverlayTiles = new List<GMapProvider>();
+                    MapBox.ReloadMap();
+                    break;
+                }
                 case "Clear Tiles Cache":
+                {
+                    if (
+                        MessageBox.Show(
+                            text: @"Are You sure?",
+                            caption: @"Clear tiles cache?",
+                            buttons: MessageBoxButtons.OKCancel,
+                            icon: MessageBoxIcon.Warning
+                        ) != DialogResult.OK)
+                        return;
+                    try
                     {
-                        if (
-                            MessageBox.Show(
-                                text: @"Are You sure?",
-                                caption: @"Clear tiles cache?",
-                                buttons: MessageBoxButtons.OKCancel,
-                                icon: MessageBoxIcon.Warning
-                            ) != DialogResult.OK)
-                            return;
-                        try
-                        {
-                            BeginInvoke(
-                                method: () =>
-                                {
-                                    FileLoadLogAdd(input: statusText.Text = @"Tiles cache cleaning up ...");
-                                    Application.DoEvents();
-                                    MapBox.Manager.PrimaryCache.DeleteOlderThan(date: DateTime.Now, type: null);
-                                    FileLoadLogAdd(input: statusText.Text = @"Tiles cache cleaning completed.");
-                                }
-                            );
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(text: ex.Message);
-                        }
-                        break;
+                        BeginInvoke(
+                            method: () =>
+                            {
+                                FileLoadLogAdd(input: statusText.Text = @"Tiles cache cleaning up ...");
+                                Application.DoEvents();
+                                MapBox.Manager.PrimaryCache.DeleteOlderThan(date: DateTime.Now, type: null);
+                                FileLoadLogAdd(input: statusText.Text = @"Tiles cache cleaning completed.");
+                            }
+                        );
                     }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(text: ex.Message);
+                    }
+                    break;
+                }
                 case "Cancel Drawing (ESC)":
-                    {
-                        BeginInvoke(method: BreakMapViewTask);
-                        break;
-                    }
+                {
+                    BeginInvoke(method: BreakMapViewTask);
+                    break;
+                }
                 case "Vector SaveAs ...":
+                {
+                    var markers = MapView.Features.Markers;
+                    var routes = MapView.Features.Routes;
+                    var mapGrids = MapGrid.Features.Routes;
+                    var polygons = MapView.Features.Polygons;
+                    var markerCount = markers.Count;
+                    var routeCount = routes.Count;
+                    var mapGridCount = mapGrids.Count;
+                    var polygonCount = polygons.Count;
+                    var total = markerCount + routeCount + mapGridCount + polygonCount;
+                    if (total > 0)
                     {
-                        FileLoadLogAdd(input: statusText.Text = @"This version currently does not support.");
-                        FileLoadLogAdd(input: statusText.Text = @"Can be implemented using the GetFeature of GeositeServer.");
-                        break;
+                        FileLoadLogAdd(input: statusText.Text =
+                            @"SaveAs can be implemented using GetFeature / GeositeServer.");
+                        Application.DoEvents();
+                        var key = vectorSaveButton.Name;
+                        var path = key + "_path";
+                        var oldPath = RegEdit.Getkey(keyname: path);
+                        int.TryParse(s: RegEdit.Getkey(keyname: key), result: out var filterIndex);
+                        var saveFileDialog = new SaveFileDialog
+                        {
+                            Filter = @"ESRI ShapeFile(*.shp)|*.shp|GeoJSON(*.geojson)|*.geojson|GoogleEarth(*.kml)|*.kml|Gml(*.gml)|*.gml|GeositeXML(*.xml)|*.xml",
+                            FilterIndex = filterIndex
+                        };
+                        if (Directory.Exists(path: oldPath))
+                            saveFileDialog.InitialDirectory = oldPath;
+                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            RegEdit.Setkey(keyname: key, defaultvalue: $"{saveFileDialog.FilterIndex}");
+                            RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: saveFileDialog.FileName));
+                            var saveAsFileName = saveFileDialog.FileName;
+                            var fileType = Path.GetExtension(path: saveAsFileName).ToLower();
+                            try
+                            {
+                                var xDocument = new XDocument(new XDeclaration("1.0", "utf-8", "yes"));
+                                var rootX = new XElement("FeatureCollection");
+                                rootX.Add(new XAttribute("timeStamp", DateTime.Now.ToString("s")));
+                                rootX.Add(new XElement("name", "Untitled"));
+                                var featureId = 0;
+                                var featureTimeStamp = DateTime.Now.ToString("s");
+                                if (markerCount > 0)
+                                    lock (MapView.Features.Markers)
+                                    {
+                                        foreach (var marker in MapView.Features.Markers)
+                                        {
+                                            if (marker.IsVisible)
+                                            {
+                                                var branchList =
+                                                    Regex.Split("Markers", @"[\/\\\|\@]+")
+                                                        .Where(layer => !string.IsNullOrWhiteSpace(layer))
+                                                        .Select(layer => layer)
+                                                        .ToArray();
+                                                var branchX = rootX;
+                                                foreach (var branch in branchList)
+                                                {
+                                                    if (branchX.Elements("layer")
+                                                        .All(x => x.Element("name")?.Value != branch))
+                                                        branchX.Add(new XElement("layer",
+                                                            new XElement("name", branch)));
+                                                    branchX = branchX.Elements("layer")
+                                                        .First(x => x.Element("name")?.Value == branch);
+                                                }
+                                                var vertex = marker.Position;
+                                                var geometry = new JArray { vertex.Lng, vertex.Lat };
+                                                XElement propertyX = null;
+                                                XElement styleX = null;
+                                                var tag = marker.Tag;
+                                                if (tag != null)
+                                                {
+                                                    var (property, style) = ((JObject property, JObject style))tag;
+                                                    propertyX = property != null
+                                                        ? JsonConvert.DeserializeXNode(
+                                                            property.ToString(Formatting.None),
+                                                            "property")?.Root
+                                                        : null;
+                                                    styleX = style != null
+                                                        ? JsonConvert.DeserializeXNode(style.ToString(Formatting.None),
+                                                            "style")?.Root
+                                                        : null;
+                                                }
+                                                branchX.Add(
+                                                    new XElement(
+                                                        "member",
+                                                        new XAttribute("type", "Point"),
+                                                        new XAttribute("typeCode", "1"),
+                                                        new XAttribute("id", featureId),
+                                                        new XAttribute("timeStamp", featureTimeStamp),
+                                                        new XElement(
+                                                            "geometry",
+                                                            new XAttribute("format", "WKT"),
+                                                            new XAttribute("type", "Point"),
+                                                            new XAttribute("centroid",
+                                                                $"({geometry[0]} {geometry[1]})"),
+                                                            new XAttribute("boundary",
+                                                                $"(({geometry[0]} {geometry[1]},{geometry[0]} {geometry[1]},{geometry[0]} {geometry[1]},{geometry[0]} {geometry[1]},{geometry[0]} {geometry[1]}))"),
+                                                            $"({string.Join(" ", geometry)})"
+                                                        ),
+                                                        propertyX ?? new XElement("property", new XElement("id", featureId)),
+                                                        styleX
+                                                    )
+                                                );
+                                                featureId++;
+                                            }
+                                        }
+                                    }
+                                if (routeCount > 0)
+                                    lock (MapView.Features.Routes)
+                                    {
+                                        foreach (var route in MapView.Features.Routes)
+                                        {
+                                            if (route.IsVisible)
+                                            {
+                                                var branchList =
+                                                    Regex.Split("Routes", @"[\/\\\|\@]+")
+                                                        .Where(layer => !string.IsNullOrWhiteSpace(layer))
+                                                        .Select(layer => layer)
+                                                        .ToArray();
+                                                var branchX = rootX;
+                                                foreach (var branch in branchList)
+                                                {
+                                                    if (branchX.Elements("layer")
+                                                        .All(x => x.Element("name")?.Value != branch))
+                                                        branchX.Add(new XElement("layer",
+                                                            new XElement("name", branch)));
+                                                    branchX = branchX.Elements("layer")
+                                                        .First(x => x.Element("name")?.Value == branch);
+                                                }
+                                                var verteics = route.Points;
+                                                var geometry = new JArray();
+                                                foreach (var vertex in verteics)
+                                                    geometry.Add(new JArray { vertex.Lng, vertex.Lat });
+                                                (JArray Centroid, JArray BBox) lineStringTopology;
+                                                try
+                                                {
+                                                    lineStringTopology = GeositeXML.Topology.GetTopology(geometry, "LineString");
+                                                }
+                                                catch
+                                                {
+                                                    lineStringTopology = (null, null);
+                                                }
+                                                XElement propertyX = null;
+                                                XElement styleX = null;
+                                                var tag = route.Tag;
+                                                if (tag != null)
+                                                {
+                                                    var (property, style) = ((JObject property, JObject style))tag;
+                                                    propertyX = property != null
+                                                        ? JsonConvert.DeserializeXNode(
+                                                            property.ToString(Formatting.None),
+                                                            "property")?.Root
+                                                        : null;
+                                                    styleX = style != null
+                                                        ? JsonConvert.DeserializeXNode(style.ToString(Formatting.None),
+                                                            "style")?.Root
+                                                        : null;
+                                                }
+                                                branchX.Add(
+                                                    new XElement
+                                                    (
+                                                        "member",
+                                                        new XAttribute("type", "Line"),
+                                                        new XAttribute("typeCode", "2"),
+                                                        new XAttribute("id", featureId),
+                                                        new XAttribute("timeStamp", featureTimeStamp),
+                                                        new XElement(
+                                                            "geometry",
+                                                            new XAttribute("format", "WKT"),
+                                                            new XAttribute("type", "LineString"),
+                                                            lineStringTopology.Centroid != null
+                                                                ? new XAttribute("centroid",
+                                                                    $"({lineStringTopology.Centroid[0]} {lineStringTopology.Centroid[1]})")
+                                                                : null,
+                                                            lineStringTopology.BBox != null
+                                                                ? new XAttribute("boundary",
+                                                                    $"(({lineStringTopology.BBox[0]} {lineStringTopology.BBox[1]},{lineStringTopology.BBox[2]} {lineStringTopology.BBox[1]},{lineStringTopology.BBox[2]} {lineStringTopology.BBox[3]},{lineStringTopology.BBox[0]} {lineStringTopology.BBox[3]},{lineStringTopology.BBox[0]} {lineStringTopology.BBox[1]}))")
+                                                                : null,
+                                                            $"({string.Join(",", from vertex in geometry select $"{vertex[0]} {vertex[1]}")})"
+                                                        ),
+                                                        propertyX ?? new XElement("property", new XElement("id", featureId)),
+                                                        styleX
+                                                    )
+                                                );
+                                                featureId++;
+                                            }
+                                        }
+                                    }
+                                if (mapGridCount > 0)
+                                    lock (MapGrid.Features.Routes)
+                                    {
+                                        foreach (var route in MapGrid.Features.Routes)
+                                        {
+                                            if (route.IsVisible)
+                                            {
+                                                var branchList =
+                                                    Regex.Split("MapGridLines", @"[\/\\\|\@]+")
+                                                        .Where(layer => !string.IsNullOrWhiteSpace(layer))
+                                                        .Select(layer => layer)
+                                                        .ToArray();
+                                                var branchX = rootX;
+                                                foreach (var branch in branchList)
+                                                {
+                                                    if (branchX.Elements("layer")
+                                                        .All(x => x.Element("name")?.Value != branch))
+                                                        branchX.Add(new XElement("layer",
+                                                            new XElement("name", branch)));
+                                                    branchX = branchX.Elements("layer")
+                                                        .First(x => x.Element("name")?.Value == branch);
+                                                }
+                                                var verteics = route.Points;
+                                                var geometry = new JArray();
+                                                foreach (var vertex in verteics)
+                                                    geometry.Add(new JArray { vertex.Lng, vertex.Lat });
+                                                (JArray Centroid, JArray BBox) lineStringTopology;
+                                                try
+                                                {
+                                                    lineStringTopology = GeositeXML.Topology.GetTopology(geometry, "LineString");
+                                                }
+                                                catch
+                                                {
+                                                    lineStringTopology = (null, null);
+                                                }
+                                                XElement propertyX = null;
+                                                XElement styleX = null;
+                                                var tag = route.Tag;
+                                                if (tag != null)
+                                                {
+                                                    var (property, style) = ((JObject property, JObject style))tag;
+                                                    propertyX = property != null
+                                                        ? JsonConvert.DeserializeXNode(
+                                                            property.ToString(Formatting.None),
+                                                            "property")?.Root
+                                                        : null;
+                                                    styleX = style != null
+                                                        ? JsonConvert.DeserializeXNode(style.ToString(Formatting.None),
+                                                            "style")?.Root
+                                                        : null;
+                                                }
+                                                branchX.Add(
+                                                    new XElement
+                                                    (
+                                                        "member",
+                                                        new XAttribute("type", "Line"),
+                                                        new XAttribute("typeCode", "2"),
+                                                        new XAttribute("id", featureId),
+                                                        new XAttribute("timeStamp", featureTimeStamp),
+                                                        new XElement(
+                                                            "geometry",
+                                                            new XAttribute("format", "WKT"),
+                                                            new XAttribute("type", "LineString"),
+                                                            lineStringTopology.Centroid != null
+                                                                ? new XAttribute("centroid",
+                                                                    $"({lineStringTopology.Centroid[0]} {lineStringTopology.Centroid[1]})")
+                                                                : null,
+                                                            lineStringTopology.BBox != null
+                                                                ? new XAttribute("boundary",
+                                                                    $"(({lineStringTopology.BBox[0]} {lineStringTopology.BBox[1]},{lineStringTopology.BBox[2]} {lineStringTopology.BBox[1]},{lineStringTopology.BBox[2]} {lineStringTopology.BBox[3]},{lineStringTopology.BBox[0]} {lineStringTopology.BBox[3]},{lineStringTopology.BBox[0]} {lineStringTopology.BBox[1]}))")
+                                                                : null,
+                                                            $"({string.Join(",", from vertex in geometry select $"{vertex[0]} {vertex[1]}")})"
+                                                        ),
+                                                        propertyX ?? new XElement("property", new XElement("id", featureId)),
+                                                        styleX
+                                                    )
+                                                );
+                                                featureId++;
+                                            }
+                                        }
+                                    }
+                                if (polygonCount > 0)
+                                    lock (MapView.Features.Polygons)
+                                    {
+                                        foreach (var polygon in MapView.Features.Polygons)
+                                        {
+                                            if (polygon.IsVisible)
+                                            {
+                                                var branchList =
+                                                    Regex.Split("Polygons", @"[\/\\\|\@]+")
+                                                        .Where(layer => !string.IsNullOrWhiteSpace(layer))
+                                                        .Select(layer => layer)
+                                                        .ToArray();
+                                                var branchX = rootX;
+                                                foreach (var branch in branchList)
+                                                {
+                                                    if (branchX.Elements("layer")
+                                                        .All(x => x.Element("name")?.Value != branch))
+                                                        branchX.Add(new XElement("layer",
+                                                            new XElement("name", branch)));
+                                                    branchX = branchX.Elements("layer")
+                                                        .First(x => x.Element("name")?.Value == branch);
+                                                }
+                                                var verteics = polygon.Points;
+                                                var geometry = new JArray();
+                                                foreach (var vertex in verteics)
+                                                    geometry.Add(new JArray { vertex.Lng, vertex.Lat });
+                                                geometry = new JArray { geometry };
+                                                (JArray Centroid, JArray BBox) polygonTopology;
+                                                try
+                                                {
+                                                    polygonTopology = GeositeXML.Topology.GetTopology(geometry, "Polygon");
+                                                }
+                                                catch
+                                                {
+                                                    polygonTopology = (null, null);
+                                                }
+                                                XElement propertyX = null;
+                                                XElement styleX = null;
+                                                var tag = polygon.Tag;
+                                                if (tag != null)
+                                                {
+                                                    var (property, style) = ((JObject property, JObject style))tag;
+                                                    propertyX = property != null
+                                                        ? JsonConvert.DeserializeXNode(
+                                                            property.ToString(Formatting.None),
+                                                            "property")?.Root
+                                                        : null;
+                                                    styleX = style != null
+                                                        ? JsonConvert.DeserializeXNode(style.ToString(Formatting.None),
+                                                            "style")?.Root
+                                                        : null;
+                                                }
+                                                branchX.Add(
+                                                    new XElement(
+                                                        "member",
+                                                        new XAttribute("type", "Polygon"),
+                                                        new XAttribute("typeCode", "3"),
+                                                        new XAttribute("id", featureId),
+                                                        new XAttribute("timeStamp", featureTimeStamp),
+                                                        new XElement(
+                                                            "geometry",
+                                                            new XAttribute("format", "WKT"),
+                                                            new XAttribute("type", "Polygon"),
+                                                            polygonTopology.Centroid != null
+                                                                ? new XAttribute("centroid",
+                                                                    $"({polygonTopology.Centroid[0]} {polygonTopology.Centroid[1]})")
+                                                                : null,
+                                                            polygonTopology.BBox != null
+                                                                ? new XAttribute("boundary",
+                                                                    $"(({polygonTopology.BBox[0]} {polygonTopology.BBox[1]},{polygonTopology.BBox[2]} {polygonTopology.BBox[1]},{polygonTopology.BBox[2]} {polygonTopology.BBox[3]},{polygonTopology.BBox[0]} {polygonTopology.BBox[3]},{polygonTopology.BBox[0]} {polygonTopology.BBox[1]}))")
+                                                                : null
+                                                            , $"(({string.Join(",", from vertex in geometry[0] select $"{vertex[0]} {vertex[1]}")}))"
+                                                        ),
+                                                        propertyX ?? new XElement("property",
+                                                            new XElement("id", featureId)),
+                                                        styleX
+                                                    )
+                                                );
+                                                featureId++;
+                                            }
+                                        }
+                                    }
+                                xDocument.Add(rootX);
+                                using var geositeXml =
+                                    new GeositeXml.GeositeXml(
+                                        new XElement(
+                                            "Projection",
+                                            new XElement(
+                                                "From",
+                                                new XElement("Geography")
+                                            ),
+                                            new XElement(
+                                                "To",
+                                                new XElement("Geography")
+                                            )
+                                        )
+                                    );
+                                switch (fileType)
+                                {
+                                    case ".shp":
+                                    {
+                                        geositeXml.GeositeXmlToShp(rootX, saveAsFileName);
+                                        break;
+                                    }
+                                    case ".geojson":
+                                    {
+                                        var result = geositeXml.GeositeXmlToGeoJson(rootX.Descendants());
+                                        if (result != null)
+                                        {
+                                            using var w = new StreamWriter(saveAsFileName, false, Encoding.UTF8);
+                                            w.WriteLine(result);
+                                        }
+                                        break;
+                                    }
+                                    case ".kml":
+                                    {
+                                        geositeXml.GeositeXmlToKml(rootX.Descendants()).Save(saveAsFileName);
+                                        break;
+                                    }
+                                    case ".gml":
+                                    {
+                                        geositeXml.GeositeXmlToGml(rootX.Descendants()).Save(saveAsFileName);
+                                        break;
+                                    }
+                                    case ".xml":
+                                    {
+                                        geositeXml.GeositeXmlToGeositeXml(rootX.Descendants()).Save(saveAsFileName);
+                                        break;
+                                    }
+                                }
+                                FileLoadLogAdd(input: statusText.Text = @$"[{featureId} / {total}] feature{(featureId > 1 ? "s" : "")} saved.");
+                            }
+                            catch (Exception error)
+                            {
+                                FileLoadLogAdd(input: statusText.Text = error.Message);
+                            }
+                        }
                     }
+                    else
+                        FileLoadLogAdd(input: statusText.Text = @"No vector data found.");
+                    break;
+                }
             }
         }
 
