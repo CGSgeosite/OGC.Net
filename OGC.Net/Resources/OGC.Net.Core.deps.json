@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "OGC.Net.Core/7.2023.6.1": {
+      "OGC.Net.Core/7.2023.6.5": {
         "dependencies": {
           "GDAL": "3.6.3",
           "Newtonsoft.Json": "13.0.3",
@@ -86,7 +86,7 @@
     }
   },
   "libraries": {
-    "OGC.Net.Core/7.2023.6.1": {
+    "OGC.Net.Core/7.2023.6.5": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
