@@ -8,7 +8,7 @@
 		<RootNamespace>Geosite</RootNamespace>
 		<ApplicationIcon>OGC.net.ico</ApplicationIcon>
 		<Title>OGC.net</Title>
-		<Version>7.2023.6.1</Version>
+		<Version>7.2023.6.8</Version>
 		<Authors>ZhanchangWang</Authors>
 		<Company>CGS</Company>
 		<Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
@@ -46,12 +46,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="GDAL" Version="3.6.3">
-	    <GeneratePathProperty>False</GeneratePathProperty>
-	  </PackageReference>
-	  <PackageReference Include="GDAL.Native" Version="3.6.3">
-	    <GeneratePathProperty>False</GeneratePathProperty>
-	  </PackageReference>
+	  <PackageReference Include="MaxRev.Gdal.Core" Version="3.7.0.217" />
+	  <PackageReference Include="MaxRev.Gdal.LinuxRuntime.Minimal" Version="3.7.0.100" />
+	  <PackageReference Include="MaxRev.Gdal.MacosRuntime.Minimal.arm64" Version="3.7.0.217" />
+	  <PackageReference Include="MaxRev.Gdal.MacosRuntime.Minimal.x64" Version="3.7.0.217" />
+	  <PackageReference Include="MaxRev.Gdal.WindowsRuntime.Minimal" Version="3.7.0.100" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="Npgsql" Version="7.0.4" />
 	  <PackageReference Include="RestSharp" Version="110.2.0" />
@@ -81,9 +80,6 @@
 	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
- <ItemGroup>
-    <None Include="gdal\**" CopyToOutputDirectory="Always" />
-</ItemGroup>
  <ItemGroup>
    <Reference Include="GMap.NET.Core">
      <HintPath>Resources\GMap.NET.Core.dll</HintPath>
