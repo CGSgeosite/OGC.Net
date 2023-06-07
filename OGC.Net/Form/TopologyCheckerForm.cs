@@ -31,7 +31,6 @@ using System.ComponentModel;
 using Geosite.Properties;
 using GMap.NET.Extend;
 using GMap.NET;
-using GMap.NET.Geometry;
 using GMap.NET.WindowsForms;
 
 /*
