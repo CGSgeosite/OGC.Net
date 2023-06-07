@@ -996,7 +996,8 @@ namespace Geosite
                                             _mainForm.MapBox.BeginInvoke(
                                                 method: () =>
                                                 {
-                                                    _mainForm.MapBox.SetZoomToFitRect(rect: RectLatLng.FromLTRB(
+                                                    _mainForm.MapBox.SetZoomToFitRect(
+                                                        rect: RectLatLng.FromLTRB(
                                                             leftLng: west,
                                                             topLat: north,
                                                             rightLng: east,
