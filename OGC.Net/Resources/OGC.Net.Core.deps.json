@@ -6,9 +6,13 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "OGC.Net.Core/7.2023.6.5": {
+      "OGC.Net.Core/7.2023.6.8": {
         "dependencies": {
-          "GDAL": "3.6.3",
+          "MaxRev.Gdal.Core": "3.7.0.217",
+          "MaxRev.Gdal.LinuxRuntime.Minimal": "3.7.0.100",
+          "MaxRev.Gdal.MacosRuntime.Minimal.arm64": "3.7.0.217",
+          "MaxRev.Gdal.MacosRuntime.Minimal.x64": "3.7.0.217",
+          "MaxRev.Gdal.WindowsRuntime.Minimal": "3.7.0.100",
           "Newtonsoft.Json": "13.0.3",
           "Npgsql": "7.0.4",
           "RestSharp": "110.2.0",
@@ -18,23 +22,2253 @@
           "OGC.Net.Core.dll": {}
         }
       },
-      "GDAL/3.6.3": {
+      "MaxRev.Gdal.Core/3.7.0.217": {
         "runtime": {
-          "lib/netstandard2.0/gdal_csharp.dll": {
-            "assemblyVersion": "3.6.3.0",
-            "fileVersion": "3.6.3.0"
+          "lib/net7.0/MaxRev.Gdal.Core.dll": {
+            "assemblyVersion": "3.7.0.217",
+            "fileVersion": "3.7.0.217"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/any/native/gdal-data/GDALLogoBW.svg": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
           },
-          "lib/netstandard2.0/gdalconst_csharp.dll": {
-            "assemblyVersion": "3.6.3.0",
-            "fileVersion": "3.6.3.0"
+          "runtimes/any/native/gdal-data/GDALLogoColor.svg": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
           },
-          "lib/netstandard2.0/ogr_csharp.dll": {
-            "assemblyVersion": "3.6.3.0",
-            "fileVersion": "3.6.3.0"
+          "runtimes/any/native/gdal-data/GDALLogoGS.svg": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
           },
-          "lib/netstandard2.0/osr_csharp.dll": {
-            "assemblyVersion": "3.6.3.0",
-            "fileVersion": "3.6.3.0"
+          "runtimes/any/native/gdal-data/LICENSE.TXT": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/bag_template.xml": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/cubewerx_extra.wkt": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/default.rsc": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ecw_cs.wkt": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/eedaconf.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/epsg.wkt": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/esri_StatePlane_extra.wkt": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gdalicon.png": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gdalinfo_output.schema.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gdalmdiminfo_output.schema.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gdalvrt.xsd": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gml_registry.xml": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gmlasconf.xml": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gmlasconf.xsd": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_center.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_process.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_subcenter.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_0.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_1.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_13.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_14.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_15.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_16.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_17.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_18.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_19.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_190.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_191.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_2.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_20.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_21.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_3.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_4.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_5.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_6.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_0_7.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_10_0.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_10_1.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_10_191.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_10_2.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_10_3.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_10_4.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_1_0.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_1_1.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_1_2.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_20_0.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_20_1.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_20_2.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_2_0.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_2_3.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_2_4.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_2_5.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_2_6.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_3_0.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_3_1.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_3_2.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_3_3.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_3_4.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_3_5.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_3_6.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_0.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_1.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_10.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_2.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_3.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_4.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_5.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_6.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_7.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_8.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_4_9.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_local_Canada.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_local_HPC.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_local_MRMS.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_local_NCEP.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_local_NDFD.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_2_local_index.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_4_5.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/grib2_table_versions.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gt_datum.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/gt_ellips.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/header.dxf": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/inspire_cp_BasicPropertyUnit.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/inspire_cp_CadastralBoundary.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/inspire_cp_CadastralParcel.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/inspire_cp_CadastralZoning.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_AdmArea.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_AdmBdry.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_AdmPt.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_BldA.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_BldL.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_Cntr.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_CommBdry.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_CommPt.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_Cstline.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_ElevPt.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_GCP.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_LeveeEdge.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_RailCL.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_RdASL.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_RdArea.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_RdCompt.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_RdEdg.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_RdMgtBdry.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_RdSgmtA.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_RvrMgtBdry.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_SBAPt.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_SBArea.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_SBBdry.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_WA.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_WL.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_WStrA.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/jpfgdgml_WStrL.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/netcdf_config.xsd": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/nitf_spec.xml": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/nitf_spec.xsd": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ogrinfo_output.schema.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ogrvrt.xsd": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/osmconf.ini": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ozi_datum.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ozi_ellips.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/pci_datum.txt": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/pci_ellips.txt": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/pdfcomposition.xsd": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/pds4_template.xml": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/plscenesconf.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ruian_vf_ob_v1.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ruian_vf_st_uvoh_v1.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ruian_vf_st_v1.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/ruian_vf_v1.gfs": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/s57agencies.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/s57attributes.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/s57expectedinput.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/s57objectclasses.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/seed_2d.dgn": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/seed_3d.dgn": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/stateplane.csv": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/template_tiles.mapml": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/tms_LINZAntarticaMapTileGrid.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/tms_MapML_APSTILE.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/tms_MapML_CBMTILE.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/tms_NZTM2000.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/trailer.dxf": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/vdv452.xml": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/vdv452.xsd": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/any/native/gdal-data/vicar.json": {
+            "rid": "any",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "MaxRev.Gdal.LinuxRuntime.Minimal/3.7.0.100": {
+        "runtime": {
+          "lib/net7.0/MaxRev.Gdal.LinuxRuntime.Minimal.dll": {
+            "assemblyVersion": "3.7.0.100",
+            "fileVersion": "3.7.0.100"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libaec.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libbrotlicommon.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libbrotlidec.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libc.so.6": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libcfitsio.so.3": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libcom_err.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libcrypto.so.3": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libcurl-gnutls.so.4": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libcurl.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libdf.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libdl.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libexpat.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libffi.so.7": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libfreexl.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgcc_s.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgcrypt.so.20": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgdal.so.33": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgdal_wrap.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgdalconst_wrap.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgeos.so.3.11.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgeos_c.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgif.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgmp.so.10": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgnutls.so.30": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgpg-error.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgssapi_krb5.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libhdf5.so.200": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libhdf5_serial.so.103": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libhdf5_serial_hl.so.100": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libhogweed.so.6": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libidn2.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libjpeg.so.62": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libk5crypto.so.3": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libkeyutils.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libkmlbase.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libkmldom.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libkmlengine.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libkrb5.so.3": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libkrb5support.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/liblber-2.4.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libldap_r-2.4.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/liblz4.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/liblzma.so.5": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libm.so.6": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libmfhdf.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libminizip.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libmysqlclient.so.21": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libnetcdf.so.18": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libnettle.so.8": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libnghttp2.so.14": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libodbc.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libodbcinst.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libogr_wrap.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libopenjp2.so.7": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libosr_wrap.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libp11-kit.so.0": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libpcre.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libpng16.so.16": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libpq.so.5": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libproj.so.25": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libpsl.so.5": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libresolv.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/librtmp.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libsasl2.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libsqlite3.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libssh2.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libssl.so.3": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libstdc++.so.6": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libsz.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libtasn1.so.6": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libtiff.so.5": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libunistring.so.2": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/liburiparser.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libwebp.so.7": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libxerces-c-3.2.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libxml2.so.2.9.14": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libz.so.1": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/maxrev.gdal.core.libshared/proj.db": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "MaxRev.Gdal.MacosRuntime.Minimal.arm64/3.7.0.217": {
+        "runtime": {
+          "lib/net7.0/MaxRev.Gdal.MacosRuntime.Minimal.arm64.dll": {
+            "assemblyVersion": "3.7.0.217",
+            "fileVersion": "3.7.0.217"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/osx-arm64/native/libLerc.4.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libarchive.13.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libb2.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libblosc.1.21.3.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libbrotlicommon.1.0.9.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libbrotlidec.1.0.9.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libbrotlienc.1.0.9.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libbrunslidec-c.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libbrunslienc-c.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libbz2.1.0.8.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libcfitsio.3.49.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libcrypto.3.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libcurl.4.8.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libcurl.4.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libdf.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libexpat.1.8.10.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libfreexl.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libgdal.33.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libgdal_wrap.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libgdalconst_wrap.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libgeos.3.11.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libgeos_c.1.17.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libgif.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libhdf5.310.0.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libhdf5.310.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libhdf5_hl.310.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libiconv.2.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libicudata.72.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libicui18n.72.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libicuuc.72.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libidn2.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libintl.8.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libjpeg.62.3.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libjpeg.8.2.2.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libkmlbase.1.3.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libkmldom.1.3.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libkmlengine.1.3.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/liblz4.1.9.4.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/liblz4.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/liblzma.5.4.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/liblzma.5.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/liblzo2.2.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libmfhdf.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libnetcdf.19.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libnghttp2.14.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libodbc.2.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libodbcinst.2.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libogr_wrap.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libopenjp2.2.5.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libosr_wrap.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libpng16.16.39.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libpq.5.15.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libproj.25.9.2.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libpsl.5.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libqhull_r.8.0.2.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libsharpyuv.0.0.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libsqlite3.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libssl.3.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libszip.2.1.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libtiff.6.0.0.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libunistring.5.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/liburiparser.1.0.30.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libwebp.7.1.6.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libxerces-c-3.2.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libxml2.2.10.3.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libxml2.2.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libz.1.2.13.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/libzstd.1.5.5.dylib": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-arm64/native/maxrev.gdal.core.libshared/proj.db": {
+            "rid": "osx-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "MaxRev.Gdal.MacosRuntime.Minimal.x64/3.7.0.217": {
+        "runtime": {
+          "lib/net7.0/MaxRev.Gdal.MacosRuntime.Minimal.x64.dll": {
+            "assemblyVersion": "3.7.0.217",
+            "fileVersion": "3.7.0.217"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/osx-x64/native/libarchive.13.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libb2.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libbrotlicommon.1.0.9.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libbrotlidec.1.0.9.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libbz2.1.0.8.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libcfitsio.3.49.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libcrypto.3.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libcurl.4.8.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libcurl.4.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libdf.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libexpat.1.8.10.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libfreexl.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libgdal.33.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libgdal_wrap.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libgdalconst_wrap.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libgeos.3.11.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libgeos_c.1.17.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libgif.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libhdf5.310.0.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libhdf5.310.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libhdf5_hl.310.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libiconv.2.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libicudata.72.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libicui18n.72.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libicuuc.72.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libidn2.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libintl.8.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libjpeg.62.3.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libjpeg.8.2.2.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libkmlbase.1.3.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libkmldom.1.3.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libkmlengine.1.3.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/liblz4.1.9.4.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/liblz4.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/liblzma.5.4.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/liblzma.5.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/liblzo2.2.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libmfhdf.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libnetcdf.19.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libnghttp2.14.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libodbc.2.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libodbcinst.2.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libogr_wrap.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libopenjp2.2.5.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libosr_wrap.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libpcre.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libpng16.16.39.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libpq.5.15.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libproj.25.9.2.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libpsl.5.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libsharpyuv.0.0.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libsqlite3.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libssl.3.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libszip.2.1.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libtiff.6.0.0.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libunistring.5.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/liburiparser.1.0.30.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libwebp.7.1.6.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libxerces-c-3.2.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libxml2.2.10.3.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libxml2.2.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libz.1.2.13.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libzstd.1.5.5.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/maxrev.gdal.core.libshared/proj.db": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "MaxRev.Gdal.WindowsRuntime.Minimal/3.7.0.100": {
+        "runtime": {
+          "lib/net7.0/MaxRev.Gdal.WindowsRuntime.Minimal.dll": {
+            "assemblyVersion": "3.7.0.100",
+            "fileVersion": "3.7.0.100"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win-x64/native/FileGDBAPI.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.5.1.253"
+          },
+          "runtimes/win-x64/native/NCSEcw.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "5.5.0.2034"
+          },
+          "runtimes/win-x64/native/adrg.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/apr_dbd_odbc-1.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.6.1.0"
+          },
+          "runtimes/win-x64/native/apr_ldap-1.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.6.1.0"
+          },
+          "runtimes/win-x64/native/cairo.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/cfitsio.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/concrt140.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/freexl.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/fribidi-0.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/fts5.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/gdal.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "3.7.0.0"
+          },
+          "runtimes/win-x64/native/gdal_wrap.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/gdalconst_wrap.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/geos.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/geos_c.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/hdf.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/hdf5.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/hdf5_cpp.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/hdf5_hl.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/hdf5_hl_cpp.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/iconv-2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.16.0.0"
+          },
+          "runtimes/win-x64/native/jpeg62.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "62.3.0.0"
+          },
+          "runtimes/win-x64/native/libapr-1.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.7.0.0"
+          },
+          "runtimes/win-x64/native/libaprutil-1.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.6.1.0"
+          },
+          "runtimes/win-x64/native/libcrypto-1_1-x64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.1.1.12"
+          },
+          "runtimes/win-x64/native/libcurl.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "7.79.1.0"
+          },
+          "runtimes/win-x64/native/libexpat.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libfcgi.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libhttpd.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "2.4.46.0"
+          },
+          "runtimes/win-x64/native/libkea.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/liblzma.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "5.2.5.0"
+          },
+          "runtimes/win-x64/native/libmysql.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "5.7.30.0"
+          },
+          "runtimes/win-x64/native/libpng16.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libpq.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.0.0.22035"
+          },
+          "runtimes/win-x64/native/librttopo.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libssl-1_1-x64.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.1.1.12"
+          },
+          "runtimes/win-x64/native/libxml2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "2.9.12.0"
+          },
+          "runtimes/win-x64/native/mapcache.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/mapserver.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "8.0.0.0"
+          },
+          "runtimes/win-x64/native/maxrev.gdal.core.libshared/proj.db": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/mfhdf.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/mod_mapcache.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/msplugin_mssql2008.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/msplugin_oracle.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/msvcp140.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/msvcp140_1.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/msvcp140_2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/msvcp140_atomic_wait.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/msvcp140_codecvt_ids.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/netcdf.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/ogdi.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/ogr_wrap.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/openjp2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/osr_wrap.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/pcre.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/pcrecpp.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/pcreposix.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/proj_4_9.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/proj_7_2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/proj_9_2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/remote.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/rpf.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/skeleton.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/spatialite.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/sqlite3.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "3.37.2.0"
+          },
+          "runtimes/win-x64/native/szip.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/tiff.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/tiffxx.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/turbojpeg.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.2.0.0"
+          },
+          "runtimes/win-x64/native/vccorlib140.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/vcruntime140.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/vcruntime140_1.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "14.34.31938.0"
+          },
+          "runtimes/win-x64/native/vrf.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/xdr.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/xerces-c_3_2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "3.2.2.0"
+          },
+          "runtimes/win-x64/native/zlib.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.2.11.0"
+          },
+          "runtimes/win-x64/native/zlib1.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.2.13.0"
+          },
+          "runtimes/win-x64/native/zstd.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.5.0.0"
           }
         }
       },
@@ -86,17 +2320,45 @@
     }
   },
   "libraries": {
-    "OGC.Net.Core/7.2023.6.5": {
+    "OGC.Net.Core/7.2023.6.8": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "GDAL/3.6.3": {
+    "MaxRev.Gdal.Core/3.7.0.217": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-y9YopSZTp60DSUOCwhIm5sbya1YOfQ4tScq4QE6cbz3iu4WH/G30aXKwtrxdh3JMtm8UaT+M3/ggjhRNtQS1ww==",
-      "path": "gdal/3.6.3",
-      "hashPath": "gdal.3.6.3.nupkg.sha512"
+      "sha512": "sha512-gZCeLKgpQ0iFv5ianp9qd+wGyQevoGKHrsWHvXtwE26cYgiPDeBSOX23fs9sDCjW+mJeLjxVlyvBKMSo1MgrPA==",
+      "path": "maxrev.gdal.core/3.7.0.217",
+      "hashPath": "maxrev.gdal.core.3.7.0.217.nupkg.sha512"
+    },
+    "MaxRev.Gdal.LinuxRuntime.Minimal/3.7.0.100": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nzBgqJ76uvQR/QY7QLhtLCIfhdn59aC2uX2cODk0XnrH3IL/CACMOsHlw7nB1N64g7Xw58HhTv5KrDsb/hzAkQ==",
+      "path": "maxrev.gdal.linuxruntime.minimal/3.7.0.100",
+      "hashPath": "maxrev.gdal.linuxruntime.minimal.3.7.0.100.nupkg.sha512"
+    },
+    "MaxRev.Gdal.MacosRuntime.Minimal.arm64/3.7.0.217": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-s9jQNm5Cl7s2JJUaU9Xzgi+h88Rg2BggXKMvW8fbyt21CbLRyZxAEy57BnXuHmb+Mr/r60c4oNDHCuZJxM2mYA==",
+      "path": "maxrev.gdal.macosruntime.minimal.arm64/3.7.0.217",
+      "hashPath": "maxrev.gdal.macosruntime.minimal.arm64.3.7.0.217.nupkg.sha512"
+    },
+    "MaxRev.Gdal.MacosRuntime.Minimal.x64/3.7.0.217": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Yh5H8U+jZhXa2zPXEaMTWKwjyP68GP5RhWO01l6XelRxFCj1gGJYDs3Zk15GFDG3huxEH6Nt0BTzJ6Q3cQladw==",
+      "path": "maxrev.gdal.macosruntime.minimal.x64/3.7.0.217",
+      "hashPath": "maxrev.gdal.macosruntime.minimal.x64.3.7.0.217.nupkg.sha512"
+    },
+    "MaxRev.Gdal.WindowsRuntime.Minimal/3.7.0.100": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9Tt2XztpM/1Yo8tKjo8mt/rOTXMIxoJt49kxm6PyqDPx8J1WpxirvQ7/rEFXVPHiTB6oqYhTvexkD78vDmuZ7w==",
+      "path": "maxrev.gdal.windowsruntime.minimal/3.7.0.100",
+      "hashPath": "maxrev.gdal.windowsruntime.minimal.3.7.0.100.nupkg.sha512"
     },
     "Microsoft.Extensions.Logging.Abstractions/6.0.0": {
       "type": "package",
