@@ -50,6 +50,7 @@ using GMap.NET.MapProviders.TiandituProviders;
 using GMap.NET.MapProviders.ArcGISProviders;
 using GMap.NET.Extend;
 using Formatting = Newtonsoft.Json.Formatting;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Geosite
 {
@@ -3581,13 +3582,28 @@ namespace Geosite
                         GeositeHits.Refresh();
                         Invoke(
                             method: () =>
-                            {
+                            { 
                                 statusProgress.Value = 6;
                                 DatabaseLogAdd(input: statusText.Text = @"VACUUM ANALYZE forest ...");
                             }
                         );
+
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE forest;", timeout: 0) == null)
                             throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                        Invoke(
+                            method: () =>
+                            {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT COUNT(*) FROM forest;",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"{count} record{(count > 1 ? "s" : "")} in forest.");
+                            }
+                        );
                         Invoke(
                             method: () =>
                             {
@@ -3609,6 +3625,20 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT COUNT(*) FROM tree;",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"{count} record{(count > 1 ? "s" : "")} in tree.");
+                            }
+                        );
+                        Invoke(
+                            method: () =>
+                            {
                                 statusProgress.Value = 24;
                                 DatabaseLogAdd(input: statusText.Text = @"VACUUM ANALYZE tree_relation ...");
                             }
@@ -3624,6 +3654,20 @@ namespace Geosite
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE branch;", timeout: 0) == null)
                             throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                        Invoke(
+                            method: () =>
+                            {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT COUNT(*) FROM branch;",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"{count} record{(count > 1 ? "s" : "")} in branch.");
+                            }
+                        );
                         Invoke(
                             method: () =>
                             {
@@ -3645,6 +3689,20 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf';",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf.");
+                            }
+                        );
+                        Invoke(
+                            method: () =>
+                            {
                                 statusProgress.Value = 48;
                                 DatabaseLogAdd(input: statusText.Text = @"VACUUM ANALYZE leaf_relation ...");
                             }
@@ -3663,12 +3721,40 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_description';",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_description.");
+                            }
+                        );
+                        Invoke(
+                            method: () =>
+                            {
                                 statusProgress.Value = 60;
                                 DatabaseLogAdd(input: statusText.Text = @"VACUUM ANALYZE leaf_style ...");
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_style;", timeout: 0) == null)
                             throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                        Invoke(
+                            method: () =>
+                            {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_style';",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_style.");
+                            }
+                        );
                         Invoke(
                             method: () =>
                             {
@@ -3681,12 +3767,40 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_geometry';",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_geometry.");
+                            }
+                        );
+                        Invoke(
+                            method: () =>
+                            {
                                 statusProgress.Value = 72;
                                 DatabaseLogAdd(input: statusText.Text = @"VACUUM ANALYZE leaf_tile ...");
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_tile;", timeout: 0) == null)
                             throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                        Invoke(
+                            method: () =>
+                            {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_tile';",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_tile.");
+                            }
+                        );
                         Invoke(
                             method: () =>
                             {
@@ -3699,12 +3813,40 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_wms';",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_wms.");
+                            }
+                        );
+                        Invoke(
+                            method: () =>
+                            {
                                 statusProgress.Value = 84;
                                 DatabaseLogAdd(input: statusText.Text = @"VACUUM ANALYZE leaf_temporal ...");
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_temporal;", timeout: 0) == null)
                             throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                        Invoke(
+                            method: () =>
+                            {
+                                var count = long.Parse(
+                                    (
+                                        PostgreSqlHelper.Scalar(
+                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_temporal';",
+                                            timeout: 0
+                                        )
+                                    ).ToString() ?? "0"
+                                );
+                                DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_temporal.");
+                            }
+                        );
                         Invoke(
                             method: () =>
                             {
