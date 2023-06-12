@@ -480,6 +480,16 @@ namespace Geosite
                                 // j 从 i 开始，意味着可检查自相交
                                 for (var j = i; j < count; j++)
                                 {
+                                    worker.ReportProgress(
+                                        percentProgress: 100 * (i + 1) / count,
+                                        userState:
+                                        $"{geometryType} Intersection Checking ({j + 1} - {i + 1} / {count})"
+                                    );
+                                    if (worker.CancellationPending)
+                                    {
+                                        e.Cancel = true;
+                                        return;
+                                    }
                                     var innerLine = polylines[j];
                                     var innerVertices = innerLine.Points;
                                     var innerVerticesCount = innerVertices.Count;
@@ -495,16 +505,6 @@ namespace Geosite
                                               innerBox.south > outerBox.north ||
                                               innerBox.north < outerBox.south))
                                         {
-                                            worker.ReportProgress(
-                                                percentProgress: 100 * (i + 1) / count,
-                                                userState:
-                                                $"{geometryType} Intersection Checking ({j + 1} - {i + 1} / {count})"
-                                            );
-                                            if (worker.CancellationPending)
-                                            {
-                                                e.Cancel = true;
-                                                return;
-                                            }
                                             Parallel.For(0, outerVerticesCount - 1, m =>
                                             {
                                                 var pointM = outerVertices[m];
@@ -521,29 +521,39 @@ namespace Geosite
                                                     return;
                                                 var outerSegment = new Segment(pointM, outerVertices[m + 1]);
                                                 var outerSegmentBox = outerSegment.Boundary();
-                                                Parallel.For(0, innerVerticesCount - 1, n =>
+                                                if (!(outerSegmentBox.west > innerBox.east ||
+                                                      outerSegmentBox.east < innerBox.west ||
+                                                      outerSegmentBox.south > innerBox.north ||
+                                                      outerSegmentBox.north < innerBox.south) ||
+                                                    !(innerBox.west > outerSegmentBox.east ||
+                                                      innerBox.east < outerSegmentBox.west ||
+                                                      innerBox.south > outerSegmentBox.north ||
+                                                      innerBox.north < outerSegmentBox.south))
                                                 {
-                                                    var innerSegment = new Segment(innerVertices[n], innerVertices[n + 1]);
-                                                    var innerSegmentBox = innerSegment.Boundary();
-                                                    if (!(outerSegmentBox.west > innerSegmentBox.east ||
-                                                          outerSegmentBox.east < innerSegmentBox.west ||
-                                                          outerSegmentBox.south > innerSegmentBox.north ||
-                                                          outerSegmentBox.north < innerSegmentBox.south) ||
-                                                        !(innerSegmentBox.west > outerSegmentBox.east ||
-                                                          innerSegmentBox.east < outerSegmentBox.west ||
-                                                          innerSegmentBox.south > outerSegmentBox.north ||
-                                                          innerSegmentBox.north < outerSegmentBox.south))
+                                                    Parallel.For(0, innerVerticesCount - 1, n =>
                                                     {
-                                                        // 计算outerSegment与innerSegments的交点
-                                                        var intersectionPoint = outerSegment.GetIntersection(innerSegment);
-                                                        if (intersectionPoint != null)
+                                                        var innerSegment = new Segment(innerVertices[n], innerVertices[n + 1]);
+                                                        var innerSegmentBox = innerSegment.Boundary();
+                                                        if (!(outerSegmentBox.west > innerSegmentBox.east ||
+                                                              outerSegmentBox.east < innerSegmentBox.west ||
+                                                              outerSegmentBox.south > innerSegmentBox.north ||
+                                                              outerSegmentBox.north < innerSegmentBox.south) ||
+                                                            !(innerSegmentBox.west > outerSegmentBox.east ||
+                                                              innerSegmentBox.east < outerSegmentBox.west ||
+                                                              innerSegmentBox.south > outerSegmentBox.north ||
+                                                              innerSegmentBox.north < outerSegmentBox.south))
                                                         {
-                                                            // 由于_intersectionCount是共享变量，需要使用Interlocked.Increment方法来保证线程安全
-                                                            Interlocked.Increment(ref _intersectionCount);
-                                                            ShowNode((intersectionPoint.Value, 0b10000));
+                                                            // 计算outerSegment与innerSegments的交点
+                                                            var intersectionPoint = outerSegment.GetIntersection(innerSegment);
+                                                            if (intersectionPoint != null)
+                                                            {
+                                                                // 由于_intersectionCount是共享变量，需要使用Interlocked.Increment方法来保证线程安全
+                                                                Interlocked.Increment(ref _intersectionCount);
+                                                                ShowNode((intersectionPoint.Value, 0b10000));
+                                                            }
                                                         }
-                                                    }
-                                                });
+                                                    });
+                                                }
                                             });
                                         }
                                     }
