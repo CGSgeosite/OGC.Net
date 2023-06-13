@@ -368,9 +368,10 @@ namespace Geosite
             var dangle = (topologyMask & 0b1) > 0;
             var pseudo = (topologyMask & 0b10) > 0;
             var coincide = (topologyMask & 0b100) > 0;
+            var overlay = (topologyMask & 0b1000) > 0;
             var intersection = (topologyMask & 0b10000) > 0;
             var count = polylines.Count;
-            if ((dangle || pseudo || coincide || intersection) && count > 0)
+            if ((dangle || pseudo || coincide|| overlay || intersection) && count > 0)
             {
                 worker.ReportProgress(
                     percentProgress: -1,
@@ -457,7 +458,7 @@ namespace Geosite
                         }
                     }
                 }
-                if (intersection || coincide || dangle)
+                if (intersection || coincide || overlay || dangle)
                     for (var i = 0; i < count; i++)
                     {
                         var outerLine = polylines[i];
@@ -475,7 +476,7 @@ namespace Geosite
                                 continue;
                             }
                             var outerBox = outerLine.Boundary();
-                            if (intersection || coincide)
+                            if (coincide|| overlay|| intersection)
                             {
                                 // j 从 i 开始，意味着可检查自相交
                                 for (var j = i; j < count; j++)
@@ -552,7 +553,25 @@ namespace Geosite
                                                             if (intersectionPoint != null)
                                                             {
                                                                 // 由于_intersectionCount是共享变量，需要使用Interlocked.Increment方法来保证线程安全
-                                                                Interlocked.Increment(ref _intersectionCount);
+                                                                var type = intersectionPoint.Value.type; //0b100 0b1000 0b10000
+                                                                switch (type)
+                                                                {
+                                                                    case 0b100:
+                                                                    {
+                                                                        Interlocked.Increment(ref _coincideCount);
+                                                                        break;
+                                                                    }
+                                                                    case 0b1000:
+                                                                    {
+                                                                        Interlocked.Increment(ref _overlayCount);
+                                                                        break;
+                                                                    }
+                                                                    case 0b10000:
+                                                                    {
+                                                                        Interlocked.Increment(ref _intersectionCount);
+                                                                        break;
+                                                                    }
+                                                                }
                                                                 ShowNode((intersectionPoint.Value.point, intersectionPoint.Value.type));
                                                             }
                                                         }
@@ -626,7 +645,7 @@ namespace Geosite
                                     );
                                 break;
                             }
-                        case 0b100: //毛刺线段（或外挂微小多边形）重叠点
+                        case 0b100: //毛刺线段（或外挂微小多边形）重叠点以及线段重合点
                             {
                                 lock (Features.Markers)
                                 {
@@ -651,7 +670,7 @@ namespace Geosite
 
                                 break;
                             }
-                        case 0b1000: //点要素重叠或线段端点重叠点
+                        case 0b1000: //点要素重叠
                             {
                                 lock (Features.Markers)
                                 {
@@ -676,7 +695,7 @@ namespace Geosite
 
                                 break;
                             }
-                        case 0b10000: //互相交点（暂不识别自相交）
+                        case 0b10000: //相交点（含自相交）
                             {
                                 lock (Features.Markers)
                                 {
