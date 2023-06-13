@@ -505,6 +505,8 @@ namespace Geosite
                                               innerBox.south > outerBox.north ||
                                               innerBox.north < outerBox.south))
                                         {
+                                            var i2 = i;
+                                            var j2 = j;
                                             Parallel.For(0, outerVerticesCount - 1, m =>
                                             {
                                                 var pointM = outerVertices[m];
@@ -530,6 +532,8 @@ namespace Geosite
                                                       innerBox.south > outerSegmentBox.north ||
                                                       innerBox.north < outerSegmentBox.south))
                                                 {
+                                                    var i1 = i2;
+                                                    var j1 = j2;
                                                     Parallel.For(0, innerVerticesCount - 1, n =>
                                                     {
                                                         var innerSegment = new Segment(innerVertices[n], innerVertices[n + 1]);
@@ -544,12 +548,12 @@ namespace Geosite
                                                               innerSegmentBox.north < outerSegmentBox.south))
                                                         {
                                                             // 计算outerSegment与innerSegments的交点
-                                                            var intersectionPoint = outerSegment.GetIntersection(innerSegment);
+                                                            var intersectionPoint = outerSegment.GetIntersection(innerSegment, i1 == j1);
                                                             if (intersectionPoint != null)
                                                             {
                                                                 // 由于_intersectionCount是共享变量，需要使用Interlocked.Increment方法来保证线程安全
                                                                 Interlocked.Increment(ref _intersectionCount);
-                                                                ShowNode((intersectionPoint.Value, 0b10000));
+                                                                ShowNode((intersectionPoint.Value.point, intersectionPoint.Value.type));
                                                             }
                                                         }
                                                     });
@@ -647,7 +651,7 @@ namespace Geosite
 
                                 break;
                             }
-                        case 0b1000: //点要素重叠点
+                        case 0b1000: //点要素重叠或线段端点重叠点
                             {
                                 lock (Features.Markers)
                                 {

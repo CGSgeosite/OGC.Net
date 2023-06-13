@@ -987,7 +987,7 @@
 - Central meridian: 0°
 - Unit: meter
 - Longitude: ±180°
-- Latitude: ±85°03′4″</value>
+- Latitude: ±85°03′4.064″</value>
   </data>
   <data name="pictureBox15.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1827,7 +1827,7 @@
 - Central meridian: 0°
 - Unit: meter
 - Longitude: ±180°
-- Latitude: ±85°03′4″
+- Latitude: ±85°03′4.064″
 </value>
   </data>
   <data name="pictureBox12.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
