@@ -683,7 +683,7 @@ namespace Geosite
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
                             var getResponse = new WebProxy().Call(
                                 path: callPath,
-                                timeout: 5000
+                                timeout: 36000
                             );
                             if (getResponse.IsSuccessful)
                             {
@@ -717,7 +717,7 @@ namespace Geosite
                                             Application.DoEvents();
                                             getResponse = new WebProxy().Call(
                                                 path: next,
-                                                timeout: 5000
+                                                timeout: 0
                                             );
                                             if (getResponse.IsSuccessful)
                                             {
