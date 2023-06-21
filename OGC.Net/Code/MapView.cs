@@ -681,9 +681,10 @@ namespace Geosite
                             var callPath =
                                 $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}";
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
-                            var getResponse = new WebProxy().Call(
+                            var webProxy = new WebProxy();
+                            var getResponse = webProxy.Call(
                                 path: callPath,
-                                timeout: 36000
+                                timeout: 60 * 1000
                             );
                             if (getResponse.IsSuccessful)
                             {
@@ -709,15 +710,17 @@ namespace Geosite
                                                 return;
                                             }
                                             var theCount = count;
+                                            var next1 = next;
                                             _mainForm.MapBox.BeginInvoke(() =>
                                             {
+                                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: next1);
                                                 _mainForm.SetStatusText(
                                                     $"{theCount} / {numberMatched} features loading ...");
                                             });
                                             Application.DoEvents();
-                                            getResponse = new WebProxy().Call(
+                                            getResponse = webProxy.Call(
                                                 path: next,
-                                                timeout: 0
+                                                timeout: -1
                                             );
                                             if (getResponse.IsSuccessful)
                                             {
@@ -812,7 +815,7 @@ namespace Geosite
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
                             var getResponse = new WebProxy().Call(
                                 path: callPath,
-                                timeout: 5000
+                                timeout: 60 * 1000
                             );
                             if (getResponse.IsSuccessful)
                             {
@@ -1561,7 +1564,7 @@ namespace Geosite
             } while (true);
         }
 
-        private void Image(string href, JArray coordinate, JObject property, JObject style = null, int timeout = 5000)
+        private void Image(string href, JArray coordinate, JObject property, JObject style = null, int timeout = 60 * 1000)
         {
             try
             {
