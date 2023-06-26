@@ -50,7 +50,6 @@ using GMap.NET.MapProviders.TiandituProviders;
 using GMap.NET.MapProviders.ArcGISProviders;
 using GMap.NET.Extend;
 using Formatting = Newtonsoft.Json.Formatting;
-using System.DirectoryServices.ActiveDirectory;
 
 namespace Geosite
 {
@@ -1763,10 +1762,10 @@ namespace Geosite
                                     mapgis.Open(mapgisFile: sourceFile, projection: projectionX);
                                     switch (Path.GetExtension(path: targetFile)?.ToLower())
                                     {
-                                        case ".shp":
+                                        case ".shp": 
                                             {
                                                 mapgis.Export(saveAs: targetFile, format: "shapefile");
-                                                break;
+                                                break; 
                                             }
                                         case ".xml":
                                         case ".kml":
