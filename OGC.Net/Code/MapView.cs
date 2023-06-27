@@ -114,7 +114,7 @@ namespace Geosite
             _lineStyle = style?.line ?? new Pen(color: Color.FromArgb(alpha: 255, red: 0, green: 0, blue: 0), width: 1);
             _polygonStyle = style?.polygon ?? new Pen(color: Color.FromArgb(alpha: 255, red: 255, green: 63, blue: 34), width: 1);
 
-            //注：由于本类仅支持【EPSG:4326】矢量数据源可视化，因此无需关切【Projection】中的【To】标签！
+            //注：由于本类目前仅支持【EPSG:4326】矢量数据源可视化，因此无需关切【Projection】中的【To】标签！
             var projectionFromX = projection?.Element("From")?.Elements().FirstOrDefault();
             var projectionFromName = projectionFromX?.Name.LocalName;
             switch (projectionFromName)
@@ -139,37 +139,44 @@ namespace Geosite
                     var srid = projectionFromX.Element("Srid")?.Value ?? "2000";
                     var centralMeridian = double.Parse(projectionFromX.Element("CentralMeridian")?.Value ?? "0");
                     double zone = 500000;
-                    switch (projectionFromX.Element("Zone")?.Value ?? "6")
-                    {
-                        case "6":
-                        {
-                            zone +=
-                            (
-                                centralMeridian >= 0
-                                    ? Math.Floor(centralMeridian / 6) + 1
-                                    : Math.Floor((centralMeridian + 180) / 6) + 31
-                            ) * 1000000;
-                            break;
-                        }
-                        case "3":
-                        {
-                            zone +=
-                            (
-                                centralMeridian >= 0
-                                    ? centralMeridian >= 1.5
-                                        ? Math.Floor((centralMeridian - 1.5) / 3) + 1
-                                        : 120
-                                    : Math.Floor((centralMeridian + 180 - 1.5) / 3) + 61
-                            ) * 1000000;
-                            break;
-                        }
-                        //case "-1":
-                        //default:
-                        //{
-                        //    break;
-                        //}
-                    }
-                    _projectionHelper = new ProjectionHelper(srid, centralMeridian, zone);
+                    //switch (projectionFromX.Element("Zone")?.Value ?? "6")
+                    //{
+                    //    case "6":
+                    //    {
+                    //        zone +=
+                    //        (
+                    //            centralMeridian >= 0
+                    //                ? Math.Floor(centralMeridian / 6) + 1
+                    //                : Math.Floor((centralMeridian + 180) / 6) + 31
+                    //        ) * 1000000;
+                    //        break;
+                    //    }
+                    //    case "3":
+                    //    {
+                    //        zone +=
+                    //        (
+                    //            centralMeridian >= 0
+                    //                ? centralMeridian >= 1.5
+                    //                    ? Math.Floor((centralMeridian - 1.5) / 3) + 1
+                    //                    : 120
+                    //                : Math.Floor((centralMeridian + 180 - 1.5) / 3) + 61
+                    //        ) * 1000000;
+                    //        break;
+                    //    }
+                    //    //case "-1":
+                    //    //default:
+                    //    //{
+                    //    //    break;
+                    //    //}
+                    //}
+                    if (!uint.TryParse(projectionFromX.Element("Scale")?.Value ?? "1", out var sourceScale))
+                        sourceScale = 1;
+                    _projectionHelper = new ProjectionHelper(
+                        srid: srid,
+                        centralMeridian: centralMeridian,
+                        x0: zone,
+                        sourceScale: sourceScale
+                    );
                     break;
                 }
                 case "Lambert":
@@ -202,7 +209,9 @@ namespace Geosite
                     var parallel1 = double.Parse(projectionFromX.Element("Parallel1")?.Value ?? "25");
                     var parallel2 = double.Parse(projectionFromX.Element("Parallel2")?.Value ?? "47");
                     var srid = projectionFromX.Element("Srid")?.Value ?? "2000";
-                    _projectionHelper = new ProjectionHelper("Lambert", srid, centralMeridian, originLatitude, parallel1, parallel2);
+                    if (!uint.TryParse(projectionFromX.Element("Scale")?.Value ?? "1", out var sourceScale))
+                        sourceScale = 1;
+                    _projectionHelper = new ProjectionHelper("Lambert", srid, centralMeridian, originLatitude, parallel1, parallel2, sourceScale: sourceScale);
                     break;
                 }
                 case "Albers":
@@ -234,7 +243,9 @@ namespace Geosite
                     var parallel1 = double.Parse(projectionFromX.Element("Parallel1")?.Value ?? "25");
                     var parallel2 = double.Parse(projectionFromX.Element("Parallel2")?.Value ?? "47");
                     var srid = projectionFromX.Element("Srid")?.Value ?? "2000";
-                    _projectionHelper = new ProjectionHelper("Albers", srid, centralMeridian, originLatitude, parallel1, parallel2);
+                    if (!uint.TryParse(projectionFromX.Element("Scale")?.Value ?? "1", out var sourceScale))
+                        sourceScale = 1;
+                    _projectionHelper = new ProjectionHelper("Albers", srid, centralMeridian, originLatitude, parallel1, parallel2, sourceScale: sourceScale);
                     break;
                 }
                 case "Web-Mercator":
@@ -681,10 +692,9 @@ namespace Geosite
                             var callPath =
                                 $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}";
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
-                            var webProxy = new WebProxy();
-                            var getResponse = webProxy.Call(
+                            var getResponse = new WebProxy().Call(
                                 path: callPath,
-                                timeout: 60 * 1000
+                                timeout: 36000
                             );
                             if (getResponse.IsSuccessful)
                             {
@@ -710,17 +720,15 @@ namespace Geosite
                                                 return;
                                             }
                                             var theCount = count;
-                                            var next1 = next;
                                             _mainForm.MapBox.BeginInvoke(() =>
                                             {
-                                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: next1);
                                                 _mainForm.SetStatusText(
                                                     $"{theCount} / {numberMatched} features loading ...");
                                             });
                                             Application.DoEvents();
-                                            getResponse = webProxy.Call(
+                                            getResponse = new WebProxy().Call(
                                                 path: next,
-                                                timeout: -1
+                                                timeout: 0
                                             );
                                             if (getResponse.IsSuccessful)
                                             {
@@ -815,7 +823,7 @@ namespace Geosite
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
                             var getResponse = new WebProxy().Call(
                                 path: callPath,
-                                timeout: 60 * 1000
+                                timeout: 5000
                             );
                             if (getResponse.IsSuccessful)
                             {
@@ -1564,7 +1572,7 @@ namespace Geosite
             } while (true);
         }
 
-        private void Image(string href, JArray coordinate, JObject property, JObject style = null, int timeout = 60 * 1000)
+        private void Image(string href, JArray coordinate, JObject property, JObject style = null, int timeout = 5000)
         {
             try
             {
