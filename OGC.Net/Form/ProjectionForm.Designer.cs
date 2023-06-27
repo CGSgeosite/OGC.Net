@@ -38,6 +38,10 @@
             textBox1 = new TextBox();
             panel1 = new Panel();
             GaussKrugerPageFrom = new TabPage();
+            groupBox35 = new GroupBox();
+            GaussKrugerPageScaleFrom = new TextBox();
+            panel19 = new Panel();
+            label5 = new Label();
             textBox12 = new TextBox();
             groupBox3 = new GroupBox();
             tableLayoutPanel6 = new TableLayoutPanel();
@@ -57,6 +61,10 @@
             panel2 = new Panel();
             pictureBox7 = new PictureBox();
             LambertPageFrom = new TabPage();
+            groupBox37 = new GroupBox();
+            LambertPageScaleFrom = new TextBox();
+            panel21 = new Panel();
+            label8 = new Label();
             textBox13 = new TextBox();
             groupBox8 = new GroupBox();
             tableLayoutPanel5 = new TableLayoutPanel();
@@ -76,6 +84,10 @@
             panel3 = new Panel();
             pictureBox8 = new PictureBox();
             AlbersPageFrom = new TabPage();
+            groupBox39 = new GroupBox();
+            AlbersPageScaleFrom = new TextBox();
+            panel23 = new Panel();
+            label10 = new Label();
             textBox14 = new TextBox();
             groupBox13 = new GroupBox();
             tableLayoutPanel9 = new TableLayoutPanel();
@@ -118,6 +130,10 @@
             textBox11 = new TextBox();
             panel12 = new Panel();
             GaussKrugerPageTo = new TabPage();
+            groupBox36 = new GroupBox();
+            GaussKrugerPageScaleTo = new TextBox();
+            panel20 = new Panel();
+            label7 = new Label();
             textBox15 = new TextBox();
             groupBox23 = new GroupBox();
             tableLayoutPanel14 = new TableLayoutPanel();
@@ -137,6 +153,10 @@
             panel14 = new Panel();
             pictureBox5 = new PictureBox();
             LambertPageTo = new TabPage();
+            groupBox38 = new GroupBox();
+            LambertPageScaleTo = new TextBox();
+            panel22 = new Panel();
+            label9 = new Label();
             textBox16 = new TextBox();
             groupBox25 = new GroupBox();
             tableLayoutPanel16 = new TableLayoutPanel();
@@ -156,6 +176,10 @@
             panel15 = new Panel();
             pictureBox6 = new PictureBox();
             AlbersPageTo = new TabPage();
+            groupBox40 = new GroupBox();
+            AlbersPageScaleTo = new TextBox();
+            panel24 = new Panel();
+            label12 = new Label();
             textBox17 = new TextBox();
             groupBox30 = new GroupBox();
             tableLayoutPanel18 = new TableLayoutPanel();
@@ -221,6 +245,7 @@
             GeographyPageFrom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
             GaussKrugerPageFrom.SuspendLayout();
+            groupBox35.SuspendLayout();
             groupBox3.SuspendLayout();
             tableLayoutPanel6.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -229,6 +254,7 @@
             tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             LambertPageFrom.SuspendLayout();
+            groupBox37.SuspendLayout();
             groupBox8.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
@@ -238,6 +264,7 @@
             groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             AlbersPageFrom.SuspendLayout();
+            groupBox39.SuspendLayout();
             groupBox13.SuspendLayout();
             tableLayoutPanel9.SuspendLayout();
             tableLayoutPanel8.SuspendLayout();
@@ -255,6 +282,7 @@
             GeographyPageTo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             GaussKrugerPageTo.SuspendLayout();
+            groupBox36.SuspendLayout();
             groupBox23.SuspendLayout();
             tableLayoutPanel14.SuspendLayout();
             groupBox24.SuspendLayout();
@@ -263,6 +291,7 @@
             tableLayoutPanel15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             LambertPageTo.SuspendLayout();
+            groupBox38.SuspendLayout();
             groupBox25.SuspendLayout();
             tableLayoutPanel16.SuspendLayout();
             tableLayoutPanel17.SuspendLayout();
@@ -272,6 +301,7 @@
             groupBox29.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             AlbersPageTo.SuspendLayout();
+            groupBox40.SuspendLayout();
             groupBox30.SuspendLayout();
             tableLayoutPanel18.SuspendLayout();
             tableLayoutPanel19.SuspendLayout();
@@ -388,6 +418,7 @@
             // 
             // GaussKrugerPageFrom
             // 
+            GaussKrugerPageFrom.Controls.Add(groupBox35);
             GaussKrugerPageFrom.Controls.Add(textBox12);
             GaussKrugerPageFrom.Controls.Add(groupBox3);
             GaussKrugerPageFrom.Controls.Add(groupBox2);
@@ -403,16 +434,55 @@
             GaussKrugerPageFrom.ToolTipText = "A system of geodetic and cartographic projection";
             GaussKrugerPageFrom.UseVisualStyleBackColor = true;
             // 
+            // groupBox35
+            // 
+            groupBox35.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox35.Controls.Add(GaussKrugerPageScaleFrom);
+            groupBox35.Controls.Add(panel19);
+            groupBox35.Controls.Add(label5);
+            groupBox35.Location = new Point(6, 99);
+            groupBox35.Name = "groupBox35";
+            groupBox35.Size = new Size(100, 70);
+            groupBox35.TabIndex = 10;
+            groupBox35.TabStop = false;
+            groupBox35.Text = "Scale";
+            // 
+            // GaussKrugerPageScaleFrom
+            // 
+            GaussKrugerPageScaleFrom.BorderStyle = BorderStyle.None;
+            GaussKrugerPageScaleFrom.Location = new Point(6, 46);
+            GaussKrugerPageScaleFrom.Name = "GaussKrugerPageScaleFrom";
+            GaussKrugerPageScaleFrom.Size = new Size(88, 16);
+            GaussKrugerPageScaleFrom.TabIndex = 2;
+            GaussKrugerPageScaleFrom.Text = "1";
+            GaussKrugerPageScaleFrom.TextAlign = HorizontalAlignment.Center;
+            GaussKrugerPageScaleFrom.MouseLeave += ScaleTextBox_MouseLeave;
+            // 
+            // panel19
+            // 
+            panel19.BackColor = Color.Gray;
+            panel19.Location = new Point(6, 40);
+            panel19.Name = "panel19";
+            panel19.Size = new Size(88, 1);
+            panel19.TabIndex = 1;
+            // 
+            // label5
+            // 
+            label5.Location = new Point(6, 16);
+            label5.Name = "label5";
+            label5.Size = new Size(88, 20);
+            label5.TabIndex = 0;
+            label5.Text = "1";
+            label5.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // textBox12
             // 
-            textBox12.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             textBox12.Location = new Point(6, 70);
-            textBox12.Multiline = true;
             textBox12.Name = "textBox12";
             textBox12.ReadOnly = true;
-            textBox12.Size = new Size(100, 96);
+            textBox12.Size = new Size(100, 23);
             textBox12.TabIndex = 9;
-            textBox12.Text = "- Unit: Meter\r\n- Scale: 1∶1\r\n";
+            textBox12.Text = "- Unit: Meter\r\n";
             // 
             // groupBox3
             // 
@@ -630,6 +700,7 @@
             // 
             // LambertPageFrom
             // 
+            LambertPageFrom.Controls.Add(groupBox37);
             LambertPageFrom.Controls.Add(textBox13);
             LambertPageFrom.Controls.Add(groupBox8);
             LambertPageFrom.Controls.Add(tableLayoutPanel4);
@@ -645,16 +716,55 @@
             LambertPageFrom.ToolTipText = "Double Standard Parallel Lambert Conformal Conic Projection";
             LambertPageFrom.UseVisualStyleBackColor = true;
             // 
+            // groupBox37
+            // 
+            groupBox37.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox37.Controls.Add(LambertPageScaleFrom);
+            groupBox37.Controls.Add(panel21);
+            groupBox37.Controls.Add(label8);
+            groupBox37.Location = new Point(6, 99);
+            groupBox37.Name = "groupBox37";
+            groupBox37.Size = new Size(100, 70);
+            groupBox37.TabIndex = 11;
+            groupBox37.TabStop = false;
+            groupBox37.Text = "Scale";
+            // 
+            // LambertPageScaleFrom
+            // 
+            LambertPageScaleFrom.BorderStyle = BorderStyle.None;
+            LambertPageScaleFrom.Location = new Point(6, 46);
+            LambertPageScaleFrom.Name = "LambertPageScaleFrom";
+            LambertPageScaleFrom.Size = new Size(88, 16);
+            LambertPageScaleFrom.TabIndex = 2;
+            LambertPageScaleFrom.Text = "1";
+            LambertPageScaleFrom.TextAlign = HorizontalAlignment.Center;
+            LambertPageScaleFrom.MouseLeave += ScaleTextBox_MouseLeave;
+            // 
+            // panel21
+            // 
+            panel21.BackColor = Color.Gray;
+            panel21.Location = new Point(6, 40);
+            panel21.Name = "panel21";
+            panel21.Size = new Size(88, 1);
+            panel21.TabIndex = 1;
+            // 
+            // label8
+            // 
+            label8.Location = new Point(6, 16);
+            label8.Name = "label8";
+            label8.Size = new Size(88, 20);
+            label8.TabIndex = 0;
+            label8.Text = "1";
+            label8.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // textBox13
             // 
-            textBox13.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            textBox13.Location = new Point(6, 87);
-            textBox13.Multiline = true;
+            textBox13.Location = new Point(6, 70);
             textBox13.Name = "textBox13";
             textBox13.ReadOnly = true;
-            textBox13.Size = new Size(99, 82);
+            textBox13.Size = new Size(99, 23);
             textBox13.TabIndex = 10;
-            textBox13.Text = "- Unit: Meter\r\n- Scale: 1∶1\r\n";
+            textBox13.Text = "- Unit: Meter\r\n";
             // 
             // groupBox8
             // 
@@ -852,7 +962,7 @@
             pictureBox8.Image = (Image)resources.GetObject("pictureBox8.Image");
             pictureBox8.Location = new Point(6, 6);
             pictureBox8.Name = "pictureBox8";
-            pictureBox8.Size = new Size(99, 75);
+            pictureBox8.Size = new Size(99, 60);
             pictureBox8.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox8.TabIndex = 3;
             pictureBox8.TabStop = false;
@@ -860,6 +970,7 @@
             // 
             // AlbersPageFrom
             // 
+            AlbersPageFrom.Controls.Add(groupBox39);
             AlbersPageFrom.Controls.Add(textBox14);
             AlbersPageFrom.Controls.Add(groupBox13);
             AlbersPageFrom.Controls.Add(tableLayoutPanel8);
@@ -875,16 +986,55 @@
             AlbersPageFrom.ToolTipText = "Double Standard Parallel Albers Equal Area Conic Projection";
             AlbersPageFrom.UseVisualStyleBackColor = true;
             // 
+            // groupBox39
+            // 
+            groupBox39.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox39.Controls.Add(AlbersPageScaleFrom);
+            groupBox39.Controls.Add(panel23);
+            groupBox39.Controls.Add(label10);
+            groupBox39.Location = new Point(6, 99);
+            groupBox39.Name = "groupBox39";
+            groupBox39.Size = new Size(100, 70);
+            groupBox39.TabIndex = 12;
+            groupBox39.TabStop = false;
+            groupBox39.Text = "Scale";
+            // 
+            // AlbersPageScaleFrom
+            // 
+            AlbersPageScaleFrom.BorderStyle = BorderStyle.None;
+            AlbersPageScaleFrom.Location = new Point(6, 46);
+            AlbersPageScaleFrom.Name = "AlbersPageScaleFrom";
+            AlbersPageScaleFrom.Size = new Size(88, 16);
+            AlbersPageScaleFrom.TabIndex = 2;
+            AlbersPageScaleFrom.Text = "1";
+            AlbersPageScaleFrom.TextAlign = HorizontalAlignment.Center;
+            AlbersPageScaleFrom.MouseLeave += ScaleTextBox_MouseLeave;
+            // 
+            // panel23
+            // 
+            panel23.BackColor = Color.Gray;
+            panel23.Location = new Point(6, 40);
+            panel23.Name = "panel23";
+            panel23.Size = new Size(88, 1);
+            panel23.TabIndex = 1;
+            // 
+            // label10
+            // 
+            label10.Location = new Point(6, 16);
+            label10.Name = "label10";
+            label10.Size = new Size(88, 20);
+            label10.TabIndex = 0;
+            label10.Text = "1";
+            label10.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // textBox14
             // 
-            textBox14.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            textBox14.Location = new Point(6, 87);
-            textBox14.Multiline = true;
+            textBox14.Location = new Point(6, 70);
             textBox14.Name = "textBox14";
             textBox14.ReadOnly = true;
-            textBox14.Size = new Size(99, 82);
+            textBox14.Size = new Size(99, 23);
             textBox14.TabIndex = 11;
-            textBox14.Text = "- Unit: Meter\r\n- Scale: 1∶1\r\n";
+            textBox14.Text = "- Unit: Meter\r\n";
             // 
             // groupBox13
             // 
@@ -1082,7 +1232,7 @@
             pictureBox9.Image = (Image)resources.GetObject("pictureBox9.Image");
             pictureBox9.Location = new Point(6, 6);
             pictureBox9.Name = "pictureBox9";
-            pictureBox9.Size = new Size(99, 75);
+            pictureBox9.Size = new Size(99, 60);
             pictureBox9.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox9.TabIndex = 4;
             pictureBox9.TabStop = false;
@@ -1338,6 +1488,7 @@
             // 
             // GaussKrugerPageTo
             // 
+            GaussKrugerPageTo.Controls.Add(groupBox36);
             GaussKrugerPageTo.Controls.Add(textBox15);
             GaussKrugerPageTo.Controls.Add(groupBox23);
             GaussKrugerPageTo.Controls.Add(groupBox24);
@@ -1353,16 +1504,55 @@
             GaussKrugerPageTo.ToolTipText = "A system of geodetic and cartographic projection";
             GaussKrugerPageTo.UseVisualStyleBackColor = true;
             // 
+            // groupBox36
+            // 
+            groupBox36.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox36.Controls.Add(GaussKrugerPageScaleTo);
+            groupBox36.Controls.Add(panel20);
+            groupBox36.Controls.Add(label7);
+            groupBox36.Location = new Point(6, 99);
+            groupBox36.Name = "groupBox36";
+            groupBox36.Size = new Size(100, 70);
+            groupBox36.TabIndex = 11;
+            groupBox36.TabStop = false;
+            groupBox36.Text = "Scale";
+            // 
+            // GaussKrugerPageScaleTo
+            // 
+            GaussKrugerPageScaleTo.BorderStyle = BorderStyle.None;
+            GaussKrugerPageScaleTo.Location = new Point(6, 46);
+            GaussKrugerPageScaleTo.Name = "GaussKrugerPageScaleTo";
+            GaussKrugerPageScaleTo.Size = new Size(88, 16);
+            GaussKrugerPageScaleTo.TabIndex = 2;
+            GaussKrugerPageScaleTo.Text = "1";
+            GaussKrugerPageScaleTo.TextAlign = HorizontalAlignment.Center;
+            GaussKrugerPageScaleTo.MouseLeave += ScaleTextBox_MouseLeave;
+            // 
+            // panel20
+            // 
+            panel20.BackColor = Color.Gray;
+            panel20.Location = new Point(6, 40);
+            panel20.Name = "panel20";
+            panel20.Size = new Size(88, 1);
+            panel20.TabIndex = 1;
+            // 
+            // label7
+            // 
+            label7.Location = new Point(6, 16);
+            label7.Name = "label7";
+            label7.Size = new Size(88, 20);
+            label7.TabIndex = 0;
+            label7.Text = "1";
+            label7.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // textBox15
             // 
-            textBox15.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             textBox15.Location = new Point(6, 70);
-            textBox15.Multiline = true;
             textBox15.Name = "textBox15";
             textBox15.ReadOnly = true;
-            textBox15.Size = new Size(100, 96);
+            textBox15.Size = new Size(100, 23);
             textBox15.TabIndex = 10;
-            textBox15.Text = "- Unit: Meter\r\n- Scale: 1∶1\r\n";
+            textBox15.Text = "- Unit: Meter\r\n";
             // 
             // groupBox23
             // 
@@ -1577,6 +1767,7 @@
             // 
             // LambertPageTo
             // 
+            LambertPageTo.Controls.Add(groupBox38);
             LambertPageTo.Controls.Add(textBox16);
             LambertPageTo.Controls.Add(groupBox25);
             LambertPageTo.Controls.Add(tableLayoutPanel17);
@@ -1592,16 +1783,55 @@
             LambertPageTo.ToolTipText = "Double Standard Parallel Lambert Conformal Conic Projection";
             LambertPageTo.UseVisualStyleBackColor = true;
             // 
+            // groupBox38
+            // 
+            groupBox38.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox38.Controls.Add(LambertPageScaleTo);
+            groupBox38.Controls.Add(panel22);
+            groupBox38.Controls.Add(label9);
+            groupBox38.Location = new Point(6, 99);
+            groupBox38.Name = "groupBox38";
+            groupBox38.Size = new Size(100, 70);
+            groupBox38.TabIndex = 12;
+            groupBox38.TabStop = false;
+            groupBox38.Text = "Scale";
+            // 
+            // LambertPageScaleTo
+            // 
+            LambertPageScaleTo.BorderStyle = BorderStyle.None;
+            LambertPageScaleTo.Location = new Point(6, 46);
+            LambertPageScaleTo.Name = "LambertPageScaleTo";
+            LambertPageScaleTo.Size = new Size(88, 16);
+            LambertPageScaleTo.TabIndex = 2;
+            LambertPageScaleTo.Text = "1";
+            LambertPageScaleTo.TextAlign = HorizontalAlignment.Center;
+            LambertPageScaleTo.MouseLeave += ScaleTextBox_MouseLeave;
+            // 
+            // panel22
+            // 
+            panel22.BackColor = Color.Gray;
+            panel22.Location = new Point(6, 40);
+            panel22.Name = "panel22";
+            panel22.Size = new Size(88, 1);
+            panel22.TabIndex = 1;
+            // 
+            // label9
+            // 
+            label9.Location = new Point(6, 16);
+            label9.Name = "label9";
+            label9.Size = new Size(88, 20);
+            label9.TabIndex = 0;
+            label9.Text = "1";
+            label9.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // textBox16
             // 
-            textBox16.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            textBox16.Location = new Point(6, 87);
-            textBox16.Multiline = true;
+            textBox16.Location = new Point(6, 70);
             textBox16.Name = "textBox16";
             textBox16.ReadOnly = true;
-            textBox16.Size = new Size(99, 82);
+            textBox16.Size = new Size(99, 23);
             textBox16.TabIndex = 11;
-            textBox16.Text = "- Unit: Meter\r\n- Scale: 1∶1\r\n";
+            textBox16.Text = "- Unit: Meter\r\n";
             // 
             // groupBox25
             // 
@@ -1799,13 +2029,14 @@
             pictureBox6.Image = (Image)resources.GetObject("pictureBox6.Image");
             pictureBox6.Location = new Point(6, 6);
             pictureBox6.Name = "pictureBox6";
-            pictureBox6.Size = new Size(99, 75);
+            pictureBox6.Size = new Size(99, 60);
             pictureBox6.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox6.TabIndex = 3;
             pictureBox6.TabStop = false;
             // 
             // AlbersPageTo
             // 
+            AlbersPageTo.Controls.Add(groupBox40);
             AlbersPageTo.Controls.Add(textBox17);
             AlbersPageTo.Controls.Add(groupBox30);
             AlbersPageTo.Controls.Add(tableLayoutPanel19);
@@ -1821,16 +2052,55 @@
             AlbersPageTo.ToolTipText = "Double Standard Parallel Albers Equal Area Conic Projection";
             AlbersPageTo.UseVisualStyleBackColor = true;
             // 
+            // groupBox40
+            // 
+            groupBox40.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox40.Controls.Add(AlbersPageScaleTo);
+            groupBox40.Controls.Add(panel24);
+            groupBox40.Controls.Add(label12);
+            groupBox40.Location = new Point(6, 99);
+            groupBox40.Name = "groupBox40";
+            groupBox40.Size = new Size(100, 70);
+            groupBox40.TabIndex = 13;
+            groupBox40.TabStop = false;
+            groupBox40.Text = "Scale";
+            // 
+            // AlbersPageScaleTo
+            // 
+            AlbersPageScaleTo.BorderStyle = BorderStyle.None;
+            AlbersPageScaleTo.Location = new Point(6, 46);
+            AlbersPageScaleTo.Name = "AlbersPageScaleTo";
+            AlbersPageScaleTo.Size = new Size(88, 16);
+            AlbersPageScaleTo.TabIndex = 2;
+            AlbersPageScaleTo.Text = "1";
+            AlbersPageScaleTo.TextAlign = HorizontalAlignment.Center;
+            AlbersPageScaleTo.MouseLeave += ScaleTextBox_MouseLeave;
+            // 
+            // panel24
+            // 
+            panel24.BackColor = Color.Gray;
+            panel24.Location = new Point(6, 40);
+            panel24.Name = "panel24";
+            panel24.Size = new Size(88, 1);
+            panel24.TabIndex = 1;
+            // 
+            // label12
+            // 
+            label12.Location = new Point(6, 16);
+            label12.Name = "label12";
+            label12.Size = new Size(88, 20);
+            label12.TabIndex = 0;
+            label12.Text = "1";
+            label12.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // textBox17
             // 
-            textBox17.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            textBox17.Location = new Point(6, 87);
-            textBox17.Multiline = true;
+            textBox17.Location = new Point(6, 70);
             textBox17.Name = "textBox17";
             textBox17.ReadOnly = true;
-            textBox17.Size = new Size(99, 82);
+            textBox17.Size = new Size(99, 23);
             textBox17.TabIndex = 12;
-            textBox17.Text = "- Unit: Meter\r\n- Scale: 1∶1\r\n";
+            textBox17.Text = "- Unit: Meter\r\n";
             // 
             // groupBox30
             // 
@@ -2028,7 +2298,7 @@
             pictureBox10.Image = (Image)resources.GetObject("pictureBox10.Image");
             pictureBox10.Location = new Point(6, 6);
             pictureBox10.Name = "pictureBox10";
-            pictureBox10.Size = new Size(99, 75);
+            pictureBox10.Size = new Size(99, 60);
             pictureBox10.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox10.TabIndex = 4;
             pictureBox10.TabStop = false;
@@ -2532,6 +2802,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
             GaussKrugerPageFrom.ResumeLayout(false);
             GaussKrugerPageFrom.PerformLayout();
+            groupBox35.ResumeLayout(false);
+            groupBox35.PerformLayout();
             groupBox3.ResumeLayout(false);
             tableLayoutPanel6.ResumeLayout(false);
             tableLayoutPanel6.PerformLayout();
@@ -2544,6 +2816,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             LambertPageFrom.ResumeLayout(false);
             LambertPageFrom.PerformLayout();
+            groupBox37.ResumeLayout(false);
+            groupBox37.PerformLayout();
             groupBox8.ResumeLayout(false);
             tableLayoutPanel5.ResumeLayout(false);
             tableLayoutPanel5.PerformLayout();
@@ -2559,6 +2833,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             AlbersPageFrom.ResumeLayout(false);
             AlbersPageFrom.PerformLayout();
+            groupBox39.ResumeLayout(false);
+            groupBox39.PerformLayout();
             groupBox13.ResumeLayout(false);
             tableLayoutPanel9.ResumeLayout(false);
             tableLayoutPanel9.PerformLayout();
@@ -2584,6 +2860,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             GaussKrugerPageTo.ResumeLayout(false);
             GaussKrugerPageTo.PerformLayout();
+            groupBox36.ResumeLayout(false);
+            groupBox36.PerformLayout();
             groupBox23.ResumeLayout(false);
             tableLayoutPanel14.ResumeLayout(false);
             tableLayoutPanel14.PerformLayout();
@@ -2596,6 +2874,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             LambertPageTo.ResumeLayout(false);
             LambertPageTo.PerformLayout();
+            groupBox38.ResumeLayout(false);
+            groupBox38.PerformLayout();
             groupBox25.ResumeLayout(false);
             tableLayoutPanel16.ResumeLayout(false);
             tableLayoutPanel16.PerformLayout();
@@ -2611,6 +2891,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             AlbersPageTo.ResumeLayout(false);
             AlbersPageTo.PerformLayout();
+            groupBox40.ResumeLayout(false);
+            groupBox40.PerformLayout();
             groupBox30.ResumeLayout(false);
             tableLayoutPanel18.ResumeLayout(false);
             tableLayoutPanel18.PerformLayout();
@@ -2848,5 +3130,29 @@
         private TextBox GaussKrugerPageCentralMeridianZoneFrom;
         private TableLayoutPanel tableLayoutPanel21;
         private TextBox GaussKrugerPageCentralMeridianZoneTo;
+        private GroupBox groupBox35;
+        private TextBox GaussKrugerPageScaleFrom;
+        private Panel panel19;
+        private Label label5;
+        private GroupBox groupBox37;
+        private TextBox LambertPageScaleFrom;
+        private Panel panel21;
+        private Label label8;
+        private GroupBox groupBox36;
+        private TextBox GaussKrugerPageScaleTo;
+        private Panel panel20;
+        private Label label7;
+        private GroupBox groupBox39;
+        private TextBox AlbersPageScaleFrom;
+        private Panel panel23;
+        private Label label10;
+        private GroupBox groupBox38;
+        private TextBox LambertPageScaleTo;
+        private Panel panel22;
+        private Label label9;
+        private GroupBox groupBox40;
+        private TextBox AlbersPageScaleTo;
+        private Panel panel24;
+        private Label label12;
     }
 }

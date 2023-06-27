@@ -322,6 +322,10 @@ namespace Geosite
             //                3
             //            ),
             //            new XElement(
+            //                "Scale", //比例尺分母 >= 1
+            //                1
+            //            ),
+            //            new XElement(
             //                "Srid",
             //                1954
             //            )
@@ -344,6 +348,10 @@ namespace Geosite
             //                47
             //            ),
             //            new XElement(
+            //                "Scale", //比例尺分母 >= 1
+            //                1
+            //            ),
+            //            new XElement(
             //                "Srid",
             //                1980
             //            )),
@@ -363,6 +371,10 @@ namespace Geosite
             //            new XElement(
             //                "Parallel2",
             //                47
+            //            ),
+            //            new XElement(
+            //                "Scale", //比例尺分母 >= 1
+            //                1
             //            ),
             //            new XElement(
             //                "Srid",
@@ -430,6 +442,9 @@ namespace Geosite
                         var parallel2 = albersX.Element(name: "Parallel2")?.Value;
                         if (parallel2 != null)
                             AlbersPageParallel2From.Text = parallel2;
+                        var scale = albersX.Element(name: "Scale")?.Value;
+                        if (scale != null)
+                            AlbersPageScaleFrom.Text = scale;
                         var srid = albersX.Element(name: "Srid")?.Value;
                         if (srid != null)
                             switch (srid)
@@ -476,6 +491,9 @@ namespace Geosite
                         var parallel2 = lambertX.Element(name: "Parallel2")?.Value;
                         if (parallel2 != null)
                             LambertPageParallel2From.Text = parallel2;
+                        var scale = lambertX.Element(name: "Scale")?.Value;
+                        if (scale != null)
+                            LambertPageScaleFrom.Text = scale;
                         var srid = lambertX.Element(name: "Srid")?.Value;
                         if (srid != null)
                             switch (srid)
@@ -535,6 +553,9 @@ namespace Geosite
                             }
                         else
                             GaussKrugerPage6DegreeFrom.Checked = true;
+                        var scale = gaussKrugerX.Element(name: "Scale")?.Value;
+                        if (scale != null)
+                            GaussKrugerPageScaleFrom.Text = scale;
                         var srid = gaussKrugerX.Element(name: "Srid")?.Value;
                         if (srid != null)
                             switch (srid)
@@ -571,16 +592,8 @@ namespace Geosite
                     else
                         GeographyPageFrom.Tag = false;
                     var active = projectionFrom.Attribute(name: "Active")?.Value;
-                    if (active != null)
-                    {
-                        if (int.TryParse(s: active, result: out var index))
-                        {
-                            if (index is >= 0 and <= 4)
-                            {
-                                selectedIndexFrom = index;
-                            }
-                        }
-                    }
+                    if (active != null && int.TryParse(s: active, result: out var index) && index is >= 0 and <= 4)
+                        selectedIndexFrom = index;
                 }
                 // 目的投影
                 var projectionTo = _projection.Element(name: "To");
@@ -607,6 +620,9 @@ namespace Geosite
                         var parallel2 = albersX.Element(name: "Parallel2")?.Value;
                         if (parallel2 != null)
                             AlbersPageParallel2To.Text = parallel2;
+                        var scale = albersX.Element(name: "Scale")?.Value;
+                        if (scale != null)
+                            AlbersPageScaleTo.Text = scale;
                         var srid = albersX.Element(name: "Srid")?.Value;
                         if (srid != null)
                             switch (srid)
@@ -653,6 +669,9 @@ namespace Geosite
                         var parallel2 = lambertX.Element(name: "Parallel2")?.Value;
                         if (parallel2 != null)
                             LambertPageParallel2To.Text = parallel2;
+                        var scale = lambertX.Element(name: "Scale")?.Value;
+                        if (scale != null)
+                            LambertPageScaleTo.Text = scale;
                         var srid = lambertX.Element(name: "Srid")?.Value;
                         if (srid != null)
                             switch (srid)
@@ -712,6 +731,9 @@ namespace Geosite
                             }
                         else
                             GaussKrugerPage6DegreeTo.Checked = true;
+                        var scale = gaussKrugerX.Element(name: "Scale")?.Value;
+                        if (scale != null)
+                            GaussKrugerPageScaleTo.Text = scale;
                         var srid = gaussKrugerX.Element(name: "Srid")?.Value;
                         if (srid != null)
                             switch (srid)
@@ -748,16 +770,8 @@ namespace Geosite
                     else
                         GeographyPageTo.Tag = false;
                     var active = projectionTo.Attribute(name: "Active")?.Value;
-                    if (active != null)
-                    {
-                        if (int.TryParse(s: active, result: out var index))
-                        {
-                            if (index is >= 0 and <= 4)
-                            {
-                                selectedIndexTo = index;
-                            }
-                        }
-                    }
+                    if (active != null && int.TryParse(s: active, result: out var index) && index is >= 0 and <= 4)
+                        selectedIndexTo = index;
                 }
             }
             ProjectionTabControlFrom.SelectedIndex = selectedIndexFrom == -1 ? 0 : selectedIndexFrom;
@@ -794,29 +808,40 @@ namespace Geosite
                         if (double.TryParse(s: GaussKrugerPageCentralMeridianFrom.Text, result: out var gaussKrugerPageCentralMeridian))
                         {
                             if (gaussKrugerPageCentralMeridian is >= -180 and <= 180)
-                                fromX!.Add(
-                                    content: new XElement(
-                                        name: "Gauss-Kruger",
-                                        content: new object[]
-                                        {
-                                            new XElement(
-                                                name: "CentralMeridian",
-                                                content: gaussKrugerPageCentralMeridian
-                                            ),
-                                            new XElement(
-                                                name: "Zone",
-                                                content: GaussKrugerPage6DegreeFrom.Checked ? 6 :
-                                                GaussKrugerPage3DegreeFrom.Checked ? 3 : -1
-                                            ),
-                                            new XElement(
-                                                name: "Srid",
-                                                content: GaussKrugerPage1954From.Checked ? 1954 :
-                                                GaussKrugerPage1980From.Checked ? 1980 :
-                                                GaussKrugerPage1984From.Checked ? 1984 : 2000
-                                            )
-                                        }
-                                    )
-                                );
+                            {
+                                if (uint.TryParse(GaussKrugerPageScaleFrom.Text, out var scale) && scale > 0)
+                                {
+                                    fromX!.Add(
+                                        content: new XElement(
+                                            name: "Gauss-Kruger",
+                                            content: new object[]
+                                            {
+                                                new XElement(
+                                                    name: "CentralMeridian",
+                                                    content: gaussKrugerPageCentralMeridian
+                                                ),
+                                                new XElement(
+                                                    name: "Zone",
+                                                    content: GaussKrugerPage6DegreeFrom.Checked ? 6 :
+                                                    GaussKrugerPage3DegreeFrom.Checked ? 3 : -1
+                                                ),
+                                                new XElement(
+                                                    name: "Scale",
+                                                    content: scale
+                                                ),
+                                                new XElement(
+                                                    name: "Srid",
+                                                    content: GaussKrugerPage1954From.Checked ? 1954 :
+                                                    GaussKrugerPage1980From.Checked ? 1980 :
+                                                    GaussKrugerPage1984From.Checked ? 1984 : 2000
+                                                )
+                                            }
+                                        )
+                                    );
+                                }
+                                else
+                                    errorMessage = "From: Scale should be a positive integer.";
+                            }
                             else
                                 errorMessage = "From: CentralMeridian should be >= -180 and <= 180.";
                         }
@@ -843,39 +868,50 @@ namespace Geosite
                                                     if (lambertPageParallel2 is >= -90 and <= 90)
                                                     {
                                                         if (lambertPageParallel2 > lambertPageParallel1)
-                                                            fromX!.Add(
-                                                                content: new XElement(name: "Lambert",
-                                                                    content: new object[]
-                                                                    {
-                                                                        new XElement(
-                                                                            name: "CentralMeridian",
-                                                                            content: lambertPageCentralMeridian
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "OriginLatitude",
-                                                                            content: lambertPageOriginLatitude
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Parallel1",
-                                                                            content: lambertPageParallel1
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Parallel2",
-                                                                            content: lambertPageParallel2
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Srid",
-                                                                            content: LambertPage1954From.Checked
-                                                                                ? 1954
-                                                                                : LambertPage1980From.Checked
-                                                                                    ? 1980
-                                                                                    : LambertPage1984From.Checked
-                                                                                        ? 1984
-                                                                                        : 2000
-                                                                        )
-                                                                    }
-                                                                )
-                                                            );
+                                                        {
+                                                            if (uint.TryParse(LambertPageScaleFrom.Text, out var scale) && scale > 0)
+                                                            {
+                                                                fromX!.Add(
+                                                                    content: new XElement(name: "Lambert",
+                                                                        content: new object[]
+                                                                        {
+                                                                            new XElement(
+                                                                                name: "CentralMeridian",
+                                                                                content: lambertPageCentralMeridian
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "OriginLatitude",
+                                                                                content: lambertPageOriginLatitude
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Parallel1",
+                                                                                content: lambertPageParallel1
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Parallel2",
+                                                                                content: lambertPageParallel2
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Scale",
+                                                                                content: scale
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Srid",
+                                                                                content: LambertPage1954From.Checked
+                                                                                    ? 1954
+                                                                                    : LambertPage1980From.Checked
+                                                                                        ? 1980
+                                                                                        : LambertPage1984From.Checked
+                                                                                            ? 1984
+                                                                                            : 2000
+                                                                            )
+                                                                        }
+                                                                    )
+                                                                );
+                                                            }
+                                                            else
+                                                                errorMessage = "From: Scale should be a positive integer.";
+                                                        }
                                                         else
                                                             errorMessage = "From: Parallel2 should be > Parallel1.";
                                                     }
@@ -923,34 +959,52 @@ namespace Geosite
                                                     if (albersPageParallel2 is >= -90 and <= 90)
                                                     {
                                                         if (albersPageParallel2 > albersPageParallel1)
-                                                            fromX!.Add(
-                                                                content: new XElement(name: "Albers",
-                                                                    content: new object[]
-                                                                    {
-                                                                        new XElement(
-                                                                            name: "CentralMeridian",
-                                                                            content: albersPageCentralMeridian
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "OriginLatitude",
-                                                                            content: albersPageOriginLatitude
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Parallel1",
-                                                                            content: albersPageParallel1
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Parallel2",
-                                                                            content: albersPageParallel2
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Srid",
-                                                                            content: AlbersPage1954From.Checked ? 1954 :
-                                                                            AlbersPage1980From.Checked ? 1980 :
-                                                                            AlbersPage1984From.Checked ? 1984 : 2000
-                                                                        )
-                                                                    })
-                                                            );
+                                                        {
+                                                            if (uint.TryParse(AlbersPageScaleFrom.Text, out var scale) && scale > 0)
+                                                            {
+                                                                fromX!.Add(
+                                                                    content: new XElement(name: "Albers",
+                                                                        content: new object[]
+                                                                        {
+                                                                            new XElement(
+                                                                                name: "CentralMeridian",
+                                                                                content: albersPageCentralMeridian
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "OriginLatitude",
+                                                                                content: albersPageOriginLatitude
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Parallel1",
+                                                                                content: albersPageParallel1
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Parallel2",
+                                                                                content: albersPageParallel2
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Scale",
+                                                                                content: AlbersPageScaleFrom.Text
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Srid",
+                                                                                content: AlbersPage1954From.Checked
+                                                                                    ?
+                                                                                    1954
+                                                                                    :
+                                                                                    AlbersPage1980From.Checked
+                                                                                        ? 1980
+                                                                                        :
+                                                                                        AlbersPage1984From.Checked
+                                                                                            ? 1984
+                                                                                            : 2000
+                                                                            )
+                                                                        })
+                                                                );
+                                                            }
+                                                            else
+                                                                errorMessage = "From: Scale should be a positive integer.";
+                                                        }
                                                         else
                                                             errorMessage = "From: Parallel2 should be > Parallel1.";
                                                     }
@@ -998,29 +1052,40 @@ namespace Geosite
                         if (double.TryParse(s: GaussKrugerPageCentralMeridianTo.Text, result: out var gaussKrugerPageCentralMeridian))
                         {
                             if (gaussKrugerPageCentralMeridian is >= -180 and <= 180)
-                                toX!.Add(
-                                    content: new XElement(
-                                        name: "Gauss-Kruger",
-                                        content: new object[]
-                                        {
-                                            new XElement(
-                                                name: "CentralMeridian",
-                                                content: gaussKrugerPageCentralMeridian
-                                            ),
-                                            new XElement(
-                                                name: "Zone",
-                                                content: GaussKrugerPage6DegreeTo.Checked ? 6 :
-                                                GaussKrugerPage3DegreeTo.Checked ? 3 : -1
-                                            ),
-                                            new XElement(
-                                                name: "Srid",
-                                                content: GaussKrugerPage1954To.Checked ? 1954 :
-                                                GaussKrugerPage1980To.Checked ? 1980 :
-                                                GaussKrugerPage1984To.Checked ? 1984 : 2000
-                                            )
-                                        }
-                                    )
-                                );
+                            {
+                                if (uint.TryParse(GaussKrugerPageScaleTo.Text, out var scale) && scale > 0)
+                                {
+                                    toX!.Add(
+                                        content: new XElement(
+                                            name: "Gauss-Kruger",
+                                            content: new object[]
+                                            {
+                                                new XElement(
+                                                    name: "CentralMeridian",
+                                                    content: gaussKrugerPageCentralMeridian
+                                                ),
+                                                new XElement(
+                                                    name: "Zone",
+                                                    content: GaussKrugerPage6DegreeTo.Checked ? 6 :
+                                                    GaussKrugerPage3DegreeTo.Checked ? 3 : -1
+                                                ),
+                                                new XElement(
+                                                    name: "Scale",
+                                                    content: scale
+                                                ),
+                                                new XElement(
+                                                    name: "Srid",
+                                                    content: GaussKrugerPage1954To.Checked ? 1954 :
+                                                    GaussKrugerPage1980To.Checked ? 1980 :
+                                                    GaussKrugerPage1984To.Checked ? 1984 : 2000
+                                                )
+                                            }
+                                        )
+                                    );
+                                }
+                                else
+                                    errorMessage = "From: Scale should be a positive integer.";
+                            }
                             else
                                 errorMessage = "To: CentralMeridian should be >= -180 and <= 180.";
                         }
@@ -1047,39 +1112,50 @@ namespace Geosite
                                                     if (lambertPageParallel2 is >= -90 and <= 90)
                                                     {
                                                         if (lambertPageParallel2 > lambertPageParallel1)
-                                                            toX!.Add(
-                                                                content: new XElement(name: "Lambert",
-                                                                    content: new object[]
-                                                                    {
-                                                                        new XElement(
-                                                                            name: "CentralMeridian",
-                                                                            content: lambertPageCentralMeridian
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "OriginLatitude",
-                                                                            content: lambertPageOriginLatitude
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Parallel1",
-                                                                            content: lambertPageParallel1
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Parallel2",
-                                                                            content: lambertPageParallel2
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Srid",
-                                                                            content: LambertPage1954To.Checked
-                                                                                ? 1954
-                                                                                : LambertPage1980To.Checked
-                                                                                    ? 1980
-                                                                                    : LambertPage1984To.Checked
-                                                                                        ? 1984
-                                                                                        : 2000
-                                                                        )
-                                                                    }
-                                                                )
-                                                            );
+                                                        {
+                                                            if (uint.TryParse(LambertPageScaleTo.Text, out var scale) && scale > 0)
+                                                            {
+                                                                toX!.Add(
+                                                                    content: new XElement(name: "Lambert",
+                                                                        content: new object[]
+                                                                        {
+                                                                            new XElement(
+                                                                                name: "CentralMeridian",
+                                                                                content: lambertPageCentralMeridian
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "OriginLatitude",
+                                                                                content: lambertPageOriginLatitude
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Parallel1",
+                                                                                content: lambertPageParallel1
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Parallel2",
+                                                                                content: lambertPageParallel2
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Scale",
+                                                                                content: scale
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Srid",
+                                                                                content: LambertPage1954To.Checked
+                                                                                    ? 1954
+                                                                                    : LambertPage1980To.Checked
+                                                                                        ? 1980
+                                                                                        : LambertPage1984To.Checked
+                                                                                            ? 1984
+                                                                                            : 2000
+                                                                            )
+                                                                        }
+                                                                    )
+                                                                );
+                                                            }
+                                                            else
+                                                                errorMessage = "From: Scale should be a positive integer.";
+                                                        }
                                                         else
                                                             errorMessage = "To: Parallel2 should be > Parallel1.";
                                                     }
@@ -1127,34 +1203,52 @@ namespace Geosite
                                                     if (albersPageParallel2 is >= -90 and <= 90)
                                                     {
                                                         if (albersPageParallel2 > albersPageParallel1)
-                                                            toX!.Add(
-                                                                content: new XElement(name: "Albers",
-                                                                    content: new object[]
-                                                                    {
-                                                                        new XElement(
-                                                                            name: "CentralMeridian",
-                                                                            content: albersPageCentralMeridian
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "OriginLatitude",
-                                                                            content: albersPageOriginLatitude
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Parallel1",
-                                                                            content: albersPageParallel1
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Parallel2",
-                                                                            content: albersPageParallel2
-                                                                        ),
-                                                                        new XElement(
-                                                                            name: "Srid",
-                                                                            content: AlbersPage1954To.Checked ? 1954 :
-                                                                            AlbersPage1980To.Checked ? 1980 :
-                                                                            AlbersPage1984To.Checked ? 1984 : 2000
-                                                                        )
-                                                                    })
-                                                            );
+                                                        {
+                                                            if (uint.TryParse(AlbersPageScaleTo.Text, out var scale) && scale > 0)
+                                                            {
+                                                                toX!.Add(
+                                                                    content: new XElement(name: "Albers",
+                                                                        content: new object[]
+                                                                        {
+                                                                            new XElement(
+                                                                                name: "CentralMeridian",
+                                                                                content: albersPageCentralMeridian
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "OriginLatitude",
+                                                                                content: albersPageOriginLatitude
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Parallel1",
+                                                                                content: albersPageParallel1
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Parallel2",
+                                                                                content: albersPageParallel2
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Scale",
+                                                                                content: scale
+                                                                            ),
+                                                                            new XElement(
+                                                                                name: "Srid",
+                                                                                content: AlbersPage1954To.Checked
+                                                                                    ?
+                                                                                    1954
+                                                                                    :
+                                                                                    AlbersPage1980To.Checked
+                                                                                        ? 1980
+                                                                                        :
+                                                                                        AlbersPage1984To.Checked
+                                                                                            ? 1984
+                                                                                            : 2000
+                                                                            )
+                                                                        })
+                                                                );
+                                                            }
+                                                            else
+                                                                errorMessage = "From: Scale should be a positive integer.";
+                                                        }
                                                         else
                                                             errorMessage = "To: Parallel2 should be > Parallel1.";
                                                     }
@@ -1609,15 +1703,11 @@ namespace Geosite
                         GaussKrugerPageCentralMeridianZoneFrom.Text = $@"{GeositeServer.Vector.Ellipsoid.Zone3(double.Parse(longitudeString))}";
                     }
                     else
-                    {
                         GaussKrugerPageCentralMeridianZoneFrom.Text = "";
-                    }
                 }
             }
             else
-            {
                 GaussKrugerPageCentralMeridianZoneFrom.Text = "";
-            }
         }
 
         private void GaussKrugerPageCentralMeridianTo_MouseLeave(object sender, EventArgs e)
@@ -1639,15 +1729,11 @@ namespace Geosite
                         GaussKrugerPageCentralMeridianZoneTo.Text = $@"{GeositeServer.Vector.Ellipsoid.Zone3(double.Parse(longitudeString))}";
                     }
                     else
-                    {
                         GaussKrugerPageCentralMeridianTo.Text = "";
-                    }
                 }
             }
             else
-            {
                 GaussKrugerPageCentralMeridianTo.Text = "";
-            }
         }
 
         private void Degree_MouseLeave(object sender, EventArgs e)
@@ -1658,6 +1744,14 @@ namespace Geosite
             var degree = GeositeServer.Vector.Ellipsoid.Degree2Dms(DMS: theSender.Text);
             if (degree != null)
                 theSender.Text = degree;
+        }
+
+        private void ScaleTextBox_MouseLeave(object sender, EventArgs e)
+        {
+            var theSender = (TextBox)sender;
+            if (theSender == null)
+                return;
+            theSender.Text = int.TryParse(theSender.Text, out var scale) && scale > 0 ? $@"{scale}" : @"1";
         }
     }
 }
