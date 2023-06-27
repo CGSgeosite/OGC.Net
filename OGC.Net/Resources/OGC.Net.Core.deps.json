@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "OGC.Net.Core/7.2023.6.26": {
+      "OGC.Net.Core/7.2023.6.27": {
         "dependencies": {
           "MaxRev.Gdal.Core": "3.7.0.217",
           "MaxRev.Gdal.LinuxRuntime.Minimal": "3.7.0.100",
@@ -2320,7 +2320,7 @@
     }
   },
   "libraries": {
-    "OGC.Net.Core/7.2023.6.26": {
+    "OGC.Net.Core/7.2023.6.27": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
