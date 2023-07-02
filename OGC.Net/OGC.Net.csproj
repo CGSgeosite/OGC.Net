@@ -8,7 +8,7 @@
 		<RootNamespace>Geosite</RootNamespace>
 		<ApplicationIcon>OGC.net.ico</ApplicationIcon>
 		<Title>OGC.net</Title>
-		<Version>7.2023.6.8</Version>
+		<Version>7.2023.7.2</Version>
 		<Authors>ZhanchangWang</Authors>
 		<Company>CGS</Company>
 		<Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
@@ -30,8 +30,11 @@
 
 	<ItemGroup>
 	  <Compile Remove="GMap.NET\CustomMarkers\**" />
+	  <Compile Remove="Resources\**" />
 	  <EmbeddedResource Remove="GMap.NET\CustomMarkers\**" />
+	  <EmbeddedResource Remove="Resources\**" />
 	  <None Remove="GMap.NET\CustomMarkers\**" />
+	  <None Remove="Resources\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -55,10 +58,10 @@
 	  <PackageReference Include="Npgsql" Version="7.0.4" />
 	  <PackageReference Include="RestSharp" Version="110.2.0" />
 	  <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-	  <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
+	  <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
 	  <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
 	  <PackageReference Include="System.Text.Encodings.Web" Version="7.0.0" />
-	  <PackageReference Include="System.Text.Json" Version="7.0.2" />
+	  <PackageReference Include="System.Text.Json" Version="7.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
