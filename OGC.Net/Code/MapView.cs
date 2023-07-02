@@ -110,13 +110,16 @@ namespace Geosite
             _type = type;
             _property = property;
 
-            _pointStyle = style?.point ?? (new Pen(Color.FromArgb(255, 13, 110, 253), 2), 0);
+            _pointStyle = style?.point ?? (new Pen(color: Color.FromArgb(alpha: 255, red: 13, green: 110, blue: 253), width: 2), 0);
             _lineStyle = style?.line ?? new Pen(color: Color.FromArgb(alpha: 255, red: 0, green: 0, blue: 0), width: 1);
             _polygonStyle = style?.polygon ?? new Pen(color: Color.FromArgb(alpha: 255, red: 255, green: 63, blue: 34), width: 1);
 
             //注：由于本类目前仅支持【EPSG:4326】矢量数据源可视化，因此无需关切【Projection】中的【To】标签！
-            var projectionFromX = projection?.Element("From")?.Elements().FirstOrDefault();
+            var projectionFromX = projection?.Element(name: "From")?.Elements().FirstOrDefault();
+            if (!uint.TryParse(s: projectionFromX?.Element(name: "Scale")?.Value ?? "1", result: out var sourceScale))
+                sourceScale = 1;
             var projectionFromName = projectionFromX?.Name.LocalName;
+            string sourceProjection = null;
             switch (projectionFromName)
             {
                 case "Gauss-Kruger":
@@ -132,12 +135,16 @@ namespace Geosite
                     //        3
                     //    ),
                     //    new XElement(
+                    //        "Scale", //折合成米制的比例尺分母
+                    //        1
+                    //    ),
+                    //    new XElement(
                     //        "Srid",
                     //        1954
                     //    )
                     //  );
-                    var srid = projectionFromX.Element("Srid")?.Value ?? "2000";
-                    var centralMeridian = double.Parse(projectionFromX.Element("CentralMeridian")?.Value ?? "0");
+                    var srid = projectionFromX.Element(name: "Srid")?.Value ?? "2000";
+                    var centralMeridian = double.Parse(s: projectionFromX.Element(name: "CentralMeridian")?.Value ?? "0");
                     double zone = 500000;
                     //switch (projectionFromX.Element("Zone")?.Value ?? "6")
                     //{
@@ -169,13 +176,10 @@ namespace Geosite
                     //    //    break;
                     //    //}
                     //}
-                    if (!uint.TryParse(projectionFromX.Element("Scale")?.Value ?? "1", out var sourceScale))
-                        sourceScale = 1;
-                    _projectionHelper = new ProjectionHelper(
+                    sourceProjection = ProjectionHelper.GetProjectionString(
                         srid: srid,
                         centralMeridian: centralMeridian,
-                        x0: zone,
-                        sourceScale: sourceScale
+                        x0: zone
                     );
                     break;
                 }
@@ -200,18 +204,27 @@ namespace Geosite
                     //        47
                     //    ),
                     //    new XElement(
+                    //        "Scale", //折合成米制的比例尺分母
+                    //        1
+                    //    ),
+                    //    new XElement(
                     //        "Srid",
                     //        1980
                     //    )
                     //  );
-                    var centralMeridian = double.Parse(projectionFromX.Element("CentralMeridian")?.Value ?? "0");
-                    var originLatitude = double.Parse(projectionFromX.Element("OriginLatitude")?.Value ?? "0");
-                    var parallel1 = double.Parse(projectionFromX.Element("Parallel1")?.Value ?? "25");
-                    var parallel2 = double.Parse(projectionFromX.Element("Parallel2")?.Value ?? "47");
-                    var srid = projectionFromX.Element("Srid")?.Value ?? "2000";
-                    if (!uint.TryParse(projectionFromX.Element("Scale")?.Value ?? "1", out var sourceScale))
-                        sourceScale = 1;
-                    _projectionHelper = new ProjectionHelper("Lambert", srid, centralMeridian, originLatitude, parallel1, parallel2, sourceScale: sourceScale);
+                    var centralMeridian = double.Parse(s: projectionFromX.Element(name: "CentralMeridian")?.Value ?? "0");
+                    var originLatitude = double.Parse(s: projectionFromX.Element(name: "OriginLatitude")?.Value ?? "0");
+                    var parallel1 = double.Parse(s: projectionFromX.Element(name: "Parallel1")?.Value ?? "25");
+                    var parallel2 = double.Parse(s: projectionFromX.Element(name: "Parallel2")?.Value ?? "47");
+                    var srid = projectionFromX.Element(name: "Srid")?.Value ?? "2000";
+                    sourceProjection = ProjectionHelper.GetProjectionString(
+                        conic: "Lambert",
+                        srid: srid,
+                        centralMeridian: centralMeridian,
+                        originLatitude: originLatitude,
+                        parallel1: parallel1,
+                        parallel2: parallel2
+                    );
                     break;
                 }
                 case "Albers":
@@ -234,39 +247,52 @@ namespace Geosite
                     //        47
                     //    ),
                     //    new XElement(
+                    //        "Scale", //折合成米制的比例尺分母
+                    //        1
+                    //    ),
+                    //    new XElement(
                     //        "Srid",
                     //        1980
                     //    )
                     //  );
-                    var centralMeridian = double.Parse(projectionFromX.Element("CentralMeridian")?.Value ?? "0");
-                    var originLatitude = double.Parse(projectionFromX.Element("OriginLatitude")?.Value ?? "0");
-                    var parallel1 = double.Parse(projectionFromX.Element("Parallel1")?.Value ?? "25");
-                    var parallel2 = double.Parse(projectionFromX.Element("Parallel2")?.Value ?? "47");
-                    var srid = projectionFromX.Element("Srid")?.Value ?? "2000";
-                    if (!uint.TryParse(projectionFromX.Element("Scale")?.Value ?? "1", out var sourceScale))
-                        sourceScale = 1;
-                    _projectionHelper = new ProjectionHelper("Albers", srid, centralMeridian, originLatitude, parallel1, parallel2, sourceScale: sourceScale);
+                    var centralMeridian = double.Parse(s: projectionFromX.Element(name: "CentralMeridian")?.Value ?? "0");
+                    var originLatitude = double.Parse(s: projectionFromX.Element(name: "OriginLatitude")?.Value ?? "0");
+                    var parallel1 = double.Parse(s: projectionFromX.Element(name: "Parallel1")?.Value ?? "25");
+                    var parallel2 = double.Parse(s: projectionFromX.Element(name: "Parallel2")?.Value ?? "47");
+                    var srid = projectionFromX.Element(name: "Srid")?.Value ?? "2000";
+                    sourceProjection = ProjectionHelper.GetProjectionString(
+                        conic: "Albers",
+                        srid: srid,
+                        centralMeridian: centralMeridian,
+                        originLatitude: originLatitude,
+                        parallel1: parallel1,
+                        parallel2: parallel2
+                    );
                     break;
                 }
                 case "Web-Mercator":
                 {
                     // new XElement("Web-Mercator");
-                    _projectionHelper = new ProjectionHelper("WebMercator", "1984", 0, 0, 0, 0);
+                    sourceProjection = ProjectionHelper.GetProjectionString(conic: "WebMercator", srid: "1984", centralMeridian: 0, originLatitude: 0, parallel1: 0, parallel2: 0);
                     break;
                 }
-                //case "Geography":
-                default:
-                {
-                    _projectionHelper = null;
-                    break;
-                }
+                ////case "Geography":
+                //default:
+                //{
+                //    //如果sourceProjection未定义，强行按【EPSG:4326】对待
+                //    break;
+                //}
             }
+
+            //视图强行采用【EPSG:4326】，因此目标投影参数无需额外指定
+            _projectionHelper = new ProjectionHelper(sourceProjection: sourceProjection, sourceScale: sourceScale);
+
             _backgroundWorker.WorkerReportsProgress = true;
             _backgroundWorker.WorkerSupportsCancellation = true;
             _backgroundWorker.DoWork += BackgroundWorker_DoWork;
             _backgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged;
             _backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
-            Tasks.Add(this);
+            Tasks.Add(item: this);
         }
 
         /// <summary>
@@ -294,118 +320,32 @@ namespace Geosite
             switch (_type?.ToLower())
             {
                 case "mapgis":
+                {
+                    try
                     {
-                        try
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
+                        var fileType = Path.GetExtension(path: _path)?.ToLower();
+                        if (fileType == ".mpj")
                         {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
-                            var fileType = Path.GetExtension(path: _path)?.ToLower();
-                            if (fileType == ".mpj")
-                            {
-                                var mapgisProject = new MapGis.MapGisProject();
-                                mapgisProject.Open(file: _path);
-                                var resultString = mapgisProject.Content.ToString(formatting: Formatting.Indented);
-                                _mainForm.BeginInvoke(method: () => { _mainForm.MapBoxPropertyText = resultString; });
-                            }
-                            else //.wt .wl .wp
-                            {
-                                using var mapgis = new MapGis.MapGisFile();
-                                mapgis.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
-                                {
-                                    var progress = thisEvent.Progress;
-                                    if (progress == null)
-                                        _backgroundWorker.ReportProgress(percentProgress: -1,
-                                            userState: thisEvent.Message ?? string.Empty);
-                                };
-                                mapgis.Open(mapgisFile: _path);
-                                if (mapgis.RecordCount == 0)
-                                    throw new Exception(message: "No features found.");
-                                var capabilities = mapgis.GetCapabilities();
-                                if (capabilities != null)
-                                {
-                                    var bbox = (JArray)capabilities[propertyName: "bbox"]; //西南东北
-                                    if (bbox != null)
-                                    {
-                                        var west = (double)bbox[index: 0];
-                                        var south = (double)bbox[index: 1];
-                                        var east = (double)bbox[index: 2];
-                                        var north = (double)bbox[index: 3];
-
-                                        if (_projectionHelper != null)
-                                        {
-                                            var westSouth = _projectionHelper.Project(new JArray() { west, south });
-                                            west = (double)westSouth[0];
-                                            south = (double)westSouth[1];
-                                            var eastNorth = _projectionHelper.Project(new JArray() { east, north });
-                                            east = (double)eastNorth[0];
-                                            north = (double)eastNorth[1];
-                                        }
-
-                                        if (west is > 180 or < -180 || east is > 180 or < -180 || south is > 90 or < -90 || north is > 90 or < -90)
-                                            throw new Exception(message: @"The boundary has exceeded [±180, ±90].");
-                                        if (west > east)
-                                            west = -180;
-                                        if (west > east)
-                                            east = 180;
-                                        if (south > north)
-                                            south = -90;
-                                        if (south > north)
-                                            north = 90;
-                                        _mainForm.MapBox.BeginInvoke(
-                                            method: () =>
-                                            {
-                                                _mainForm.MapBox.SetZoomToFitRect(
-                                                    rect: RectLatLng.FromLTRB(leftLng: west, topLat: north, rightLng: east, bottomLat: south)
-                                                    );
-                                            }
-                                        );
-                                    }
-                                    var count = FeaturesView(features: mapgis.GetFeature());
-                                    _backgroundWorker.ReportProgress(
-                                        percentProgress: -1,
-                                        userState:
-                                        $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}");
-                                }
-                            }
+                            var mapgisProject = new MapGis.MapGisProject();
+                            mapgisProject.Open(file: _path);
+                            var resultString = mapgisProject.Content.ToString(formatting: Formatting.Indented);
+                            _mainForm.BeginInvoke(method: () => { _mainForm.MapBoxPropertyText = resultString; });
                         }
-                        catch (Exception error)
+                        else //.wt .wl .wp
                         {
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
-                        }
-                        finally
-                        {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
-                        }
-                        break;
-                    }
-                case "shapefile":
-                    {
-                        try
-                        {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
-                            var codePage = ShapeFile.GetDbfCodePage
-                            (
-                                dbfFileName: Path.Combine
-                                (
-                                    path1: Path.GetDirectoryName(path: _path) ?? "",
-                                    path2: Path.GetFileNameWithoutExtension(path: _path) + ".dbf"
-                                )
-                            );
-                            using var shapeFile = new ShapeFileReader();
-                            shapeFile.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
+                            using var mapgis = new MapGis.MapGisFile();
+                            mapgis.OnMessagerEvent += delegate(object _, MessagerEventArgs thisEvent)
                             {
                                 var progress = thisEvent.Progress;
                                 if (progress == null)
-                                {
-                                    _backgroundWorker.ReportProgress(
-                                        percentProgress: -1,
-                                        userState: thisEvent.Message ?? string.Empty
-                                    );
-                                }
+                                    _backgroundWorker.ReportProgress(percentProgress: -1,
+                                        userState: thisEvent.Message ?? string.Empty);
                             };
-                            shapeFile.Open(filePath: _path, defaultCodePage: codePage.CodePage);
-                            if (shapeFile.RecordCount == 0)
+                            mapgis.Open(mapgisFile: _path);
+                            if (mapgis.RecordCount == 0)
                                 throw new Exception(message: "No features found.");
-                            var capabilities = shapeFile.GetCapabilities();
+                            var capabilities = mapgis.GetCapabilities();
                             if (capabilities != null)
                             {
                                 var bbox = (JArray)capabilities[propertyName: "bbox"]; //西南东北
@@ -418,12 +358,31 @@ namespace Geosite
 
                                     if (_projectionHelper != null)
                                     {
-                                        var westSouth = _projectionHelper.Project(new JArray(){ west, south });
-                                        west = (double)westSouth[0];
-                                        south = (double)westSouth[1];
-                                        var eastNorth = _projectionHelper.Project(new JArray() { east, north });
-                                        east = (double)eastNorth[0];
-                                        north = (double)eastNorth[1];
+                                        try
+                                        {
+                                            var westSouth = _projectionHelper.Project(geometry: new JArray { west, south });
+                                            west = (double)westSouth[index: 0];
+                                            south = (double)westSouth[index: 1];
+                                        }
+                                        catch
+                                        {
+                                            //如果投影失败，强制西南角
+                                            west = -180;
+                                            south = -90;
+                                        }
+
+                                        try
+                                        {
+                                            var eastNorth = _projectionHelper.Project(geometry: new JArray { east, north });
+                                            east = (double)eastNorth[index: 0];
+                                            north = (double)eastNorth[index: 1];
+                                        }
+                                        catch
+                                        {
+                                            //如果投影失败，强制东北角
+                                            east = 180;
+                                            north = 90;
+                                        }
                                     }
 
                                     if (west is > 180 or < -180 || east is > 180 or < -180 || south is > 90 or < -90 || north is > 90 or < -90)
@@ -439,360 +398,504 @@ namespace Geosite
                                     _mainForm.MapBox.BeginInvoke(
                                         method: () =>
                                         {
-                                            _mainForm.MapBox.SetZoomToFitRect(rect: RectLatLng.FromLTRB(leftLng: west, topLat: north, rightLng: east, bottomLat: south));
+                                            _mainForm.MapBox.SetZoomToFitRect(
+                                                rect: RectLatLng.FromLTRB(leftLng: west, topLat: north, rightLng: east, bottomLat: south)
+                                            );
                                         }
                                     );
                                 }
-                                var count = FeaturesView(features: shapeFile.GetFeature());
+
+                                var count = FeaturesView(features: mapgis.GetFeature());
                                 _backgroundWorker.ReportProgress(
                                     percentProgress: -1,
-                                    userState: $@"{count} valid feature" + (count > 1 ? "s" : "") + $" in {Path.GetFileName(path: _path)}"
-                                );
+                                    userState:
+                                    $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}");
                             }
                         }
-                        catch (Exception error)
-                        {
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
-                        }
-                        finally
-                        {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
-                        }
-                        break;
                     }
+                    catch (Exception error)
+                    {
+                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
+                    }
+                    finally
+                    {
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
+                    }
+
+                    break;
+                }
+                case "shapefile":
+                {
+                    try
+                    {
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
+                        var codePage = ShapeFile.GetDbfCodePage
+                        (
+                            dbfFileName: Path.Combine
+                            (
+                                path1: Path.GetDirectoryName(path: _path) ?? "",
+                                path2: Path.GetFileNameWithoutExtension(path: _path) + ".dbf"
+                            )
+                        );
+                        using var shapeFile = new ShapeFileReader();
+                        shapeFile.OnMessagerEvent += delegate(object _, MessagerEventArgs thisEvent)
+                        {
+                            var progress = thisEvent.Progress;
+                            if (progress == null)
+                            {
+                                _backgroundWorker.ReportProgress(
+                                    percentProgress: -1,
+                                    userState: thisEvent.Message ?? string.Empty
+                                );
+                            }
+                        };
+                        shapeFile.Open(filePath: _path, defaultCodePage: codePage.CodePage);
+                        if (shapeFile.RecordCount == 0)
+                            throw new Exception(message: "No features found.");
+                        var capabilities = shapeFile.GetCapabilities();
+                        if (capabilities != null)
+                        {
+                            var bbox = (JArray)capabilities[propertyName: "bbox"]; //西南东北
+                            if (bbox != null)
+                            {
+                                var west = (double)bbox[index: 0];
+                                var south = (double)bbox[index: 1];
+                                var east = (double)bbox[index: 2];
+                                var north = (double)bbox[index: 3];
+                                if (_projectionHelper != null)
+                                {
+                                    try
+                                    {
+                                        var westSouth = _projectionHelper.Project(geometry: new JArray { west, south });
+                                        west = (double)westSouth[index: 0];
+                                        south = (double)westSouth[index: 1];
+                                    }
+                                    catch
+                                    {
+                                        //如果投影失败，强制西南角
+                                        west = -180;
+                                        south = -90;
+                                    }
+
+                                    try
+                                    {
+                                        var eastNorth = _projectionHelper.Project(geometry: new JArray { east, north });
+                                        east = (double)eastNorth[index: 0];
+                                        north = (double)eastNorth[index: 1];
+                                    }
+                                    catch
+                                    {
+                                        //如果投影失败，强制东北角
+                                        east = 180;
+                                        north = 90;
+                                    }
+                                }
+
+                                if (west is > 180 or < -180 || east is > 180 or < -180 || south is > 90 or < -90 ||
+                                    north is > 90 or < -90)
+                                    throw new Exception(message: @"The boundary has exceeded [±180, ±90].");
+                                if (west > east)
+                                    west = -180;
+                                if (west > east)
+                                    east = 180;
+                                if (south > north)
+                                    south = -90;
+                                if (south > north)
+                                    north = 90;
+                                _mainForm.MapBox.BeginInvoke(
+                                    method: () =>
+                                    {
+                                        _mainForm.MapBox.SetZoomToFitRect(rect: RectLatLng.FromLTRB(leftLng: west,
+                                            topLat: north, rightLng: east, bottomLat: south));
+                                    }
+                                );
+                            }
+
+                            var count = FeaturesView(features: shapeFile.GetFeature());
+                            _backgroundWorker.ReportProgress(
+                                percentProgress: -1,
+                                userState: $@"{count} valid feature" + (count > 1 ? "s" : "") +
+                                           $" in {Path.GetFileName(path: _path)}"
+                            );
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
+                    }
+                    finally
+                    {
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
+                    }
+
+                    break;
+                }
                 case "txt":
                 case "csv":
                 case "excel":
+                {
+                    try
                     {
-                        try
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
+                        var freeTextFields = _type switch
                         {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
-                            var freeTextFields = _type switch
-                            {
-                                "txt" => TXT.GetFieldNames(file: _path),
-                                "csv" => CSV.GetFieldNames(file: _path),
-                                _ => FreeText.Excel.Excel.GetFieldNames(file: _path)
-                            };
-                            if (freeTextFields.Length == 0)
-                                throw new Exception(message: "No valid fields found.");
-                            string coordinateFieldName;
-                            if (freeTextFields.Any(predicate: f => f == "_position_"))
-                                coordinateFieldName = "_position_";
-                            else
-                            {
-                                var txtForm = new FreeTextFieldForm(fieldNames: freeTextFields);
-                                txtForm.ShowDialog();
-                                var choice = txtForm.Ok;
-                                if (choice == null)
-                                    throw new Exception(message: "Task Cancellation.");
-                                coordinateFieldName = choice.Value ? txtForm.CoordinateFieldName : null;
-                            }
-                            FreeText.FreeText freeText = _type switch
-                            {
-                                "txt" => new TXT(coordinateFieldName: coordinateFieldName),
-                                "csv" => new CSV(coordinateFieldName: coordinateFieldName),
-                                _ => new FreeText.Excel.Excel(coordinateFieldName: coordinateFieldName)
-                            };
-                            freeText.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
-                            {
-                                var progress = thisEvent.Progress;
-                                if (progress == null)
-                                    _backgroundWorker.ReportProgress(percentProgress: -1,
-                                        userState: thisEvent.Message ?? string.Empty);
-                            };
-                            freeText.Open(file: _path);
-                            if (string.IsNullOrWhiteSpace(value: coordinateFieldName))
-                            {
-                                //如果默认坐标字段不存在或者未明确指定，尝试按xml格式读取并按文本输出
-                                var getContent = new StringBuilder();
-                                freeText.Export(saveAs: getContent, format: "xml");
-                                _mainForm.BeginInvoke(method: () =>
-                                {
-                                    _mainForm.MapBoxPropertyText = getContent.ToString();
-                                });
-                            }
-                            else
-                            {
-                                if (freeText.RecordCount == 0)
-                                    throw new Exception(message: "No features found.");
-                                var capabilities = freeText.GetCapabilities();
-                                if (capabilities != null)
-                                {
-                                    var bbox = (JArray)capabilities[propertyName: "bbox"]; //西南东北
-                                    if (bbox != null)
-                                    {
-                                        var west = (double)bbox[index: 0];
-                                        var south = (double)bbox[index: 1];
-                                        var east = (double)bbox[index: 2];
-                                        var north = (double)bbox[index: 3];
+                            "txt" => TXT.GetFieldNames(file: _path),
+                            "csv" => CSV.GetFieldNames(file: _path),
+                            _ => FreeText.Excel.Excel.GetFieldNames(file: _path)
+                        };
+                        if (freeTextFields.Length == 0)
+                            throw new Exception(message: "No valid fields found.");
+                        string coordinateFieldName;
+                        if (freeTextFields.Any(predicate: f => f == "_position_"))
+                            coordinateFieldName = "_position_";
+                        else
+                        {
+                            var txtForm = new FreeTextFieldForm(fieldNames: freeTextFields);
+                            txtForm.ShowDialog();
+                            var choice = txtForm.Ok;
+                            if (choice == null)
+                                throw new Exception(message: "Task Cancellation.");
+                            coordinateFieldName = choice.Value ? txtForm.CoordinateFieldName : null;
+                        }
 
-                                        if (_projectionHelper != null)
+                        FreeText.FreeText freeText = _type switch
+                        {
+                            "txt" => new TXT(coordinateFieldName: coordinateFieldName),
+                            "csv" => new CSV(coordinateFieldName: coordinateFieldName),
+                            _ => new FreeText.Excel.Excel(coordinateFieldName: coordinateFieldName)
+                        };
+                        freeText.OnMessagerEvent += delegate(object _, MessagerEventArgs thisEvent)
+                        {
+                            var progress = thisEvent.Progress;
+                            if (progress == null)
+                                _backgroundWorker.ReportProgress(percentProgress: -1,
+                                    userState: thisEvent.Message ?? string.Empty);
+                        };
+                        freeText.Open(file: _path);
+                        if (string.IsNullOrWhiteSpace(value: coordinateFieldName))
+                        {
+                            //如果默认坐标字段不存在或者未明确指定，尝试按xml格式读取并按文本输出
+                            var getContent = new StringBuilder();
+                            freeText.Export(saveAs: getContent, format: "xml");
+                            _mainForm.BeginInvoke(method: () =>
+                            {
+                                _mainForm.MapBoxPropertyText = getContent.ToString();
+                            });
+                        }
+                        else
+                        {
+                            if (freeText.RecordCount == 0)
+                                throw new Exception(message: "No features found.");
+                            var capabilities = freeText.GetCapabilities();
+                            if (capabilities != null)
+                            {
+                                var bbox = (JArray)capabilities[propertyName: "bbox"]; //西南东北
+                                if (bbox != null)
+                                {
+                                    var west = (double)bbox[index: 0];
+                                    var south = (double)bbox[index: 1];
+                                    var east = (double)bbox[index: 2];
+                                    var north = (double)bbox[index: 3];
+
+                                    if (_projectionHelper != null)
+                                    {
+                                        try
                                         {
-                                            var westSouth = _projectionHelper.Project(new JArray() { west, south });
-                                            west = (double)westSouth[0];
-                                            south = (double)westSouth[1];
-                                            var eastNorth = _projectionHelper.Project(new JArray() { east, north });
-                                            east = (double)eastNorth[0];
-                                            north = (double)eastNorth[1];
+                                            var westSouth = _projectionHelper.Project(geometry: new JArray { west, south });
+                                            west = (double)westSouth[index: 0];
+                                            south = (double)westSouth[index: 1];
+                                        }
+                                        catch
+                                        {
+                                            //如果投影失败，强制西南角
+                                            west = -180;
+                                            south = -90;
                                         }
 
-                                        if (west is > 180 or < -180 || east is > 180 or < -180 || south is > 90 or < -90 || north is > 90 or < -90)
-                                            throw new Exception(message: @"The boundary has exceeded [±180, ±90].");
-                                        if (west > east)
-                                            west = -180;
-                                        if (west > east)
-                                            east = 180;
-                                        if (south > north)
-                                            south = -90;
-                                        if (south > north)
-                                            north = 90;
-                                        _mainForm.MapBox.BeginInvoke(
-                                            method: () =>
-                                            {
-                                                _mainForm.MapBox.SetZoomToFitRect(rect: RectLatLng.FromLTRB(leftLng: west,
-                                                    topLat: north, rightLng: east, bottomLat: south));
-                                            }
-                                        );
-                                    }
-                                    var count = FeaturesView(features: freeText.GetFeature());
-                                    _backgroundWorker.ReportProgress(percentProgress: -1, userState: $@"{count} valid feature" + (count > 1 ? "s" : "") + $" in {Path.GetFileName(path: _path)}");
-                                }
-                            }
-                        }
-                        catch (Exception error)
-                        {
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
-                        }
-                        finally
-                        {
-                            _mainForm.MapBox.BeginInvoke(
-                                method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); }
-                            );
-                        }
-                        break;
-                    }
-                case "geositexml":
-                    {
-                        try
-                        {
-                            _mainForm.MapBox.BeginInvoke(
-                                method: () => { _mainForm.FilePreviewLoading.Run(); }
-                            );
-                            using var xml = new GeositeXml.GeositeXml();
-                            xml.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
-                            {
-                                var progress = thisEvent.Progress;
-                                if (progress == null)
-                                    _backgroundWorker.ReportProgress(percentProgress: -1,
-                                        userState: thisEvent.Message ?? string.Empty);
-                            };
-                            var count = GeositeXmlView(
-                                features: xml.GeositeXmlToGeositeXml(geositeXml: xml.GetTree(input: _path)).Root);
-                            _backgroundWorker.ReportProgress(percentProgress: -1,
-                                userState: $@"{count} valid feature" + (count > 1 ? "s" : "") +
-                                           $" in {Path.GetFileName(path: _path)}");
-                        }
-                        catch (Exception error)
-                        {
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
-                        }
-                        finally
-                        {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
-                        }
-                        break;
-                    }
-                case "kml":
-                    {
-                        try
-                        {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
-                            using var kml = new GeositeXml.GeositeXml();
-                            kml.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
-                            {
-                                var progress = thisEvent.Progress;
-                                if (progress == null)
-                                    _backgroundWorker.ReportProgress(percentProgress: -1, userState: thisEvent.Message ?? string.Empty);
-                            };
-                            var count = GeositeXmlView(features: kml.KmlToGeositeXml(kml: kml.GetTree(input: _path)).Root);
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}");
-                        }
-                        catch (Exception error)
-                        {
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
-                        }
-                        finally
-                        {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
-                        }
-                        break;
-                    }
-                case "geojson":
-                    {
-                        try
-                        {
-                            using var geoJsonObject = new GeositeXml.GeositeXml();
-                            geoJsonObject.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
-                            {
-                                var progress = thisEvent.Progress;
-                                if (progress == null)
-                                    _backgroundWorker.ReportProgress(percentProgress: -1,
-                                        userState: thisEvent.Message ?? string.Empty);
-                            };
-                            var getGeositeXml = new StringBuilder();
-                            geoJsonObject.GeoJsonToGeositeXml(input: _path, output: getGeositeXml);
-                            if (getGeositeXml.Length > 0)
-                            {
-                                var count = GeositeXmlView(features: XElement.Parse(text: getGeositeXml.ToString()));
-                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}");
-                            }
-                        }
-                        catch (Exception error)
-                        {
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
-                        }
-                        finally
-                        {
-                            _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        //文档树要素类型码构成的数组（类型码约定：
-                        //0：非空间数据【默认】 ✔
-                        //1：Point点 ✔
-                        //2：Line线 ✔
-                        //3：Polygon面 ✔
-                        //4：Image地理贴图 ✔
-                        //10000：Wms栅格金字塔瓦片服务类型[epsg:0 - 无投影瓦片]
-                        //10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]
-                        //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片] ✔
-                        //11000：Wmts栅格金字塔瓦片类型[epsg:0 - 无投影瓦片]
-                        //11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]
-                        //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片] ✔
-                        //12000：WPS栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]
-                        //12001：WPS栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]
-                        //12002：WPS栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]
-                        var typeArray = Regex.Split(
-                            _type ?? "0",
-                            @"[\s,\s]+"
-                        );
-                        var geositeServerArray = Regex.Split(
-                            _path, //path layer leaf
-                            "\b"
-                        );
-                        var count = 0L;
-                        var webApi = geositeServerArray[0];
-                        var layer = geositeServerArray[1];
-                        var leaf = geositeServerArray[2];
-                        if (typeArray.Contains("0") || typeArray.Contains("1") || typeArray.Contains("2") || typeArray.Contains("3") || typeArray.Contains("4"))
-                        {
-                            //WFS服务模板示例：http://localhost:5000/getFeature?service=wfs&resultType=hits&typeNames=a.b&outputFormat=2&count=100
-                            var callPath =
-                                $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}";
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
-                            var getResponse = new WebProxy().Call(
-                                path: callPath,
-                                timeout: 36000
-                            );
-                            if (getResponse.IsSuccessful)
-                            {
-                                var content = getResponse.Content;
-                                if (content != null)
-                                {
-                                    var geositeXml = XElement.Parse(content);
-                                    if (int.TryParse(geositeXml.Attribute("numberMatched")?.Value, out var numberMatched) &&
-                                        numberMatched > 0)
-                                    {
-                                        if (!bool.TryParse(geositeXml.Attribute("estimate")?.Value, out var estimate))
-                                            estimate = false;
-                                        _backgroundWorker.ReportProgress(
-                                            percentProgress: -1,
-                                            userState:
-                                            $@"{(estimate ? "About " : "")}[{numberMatched}] feature{(numberMatched > 1 ? "s" : "")} found, loading ...");
-                                        var next = geositeXml.Attribute("next")?.Value;
-                                        while (!string.IsNullOrWhiteSpace(next))
+                                        try
                                         {
-                                            if (_backgroundWorker.CancellationPending)
+                                            var eastNorth = _projectionHelper.Project(geometry: new JArray { east, north });
+                                            east = (double)eastNorth[index: 0];
+                                            north = (double)eastNorth[index: 1];
+                                        }
+                                        catch
+                                        {
+                                            //如果投影失败，强制东北角
+                                            east = 180;
+                                            north = 90;
+                                        }
+                                    }
+
+                                    if (west is > 180 or < -180 || east is > 180 or < -180 || south is > 90 or < -90 ||
+                                        north is > 90 or < -90)
+                                        throw new Exception(message: @"The boundary has exceeded [±180, ±90].");
+                                    if (west > east)
+                                        west = -180;
+                                    if (west > east)
+                                        east = 180;
+                                    if (south > north)
+                                        south = -90;
+                                    if (south > north)
+                                        north = 90;
+                                    _mainForm.MapBox.BeginInvoke(
+                                        method: () =>
+                                        {
+                                            _mainForm.MapBox.SetZoomToFitRect(rect: RectLatLng.FromLTRB(leftLng: west,
+                                                topLat: north, rightLng: east, bottomLat: south));
+                                        }
+                                    );
+                                }
+
+                                var count = FeaturesView(features: freeText.GetFeature());
+                                _backgroundWorker.ReportProgress(percentProgress: -1,
+                                    userState: $@"{count} valid feature" + (count > 1 ? "s" : "") +
+                                               $" in {Path.GetFileName(path: _path)}");
+                            }
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
+                    }
+                    finally
+                    {
+                        _mainForm.MapBox.BeginInvoke(
+                            method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); }
+                        );
+                    }
+
+                    break;
+                }
+                case "geositexml":
+                {
+                    try
+                    {
+                        _mainForm.MapBox.BeginInvoke(
+                            method: () => { _mainForm.FilePreviewLoading.Run(); }
+                        );
+                        using var xml = new GeositeXml.GeositeXml();
+                        xml.OnMessagerEvent += delegate(object _, MessagerEventArgs thisEvent)
+                        {
+                            var progress = thisEvent.Progress;
+                            if (progress == null)
+                                _backgroundWorker.ReportProgress(percentProgress: -1,
+                                    userState: thisEvent.Message ?? string.Empty);
+                        };
+                        var count = GeositeXmlView(
+                            features: xml.GeositeXmlToGeositeXml(geositeXml: xml.GetTree(input: _path)).Root);
+                        _backgroundWorker.ReportProgress(percentProgress: -1,
+                            userState: $@"{count} valid feature" + (count > 1 ? "s" : "") +
+                                       $" in {Path.GetFileName(path: _path)}");
+                    }
+                    catch (Exception error)
+                    {
+                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
+                    }
+                    finally
+                    {
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
+                    }
+
+                    break;
+                }
+                case "kml":
+                {
+                    try
+                    {
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
+                        using var kml = new GeositeXml.GeositeXml();
+                        kml.OnMessagerEvent += delegate(object _, MessagerEventArgs thisEvent)
+                        {
+                            var progress = thisEvent.Progress;
+                            if (progress == null)
+                                _backgroundWorker.ReportProgress(percentProgress: -1,
+                                    userState: thisEvent.Message ?? string.Empty);
+                        };
+                        var count = GeositeXmlView(features: kml.KmlToGeositeXml(kml: kml.GetTree(input: _path)).Root);
+                        _backgroundWorker.ReportProgress(percentProgress: -1,
+                            userState:
+                            $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}");
+                    }
+                    catch (Exception error)
+                    {
+                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
+                    }
+                    finally
+                    {
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
+                    }
+
+                    break;
+                }
+                case "geojson":
+                {
+                    try
+                    {
+                        using var geoJsonObject = new GeositeXml.GeositeXml();
+                        geoJsonObject.OnMessagerEvent += delegate(object _, MessagerEventArgs thisEvent)
+                        {
+                            var progress = thisEvent.Progress;
+                            if (progress == null)
+                                _backgroundWorker.ReportProgress(percentProgress: -1,
+                                    userState: thisEvent.Message ?? string.Empty);
+                        };
+                        var getGeositeXml = new StringBuilder();
+                        geoJsonObject.GeoJsonToGeositeXml(input: _path, output: getGeositeXml);
+                        if (getGeositeXml.Length > 0)
+                        {
+                            var count = GeositeXmlView(features: XElement.Parse(text: getGeositeXml.ToString()));
+                            _backgroundWorker.ReportProgress(percentProgress: -1,
+                                userState:
+                                $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}");
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: error.Message);
+                    }
+                    finally
+                    {
+                        _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
+                    }
+
+                    break;
+                }
+                default:
+                {
+                    //文档树要素类型码构成的数组（类型码约定：
+                    //0：非空间数据【默认】 ✔
+                    //1：Point点 ✔
+                    //2：Line线 ✔
+                    //3：Polygon面 ✔
+                    //4：Image地理贴图 ✔
+                    //10000：Wms栅格金字塔瓦片服务类型[epsg:0 - 无投影瓦片]
+                    //10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]
+                    //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片] ✔
+                    //11000：Wmts栅格金字塔瓦片类型[epsg:0 - 无投影瓦片]
+                    //11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]
+                    //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片] ✔
+                    //12000：WPS栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]
+                    //12001：WPS栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]
+                    //12002：WPS栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]
+                    var typeArray = Regex.Split(
+                        input: _type ?? "0",
+                        pattern: @"[\s,\s]+"
+                    );
+                    var geositeServerArray = Regex.Split(
+                        input: _path, //path layer leaf
+                        pattern: "\b"
+                    );
+                    var count = 0L;
+                    var webApi = geositeServerArray[0];
+                    var layer = geositeServerArray[1];
+                    var leaf = geositeServerArray[2];
+                    if (typeArray.Contains(value: "0") || typeArray.Contains(value: "1") || typeArray.Contains(value: "2") ||
+                        typeArray.Contains(value: "3") || typeArray.Contains(value: "4"))
+                    {
+                        //WFS服务模板示例：http://localhost:5000/getFeature?service=wfs&resultType=hits&typeNames=a.b&outputFormat=2&count=100
+                        var callPath =
+                            $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}";
+                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
+                        var getResponse = new WebProxy().Call(
+                            path: callPath,
+                            timeout: 36000
+                        );
+                        if (getResponse.IsSuccessful)
+                        {
+                            var content = getResponse.Content;
+                            if (content != null)
+                            {
+                                var geositeXml = XElement.Parse(text: content);
+                                if (int.TryParse(s: geositeXml.Attribute(name: "numberMatched")?.Value, result: out var numberMatched) &&
+                                    numberMatched > 0)
+                                {
+                                    if (!bool.TryParse(value: geositeXml.Attribute(name: "estimate")?.Value, result: out var estimate))
+                                        estimate = false;
+                                    _backgroundWorker.ReportProgress(
+                                        percentProgress: -1,
+                                        userState:
+                                        $@"{(estimate ? "About " : "")}[{numberMatched}] feature{(numberMatched > 1 ? "s" : "")} found, loading ...");
+                                    var next = geositeXml.Attribute(name: "next")?.Value;
+                                    while (!string.IsNullOrWhiteSpace(value: next))
+                                    {
+                                        if (_backgroundWorker.CancellationPending)
+                                        {
+                                            e.Cancel = true;
+                                            return;
+                                        }
+
+                                        var theCount = count;
+                                        _mainForm.MapBox.BeginInvoke(method: () =>
+                                        {
+                                            _mainForm.SetStatusText(
+                                                text: $"{theCount} / {numberMatched} features loading ...");
+                                        });
+                                        Application.DoEvents();
+                                        getResponse = new WebProxy().Call(
+                                            path: next,
+                                            timeout: 0
+                                        );
+                                        if (getResponse.IsSuccessful)
+                                        {
+                                            content = getResponse.Content;
+                                            if (content != null)
                                             {
-                                                e.Cancel = true;
-                                                return;
-                                            }
-                                            var theCount = count;
-                                            _mainForm.MapBox.BeginInvoke(() =>
-                                            {
-                                                _mainForm.SetStatusText(
-                                                    $"{theCount} / {numberMatched} features loading ...");
-                                            });
-                                            Application.DoEvents();
-                                            getResponse = new WebProxy().Call(
-                                                path: next,
-                                                timeout: 0
-                                            );
-                                            if (getResponse.IsSuccessful)
-                                            {
-                                                content = getResponse.Content;
-                                                if (content != null)
+                                                geositeXml = XElement.Parse(text: content);
+                                                next = geositeXml.Attribute(name: "next")?.Value;
+                                                if (!int.TryParse(s: geositeXml.Attribute(name: "numberReturned")?.Value,
+                                                        result: out var numberReturned))
+                                                    numberReturned = 0;
+                                                if (numberReturned > 0)
                                                 {
-                                                    geositeXml = XElement.Parse(content);
-                                                    next = geositeXml.Attribute("next")?.Value;
-                                                    if (!int.TryParse(geositeXml.Attribute("numberReturned")?.Value,
-                                                            out var numberReturned))
-                                                        numberReturned = 0;
-                                                    if (numberReturned > 0)
+                                                    if (count == 0L)
                                                     {
-                                                        if (count == 0L)
+                                                        var bbox = geositeXml.Element(name: "boundary");
+                                                        if (bbox != null)
                                                         {
-                                                            var bbox = geositeXml.Element("boundary");
-                                                            if (bbox != null)
+                                                            if (double.TryParse(s: bbox.Element(name: "north")?.Value,
+                                                                    result: out var north))
                                                             {
-                                                                if (double.TryParse(s: bbox.Element(name: "north")?.Value,
-                                                                        result: out var north))
+                                                                if (double.TryParse(
+                                                                        s: bbox.Element(name: "south")?.Value,
+                                                                        result: out var south))
                                                                 {
                                                                     if (double.TryParse(
-                                                                            s: bbox.Element(name: "south")?.Value,
-                                                                            result: out var south))
+                                                                            s: bbox.Element(name: "west")?.Value,
+                                                                            result: out var west))
                                                                     {
                                                                         if (double.TryParse(
-                                                                                s: bbox.Element(name: "west")?.Value,
-                                                                                result: out var west))
+                                                                                s: bbox.Element(name: "east")?.Value,
+                                                                                result: out var east))
                                                                         {
-                                                                            if (double.TryParse(
-                                                                                    s: bbox.Element(name: "east")?.Value,
-                                                                                    result: out var east))
-                                                                            {
-                                                                                if (west is > 180 or < -180 || west > east)
-                                                                                    west = -180;
-                                                                                if (east is > 180 or < -180 || west > east)
-                                                                                    east = 180;
-                                                                                if (south is > 90 or < -90 || south > north)
-                                                                                    south = -90;
-                                                                                if (north is > 90 or < -90 || south > north)
-                                                                                    north = 90;
-                                                                                _mainForm.MapBox.BeginInvoke(
-                                                                                    method: () =>
-                                                                                    {
-                                                                                        _mainForm.MapBox.SetZoomToFitRect(
-                                                                                            rect: RectLatLng.FromLTRB(
-                                                                                                leftLng: west,
-                                                                                                topLat: north,
-                                                                                                rightLng: east,
-                                                                                                bottomLat: south
-                                                                                            )
-                                                                                        );
-                                                                                    }
-                                                                                );
-                                                                            }
+                                                                            if (west is > 180 or < -180 || west > east)
+                                                                                west = -180;
+                                                                            if (east is > 180 or < -180 || west > east)
+                                                                                east = 180;
+                                                                            if (south is > 90 or < -90 || south > north)
+                                                                                south = -90;
+                                                                            if (north is > 90 or < -90 || south > north)
+                                                                                north = 90;
+                                                                            _mainForm.MapBox.BeginInvoke(
+                                                                                method: () =>
+                                                                                {
+                                                                                    _mainForm.MapBox.SetZoomToFitRect(
+                                                                                        rect: RectLatLng.FromLTRB(
+                                                                                            leftLng: west,
+                                                                                            topLat: north,
+                                                                                            rightLng: east,
+                                                                                            bottomLat: south
+                                                                                        )
+                                                                                    );
+                                                                                }
+                                                                            );
                                                                         }
                                                                     }
                                                                 }
                                                             }
                                                         }
-                                                        count += GeositeXmlView(geositeXml, false);
                                                     }
-                                                    else
-                                                        next = null;
+
+                                                    count += GeositeXmlView(features: geositeXml, realZoom: false);
                                                 }
                                                 else
                                                     next = null;
@@ -800,72 +903,87 @@ namespace Geosite
                                             else
                                                 next = null;
                                         }
+                                        else
+                                            next = null;
                                     }
-                                    else
-                                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No vector features found.");
                                 }
                                 else
-                                    _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No vector features found.");
+                                    _backgroundWorker.ReportProgress(percentProgress: -1,
+                                        userState: @"No vector features found.");
                             }
                             else
-                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: getResponse.ErrorMessage);
+                                _backgroundWorker.ReportProgress(percentProgress: -1,
+                                    userState: @"No vector features found.");
                         }
-                        if (typeArray.Contains("10000") || typeArray.Contains("10001") || typeArray.Contains("11000") ||
-                            typeArray.Contains("11001"))
-                            _backgroundWorker.ReportProgress(
-                                percentProgress: -1,
-                                userState: "Non EPSG:3857 type is not currently supported."
-                            );
-                        if (typeArray.Contains("10002"))
-                        {
-                            //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]
-                            var callPath = $"{webApi}getTile?service=wms&layer={layer}";
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
-                            var getResponse = new WebProxy().Call(
-                                path: callPath,
-                                timeout: 5000
-                            );
-                            if (getResponse.IsSuccessful)
-                            {
-                                var content = getResponse.Content;
-                                if (content != null)
-                                    count += GeositeXmlView(
-                                        new XElement(
-                                            "members",
-                                            XElement.Parse(content).Descendants("wms").ToArray().Select(
-                                                wms =>
-                                                    new XElement(
-                                                        "member",
-                                                        new XAttribute("type", "Tile"),
-                                                        new XElement("wms", wms.Value), _property)
-                                            ).ToList()
-                                        ),
-                                        false);
-                                else
-                                    _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No WMS found.");
-                            }
-                            else
-                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: getResponse.ErrorMessage);
-                        }
-                        if (typeArray.Contains("11002"))
-                        {
-                            //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]
-                            count += GeositeXmlView(
-                                new XElement(
-                                    "member",
-                                    new XAttribute("type", "Tile"),
-                                    //注：GeositeServer提供的getTile指令支持采用括号封闭的(叶子id)充当图层路由，这比常规方式更加高效
-                                    new XElement("wms", $"{webApi}getTile?service=wmts&layer=({leaf})&tileMatrix={{z}}&tileCol={{x}}&tileRow={{y}}"),
-                                    _property),
-                                false);
-                        }
-                        var resultMessage = $@"[{count}] loaded completed.";
+                        else
+                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: getResponse.ErrorMessage);
+                    }
+
+                    if (typeArray.Contains(value: "10000") || typeArray.Contains(value: "10001") || typeArray.Contains(value: "11000") ||
+                        typeArray.Contains(value: "11001"))
                         _backgroundWorker.ReportProgress(
                             percentProgress: -1,
-                            userState: resultMessage);
-                        _mainForm.MapBox.BeginInvoke(() => { _mainForm.SetStatusText(resultMessage); });
-                        break;
+                            userState: "Non EPSG:3857 type is not currently supported."
+                        );
+                    if (typeArray.Contains(value: "10002"))
+                    {
+                        //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]
+                        var callPath = $"{webApi}getTile?service=wms&layer={layer}";
+                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
+                        var getResponse = new WebProxy().Call(
+                            path: callPath,
+                            timeout: 5000
+                        );
+                        if (getResponse.IsSuccessful)
+                        {
+                            var content = getResponse.Content;
+                            if (content != null)
+                                count += GeositeXmlView(
+                                    features: new XElement(
+                                        name: "members",
+                                        content: XElement.Parse(text: content).Descendants(name: "wms").ToArray().Select(
+                                            selector: wms =>
+                                                new XElement(
+                                                    name: "member",
+                                                    content: new object[]
+                                                    {
+                                                        new XAttribute(name: "type", value: "Tile"),
+                                                        new XElement(name: "wms", content: wms.Value), _property
+                                                    })
+                                        ).ToList()
+                                    ),
+                                    realZoom: false);
+                            else
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No WMS found.");
+                        }
+                        else
+                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: getResponse.ErrorMessage);
                     }
+
+                    if (typeArray.Contains(value: "11002"))
+                    {
+                        //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]
+                        count += GeositeXmlView(
+                            features: new XElement(
+                                name: "member",
+                                content: new object[]
+                                {
+                                    new XAttribute(name: "type", value: "Tile"),
+                                    //注：GeositeServer提供的getTile指令支持采用括号封闭的(叶子id)充当图层路由，这比常规方式更加高效
+                                    new XElement(name: "wms",
+                                        content: $"{webApi}getTile?service=wmts&layer=({leaf})&tileMatrix={{z}}&tileCol={{x}}&tileRow={{y}}"),
+                                    _property
+                                }),
+                            realZoom: false);
+                    }
+
+                    var resultMessage = $@"[{count}] loaded completed.";
+                    _backgroundWorker.ReportProgress(
+                        percentProgress: -1,
+                        userState: resultMessage);
+                    _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.SetStatusText(text: resultMessage); });
+                    break;
+                }
             }
 
             long FeaturesView(IEnumerable<JObject> features)
@@ -879,6 +997,7 @@ namespace Geosite
                             e.Cancel = true;
                             return;
                         }
+
                         Application.DoEvents();
                         /* feature 对象样例：
                         {
@@ -967,7 +1086,8 @@ namespace Geosite
                                             }
                                             catch (Exception ex)
                                             {
-                                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: ex.Message);
+                                                _backgroundWorker.ReportProgress(percentProgress: -1,
+                                                    userState: ex.Message);
                                             }
                                     }
                                 }
@@ -1023,6 +1143,7 @@ namespace Geosite
                             }
                         }
                     }
+
                     features.DescendantsAndSelf(name: "member").AsParallel().ForAll(
                         action: member =>
                         {
@@ -1031,6 +1152,7 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
+
                             Application.DoEvents();
                             count++;
                             _mainForm.MapBox.BeginInvoke(
@@ -1047,7 +1169,8 @@ namespace Geosite
                                     var type = member.Attribute(name: "type")?.Value;
                                     //要素几何（JSON/WKT/WKB/KML 格式）
                                     var geometryX = member.Element(name: "geometry");
-                                    var geometryFormat = geometryX?.Attribute(name: "format")?.Value ?? "JSON"; //（JSON/WKT/WKB 格式）
+                                    var geometryFormat =
+                                        geometryX?.Attribute(name: "format")?.Value ?? "JSON"; //（JSON/WKT/WKB 格式）
                                     var geometryType = geometryX?.Attribute(name: "type")?.Value;
                                     var geometryString = geometryX?.Value.Trim(); //要素几何坐标（或者贴图边框）
                                     //要素属性
@@ -1059,127 +1182,101 @@ namespace Geosite
                                         case "Point":
                                         case "Line":
                                         case "Polygon":
+                                        {
+                                            if (geometryString != null)
                                             {
-                                                if (geometryString != null)
+                                                var coordinate = geometryFormat.ToLower() switch
                                                 {
-                                                    var coordinate = geometryFormat.ToLower() switch
-                                                    {
-                                                        "json" => JArray.Parse(json: geometryString),
-                                                        "wkt" => JArray.Parse(json: OGCformat.WktToGeoJson(geometryCode: type switch
+                                                    "json" => JArray.Parse(json: geometryString),
+                                                    "wkt" => JArray.Parse(json: OGCformat.WktToGeoJson(
+                                                        geometryCode: type switch
                                                         {
                                                             "Point" => 0,
                                                             "Line" => 1,
                                                             "Polygon" => 2,
                                                             _ => -1
                                                         }, geometry: geometryString, simplify: true)),
-                                                        "wkb" => JArray.Parse(json: OGCformat.WktToGeoJson(geometryCode: type switch
+                                                    "wkb" => JArray.Parse(json: OGCformat.WktToGeoJson(
+                                                        geometryCode: type switch
                                                         {
                                                             "Point" => 0,
                                                             "Line" => 1,
                                                             "Polygon" => 2,
                                                             _ => -1
-                                                        }, geometry: OGCformat.WkbToWkt(wkb: geometryString).wkt, simplify: true)),
-                                                        _ => null
-                                                    };
-                                                    JObject property = null;
-                                                    JObject style = null;
-                                                    try
-                                                    {
-                                                        property = propertyX != null
-                                                            ? JObject.Parse(json: JsonConvert.SerializeXNode(node: propertyX))
-                                                            : null;
-                                                        style = styleX != null
-                                                            ? JObject.Parse(json: JsonConvert.SerializeXNode(node: styleX))
-                                                            : null;
-                                                    }
-                                                    catch
-                                                    {
-                                                        //
-                                                    }
-                                                    finally
-                                                    {
-                                                        switch (type)
-                                                        {
-                                                            case "Point":
-                                                                {
-                                                                    Point(
-                                                                        type: geometryType,
-                                                                        coordinate: coordinate,
-                                                                        property: property,
-                                                                        style: style
-                                                                    );
-                                                                    break;
-                                                                }
-                                                            case "Line":
-                                                                {
-                                                                    Line(
-                                                                        type: geometryType,
-                                                                        coordinate: coordinate,
-                                                                        property: property,
-                                                                        style: style
-                                                                    );
-                                                                    break;
-                                                                }
-                                                            case "Polygon":
-                                                                {
-                                                                    Polygon(
-                                                                        type: geometryType,
-                                                                        coordinate: coordinate,
-                                                                        property: property,
-                                                                        style: style
-                                                                    );
-                                                                    break;
-                                                                }
-                                                        }
-                                                    }
-                                                }
-                                                break;
-                                            }
-                                        case "Image":
-                                            {
-                                                if (geometryString != null && styleX != null)
+                                                        }, geometry: OGCformat.WkbToWkt(wkb: geometryString).wkt,
+                                                        simplify: true)),
+                                                    _ => null
+                                                };
+                                                JObject property = null;
+                                                JObject style = null;
+                                                try
                                                 {
-                                                    /*  贴图地址
-                                                        <style>
-                                                            <href>远程或本地图片</href>
-                                                        </style>                                                 
-                                                    */
-                                                    var href = styleX.Element(name: "href")?.Value;
-                                                    if (!string.IsNullOrWhiteSpace(value: href))
+                                                    property = propertyX != null
+                                                        ? JObject.Parse(
+                                                            json: JsonConvert.SerializeXNode(node: propertyX))
+                                                        : null;
+                                                    style = styleX != null
+                                                        ? JObject.Parse(json: JsonConvert.SerializeXNode(node: styleX))
+                                                        : null;
+                                                }
+                                                catch
+                                                {
+                                                    //
+                                                }
+                                                finally
+                                                {
+                                                    switch (type)
                                                     {
-                                                        //贴图边框 - [[[west, south],[east, south],[east, north],[west, north],[west, south]]]
-                                                        var coordinate = JArray.Parse(json: geometryString);
-                                                        JObject property = null;
-                                                        try
+                                                        case "Point":
                                                         {
-                                                            property = JObject.Parse(json: JsonConvert.SerializeXNode(node: propertyX));
-                                                        }
-                                                        catch
-                                                        {
-                                                            //
-                                                        }
-                                                        finally
-                                                        {
-                                                            Image(
-                                                                href: Regex.Replace(
-                                                                    input: href,
-                                                                    pattern: @"[\s]*?([\s\S]*?)[\s]*",
-                                                                    replacement: "$1",
-                                                                    options: RegexOptions.Singleline | RegexOptions.Multiline
-                                                                ),
+                                                            Point(
+                                                                type: geometryType,
                                                                 coordinate: coordinate,
-                                                                property: property
+                                                                property: property,
+                                                                style: style
                                                             );
+                                                            break;
+                                                        }
+                                                        case "Line":
+                                                        {
+                                                            Line(
+                                                                type: geometryType,
+                                                                coordinate: coordinate,
+                                                                property: property,
+                                                                style: style
+                                                            );
+                                                            break;
+                                                        }
+                                                        case "Polygon":
+                                                        {
+                                                            Polygon(
+                                                                type: geometryType,
+                                                                coordinate: coordinate,
+                                                                property: property,
+                                                                style: style
+                                                            );
+                                                            break;
                                                         }
                                                     }
                                                 }
-                                                break;
                                             }
-                                        case "Tile":
+
+                                            break;
+                                        }
+                                        case "Image":
+                                        {
+                                            if (geometryString != null && styleX != null)
                                             {
-                                                var wms = member.Element(name: "wms")?.Value.Trim(); //需符合【{z} {x} {y}】模板
-                                                if (!string.IsNullOrWhiteSpace(value: wms))
+                                                /*  贴图地址
+                                                    <style>
+                                                        <href>远程或本地图片</href>
+                                                    </style>                                                 
+                                                */
+                                                var href = styleX.Element(name: "href")?.Value;
+                                                if (!string.IsNullOrWhiteSpace(value: href))
                                                 {
+                                                    //贴图边框 - [[[west, south],[east, south],[east, north],[west, north],[west, south]]]
+                                                    var coordinate = JArray.Parse(json: geometryString);
                                                     JObject property = null;
                                                     try
                                                     {
@@ -1192,39 +1289,75 @@ namespace Geosite
                                                     }
                                                     finally
                                                     {
-                                                        Tile(
-                                                            urlFormat: wms,
+                                                        Image(
+                                                            href: Regex.Replace(
+                                                                input: href,
+                                                                pattern: @"[\s]*?([\s\S]*?)[\s]*",
+                                                                replacement: "$1",
+                                                                options: RegexOptions.Singleline |
+                                                                         RegexOptions.Multiline
+                                                            ),
+                                                            coordinate: coordinate,
                                                             property: property
                                                         );
                                                     }
                                                 }
-                                                break;
                                             }
-                                        default:
+
+                                            break;
+                                        }
+                                        case "Tile":
+                                        {
+                                            var wms = member.Element(name: "wms")?.Value.Trim(); //需符合【{z} {x} {y}】模板
+                                            if (!string.IsNullOrWhiteSpace(value: wms))
                                             {
-                                                //非空间数据，仅显示属性
-                                                if (propertyX != null)
-                                                    _mainForm.BeginInvoke(
-                                                        method: () =>
-                                                        {
-                                                            _mainForm.MapBoxPropertyText +=
-                                                                (
-                                                                    string.IsNullOrWhiteSpace(
-                                                                        value: _mainForm.MapBoxPropertyText)
-                                                                        ? ""
-                                                                        : "\n"
-                                                                ) +
-                                                                propertyX.ToString(options: SaveOptions.None);
-                                                        }
+                                                JObject property = null;
+                                                try
+                                                {
+                                                    property = JObject.Parse(
+                                                        json: JsonConvert.SerializeXNode(node: propertyX));
+                                                }
+                                                catch
+                                                {
+                                                    //
+                                                }
+                                                finally
+                                                {
+                                                    Tile(
+                                                        urlFormat: wms,
+                                                        property: property
                                                     );
-                                                break;
+                                                }
                                             }
+
+                                            break;
+                                        }
+                                        default:
+                                        {
+                                            //非空间数据，仅显示属性
+                                            if (propertyX != null)
+                                                _mainForm.BeginInvoke(
+                                                    method: () =>
+                                                    {
+                                                        _mainForm.MapBoxPropertyText +=
+                                                            (
+                                                                string.IsNullOrWhiteSpace(
+                                                                    value: _mainForm.MapBoxPropertyText)
+                                                                    ? ""
+                                                                    : "\n"
+                                                            ) +
+                                                            propertyX.ToString(options: SaveOptions.None);
+                                                    }
+                                                );
+                                            break;
+                                        }
                                     }
                                 }
                             );
                         }
                     );
                 }
+
                 return count;
             }
         }
@@ -1247,11 +1380,52 @@ namespace Geosite
                 switch (type)
                 {
                     case "Point":
+                    {
+                        if (_projectionHelper != null)
+                            coordinate = _projectionHelper.Project(geometry: coordinate, type: type);
+                        var lng = (double)coordinate[index: 0];
+                        var lat = (double)coordinate[index: 1];
+                        lock (Features.Markers)
                         {
-                            if (_projectionHelper != null) 
-                                coordinate = _projectionHelper.Project(coordinate, type);
-                            var lng = (double)coordinate[index: 0];
-                            var lat = (double)coordinate[index: 1];
+                            switch (_pointStyle.flag)
+                            {
+                                case 0:
+                                    //点圆
+                                    Features.Markers.Add(
+                                        item: new GMapMarkerCircle(position: new PointLatLng(lat: lat, lng: lng),
+                                            strokeNormal: _pointStyle.pen)
+                                        {
+                                            IsHitTestVisible = true,
+                                            Tag = (property, style)
+                                        }
+                                    );
+                                    break;
+                                default:
+                                    //按钉
+                                    Features.Markers.Add(
+                                        item: new GMapMarkerPushpin(
+                                            position: new PointLatLng(lat: lat, lng: lng)
+                                        )
+                                        {
+                                            IsHitTestVisible = true,
+                                            Tag = (property, style)
+                                        }
+                                    );
+                                    break;
+                            }
+                        }
+
+                        return;
+                    }
+                    case "MultiPoint":
+                    {
+                        if (_projectionHelper != null)
+                            coordinate = _projectionHelper.Project(geometry: coordinate, type: type);
+                        foreach (var point in coordinate)
+                        {
+                            var vertex = (JArray)point;
+                            var lng = (double)vertex[index: 0];
+                            var lat = (double)vertex[index: 1];
                             lock (Features.Markers)
                             {
                                 switch (_pointStyle.flag)
@@ -1259,7 +1433,8 @@ namespace Geosite
                                     case 0:
                                         //点圆
                                         Features.Markers.Add(
-                                            item: new GMapMarkerCircle(position: new PointLatLng(lat: lat, lng: lng), strokeNormal: _pointStyle.pen)
+                                            item: new GMapMarkerCircle(position: new PointLatLng(lat: lat, lng: lng),
+                                                strokeNormal: _pointStyle.pen)
                                             {
                                                 IsHitTestVisible = true,
                                                 Tag = (property, style)
@@ -1280,57 +1455,19 @@ namespace Geosite
                                         break;
                                 }
                             }
-                            return;
                         }
-                    case "MultiPoint":
-                        {
-                            if (_projectionHelper != null)
-                                coordinate = _projectionHelper.Project(coordinate, type);
-                            foreach (var point in coordinate)
-                            {
-                                var vertex = (JArray)point;
-                                var lng = (double)vertex[index: 0];
-                                var lat = (double)vertex[index: 1];
-                                lock (Features.Markers)
-                                {
-                                    switch (_pointStyle.flag)
-                                    {
-                                        case 0:
-                                            //点圆
-                                            Features.Markers.Add(
-                                                item: new GMapMarkerCircle(position: new PointLatLng(lat: lat, lng: lng), strokeNormal: _pointStyle.pen)
-                                                {
-                                                    IsHitTestVisible = true,
-                                                    Tag = (property, style)
-                                                }
-                                            );
-                                            break;
-                                        default:
-                                            //按钉
-                                            Features.Markers.Add(
-                                                item: new GMapMarkerPushpin(
-                                                    position: new PointLatLng(lat: lat, lng: lng)
-                                                )
-                                                {
-                                                    IsHitTestVisible = true,
-                                                    Tag = (property, style)
-                                                }
-                                            );
-                                            break;
-                                    }
-                                }
-                            }
-                            return;
-                        }
+
+                        return;
+                    }
                     default:
+                    {
+                        type = coordinate[index: 0]?.Type.ToString() switch
                         {
-                            type = coordinate[0]?.Type.ToString() switch
-                            {
-                                "Array" => "MultiPoint",
-                                _ => "Point"
-                            };
-                            break;
-                        }
+                            "Array" => "MultiPoint",
+                            _ => "Point"
+                        };
+                        break;
+                    }
                 }
             } while (true);
         }
@@ -1342,61 +1479,62 @@ namespace Geosite
                 switch (type)
                 {
                     case "LineString":
+                    {
+                        if (_projectionHelper != null)
+                            coordinate = _projectionHelper.Project(geometry: coordinate, type: type);
+                        lock (Features.Routes)
+                            Features.Routes.Add(
+                                item: new GMapRouteLine(
+                                    points: (
+                                        from JArray vertex in coordinate
+                                        let lng = (double)vertex[index: 0]
+                                        let lat = (double)vertex[index: 1]
+                                        select new PointLatLng(lat: lat, lng: lng)
+                                    ).ToList(),
+                                    name: "LineString", strokeNormal: _lineStyle
+                                )
+                                {
+                                    IsHitTestVisible = true,
+                                    Tag = (property, style)
+                                }
+                            );
+                        return;
+                    }
+                    case "MultiLineString":
+                    {
+                        if (_projectionHelper != null)
+                            coordinate = _projectionHelper.Project(geometry: coordinate, type: type);
+                        foreach (var line in coordinate)
                         {
-                            if (_projectionHelper != null)
-                                coordinate = _projectionHelper.Project(coordinate, type);
                             lock (Features.Routes)
                                 Features.Routes.Add(
                                     item: new GMapRouteLine(
                                         points: (
-                                            from JArray vertex in coordinate
+                                            from JArray vertex in (JArray)line
                                             let lng = (double)vertex[index: 0]
                                             let lat = (double)vertex[index: 1]
                                             select new PointLatLng(lat: lat, lng: lng)
                                         ).ToList(),
-                                        name: "LineString", strokeNormal: _lineStyle
+                                        name: "MultiLineString", strokeNormal: _lineStyle
                                     )
                                     {
                                         IsHitTestVisible = true,
                                         Tag = (property, style)
                                     }
                                 );
-                            return;
                         }
-                    case "MultiLineString":
-                        {
-                            if (_projectionHelper != null)
-                                coordinate = _projectionHelper.Project(coordinate, type);
-                            foreach (var line in coordinate)
-                            {
-                                lock (Features.Routes)
-                                    Features.Routes.Add(
-                                        item: new GMapRouteLine(
-                                            points: (
-                                                from JArray vertex in (JArray)line
-                                                let lng = (double)vertex[index: 0]
-                                                let lat = (double)vertex[index: 1]
-                                                select new PointLatLng(lat: lat, lng: lng)
-                                            ).ToList(),
-                                            name: "MultiLineString", strokeNormal: _lineStyle
-                                        )
-                                        {
-                                            IsHitTestVisible = true,
-                                            Tag = (property, style)
-                                        }
-                                    );
-                            }
-                            return;
-                        }
+
+                        return;
+                    }
                     default:
+                    {
+                        type = coordinate[index: 0]?[key: 0]?.Type.ToString() switch
                         {
-                            type = coordinate[0]?[0]?.Type.ToString() switch
-                            {
-                                "Array" => "MultiLineString",
-                                _ => "LineString"
-                            };
-                            break;
-                        }
+                            "Array" => "MultiLineString",
+                            _ => "LineString"
+                        };
+                        break;
+                    }
                 }
             } while (true);
         }
@@ -1408,46 +1546,128 @@ namespace Geosite
                 switch (type)
                 {
                     case "Polygon":
+                    {
+                        if (_projectionHelper != null)
+                            coordinate = _projectionHelper.Project(geometry: coordinate, type: type);
+                        //[[[x,y,...],[x,y,...],[x,y,...],[x,y,...],[x,y,...],...],...]
+                        //POLYGON((80 20,90 20,90 30,80 30,80 20),(85 25,88 25,88 26,85 26))
+                        for (var index = 0; index < coordinate.Count; index++)
                         {
-                            if (_projectionHelper != null)
-                                coordinate = _projectionHelper.Project(coordinate, type);
-                            //[[[x,y,...],[x,y,...],[x,y,...],[x,y,...],[x,y,...],...],...]
-                            //POLYGON((80 20,90 20,90 30,80 30,80 20),(85 25,88 25,88 26,85 26))
-                            for (var index = 0; index < coordinate.Count; index++)
+                            var ring = coordinate[index: index];
+                            var lineList = new List<PointLatLng>();
+                            foreach (var line in (JArray)ring)
                             {
-                                var ring = coordinate[index];
+                                if (line != null)
+                                {
+                                    var theLine = (JArray)line;
+                                    switch (theLine[index: 0].GetType().Name)
+                                    {
+                                        case "JArray":
+                                        {
+                                            lineList.AddRange(
+                                                collection: from JArray vertex in theLine
+                                                select new PointLatLng(
+                                                    lat: (double)vertex[index: 1],
+                                                    lng: (double)vertex[index: 0]
+                                                )
+                                            );
+                                            break;
+                                        }
+                                        case "JValue":
+                                        {
+                                            lineList.Add(
+                                                item: new PointLatLng(
+                                                    lat: (double)theLine[index: 1],
+                                                    lng: (double)theLine[index: 0]
+                                                )
+                                            );
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            lock (Features.Polygons)
+                            {
+                                //var polygonShow = new GMapPolygonArea(
+                                //    points: lineList,
+                                //    name: "Polygon",
+                                //    strokeNormal: _polygonStyle,
+                                //    fillNormal: index == 0
+                                //        ? new SolidBrush(color: Color.FromArgb(alpha: 50, red: _polygonStyle.Color.R,
+                                //            green: _polygonStyle.Color.G, blue: _polygonStyle.Color.B))
+                                //        : new SolidBrush(color: Color.FromArgb(alpha: 255, red: 255, green: 255,
+                                //            blue: 255))
+                                //);
+                                var polygonShow = new GMapPolygonArea(
+                                    points: lineList,
+                                    name: "Polygon",
+                                    strokeNormal: _polygonStyle,
+                                    fillNormal: new SolidBrush(color: Color.FromArgb(alpha: 50,
+                                        red: _polygonStyle.Color.R,
+                                        green: _polygonStyle.Color.G, blue: _polygonStyle.Color.B))
+                                );
+                                if (index == 0)
+                                {
+                                    polygonShow.IsHitTestVisible = true;
+                                    polygonShow.Tag = (property, style);
+                                }
+                                else
+                                {
+                                    polygonShow.IsHitTestVisible = false;
+                                }
+
+                                Features.Polygons.Add(item: polygonShow);
+                            }
+                        }
+
+                        return;
+                    }
+                    case "MultiPolygon":
+                    {
+                        if (_projectionHelper != null)
+                            coordinate = _projectionHelper.Project(geometry: coordinate, type: type);
+                        //[[[[x,y,...],[x,y,...],[x,y,...],[x,y,...],[x,y,...],...],...],[[[x,y,...],[x,y,...],[x,y,...],[x,y,...],[x,y,...],...],...]] 
+                        //MULTIPOLYGON(((0 0,4 0,4 4,0 4,0 0),(1 1,2 1,2 2,1 2,1 1)),((-1 -1,-1 -2,-2 -2,-2 -1,-1 -1)))
+                        foreach (var onePolygon in coordinate)
+                        {
+                            var thePolygon = (JArray)onePolygon;
+                            for (var index = 0; index < thePolygon.Count; index++)
+                            {
+                                var ring = thePolygon[index: index];
                                 var lineList = new List<PointLatLng>();
                                 foreach (var line in (JArray)ring)
                                 {
                                     if (line != null)
                                     {
                                         var theLine = (JArray)line;
-                                        switch (theLine[0].GetType().Name)
+                                        switch (theLine[index: 0].GetType().Name)
                                         {
                                             case "JArray":
-                                                {
-                                                    lineList.AddRange(
-                                                        from JArray vertex in theLine
-                                                        select new PointLatLng(
-                                                            lat: (double)vertex[1],
-                                                            lng: (double)vertex[0]
-                                                        )
-                                                    );
-                                                    break;
-                                                }
+                                            {
+                                                lineList.AddRange(
+                                                    collection: from JArray vertex in theLine
+                                                    select new PointLatLng(
+                                                        lat: (double)vertex[index: 1],
+                                                        lng: (double)vertex[index: 0]
+                                                    )
+                                                );
+                                                break;
+                                            }
                                             case "JValue":
-                                                {
-                                                    lineList.Add(
-                                                        new PointLatLng(
-                                                            lat: (double)theLine[1],
-                                                            lng: (double)theLine[0]
-                                                        )
-                                                    );
-                                                    break;
-                                                }
+                                            {
+                                                lineList.Add(
+                                                    item: new PointLatLng(
+                                                        lat: (double)theLine[index: 1],
+                                                        lng: (double)theLine[index: 0]
+                                                    )
+                                                );
+                                                break;
+                                            }
                                         }
                                     }
                                 }
+
                                 lock (Features.Polygons)
                                 {
                                     //var polygonShow = new GMapPolygonArea(
@@ -1464,7 +1684,8 @@ namespace Geosite
                                         points: lineList,
                                         name: "Polygon",
                                         strokeNormal: _polygonStyle,
-                                        fillNormal: new SolidBrush(color: Color.FromArgb(alpha: 50, red: _polygonStyle.Color.R,
+                                        fillNormal: new SolidBrush(color: Color.FromArgb(alpha: 50,
+                                            red: _polygonStyle.Color.R,
                                             green: _polygonStyle.Color.G, blue: _polygonStyle.Color.B))
                                     );
                                     if (index == 0)
@@ -1476,98 +1697,23 @@ namespace Geosite
                                     {
                                         polygonShow.IsHitTestVisible = false;
                                     }
-                                    Features.Polygons.Add(polygonShow);
+
+                                    Features.Polygons.Add(item: polygonShow);
                                 }
                             }
-                            return;
                         }
-                    case "MultiPolygon":
-                        {
-                            if (_projectionHelper != null)
-                                coordinate = _projectionHelper.Project(coordinate, type);
-                            //[[[[x,y,...],[x,y,...],[x,y,...],[x,y,...],[x,y,...],...],...],[[[x,y,...],[x,y,...],[x,y,...],[x,y,...],[x,y,...],...],...]] 
-                            //MULTIPOLYGON(((0 0,4 0,4 4,0 4,0 0),(1 1,2 1,2 2,1 2,1 1)),((-1 -1,-1 -2,-2 -2,-2 -1,-1 -1)))
-                            foreach (var onePolygon in coordinate)
-                            {
-                                var thePolygon = (JArray)onePolygon;
-                                for (var index = 0; index < thePolygon.Count; index++)
-                                {
-                                    var ring = thePolygon[index];
-                                    var lineList = new List<PointLatLng>();
-                                    foreach (var line in (JArray)ring)
-                                    {
-                                        if (line != null)
-                                        {
-                                            var theLine = (JArray)line;
-                                            switch (theLine[0].GetType().Name)
-                                            {
-                                                case "JArray":
-                                                    {
-                                                        lineList.AddRange(
-                                                            from JArray vertex in theLine
-                                                            select new PointLatLng(
-                                                                lat: (double)vertex[1],
-                                                                lng: (double)vertex[0]
-                                                            )
-                                                        );
-                                                        break;
-                                                    }
-                                                case "JValue":
-                                                    {
-                                                        lineList.Add(
-                                                            new PointLatLng(
-                                                                lat: (double)theLine[1],
-                                                                lng: (double)theLine[0]
-                                                            )
-                                                        );
-                                                        break;
-                                                    }
-                                            }
-                                        }
-                                    }
-                                    lock (Features.Polygons)
-                                    {
-                                        //var polygonShow = new GMapPolygonArea(
-                                        //    points: lineList,
-                                        //    name: "Polygon",
-                                        //    strokeNormal: _polygonStyle,
-                                        //    fillNormal: index == 0
-                                        //        ? new SolidBrush(color: Color.FromArgb(alpha: 50, red: _polygonStyle.Color.R,
-                                        //            green: _polygonStyle.Color.G, blue: _polygonStyle.Color.B))
-                                        //        : new SolidBrush(color: Color.FromArgb(alpha: 255, red: 255, green: 255,
-                                        //            blue: 255))
-                                        //);
-                                        var polygonShow = new GMapPolygonArea(
-                                            points: lineList,
-                                            name: "Polygon",
-                                            strokeNormal: _polygonStyle,
-                                            fillNormal: new SolidBrush(color: Color.FromArgb(alpha: 50, red: _polygonStyle.Color.R,
-                                                green: _polygonStyle.Color.G, blue: _polygonStyle.Color.B))
-                                        );
-                                        if (index == 0)
-                                        {
-                                            polygonShow.IsHitTestVisible = true;
-                                            polygonShow.Tag = (property, style);
-                                        }
-                                        else
-                                        {
-                                            polygonShow.IsHitTestVisible = false;
-                                        }
-                                        Features.Polygons.Add(item: polygonShow);
-                                    }
-                                }
-                            }
-                            return;
-                        }
+
+                        return;
+                    }
                     default:
+                    {
+                        type = coordinate[index: 0]?[key: 0]?[key: 0]?.Type.ToString() switch
                         {
-                            type = coordinate[0]?[0]?[0]?.Type.ToString() switch
-                            {
-                                "Array" => "MultiPolygon",
-                                _ => "Polygon"
-                            };
-                            break;
-                        }
+                            "Array" => "MultiPolygon",
+                            _ => "Polygon"
+                        };
+                        break;
+                    }
                 }
             } while (true);
         }
@@ -1598,6 +1744,7 @@ namespace Geosite
                         }
                     }
                 }
+
                 lock (Features.Markers)
                     Features.Markers.Add(
                         item: new GMapMarkerGround(image: image, topLeft: topLeft, bottomRight: bottomRight)
@@ -1618,8 +1765,10 @@ namespace Geosite
             var propertyJson = property?[propertyName: "property"];
             var wmsLayer = WmtsProvider.Instance;
             wmsLayer.UrlFormat = urlFormat;
-            wmsLayer.MaxZoom = propertyJson?[key: "maxZoom"]?.Value<int>() ?? propertyJson?[key: "maxzoom"]?.Value<int>() ?? 18;
-            wmsLayer.MinZoom = propertyJson?[key: "minZoom"]?.Value<int>() ?? propertyJson?[key: "minzoom"]?.Value<int>() ?? 0;
+            wmsLayer.MaxZoom = propertyJson?[key: "maxZoom"]?.Value<int>() ??
+                               propertyJson?[key: "maxzoom"]?.Value<int>() ?? 18;
+            wmsLayer.MinZoom = propertyJson?[key: "minZoom"]?.Value<int>() ??
+                               propertyJson?[key: "minzoom"]?.Value<int>() ?? 0;
             var boundary = propertyJson?[key: "boundary"];
             if (boundary != null)
             {
@@ -1628,10 +1777,13 @@ namespace Geosite
                 var west = boundary[key: "west"]?.Value<double>();
                 var east = boundary[key: "east"]?.Value<double>();
                 if (north != null && south != null && west != null && east != null)
-                    wmsLayer.Area = RectLatLng.FromLTRB(leftLng: west.Value, topLat: north.Value, rightLng: east.Value, bottomLat: south.Value);
+                    wmsLayer.Area = RectLatLng.FromLTRB(leftLng: west.Value, topLat: north.Value, rightLng: east.Value,
+                        bottomLat: south.Value);
             }
+
             wmsLayer.Alpha = propertyJson?[key: "opacity"]?.Value<float>() ?? 1f;
-            wmsLayer.ServerLetters = propertyJson?[key: "subdomains"]?.Value<string>() ?? propertyJson?[key: "subDomains"]?.Value<string>();
+            wmsLayer.ServerLetters = propertyJson?[key: "subdomains"]?.Value<string>() ??
+                                     propertyJson?[key: "subDomains"]?.Value<string>();
             GMapProvider.OverlayTiles.Add(item: wmsLayer);
             _mainForm.MapBox.ReloadMap();
         }
@@ -1644,8 +1796,8 @@ namespace Geosite
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            Dispose(disposing: true);
+            GC.SuppressFinalize(obj: this);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -1654,7 +1806,7 @@ namespace Geosite
                 return;
             _backgroundWorker?.CancelAsync();
             _backgroundWorker?.Dispose();
-            Tasks.Remove(this);
+            Tasks.Remove(item: this);
         }
     }
 }
