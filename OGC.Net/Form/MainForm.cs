@@ -4423,7 +4423,7 @@ namespace Geosite
             var rank = parameter.rank;
             var forest = _clusterUser.forest;
             var oneForest = new GeositeXmlPush();
-            var forestResult = oneForest.Forest(
+            var forestResult = oneForest.Forest( 
                 id: forest,
                 name: _clusterUser.name);
             if (!forestResult.Success)
@@ -5925,7 +5925,7 @@ namespace Geosite
                                     }
                                     if (canDo)
                                     {
-                                        using var xml = new GeositeXml.GeositeXml();
+                                        using var xml = new GeositeXml.GeositeXml(projection: projectionX);
                                         xml.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
                                         {
                                             vectorBackgroundWorker.ReportProgress(
@@ -6132,7 +6132,7 @@ namespace Geosite
                                     }
                                     if (canDo)
                                     {
-                                        using var kml = new GeositeXml.GeositeXml();
+                                        using var kml = new GeositeXml.GeositeXml(projection: projectionX);
                                         kml.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
                                         {
                                             vectorBackgroundWorker.ReportProgress(
@@ -6344,7 +6344,7 @@ namespace Geosite
                                         treePathString = ConsoleIO.FilePathToXPath(path: new FileInfo(fileName: path).FullName);
                                     if (canDo)
                                     {
-                                        using var geoJsonObject = new GeositeXml.GeositeXml();
+                                        using var geoJsonObject = new GeositeXml.GeositeXml(projection: projectionX);
                                         geoJsonObject.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
                                         {
                                             vectorBackgroundWorker.ReportProgress(
