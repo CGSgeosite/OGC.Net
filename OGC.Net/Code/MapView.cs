@@ -1763,13 +1763,21 @@ namespace Geosite
         private void Tile(string urlFormat, JObject property)
         {
             var propertyJson = property?[propertyName: "property"];
+            var propertyHasValues = (propertyJson ?? false).HasValues;
             var wmsLayer = WmtsProvider.Instance;
             wmsLayer.UrlFormat = urlFormat;
-            wmsLayer.MaxZoom = propertyJson?[key: "maxZoom"]?.Value<int>() ??
-                               propertyJson?[key: "maxzoom"]?.Value<int>() ?? 18;
-            wmsLayer.MinZoom = propertyJson?[key: "minZoom"]?.Value<int>() ??
-                               propertyJson?[key: "minzoom"]?.Value<int>() ?? 0;
-            var boundary = propertyJson?[key: "boundary"];
+            wmsLayer.MaxZoom = propertyHasValues
+                ? propertyJson?[key: "maxZoom"]?.Value<int>() ??
+                  propertyJson?[key: "maxzoom"]?.Value<int>() ?? 18
+                : 18;
+            wmsLayer.MinZoom = propertyHasValues
+                ? propertyJson?[key: "minZoom"]?.Value<int>() ??
+                  propertyJson?[key: "minzoom"]?.Value<int>() ?? 0
+                : 0;
+            
+            var boundary = propertyHasValues
+                ? propertyJson?[key: "boundary"]
+                : null;
             if (boundary != null)
             {
                 var north = boundary[key: "north"]?.Value<double>();
@@ -1781,9 +1789,13 @@ namespace Geosite
                         bottomLat: south.Value);
             }
 
-            wmsLayer.Alpha = propertyJson?[key: "opacity"]?.Value<float>() ?? 1f;
-            wmsLayer.ServerLetters = propertyJson?[key: "subdomains"]?.Value<string>() ??
-                                     propertyJson?[key: "subDomains"]?.Value<string>();
+            wmsLayer.Alpha = propertyHasValues
+                ? propertyJson?[key: "opacity"]?.Value<float>() ?? 1f
+                : 1f;
+            wmsLayer.ServerLetters = propertyHasValues
+                ? propertyJson?[key: "subdomains"]?.Value<string>() ??
+                  propertyJson?[key: "subDomains"]?.Value<string>()
+                : "";
             GMapProvider.OverlayTiles.Add(item: wmsLayer);
             _mainForm.MapBox.ReloadMap();
         }
