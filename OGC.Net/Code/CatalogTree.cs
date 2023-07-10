@@ -51,14 +51,22 @@ namespace Geosite
         private readonly TreeView _catalogTreeView;
 
         /// <summary>
+        /// 根数据名称
+        /// </summary>
+        private readonly string _rootName;
+
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="catalogTreeView">分类树对象</param>
         /// <param name="forest">森林编号</param>
-        public CatalogTree(TreeView catalogTreeView, int forest)
+        /// <param name="rootName">根数据名称，默认：Root</param>
+        public CatalogTree(TreeView catalogTreeView, int forest, string rootName = "Root")
         {
             _catalogTreeView = catalogTreeView;
             _forest = forest;
+            _rootName= rootName;
+
             _catalogTreeView.Invoke(
                 method: () =>
                 {
@@ -322,7 +330,7 @@ namespace Geosite
                         if (currentNode == null)
                         {
                             _catalogTreeView.Nodes.Clear();
-                            _catalogTreeView.Nodes.Add(currentNode = new TreeNode("Root")
+                            _catalogTreeView.Nodes.Add(currentNode = new TreeNode(_rootName)
                             {
                                 ToolTipText = $"Forest - [{_forest}]",
                                 ImageIndex = 0,
