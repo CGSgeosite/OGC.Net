@@ -1986,7 +1986,7 @@ namespace Geosite
                                                   <TargetSessionAttributes>any</TargetSessionAttributes>
                                                 </Server>
                                               </Servers>
-                                              <Forest Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
+                                              <Forest Root="Data" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
                                             </User>                                         
                                          */
                                         var host = server?.Element(name: "Host")?.Value.Trim();
@@ -2060,6 +2060,7 @@ namespace Geosite
                                                             value: forestX?.Attribute(name: "Administrator")?.Value
                                                                 .Trim() ?? "false", result: out _administrator))
                                                         _administrator = false;
+                                                    var rootName = forestX?.Attribute(name: "Root")?.Value ?? "Root";
                                                     var geositeServerLink =
                                                         PostgreSqlHelper.Connection(
                                                             host: host,
@@ -3254,7 +3255,9 @@ namespace Geosite
                                                                         _catalogTreeObject =
                                                                             new CatalogTree(
                                                                                 catalogTreeView: CatalogTreeView,
-                                                                                forest: forest);
+                                                                                forest: forest,
+                                                                                rootName: rootName
+                                                                            );
                                                                     else
                                                                         _catalogTreeObject.InsertNodes();
                                                                 }
