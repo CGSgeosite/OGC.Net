@@ -891,31 +891,32 @@
 \par
 \cf4 public\cf3  \cf4 class\cf3  \cf5 ProjectionHelper\f3\lang2052\'a3\'bb\par
 \cf1\f2 ///\cf2  \cf1 <summary>\cf3\par
-\cf1 ///\cf2  \f3\'d4\'ad\'ca\'bc\'cd\'b6\'d3\'b0\'a3\'a8proj4\'b8\'f1\'ca\'bd\'a3\'a9\cf3\par
+\cf1 ///\cf2  \f3\'d4\'ad\'ca\'bc\'cd\'b6\'d3\'b0 ESRI-Shapefile prj \'c3\'f7\'ce\'c4\cf3\par
 \cf1 ///\cf2  \cf1 </summary>\cf3\par
-\cf4 public\cf3  \cf4 string\cf3  SourceProjection;\par
-\cf1 ///\cf2  \cf1 <summary>\cf3\par
-\cf1 ///\cf2  \'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0\'a3\'a8proj4\'b8\'f1\'ca\'bd\'a3\'a9\cf3\par
+ \cf4 public\cf3  \cf4 string\cf3  SourceProjection;\par
+\f2  \cf1 ///\cf2  \cf1 <summary>\cf3\par
+\cf1 ///\cf2  \f3\'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0 ESRI-Shapefile prj \'c3\'f7\'ce\'c4\cf3\par
 \cf1 ///\cf2  \cf1 </summary>\cf3\par
 \cf4 public\cf3  \cf4 string\cf3  TargetProjection;\par
-\cf1 ///\cf2  \cf1 <summary>\cf3\par
-\cf1 ///\cf2  \'b9\'b9\'d4\'ec\'ba\'af\'ca\'fd\'a1\'a3\'d2\'c0\'be\'dd\'d6\'b8\'b6\'a8\'cd\'b6\'d3\'b0\'cf\'b5\'b4\'b4\'bd\'a8\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'c6\'f7\'a3\'ac\'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc\'b1\'e3\'c5\'d7\'b3\'f6\'d2\'ec\'b3\'a3\cf3\par
-\cf1 ///\cf2  \cf1 </summary>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 sourceProjection\cf1 ">\cf2\'d4\'ad\'ca\'bc\'cd\'b6\'d3\'b0\'a3\'a8proj4\'b8\'f1\'ca\'bd\'a3\'a9\cf1 </param>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 targetProjection\cf1 ">\cf2\'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0\'a3\'a8proj4\'b8\'f1\'ca\'bd\'a3\'a9\cf1 </param>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 reverse\cf1 ">\cf2\'ca\'c7\'b7\'f1\'bd\'ab\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'b7\'b4\'cf\'f2\'a3\'bf\'c4\'ac\'c8\'cf\'a3\'bafalse\cf1 </param>\cf3\par
-\cf4 public\cf3  \cf5 ProjectionHelper\cf3 (\cf4 string\cf3  sourceProjection, \cf4 string\cf3  targetProjection, \cf4 bool\cf3  reverse = \cf4 false\cf3 );\par
 \cf1\f2 ///\cf2  \cf1 <summary>\cf3\par
-\cf1 ///\cf2  \f3\'b9\'b9\'d4\'ec\'ba\'af\'ca\'fd\'a1\'a3\'d5\'eb\'b6\'d4\'d6\'d0\'b9\'fa\'c2\'bd\'d3\'f2\'b2\'c9\'d3\'c3\'b5\'c4\'b8\'df\'cb\'b9\'bf\'cb\'c2\'c0\'b8\'f1\'cd\'b6\'d3\'b0\'a3\'ac\'bf\'c9\'d2\'c0\'be\'dd\'d6\'b8\'b6\'a8\'b5\'c4\'b2\'ce\'bf\'bc\'cd\'d6\'c7\'f2\'d7\'f8\'b1\'ea\'cf\'b5\'b4\'fa\'ba\'c5\'a1\'a2\'d6\'d0\'d1\'eb\'d7\'d3\'ce\'e7\'cf\'df\'b5\'c8\'b2\'ce\'ca\'fd\'b4\'b4\'bd\'a8\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'c6\'f7\'a3\'ac\'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc\'b1\'e3\'c5\'d7\'b3\'f6\'d2\'ec\'b3\'a3\cf3\par
+\cf1 ///\cf2  \f3\'b9\'b9\'d4\'ec\'ba\'af\'ca\'fd \cf3\par
+\cf1 ///\cf2  \'d7\'a2\'b2\'e1GDAL\'c7\'fd\'b6\'af\'b2\'a2\'d2\'c0\'be\'dd\'d6\'b8\'b6\'a8\'cd\'b6\'d3\'b0\'cf\'b5\'b4\'b4\'bd\'a8\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'c6\'f7\'a3\'ac\'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc\'bb\'f2\'d5\'df\'d4\'ad\'ca\'bc\'d3\'eb\'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0\'d2\'bb\'d6\'c2\'ca\'b1\'b1\'e4\'bb\'bb\'c6\'f7\'bd\'ab\'c9\'e8\'d6\'c3\'ce\'aanull\cf3\par
+\cf1 ///\cf2  \cf1 </summary>\cf3\par
+\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 sourceProjection\cf1 ">\cf2\'d4\'ad\'ca\'bc\'cd\'b6\'d3\'b0\'a3\'a8proj4/wkt\'b8\'f1\'ca\'bd\'a3\'a9\'a3\'ac\'c4\'ac\'c8\'cf\'b2\'c9\'d3\'c3\'be\'ad\'ce\'b3\'b6\'c8\'ce\'de\'cd\'b6\'d3\'b0\'a3\'a8EPSG:4326\'a3\'a9WKT\'b8\'f1\'ca\'bd\'d7\'d6\'b7\'fb\'b4\'ae\cf1 </param>\cf3\par
+\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 targetProjection\cf1 ">\cf2\'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0\'a3\'a8proj4/wkt\'b8\'f1\'ca\'bd\'a3\'a9\'a3\'ac\'c4\'ac\'c8\'cf\'b2\'c9\'d3\'c3\'be\'ad\'ce\'b3\'b6\'c8\'ce\'de\'cd\'b6\'d3\'b0\'a3\'a8EPSG:4326\'a3\'a9WKT\'b8\'f1\'ca\'bd\'d7\'d6\'b7\'fb\'b4\'ae\cf1 </param>\cf3\par
+\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 sourceScale\cf1 ">\cf2\'d4\'ad\'ca\'bc\'b1\'c8\'c0\'fd\'b3\'df\'b7\'d6\'c4\'b8\'a3\'a8\'b2\'bb\'d5\'eb\'b6\'d4\'b5\'d8\'c0\'ed\'d7\'f8\'b1\'ea\'cf\'b5\'ba\'cd\'c7\'f2\'cc\'e5\'c4\'ab\'bf\'a8\'cd\'d0\'a3\'a9\'a3\'ac\'c4\'ac\'c8\'cf\'a3\'ba1\cf1 </param>\cf3\par
+\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 targetScale\cf1 ">\cf2\'c4\'bf\'b1\'ea\'b1\'c8\'c0\'fd\'b3\'df\'b7\'d6\'c4\'b8\'a3\'a8\'b2\'bb\'d5\'eb\'b6\'d4\'b5\'d8\'c0\'ed\'d7\'f8\'b1\'ea\'cf\'b5\'ba\'cd\'c7\'f2\'cc\'e5\'c4\'ab\'bf\'a8\'cd\'d0\'a3\'a9\'a3\'ac\'c4\'ac\'c8\'cf\'a3\'ba1\cf1 </param>\cf3\par
+\cf4 public\cf3  \cf5 ProjectionHelper\cf3 (\cf4 string\cf3  sourceProjection = \cf4 null\cf3 , \cf4 string\cf3  targetProjection = \cf4 null\cf3 , \cf4 uint\cf3  sourceScale = 1, \cf4 uint\cf3  targetScale = 1)\par
+\cf1\f2 ///\cf2  \cf1 <summary>\cf3\par
+\cf1 ///\cf2  \f3\'bb\'f1\'c8\'a1\'cd\'b6\'d3\'b0\'b2\'ce\'ca\'fd\'a1\'a3\'d5\'eb\'b6\'d4\'d6\'d0\'b9\'fa\'c2\'bd\'d3\'f2\'b2\'c9\'d3\'c3\'b5\'c4\'b8\'df\'cb\'b9\'bf\'cb\'c2\'c0\'b8\'f1\'a3\'a8\'cd\'a8\'d3\'c3\'ba\'e1\'d6\'e1\'c4\'ab\'bf\'a8\'cd\'d0\'a3\'a9\'cd\'b6\'d3\'b0\'a3\'ac\'bf\'c9\'d2\'c0\'be\'dd\'d6\'b8\'b6\'a8\'b5\'c4\'b2\'ce\'bf\'bc\'cd\'d6\'c7\'f2\'d7\'f8\'b1\'ea\'cf\'b5\'b4\'fa\'ba\'c5\'a1\'a2\'d6\'d0\'d1\'eb\'d7\'d3\'ce\'e7\'cf\'df\'b5\'c8\'b2\'ce\'ca\'fd\'b4\'b4\'bd\'a8\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'c6\'f7\'cb\'f9\'d0\'e8\'b5\'c4\'cd\'b6\'d3\'b0\'b2\'ce\'ca\'fd\cf3\par
 \cf1 ///\cf2  \cf1 </summary>\cf3\par
 \cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 srid\cf1 ">\cf2\'d6\'d0\'b9\'fa\'b3\'a3\'d3\'c3\'b2\'ce\'bf\'bc\'cd\'d6\'c7\'f2\'d7\'f8\'b1\'ea\'cf\'b5\'b4\'fa\'ba\'c5\'a3\'a81954/beijing=1954\'c4\'ea\'b1\'b1\'be\'a9\'d7\'f8\'b1\'ea\'cf\'b5\'a3\'bb1980/xian=1980\'c4\'ea\'ce\'f7\'b0\'b2\'d7\'f8\'b1\'ea\'cf\'b5\'a3\'bb2000/cgcs=CGCS\'b9\'fa\'bc\'ca\'b4\'f3\'b5\'d8\'d7\'f8\'b1\'ea\'cf\'b5\'a3\'a8\'cb\'e3\'b7\'a8\'bd\'f6\'cf\'de\'d3\'da\'d0\'a1\'d3\'da1\'a1\'c35\'cd\'f2\'b1\'c8\'c0\'fd\'b3\'df\'b5\'c4\'ca\'b8\'c1\'bf\'d2\'aa\'cb\'d8\'cd\'b6\'d3\'b0\'a3\'a9\'a3\'bb\'c6\'e4\'cb\'fb=UTM-WGS84\'cd\'b6\'d3\'b0\'cf\'b5\'a3\'a9\cf1 </param>\cf3\par
 \cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 centralMeridian\cf1 ">\cf2\'d6\'d0\'d1\'eb\'d7\'d3\'ce\'e7\'cf\'df\'be\'ad\'b6\'c8\cf1 </param>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 x0\cf1 ">\cf2\'ba\'e1\'d6\'e1\'c6\'bd\'d2\'c6\'c1\'bf\'a3\'ac\'cd\'a8\'b3\'a3\'ca\'c7\'c3\'d7\'d6\'c6\'d7\'d4\'c8\'bb\'d6\'b5\'c7\'b0\'d7\'ba\'a3\'ac\'c4\'ac\'c8\'cf\'a3\'ba500000\'a1\'a3\'cd\'a8\'d3\'c3\'d6\'b5\'c7\'b0\'c3\'e6\'bf\'c9\'d0\'af\'b4\'f8\'cd\'b6\'d3\'b0\'b4\'f8\'ba\'c5\cf1 </param>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 targetProjection\cf1 ">\cf2\'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0\'a3\'ac\'c4\'ac\'c8\'cf\'a3\'ba\'b5\'d8\'c0\'ed\'d7\'f8\'b1\'ea\'cf\'b5\cf1 </param>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 reverse\cf1 ">\cf2\'ca\'c7\'b7\'f1\'bd\'ab\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'b7\'b4\'cf\'f2\'a3\'bf\'c4\'ac\'c8\'cf\'a3\'bafalse\cf1 </param>\cf3\par
-\cf4 public\cf3  \cf5 ProjectionHelper\cf3 (\cf4 string\cf3  srid, \cf4 double\cf3  centralMeridian, \cf4 double\cf3  x0 = 500000, \cf4 string\cf3  targetProjection = \cf6 "+proj=longlat +datum=WGS84 +no_defs"\cf3 , \cf4 bool\cf3  reverse = \cf4 false\cf3 );\par
+\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 x0\cf1 ">\cf2\'ba\'e1\'d6\'e1\'c6\'bd\'d2\'c6\'c1\'bf\'a3\'ac\'cd\'a8\'b3\'a3\'ca\'c7\'c3\'d7\'d6\'c6\'d7\'d4\'c8\'bb\'d6\'b5\'c7\'b0\'d7\'ba\'a3\'ac\'c4\'ac\'c8\'cf\'a3\'ba500000\'a1\'a3\'cd\'a8\'d3\'c3\'d6\'b5\'c7\'b0\'c3\'e6\'b2\'bb\'bf\'c9\'d0\'af\'b4\'f8\'cd\'b6\'d3\'b0\'b4\'f8\'ba\'c5\'a3\'a1\cf1 </param>\cf3\par
+\cf1 ///\cf2  \cf1 <returns>\cf2\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'c6\'f7\'cb\'f9\'d0\'e8\'b5\'c4\'cd\'b6\'d3\'b0\'d7\'d6\'b7\'fb\'b4\'ae\'a3\'a8wkt\'b8\'f1\'ca\'bd\'a3\'a9\cf1 </returns>\cf3\par
+\cf4 public\cf3  \cf4 static\cf3  \cf4 string\cf3  GetProjectionString(\cf4 string\cf3  srid, \cf4 double\cf3  centralMeridian, \cf4 double\cf3  x0 = 500000)\par
 \cf1\f2 ///\cf2  \cf1 <summary>\cf3\par
-\cf1 ///\cf2  \f3\'b9\'b9\'d4\'ec\'ba\'af\'ca\'fd\'a1\'a3\'d5\'eb\'b6\'d4\'d6\'d0\'b9\'fa\'c2\'bd\'d3\'f2\'b2\'c9\'d3\'c3\'b5\'c4\'cb\'ab\'b1\'ea\'d7\'bc\'ce\'b3\'cf\'df\'b0\'a2\'b6\'fb\'b2\'a9\'cb\'b9\'b5\'c8\'bb\'fd\'bb\'f2\'c0\'bc\'b2\'ae\'cc\'d8\'b5\'c8\'bd\'c7\'b8\'ee\'d4\'b2\'d7\'b6\'cd\'b6\'d3\'b0\'a3\'ac\'bf\'c9\'d2\'c0\'be\'dd\'d6\'b8\'b6\'a8\'b5\'c4\'cd\'b6\'d3\'b0\'c3\'fb\'b3\'c6\'a1\'a2\'b2\'ce\'bf\'bc\'cd\'d6\'c7\'f2\'d7\'f8\'b1\'ea\'cf\'b5\'b4\'fa\'ba\'c5\'a1\'a2\'cb\'ab\'b1\'ea\'d7\'bc\'ce\'b3\'cf\'df\'ba\'cd\'d4\'ad\'b5\'e3\'be\'ad\'ce\'b3\'b6\'c8\'b5\'c8\'b2\'ce\'ca\'fd\'b4\'b4\'bd\'a8\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'c6\'f7\'a3\'ac\'c8\'e7\'b9\'fb\'ca\'a7\'b0\'dc\'b1\'e3\'c5\'d7\'b3\'f6\'d2\'ec\'b3\'a3\cf3\par
+\cf1 ///\cf2  \f3\'bb\'f1\'c8\'a1\'cd\'b6\'d3\'b0\'b2\'ce\'ca\'fd\'a1\'a3\'d5\'eb\'b6\'d4\'d6\'d0\'b9\'fa\'c2\'bd\'d3\'f2\'b2\'c9\'d3\'c3\'b5\'c4\'cb\'ab\'b1\'ea\'d7\'bc\'ce\'b3\'cf\'df\'b0\'a2\'b6\'fb\'b2\'a9\'cb\'b9\'b5\'c8\'bb\'fd\'bb\'f2\'c0\'bc\'b2\'ae\'cc\'d8\'b5\'c8\'bd\'c7\'b8\'ee\'d4\'b2\'d7\'b6\'cd\'b6\'d3\'b0\'d2\'d4\'bc\'b0\'c7\'f2\'cc\'e5\'c4\'ab\'bf\'a8\'cd\'d0\'cd\'b6\'d3\'b0\'a3\'ac\'bf\'c9\'d2\'c0\'be\'dd\'d6\'b8\'b6\'a8\'b5\'c4\'cd\'b6\'d3\'b0\'c3\'fb\'b3\'c6\'a1\'a2\'b2\'ce\'bf\'bc\'cd\'d6\'c7\'f2\'d7\'f8\'b1\'ea\'cf\'b5\'b4\'fa\'ba\'c5\'a1\'a2\'cb\'ab\'b1\'ea\'d7\'bc\'ce\'b3\'cf\'df\'ba\'cd\'d4\'ad\'b5\'e3\'be\'ad\'ce\'b3\'b6\'c8\'b5\'c8\'b2\'ce\'ca\'fd\'b2\'fa\'c9\'fa\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'c6\'f7\'cb\'f9\'d0\'e8\'b5\'c4\'cd\'b6\'d3\'b0\'b2\'ce\'ca\'fd\cf3\par
 \cf1 ///\cf2  \cf1 </summary>\cf3\par
 \cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 conic\cf1 ">\cf2 lambert\'a1\'a2albers\'a1\'a2\'c6\'e4\'cb\'fb=\'c7\'f2\'cc\'e5\'c4\'ab\'bf\'a8\'cd\'d0\cf1 </param>\cf3\par
 \cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 srid\cf1 ">\cf2\'d6\'d0\'b9\'fa\'b3\'a3\'d3\'c3\'b5\'d8\'cd\'bc\'b5\'d1\'bf\'a8\'b6\'fb\'d6\'b1\'bd\'c7\'d7\'f8\'b1\'ea\'cf\'b5\'b4\'fa\'ba\'c5\'a3\'a81954/beijing=1954\'c4\'ea\'b1\'b1\'be\'a9\'d7\'f8\'b1\'ea\'cf\'b5\'a3\'bb1980/xian=1980\'c4\'ea\'ce\'f7\'b0\'b2\'d7\'f8\'b1\'ea\'cf\'b5\'a3\'bb2000/cgcs=CGCS\'b9\'fa\'bc\'ca\'b4\'f3\'b5\'d8\'d7\'f8\'b1\'ea\'cf\'b5\'a3\'a8\'cb\'e3\'b7\'a8\'bd\'f6\'cf\'de\'d3\'da\'d0\'a1\'d3\'da1\'a1\'c35\'cd\'f2\'b1\'c8\'c0\'fd\'b3\'df\'b5\'c4\'ca\'b8\'c1\'bf\'d2\'aa\'cb\'d8\'cd\'b6\'d3\'b0\'a3\'a9\'a3\'bb\'c6\'e4\'cb\'fb=UTM-WGS84\'cd\'b6\'d3\'b0\'cf\'b5\'a3\'a9\cf1 </param>\cf3\par
@@ -923,17 +924,16 @@
 \cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 originLatitude\cf1 ">\cf2\'d4\'ad\'b5\'e3\'ce\'b3\'b6\'c8\'a3\'a8\'c4\'ac\'c8\'cf\'a3\'ba0\'a3\'a9\cf1 </param>\cf3\par
 \cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 parallel1\cf1 ">\cf2\'cf\'c2\'c3\'e6\'b5\'da\'d2\'bb\'b1\'ea\'d7\'bc\'ce\'b3\'cf\'df\'a3\'a8\'c8\'e7\'a3\'ba25\'a3\'a9\cf1 </param>\cf3\par
 \cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 parallel2\cf1 ">\cf2\'c9\'cf\'c3\'e6\'b5\'da\'b6\'fe\'b1\'ea\'d7\'bc\'ce\'b3\'cf\'df\'a3\'a8\'c8\'e7\'a3\'ba47\'a3\'a9\cf1 </param>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 targetProjection\cf1 ">\cf2\'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0\'a3\'ac\'c4\'ac\'c8\'cf\'a3\'ba\'b5\'d8\'c0\'ed\'d7\'f8\'b1\'ea\'cf\'b5\cf1 </param>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 reverse\cf1 ">\cf2\'ca\'c7\'b7\'f1\'bd\'ab\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'b7\'b4\'cf\'f2\'a3\'bf\'c4\'ac\'c8\'cf\'a3\'bafalse\cf1 </param>\cf3\par
-\cf4 public\cf3  \cf5 ProjectionHelper\cf3 (\cf4 string\cf3  conic, \cf4 string\cf3  srid, \cf4 double\cf3  centralMeridian, \cf4 double\cf3  originLatitude, \cf4 double\cf3  parallel1, \cf4 double\cf3  parallel2, \cf4 string\cf3  targetProjection = \cf6 "+proj=longlat +datum=WGS84 +no_defs"\cf3 , \cf4 bool\cf3  reverse = \cf4 false\cf3 );\par
+\cf1 ///\cf2  \cf1 <returns>\cf2\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'c6\'f7\'cb\'f9\'d0\'e8\'b5\'c4\'cd\'b6\'d3\'b0\'d7\'d6\'b7\'fb\'b4\'ae\'a3\'a8wkt\'b8\'f1\'ca\'bd\'a3\'a9\cf1 </returns>\cf3\par
+\cf4 public\cf3  \cf4 static\cf3  \cf4 string\cf3  GetProjectionString(\cf4 string\cf3  conic, \cf4 string\cf3  srid, \cf4 double\cf3  centralMeridian, \cf4 double\cf3  originLatitude, \cf4 double\cf3  parallel1, \cf4 double\cf3  parallel2)\par
 \cf1\f2 ///\cf2  \cf1 <summary>\cf3\par
-\cf1 ///\cf2  \f3\'b5\'a5\'b8\'f6\'bc\'b8\'ba\'ce\'d2\'aa\'cb\'d8\'cd\'b6\'d3\'b0\cf3\par
+\cf1 ///\cf2  \f3\'bc\'b8\'ba\'ce\'d2\'aa\'cb\'d8\'cd\'b6\'d3\'b0\cf3\par
 \cf1 ///\cf2  \cf1 </summary>\cf3\par
-\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 geometry\cf1 ">\cf2\'bc\'b8\'ba\'ce\'d7\'f8\'b1\'ea\'a3\'a8JArray\'c0\'e0\'d0\'cd\'a3\'a9\cf1 </param>\cf3\par
+\cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 geometry\cf1 ">\cf2\'bc\'b8\'ba\'ce\'d7\'f8\'b1\'ea\'a3\'a8JArray\'c0\'e0\'d0\'cd\'a3\'ba\'ba\'e1\'d7\'f8\'b1\'ea \'d7\'dd\'d7\'f8\'b1\'ea \'b8\'df\'b3\'cc\'bc\'b0\'c6\'e4\'cb\'fb ...\'a3\'a9\cf1 </param>\cf3\par
 \cf1 ///\cf2  \cf1 <param\cf3  \cf1 name="\cf3 type\cf1 ">\cf2\'bc\'b8\'ba\'ce\'c0\'e0\'d0\'cd\'a1\'a3\'d4\'dd\'d6\'a7\'b3\'d6\'a3\'baPoint\'a3\'a8\'c4\'ac\'c8\'cf\'a3\'a9 MultiPoint LineString MultiLineString Polygon MultiPolygon\cf1 </param>\cf3\par
-\cf1 ///\cf2  \cf1 <returns>\cf2\'d4\'ad\'ca\'bc\'cd\'b6\'d3\'b0\'d3\'eb\'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0\'d2\'bb\'d6\'c2\'bb\'f2\'d5\'df\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'b3\'c9\'b9\'a6\'ca\'b1\'b7\'b5\'bb\'d8JArray\'c0\'e0\'d0\'cd\'bc\'b8\'ba\'ce\'b6\'d4\'cf\'f3\'a3\'ac\'ca\'a7\'b0\'dc\'ca\'b1\'c5\'d7\'b3\'f6\'d2\'ec\'b3\'a3\cf1 </returns>\cf3\par
-\cf4 public\cf3  JArray Project(JArray geometry, \cf4 string\cf3  type = \cf6 "Point"\cf3 );\par
-\cf1\f0\lang1033\tab\par
+\cf1 ///\cf2  \cf1 <returns>\cf2\'d4\'ad\'ca\'bc\'cd\'b6\'d3\'b0\'d3\'eb\'c4\'bf\'b1\'ea\'cd\'b6\'d3\'b0\'d2\'bb\'d6\'c2\'bb\'f2\'d5\'df\'cd\'b6\'d3\'b0\'b1\'e4\'bb\'bb\'b3\'c9\'b9\'a6\'ca\'b1\'b7\'b5\'bb\'d8JArray\'c0\'e0\'d0\'cd\'bc\'b8\'ba\'ce\'b6\'d4\'cf\'f3\'a3\'ac\'cd\'b6\'d3\'b0\'ca\'a7\'b0\'dc\'ca\'b1\'c5\'d7\'b3\'f6\'d2\'ec\'b3\'a3\cf1 </returns>\cf3\par
+\cf4 public\cf3  JArray Project(JArray geometry, \cf4 string\cf3  type = \cf6 "Point"\cf3 )\cf1\f0\lang1033\par
+\par
 \cf0\fs24 ------------------------------------------------\cf1\fs19\par
 {\pict{\*\picprop}\wmetafile8\picw6773\pich6747\picwgoal311\pichgoal300 
 010009000003ca8100000000a181000000000400000003010800050000000b0200000000050000
