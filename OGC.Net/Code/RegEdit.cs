@@ -27,8 +27,8 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-using Microsoft.Win32;
 using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace Geosite
 {
@@ -39,16 +39,15 @@ namespace Geosite
         private static string Registerkey =>
             !string.IsNullOrWhiteSpace(_registerKeyName)
                 ? _registerKeyName
-                : _registerKeyName =
-                    Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule?.FileName);
+                : _registerKeyName = Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule?.FileName);
 
-        public static string Getkey(string keyname, string defaultvalue = "")
+        public static string Getkey(string keyname, string defaultvalue = null)
         {
             using var oldRegistryKey = Registry.CurrentUser.OpenSubKey(Registerkey, false);
-            return oldRegistryKey?.GetValue(keyname, defaultvalue).ToString();
+            return oldRegistryKey?.GetValue(keyname, defaultvalue)?.ToString();
         }
 
-        public static void Setkey(string keyname, string defaultvalue = "")
+        public static void Setkey(string keyname, string defaultvalue = null)
         {
             using var oldRegistryKey = Registry.CurrentUser.OpenSubKey(Registerkey, true);
             if (oldRegistryKey != null)
