@@ -184,11 +184,11 @@ namespace Geosite
             _loading = new LoadingBar(bar: DatabaseProgressBar);
 
             var key = ogcCard.Name;
-            var defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "2");
+            var defaultValue = RegEdit.Getkey(keyname: key);
             ogcCard.SelectedIndex = int.Parse(s: defaultValue ?? "2");
 
             key = DatabaseTabControl.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "0");
+            defaultValue = RegEdit.Getkey(keyname: key);
             DatabaseTabControl.SelectedIndex = int.Parse(s: defaultValue ?? "0");
 
             key = GeositeServerUrl.Name;
@@ -247,39 +247,39 @@ namespace Geosite
             GeositeServerPassword.Text = defaultValue ?? "";
 
             key = FormatStandard.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "True");
-            FormatStandard.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            FormatStandard.Checked = bool.Parse(value: defaultValue ?? "True");
 
             key = FormatTMS.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            FormatTMS.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            FormatTMS.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = FormatMapcruncher.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            FormatMapcruncher.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            FormatMapcruncher.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = FormatArcGIS.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            FormatArcGIS.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            FormatArcGIS.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = FormatDeepZoom.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            FormatDeepZoom.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            FormatDeepZoom.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = FormatRaster.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            FormatRaster.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            FormatRaster.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = EPSG4326.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            EPSG4326.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            EPSG4326.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = UpdateBox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "True");
-            UpdateBox.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            UpdateBox.Checked = bool.Parse(value: defaultValue ?? "True");
 
             key = tileLevels.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "-1");
+            defaultValue = RegEdit.Getkey(keyname: key);
             tileLevels.Text = defaultValue ?? "-1";
 
             key = themeNameBox.Name;
@@ -300,19 +300,19 @@ namespace Geosite
             tilewebapi.Text = defaultValue ?? "";
 
             key = wmtsNorth.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "90");
+            defaultValue = RegEdit.Getkey(keyname: key);
             wmtsNorth.Text = defaultValue ?? "90";
 
             key = wmtsSouth.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "-90");
+            defaultValue = RegEdit.Getkey(keyname: key);
             wmtsSouth.Text = defaultValue ?? "-90";
 
             key = wmtsWest.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "-180");
+            defaultValue = RegEdit.Getkey(keyname: key);
             wmtsWest.Text = defaultValue ?? "-180";
 
             key = wmtsEast.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "180");
+            defaultValue = RegEdit.Getkey(keyname: key);
             wmtsEast.Text = defaultValue ?? "180";
 
             key = subdomainsBox.Name;
@@ -320,47 +320,47 @@ namespace Geosite
             subdomainsBox.Text = defaultValue ?? "";
 
             key = wmtsMinZoom.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "0");
+            defaultValue = RegEdit.Getkey(keyname: key);
             wmtsMinZoom.Text = defaultValue ?? "0";
 
             key = wmtsSpider.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            wmtsMinZoom.Enabled = wmtsMaxZoom.Enabled = !(wmtsSpider.Checked = bool.Parse(value: defaultValue));
+            defaultValue = RegEdit.Getkey(keyname: key);
+            wmtsMinZoom.Enabled = wmtsMaxZoom.Enabled = !(wmtsSpider.Checked = bool.Parse(value: defaultValue ?? "False"));
 
             key = wmtsMaxZoom.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "18");
+            defaultValue = RegEdit.Getkey(keyname: key);
             wmtsMaxZoom.Text = defaultValue ?? "18";
 
             key = rasterTileSize.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "100");
+            defaultValue = RegEdit.Getkey(keyname: key);
             rasterTileSize.Text = defaultValue ?? "100";
 
             key = nodatabox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "-32768");
+            defaultValue = RegEdit.Getkey(keyname: key);
             nodatabox.Text = defaultValue ?? "-32768";
 
             key = maptilertoogc.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "True");
-            maptilertoogc.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            maptilertoogc.Checked = bool.Parse(value: defaultValue ?? "True");
 
             key = mapcrunchertoogc.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            mapcrunchertoogc.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            mapcrunchertoogc.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = ogctomapcruncher.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            ogctomapcruncher.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            ogctomapcruncher.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = ogctomaptiler.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "False");
-            ogctomaptiler.Checked = bool.Parse(value: defaultValue);
+            defaultValue = RegEdit.Getkey(keyname: key);
+            ogctomaptiler.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = MIMEBox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "png");
+            defaultValue = RegEdit.Getkey(keyname: key);
             MIMEBox.Text = defaultValue ?? "png";
 
             key = rankList.Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: "-1");
+            defaultValue = RegEdit.Getkey(keyname: key);
             rankList.Text = defaultValue ?? "-1";
 
             const string embedPath = "rtf"; // Path.Combine(path1: Directory.GetCurrentDirectory(), path2: "embed");
