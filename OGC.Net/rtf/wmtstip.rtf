@@ -1,6 +1,6 @@
-{\rtf1\ansi\ansicpg936\deff0\nouicompat\deflang1033\deflangfe2052{\fonttbl{\f0\fswiss\fprq2\fcharset134 Microsoft YaHei UI;}{\f1\fnil\fprq2\fcharset134 \'cb\'ce\'cc\'e5;}}
+{\rtf1\ansi\ansicpg936\deff0\nouicompat\deflang1033\deflangfe2052{\fonttbl{\f0\fswiss\fprq2\fcharset134 Microsoft YaHei UI;}}
 {\colortbl ;\red255\green0\blue0;}
-{\*\generator Riched20 10.0.17763}{\*\mmathPr\mdispDef1\mwrapIndent1440 }\viewkind4\uc1 
+{\*\generator Riched20 10.0.22000}{\*\mmathPr\mdispDef1\mwrapIndent1440 }\viewkind4\uc1 
 \pard\nowidctlpar\sl240\slmult1\f0\fs18{\pict{\*\picprop}\wmetafile8\picw2381\pich2646\picwgoal795\pichgoal915 
 010009000003ca0900000000a109000000000400000003010800050000000b0200000000050000
 000c0264005a00030000001e0004000000070104000400000007010400a1090000410b2000cc00
@@ -138,6 +138,17 @@ While less flexible than the WMS API, WMTS "GetTile" calls are tailored for spee
 They retrieve single map tiles and do not aggregate tiles in order to deliver a single composited map image.\par
 The GetTile operation under a procedural-oriented architectural style allows WMTS clients to take the information from the GetCapabilities response to request a particular Tile of a particular TileMatrixSet in a predefined format. \par
 Under the resource-oriented style, the client merely requests the representation of any offered Tile resource by performing a request to the address following the standard semantics of the transport protocol.\par
-GetTile operation must carry \cf1\{z\} \{x\} \{y\} \cf0 placeholder.\f1\fs22\lang2052\par
+GetTile operation must carry \cf1\{z\} \{x\} \{y\} \cf0 placeholder.\par
+\cf1\b Note: \cf0\b0 If the remote service belongs to EPSG:4326, check the  {\pict{\*\picprop}\wmetafile8\picw423\pich423\picwgoal240\pichgoal240 
+010009000003aa00000000008100000000000400000003010800050000000b0200000000050000
+000c0210001000030000001e000400000007010400040000000701040081000000410b2000cc00
+100010000000000010001000000000002800000010000000100000000100040000000000000000
+000000000000000000000000000000000000000000ffffff008080800000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000111112222221111111122121121221111121121111211211121112111121112112112111
+111211212111211111121112211121111112111221112111111211122222222222222222211121
+111112111221112111111211121211211111121121121112111121112111211211112112111112
+2121121221111111122222211111040000002701ffff030000000000
+} \lang2052 EPSG:4326? option\lang1033 . Otherwise, the remote service belongs to EPSG:3857 by default.\par
 }
  
