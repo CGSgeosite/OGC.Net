@@ -5609,7 +5609,7 @@ namespace Geosite
                                                         pointer++;
                                                         if (feature != null)
                                                         {
-                                                            var featureType = feature[propertyName: "geometry"]?[key: "type"]?.ToString();
+                                                            var featureType = feature[propertyName: "geometry"]?["type"]?.ToString();
                                                             freeText.Fire(
                                                                 message:
                                                                 $"{(string.IsNullOrWhiteSpace(value: featureType) ? "NonGeometry" : featureType)} [{pointer} / {recordCount}]",
