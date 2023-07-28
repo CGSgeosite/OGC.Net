@@ -1762,7 +1762,7 @@ namespace Geosite
 
         private void Tile(string urlFormat, JObject property)
         {
-            var propertyJson = property?[propertyName: "property"];
+            var propertyJson = property?["property"];
             var propertyHasValues = (propertyJson ?? false).HasValues;
             var wmsLayer = WmtsProvider.Instance;
             wmsLayer.UrlFormat = urlFormat;
