@@ -5609,7 +5609,7 @@ namespace Geosite
                                                         pointer++;
                                                         if (feature != null)
                                                         {
-                                                            var featureType = feature[propertyName: "geometry"]?["type"]?.ToString();
+                                                            var featureType = feature[propertyName: "geometry"]?[key: "type"]?.ToString();
                                                             freeText.Fire(
                                                                 message:
                                                                 $"{(string.IsNullOrWhiteSpace(value: featureType) ? "NonGeometry" : featureType)} [{pointer} / {recordCount}]",
@@ -6915,8 +6915,8 @@ namespace Geosite
                         if (FormatStandard.Checked)
                         {
                             EPSG4326.Enabled = true;
-                            EPSG4326.ThreeState = EPSG4326.Checked = false;
-                            tileLevels.Text = @"-1";
+                            EPSG4326.ThreeState = false;
+                            //EPSG4326.Checked = false;
                             tileLevels.Enabled = true;
                         }
                         else
@@ -6924,7 +6924,6 @@ namespace Geosite
                             if (FormatTMS.Checked || FormatMapcruncher.Checked || FormatArcGIS.Checked)
                             {
                                 EPSG4326.Enabled = EPSG4326.ThreeState = EPSG4326.Checked = false;
-                                tileLevels.Text = @"-1";
                                 tileLevels.Enabled = true;
                             }
                             else
@@ -6941,14 +6940,15 @@ namespace Geosite
                 case 1:
                     {
                         EPSG4326.Enabled = true;
-                        EPSG4326.ThreeState = EPSG4326.Checked = false;
-                        tileLevels.Text = @"0";
+                        EPSG4326.ThreeState = false;
+                        //EPSG4326.Checked = false;
                         tileLevels.Enabled = true;
                         break;
                     }
                 case 2:
                     {
-                        EPSG4326.Enabled = EPSG4326.ThreeState = false;
+                        EPSG4326.Enabled = false;
+                        EPSG4326.ThreeState = false;
                         EPSG4326.Checked = true;
                         tileLevels.Text = @"-1";
                         tileLevels.Enabled = false;
