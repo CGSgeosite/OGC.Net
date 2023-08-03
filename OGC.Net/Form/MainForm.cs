@@ -7801,19 +7801,23 @@ namespace Geosite
             rasterWorker.RunWorkerAsync(
                 argument: (
                     index: tilesource.SelectedIndex,
-                    theme: themeNameBox.Text.Trim(), type: tileType, typeCode,
-                    update: UpdateBox.Checked, light: PostgresLight.Checked, rank: rankList.Text,
+                    theme: themeNameBox.Text.Trim(), 
+                    type: tileType, 
+                    typeCode,
+                    update: UpdateBox.Checked, 
+                    light: PostgresLight.Checked, 
+                    rank: rankList.Text,
                     metadata: themeMetadataX,
-                    srid: tileType is TileType.DeepZoom or TileType.Raster ? 0 :
-                    tileType == TileType.Standard && EPSG4326.Checked ? 4326 : 3857,
-                    tileMatrix
+                    srid: tileType is TileType.DeepZoom or TileType.Raster ? 0 : tileType == TileType.Standard && EPSG4326.Checked ? 4326 : 3857,
+                    tileMatrix,
+                    tileSize: rasterTileSize.Text
                 )
             );
         }
 
         private string RasterWorkStart(BackgroundWorker rasterBackgroundWorker, DoWorkEventArgs e)
         {
-            var parameter = ((int index, string theme, TileType type, int typeCode, bool update, bool light, string rank, XElement metadata, int srid, short tileMatrix))e.Argument!;
+            var parameter = ((int index, string theme, TileType type, int typeCode, bool update, bool light, string rank, XElement metadata, int srid, short tileMatrix, string tileSize))e.Argument!;
             var oneForest = new GeositeXmlPush();
             var oneForestResult = oneForest.Forest(id: _clusterUser.forest, name: _clusterUser.name);
             if (!oneForestResult.Success)
@@ -7827,6 +7831,7 @@ namespace Geosite
             var typeCode = parameter.typeCode;
             var status = (short)(parameter.light ? 4 : 6);
             var forest = _clusterUser.forest;
+           
             string[] themeNames;
             string[] rasterSourceFiles = null;
             if (tabIndex == 2)
@@ -8012,7 +8017,7 @@ namespace Geosite
                                     var fileInfo = new FileInfo(fileName: rasterSourceFiles[pointer]);
                                     treeUri = fileInfo.FullName;
                                     treeLastWriteTime = fileInfo.LastWriteTime;
-                                    themeMetadataX = GeositeTilePush.GetRasterMetaData(sourceFile: treeUri, tileSize: rasterTileSize.Text);
+                                    themeMetadataX = GeositeTilePush.GetRasterMetaData(sourceFile: treeUri, tileSize: parameter.tileSize); 
                                     break;
                                 }
                         }
@@ -8202,7 +8207,7 @@ namespace Geosite
                                     code: 2,
                                     tileUri: rasterSourceFiles[pointer],
                                     tileType: TileType.Standard, level: -1, epsg4326: true,
-                                    boundary: (rasterTileSize.Text, rasterTileSize.Text, nodatabox.Text, null));
+                                    boundary: (parameter.tileSize, parameter.tileSize, nodatabox.Text, null));
                                 total += result2.total;
                             }
                             catch (Exception error)
