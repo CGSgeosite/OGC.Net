@@ -6948,7 +6948,8 @@ namespace Geosite
                     }
                 case 2:
                     {
-                        EPSG4326.Enabled = EPSG4326.ThreeState = false;
+                        EPSG4326.Enabled = true;
+                        EPSG4326.ThreeState = false;
                         EPSG4326.Checked = true;
                         tileLevels.Text = @"-1";
                         tileLevels.Enabled = false;
@@ -7765,8 +7766,8 @@ namespace Geosite
                                         : $"{size}"
                                 : @"100";
                             tileType = TileType.Standard;
-                            EPSG4326.Checked = true;
-                            typeCode = 12001;
+                            //EPSG4326.Checked = true;
+                            typeCode = EPSG4326.Checked ? 12001 : 12002;
                             themeMetadataX = new XElement(name: "property");
                         }
                         break;
@@ -7801,11 +7802,11 @@ namespace Geosite
             rasterWorker.RunWorkerAsync(
                 argument: (
                     index: tilesource.SelectedIndex,
-                    theme: themeNameBox.Text.Trim(), 
-                    type: tileType, 
+                    theme: themeNameBox.Text.Trim(),
+                    type: tileType,
                     typeCode,
-                    update: UpdateBox.Checked, 
-                    light: PostgresLight.Checked, 
+                    update: UpdateBox.Checked,
+                    light: PostgresLight.Checked,
                     rank: rankList.Text,
                     metadata: themeMetadataX,
                     srid: tileType is TileType.DeepZoom or TileType.Raster ? 0 : tileType == TileType.Standard && EPSG4326.Checked ? 4326 : 3857,
@@ -7831,7 +7832,7 @@ namespace Geosite
             var typeCode = parameter.typeCode;
             var status = (short)(parameter.light ? 4 : 6);
             var forest = _clusterUser.forest;
-           
+
             string[] themeNames;
             string[] rasterSourceFiles = null;
             if (tabIndex == 2)
@@ -8017,7 +8018,37 @@ namespace Geosite
                                     var fileInfo = new FileInfo(fileName: rasterSourceFiles[pointer]);
                                     treeUri = fileInfo.FullName;
                                     treeLastWriteTime = fileInfo.LastWriteTime;
-                                    themeMetadataX = GeositeTilePush.GetRasterMetaData(sourceFile: treeUri, tileSize: parameter.tileSize); 
+                                    themeMetadataX = GeositeTilePush.GetRasterMetaData(sourceFile: treeUri, tileSize: parameter.tileSize);
+                                    /*
+                                        <property>
+                                          <name>raster</name>
+                                          <tileSize>256</tileSize>
+                                          <overlap>0</overlap>
+                                          <minZoom>-1</minZoom>
+                                          <maxZoom>-1</maxZoom>
+                                          <type>raster</type>
+                                          <crs>3857</crs>
+                                          <serverFormat>Default</serverFormat>
+                                          <size>
+                                            <width>22418</width>
+                                            <height>23939</height>
+                                          </size>
+                                          <boundary>
+                                            <north>21396567.2524</north>
+                                            <south>-21397064.618899997</south>
+                                            <west>-20037508.3428</west>
+                                            <east>20037166.4261</east>
+                                          </boundary>
+                                        </property>                                     
+                                     */
+                                    if (!int.TryParse(themeMetadataX.Element("crs").Value, out var crs) || crs is not (4326 or 3857))
+                                    {
+                                        return $"The coordinate reference system [EPSG:{parameter.srid}] should be set to EPSG:4326 or 3857.";
+                                    }
+                                    if (parameter.srid != crs)
+                                    {
+                                        return $"The coordinate reference system [EPSG:{parameter.srid}] is inconsistent with the image [EPSG:{crs}].";
+                                    }
                                     break;
                                 }
                         }
@@ -8206,8 +8237,11 @@ namespace Geosite
                                 var result2 = geositeTilePush.TilePush(
                                     code: 2,
                                     tileUri: rasterSourceFiles[pointer],
-                                    tileType: TileType.Standard, level: -1, epsg4326: true,
-                                    boundary: (parameter.tileSize, parameter.tileSize, nodatabox.Text, null));
+                                    tileType: TileType.Standard,
+                                    level: -1,
+                                    epsg4326: EPSG4326.Checked,
+                                    boundary: (parameter.tileSize, parameter.tileSize, nodatabox.Text, null)
+                                );
                                 total += result2.total;
                             }
                             catch (Exception error)
