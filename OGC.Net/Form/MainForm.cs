@@ -337,7 +337,7 @@ namespace Geosite
 
             key = nodatabox.Name;
             defaultValue = RegEdit.Getkey(keyname: key);
-            nodatabox.Text = defaultValue ?? "-32768";
+            nodatabox.Text = defaultValue ?? "";
 
             key = maptilertoogc.Name;
             defaultValue = RegEdit.Getkey(keyname: key);
@@ -1931,8 +1931,7 @@ namespace Geosite
             {
                 try
                 {
-                    if (new Ping().Send(hostNameOrAddress: new UriBuilder(uri: serverUrl).Host, timeout: 10000) is
-                        { Status: IPStatus.Success })
+                    if (new Ping().Send(hostNameOrAddress: new UriBuilder(uri: serverUrl).Host, timeout: 10000) is { Status: IPStatus.Success })
                     {
                         new Task(
                             action: () =>
@@ -1964,8 +1963,7 @@ namespace Geosite
                                     if (userX.result != null)
                                     {
                                         var server = userX.result.Element(name: "Servers")?.Element(name: "Server");
-                                        var geositeServerVersion =
-                                            server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
+                                        var geositeServerVersion = server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
                                         DatabaseLogAdd(input: $"GeositeServer Version - {geositeServerVersion}");
                                         /*  样例如下：
                                             <User>
@@ -2012,13 +2010,12 @@ namespace Geosite
                                         {
                                             try
                                             {
-                                                var versionArray = Regex.Split(input: geositeServerVersion,
-                                                    pattern: @"[\.]+");
+                                                var versionArray = Regex.Split(input: geositeServerVersion, pattern: @"[\.]+");
                                                 var versionMain = long.Parse(s: versionArray[0]) * 1e8;
                                                 var versionYear = long.Parse(s: versionArray[1]) * 1e4;
                                                 var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
                                                 var versionDay = long.Parse(s: versionArray[3]);
-                                                if (versionMain + versionYear + versionMonth + versionDay >= 720221031)
+                                                if (versionMain + versionYear + versionMonth + versionDay >= 720230101) // 7.2023.1.1
                                                 {
                                                     if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(),
                                                             result: out var port))
@@ -6967,12 +6964,6 @@ namespace Geosite
             }
         }
 
-        private void NoDataBox_TextChanged(object sender, EventArgs e)
-        {
-            nodatabox.Text = int.TryParse(s: nodatabox.Text, result: out var i) ? $@"{i}" : @"-32768";
-            FormEventChanged(sender: sender);
-        }
-
         private void TileFormatOpen_Click(object sender, EventArgs e)
         {
             var key = TileFormatOpen.Name;
@@ -7766,7 +7757,7 @@ namespace Geosite
                                         : $"{size}"
                                 : @"100";
                             tileType = TileType.Standard;
-                            //EPSG4326.Checked = true;
+                            EPSG4326.Checked = true;
                             typeCode = EPSG4326.Checked ? 12001 : 12002;
                             themeMetadataX = new XElement(name: "property");
                         }
@@ -9989,7 +9980,13 @@ namespace Geosite
                     : size > 1024 //太大时容易导致内存溢出
                         ? "1024"
                         : $"{size}"
-                : @"100";
+                : @"100"; //推荐尺寸
+            FormEventChanged(sender: sender);
+        }
+
+        private void nodatabox_MouseLeave(object sender, EventArgs e)
+        {
+            nodatabox.Text = double.TryParse(s: nodatabox.Text, result: out var i) ? $@"{i}" : @"";
             FormEventChanged(sender: sender);
         }
     }

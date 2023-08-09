@@ -3886,7 +3886,7 @@
             nodatabox.Size = new Size(316, 16);
             nodatabox.TabIndex = 2;
             nodatabox.Text = "-32768";
-            nodatabox.TextChanged += NoDataBox_TextChanged;
+            nodatabox.MouseLeave += nodatabox_MouseLeave;
             // 
             // panel8
             // 
