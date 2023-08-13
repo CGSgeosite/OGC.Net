@@ -50,6 +50,7 @@ using GMap.NET.MapProviders.TiandituProviders;
 using GMap.NET.MapProviders.ArcGISProviders;
 using GMap.NET.Extend;
 using Formatting = Newtonsoft.Json.Formatting;
+using Geosite.QuickCopyFile;
 
 namespace Geosite
 {
@@ -9988,6 +9989,48 @@ namespace Geosite
         {
             nodatabox.Text = double.TryParse(s: nodatabox.Text, result: out var i) ? $@"{i}" : @"";
             FormEventChanged(sender: sender);
+        }
+
+        private void DataConvert_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(path: TileFormatOpenBox.Text))
+            {
+                if (Directory.Exists(path: TileFormatSaveBox.Text))
+                {
+                    DataConvert.Enabled = false;
+                    var quickCopyTask = new QuickCopy(TileFormatOpenBox.Text, TileFormatSaveBox.Text);
+                    quickCopyTask.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
+                    {
+                        switch (thisEvent.Code)
+                        {
+                            case 0:
+                                _loading.Run();
+                                break;
+                            case 1:
+                                _loading.Run(onOff: false);
+                                break;
+                            default:
+                                _loading.Run(onOff: null);
+                                break;
+                        }
+                        statusText.Text = thisEvent.Message ?? string.Empty;
+                    };
+                    quickCopyTask.Run();
+                    DataConvert.Enabled = true;
+                }
+                else
+                {
+                    statusText.Text = string.IsNullOrWhiteSpace(TileFormatSaveBox.Text)
+                        ? @"Please select a target folder."
+                        : @$"[{TileFormatSaveBox.Text}] does not exist.";
+                }
+            }
+            else
+            {
+                statusText.Text = string.IsNullOrWhiteSpace(TileFormatOpenBox.Text)
+                    ? @"Please select a source folder."
+                    : @$"[{TileFormatOpenBox.Text}] does not exist.";
+            }
         }
     }
 }

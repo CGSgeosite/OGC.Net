@@ -102,6 +102,7 @@
             groupBox6 = new GroupBox();
             GeositeServerPanel = new Panel();
             groupBox3 = new GroupBox();
+            DataConvert = new Button();
             PostgresRun = new Button();
             tilewebapi = new TextBox();
             FileSaveGroupBox = new GroupBox();
@@ -343,7 +344,6 @@
             ogctomaptiler = new RadioButton();
             TileFormatSaveBox = new TextBox();
             TileFormatOpenBox = new TextBox();
-            pictureBox9 = new PictureBox();
             VectorPage = new TabPage();
             panel4 = new Panel();
             vectorFilePool = new DataGridView();
@@ -488,7 +488,6 @@
             TileConvertPage.SuspendLayout();
             tableLayoutPanel8.SuspendLayout();
             panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
             VectorPage.SuspendLayout();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)vectorFilePool).BeginInit();
@@ -900,7 +899,7 @@
             tileconvert.Size = new Size(53, 99);
             tileconvert.TabIndex = 20;
             tileconvert.Text = ">";
-            OGCtoolTip.SetToolTip(tileconvert, "Run");
+            OGCtoolTip.SetToolTip(tileconvert, "Start");
             tileconvert.UseVisualStyleBackColor = true;
             tileconvert.Click += TileConvert_Click;
             // 
@@ -1399,6 +1398,23 @@
             groupBox3.TabStop = false;
             groupBox3.Text = "Tile size";
             OGCtoolTip.SetToolTip(groupBox3, "Between 10～1024");
+            // 
+            // DataConvert
+            // 
+            DataConvert.BackColor = Color.White;
+            DataConvert.BackgroundImage = (Image)resources.GetObject("DataConvert.BackgroundImage");
+            DataConvert.BackgroundImageLayout = ImageLayout.Zoom;
+            DataConvert.Cursor = Cursors.Hand;
+            DataConvert.Font = new Font("Arial", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            DataConvert.ForeColor = Color.Black;
+            DataConvert.Location = new Point(4, 11);
+            DataConvert.Margin = new Padding(4);
+            DataConvert.Name = "DataConvert";
+            DataConvert.Size = new Size(91, 99);
+            DataConvert.TabIndex = 14;
+            OGCtoolTip.SetToolTip(DataConvert, "Quick Copy");
+            DataConvert.UseVisualStyleBackColor = false;
+            DataConvert.Click += DataConvert_Click;
             // 
             // PostgresRun
             // 
@@ -3917,6 +3933,7 @@
             // 
             // TileConvertPage
             // 
+            TileConvertPage.Controls.Add(DataConvert);
             TileConvertPage.Controls.Add(panel16);
             TileConvertPage.Controls.Add(panel15);
             TileConvertPage.Controls.Add(tableLayoutPanel8);
@@ -3927,7 +3944,6 @@
             TileConvertPage.Controls.Add(tileconvert);
             TileConvertPage.Controls.Add(TileFormatSaveBox);
             TileConvertPage.Controls.Add(TileFormatOpenBox);
-            TileConvertPage.Controls.Add(pictureBox9);
             TileConvertPage.Location = new Point(4, 26);
             TileConvertPage.Margin = new Padding(4);
             TileConvertPage.Name = "TileConvertPage";
@@ -4087,17 +4103,6 @@
             TileFormatOpenBox.TabIndex = 0;
             TileFormatOpenBox.TextChanged += TileFormatChanged;
             TileFormatOpenBox.DoubleClick += TileFormatOpen_Click;
-            // 
-            // pictureBox9
-            // 
-            pictureBox9.BackgroundImage = (Image)resources.GetObject("pictureBox9.BackgroundImage");
-            pictureBox9.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox9.Location = new Point(9, 10);
-            pictureBox9.Margin = new Padding(4);
-            pictureBox9.Name = "pictureBox9";
-            pictureBox9.Size = new Size(86, 80);
-            pictureBox9.TabIndex = 25;
-            pictureBox9.TabStop = false;
             // 
             // VectorPage
             // 
@@ -4625,7 +4630,6 @@
             TileConvertPage.PerformLayout();
             tableLayoutPanel8.ResumeLayout(false);
             panel6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox9).EndInit();
             VectorPage.ResumeLayout(false);
             panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)vectorFilePool).EndInit();
@@ -4712,7 +4716,6 @@
         private Button tileconvert;
         private TextBox TileFormatSaveBox;
         private TextBox TileFormatOpenBox;
-        private PictureBox pictureBox9;
         private Button TileFormatSave;
         private Button TileFormatOpen;
         private GroupBox groupBox1;
@@ -4988,6 +4991,7 @@
         private DataGridViewTextBoxColumn VectorStatus;
         private ToolStripSeparator toolStripSeparator22;
         private ToolStripMenuItem MapBoxSaveAS;
+        private Button DataConvert;
     }
 }
 
