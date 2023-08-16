@@ -112,7 +112,6 @@
             FileRunButton = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             SaveAsFormat = new ToolStripComboBox();
-            vectorTargetFile = new ToolStripSpringTextBox();
             groupBox4 = new GroupBox();
             panel44 = new Panel();
             FileSplitContainer = new SplitContainer();
@@ -681,7 +680,7 @@
             rasterTileSize.Size = new Size(315, 16);
             rasterTileSize.TabIndex = 20;
             rasterTileSize.Text = "100";
-            OGCtoolTip.SetToolTip(rasterTileSize, "Between 10～1024");
+            OGCtoolTip.SetToolTip(rasterTileSize, "Between 10～4096");
             rasterTileSize.MouseLeave += rasterTileSize_MouseLeave;
             // 
             // wmtsSize
@@ -1397,7 +1396,7 @@
             groupBox3.TabIndex = 26;
             groupBox3.TabStop = false;
             groupBox3.Text = "Tile size";
-            OGCtoolTip.SetToolTip(groupBox3, "Between 10～1024");
+            OGCtoolTip.SetToolTip(groupBox3, "Between 10～4096");
             // 
             // DataConvert
             // 
@@ -1471,7 +1470,7 @@
             fileSaveToolStrip.Dock = DockStyle.None;
             fileSaveToolStrip.GripStyle = ToolStripGripStyle.Hidden;
             fileSaveToolStrip.ImageScalingSize = new Size(32, 32);
-            fileSaveToolStrip.Items.AddRange(new ToolStripItem[] { vectorSaveButton, toolStripTextBox2, FileRunButton, toolStripSeparator3, SaveAsFormat, vectorTargetFile });
+            fileSaveToolStrip.Items.AddRange(new ToolStripItem[] { vectorSaveButton, toolStripTextBox2, FileRunButton, toolStripSeparator3, SaveAsFormat });
             fileSaveToolStrip.Location = new Point(4, 20);
             fileSaveToolStrip.Name = "fileSaveToolStrip";
             fileSaveToolStrip.Padding = new Padding(0, 0, 2, 0);
@@ -1530,15 +1529,6 @@
             SaveAsFormat.FlatStyle = FlatStyle.Standard;
             SaveAsFormat.Name = "SaveAsFormat";
             SaveAsFormat.Size = new Size(162, 48);
-            // 
-            // vectorTargetFile
-            // 
-            vectorTargetFile.BackColor = Color.White;
-            vectorTargetFile.BorderStyle = BorderStyle.FixedSingle;
-            vectorTargetFile.Name = "vectorTargetFile";
-            vectorTargetFile.ReadOnly = true;
-            vectorTargetFile.Size = new Size(646, 48);
-            vectorTargetFile.DoubleClick += VectorTargetFile_DoubleClick;
             // 
             // groupBox4
             // 

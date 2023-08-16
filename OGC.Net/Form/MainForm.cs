@@ -9978,10 +9978,10 @@ namespace Geosite
             rasterTileSize.Text = int.TryParse(s: rasterTileSize.Text, result: out var size)
                 ? size < 10
                     ? @"10"
-                    : size > 1024 //太大时容易导致内存溢出
-                        ? "1024"
+                    : size > 4096 //太大时容易导致内存溢出
+                        ? "4096"
                         : $"{size}"
-                : @"100"; //推荐尺寸
+                : @"100"; //WPS推荐尺寸
             FormEventChanged(sender: sender);
         }
 
