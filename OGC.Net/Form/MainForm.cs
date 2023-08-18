@@ -1230,7 +1230,7 @@ namespace Geosite
             statusProgress.Visible = true;
             fileWorker.RunWorkerAsync
             (
-                argument: (FileGridViewRow: FileGridView.Rows.Cast<DataGridViewRow>().ToList(), TargetPath: vectorTargetFile.Text, SaveAsFormat: SaveAsFormat.Text)
+            argument: (FileGridViewRow: FileGridView.Rows.Cast<DataGridViewRow>().ToList(), TargetPath: vectorTargetFile.Text, SaveAsFormat: SaveAsFormat.Text)
             );
         }
 

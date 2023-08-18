@@ -108,6 +108,7 @@
             FileSaveGroupBox = new GroupBox();
             fileSaveToolStrip = new ToolStrip();
             vectorSaveButton = new ToolStripButton();
+            vectorTargetFile = new ToolStripSpringTextBox();
             toolStripTextBox2 = new ToolStripTextBox();
             FileRunButton = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
@@ -1470,7 +1471,7 @@
             fileSaveToolStrip.Dock = DockStyle.None;
             fileSaveToolStrip.GripStyle = ToolStripGripStyle.Hidden;
             fileSaveToolStrip.ImageScalingSize = new Size(32, 32);
-            fileSaveToolStrip.Items.AddRange(new ToolStripItem[] { vectorSaveButton, toolStripTextBox2, FileRunButton, toolStripSeparator3, SaveAsFormat });
+            fileSaveToolStrip.Items.AddRange(new ToolStripItem[] { vectorSaveButton, vectorTargetFile, toolStripTextBox2, FileRunButton, toolStripSeparator3, SaveAsFormat });
             fileSaveToolStrip.Location = new Point(4, 20);
             fileSaveToolStrip.Name = "fileSaveToolStrip";
             fileSaveToolStrip.Padding = new Padding(0, 0, 2, 0);
@@ -1491,12 +1492,19 @@
             vectorSaveButton.TextImageRelation = TextImageRelation.ImageAboveText;
             vectorSaveButton.Click += VectorSaveFile_Click;
             // 
+            // vectorTargetFile
+            // 
+            vectorTargetFile.BorderStyle = BorderStyle.FixedSingle;
+            vectorTargetFile.Name = "vectorTargetFile";
+            vectorTargetFile.Size = new Size(646, 48);
+            // 
             // toolStripTextBox2
             // 
             toolStripTextBox2.AutoCompleteMode = AutoCompleteMode.Append;
             toolStripTextBox2.BackColor = Color.WhiteSmoke;
             toolStripTextBox2.BorderStyle = BorderStyle.FixedSingle;
             toolStripTextBox2.Name = "toolStripTextBox2";
+            toolStripTextBox2.Padding = new Padding(4, 0, 4, 0);
             toolStripTextBox2.RightToLeft = RightToLeft.No;
             toolStripTextBox2.Size = new Size(1, 48);
             // 
@@ -1520,6 +1528,7 @@
             toolStripSeparator3.AutoSize = false;
             toolStripSeparator3.Margin = new Padding(12, 0, 0, 0);
             toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Padding = new Padding(4, 0, 4, 0);
             toolStripSeparator3.Size = new Size(6, 58);
             // 
             // SaveAsFormat
@@ -4858,7 +4867,7 @@
         private TableLayoutPanel tableLayoutPanel10;
         private TableLayoutPanel tableLayoutPanel9;
         private TableLayoutPanel tableLayoutPanel8;
-        private ToolStripSpringTextBox vectorTargetFile;
+        //private ToolStripSpringTextBox vectorTargetFile;
         private Panel panel15;
         private Panel panel16;
         private RichTextBox readmeTextBox;
@@ -4982,6 +4991,7 @@
         private ToolStripSeparator toolStripSeparator22;
         private ToolStripMenuItem MapBoxSaveAS;
         private Button DataConvert;
+        private ToolStripSpringTextBox vectorTargetFile;
     }
 }
 
