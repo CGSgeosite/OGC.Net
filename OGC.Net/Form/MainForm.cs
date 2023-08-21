@@ -1151,11 +1151,6 @@ namespace Geosite
             FileCheck();
         }
 
-        private void VectorTargetFile_DoubleClick(object sender, EventArgs e)
-        {
-            VectorSaveFile_Click(sender: sender, e: e);
-        }
-
         private void VectorSaveFile_Click(object sender, EventArgs e)
         {
             var vectorSourceFiles = FileGridView.Rows.Cast<DataGridViewRow>().Select(selector: col => col.Cells[index: 0].Value.ToString()).ToArray();

@@ -1317,29 +1317,28 @@
             // 
             // TextBoxMenuStrip
             // 
-            TextBoxMenuStrip.ImageScalingSize = new Size(24, 24);
             TextBoxMenuStrip.Items.AddRange(new ToolStripItem[] { TextBoxSelectAllItem, toolStripSeparator20, TextBoxCopyItem });
             TextBoxMenuStrip.Name = "TextBoxMenuStrip";
-            TextBoxMenuStrip.Size = new Size(193, 70);
+            TextBoxMenuStrip.Size = new Size(185, 54);
             // 
             // TextBoxSelectAllItem
             // 
             TextBoxSelectAllItem.Image = (Image)resources.GetObject("TextBoxSelectAllItem.Image");
             TextBoxSelectAllItem.Name = "TextBoxSelectAllItem";
-            TextBoxSelectAllItem.Size = new Size(192, 30);
+            TextBoxSelectAllItem.Size = new Size(184, 22);
             TextBoxSelectAllItem.Text = "Select All";
             TextBoxSelectAllItem.Click += TextBoxMenuItem_Click;
             // 
             // toolStripSeparator20
             // 
             toolStripSeparator20.Name = "toolStripSeparator20";
-            toolStripSeparator20.Size = new Size(189, 6);
+            toolStripSeparator20.Size = new Size(181, 6);
             // 
             // TextBoxCopyItem
             // 
             TextBoxCopyItem.Image = (Image)resources.GetObject("TextBoxCopyItem.Image");
             TextBoxCopyItem.Name = "TextBoxCopyItem";
-            TextBoxCopyItem.Size = new Size(192, 30);
+            TextBoxCopyItem.Size = new Size(184, 22);
             TextBoxCopyItem.Text = "Copy to Clipboard";
             TextBoxCopyItem.Click += TextBoxMenuItem_Click;
             // 
@@ -1496,7 +1495,7 @@
             // 
             vectorTargetFile.BorderStyle = BorderStyle.FixedSingle;
             vectorTargetFile.Name = "vectorTargetFile";
-            vectorTargetFile.Size = new Size(646, 48);
+            vectorTargetFile.Size = new Size(647, 48);
             // 
             // toolStripTextBox2
             // 
@@ -1506,7 +1505,7 @@
             toolStripTextBox2.Name = "toolStripTextBox2";
             toolStripTextBox2.Padding = new Padding(4, 0, 4, 0);
             toolStripTextBox2.RightToLeft = RightToLeft.No;
-            toolStripTextBox2.Size = new Size(1, 48);
+            toolStripTextBox2.Size = new Size(0, 48);
             // 
             // FileRunButton
             // 
@@ -1732,30 +1731,29 @@
             // 
             // FileListMenu
             // 
-            FileListMenu.ImageScalingSize = new Size(24, 24);
             FileListMenu.Items.AddRange(new ToolStripItem[] { SelectAllItem, toolStripSeparator2, RemoveFileItem });
             FileListMenu.Name = "FileListMenu";
-            FileListMenu.Size = new Size(185, 70);
+            FileListMenu.Size = new Size(177, 54);
             FileListMenu.Text = "SelectAllFile";
             // 
             // SelectAllItem
             // 
             SelectAllItem.Image = (Image)resources.GetObject("SelectAllItem.Image");
             SelectAllItem.Name = "SelectAllItem";
-            SelectAllItem.Size = new Size(184, 30);
+            SelectAllItem.Size = new Size(176, 22);
             SelectAllItem.Text = "Select All";
             SelectAllItem.Click += FileListMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(181, 6);
+            toolStripSeparator2.Size = new Size(173, 6);
             // 
             // RemoveFileItem
             // 
             RemoveFileItem.Image = (Image)resources.GetObject("RemoveFileItem.Image");
             RemoveFileItem.Name = "RemoveFileItem";
-            RemoveFileItem.Size = new Size(184, 30);
+            RemoveFileItem.Size = new Size(176, 22);
             RemoveFileItem.Text = "Remove Selected";
             RemoveFileItem.Click += FileListMenuItem_Click;
             // 
@@ -2225,7 +2223,7 @@
             MapBoxMenuStrip.ImageScalingSize = new Size(24, 24);
             MapBoxMenuStrip.Items.AddRange(new ToolStripItem[] { MapBoxClearMenuItem, MapBoxBreakTaskMenuItem, toolStripSeparator21, MapBoxZoomMenuItem, MapBearingMenuItem, toolStripSeparator6, MapBoxClearCacheMenuItem, toolStripSeparator22, MapBoxSaveAS });
             MapBoxMenuStrip.Name = "MapBoxMenuStrip";
-            MapBoxMenuStrip.Size = new Size(202, 166);
+            MapBoxMenuStrip.Size = new Size(202, 188);
             // 
             // MapBoxClearMenuItem
             // 
@@ -2966,43 +2964,42 @@
             // 
             // DatabaseViewMenu
             // 
-            DatabaseViewMenu.ImageScalingSize = new Size(24, 24);
             DatabaseViewMenu.Items.AddRange(new ToolStripItem[] { DatabaseViewRename, toolStripSeparator12, DatabaseViewRemove, toolStripSeparator13, DatabaseViewTypeLegend, DatabaseViewStatusLegend });
             DatabaseViewMenu.Name = "DatabaseViewMenu";
-            DatabaseViewMenu.Size = new Size(167, 136);
+            DatabaseViewMenu.Size = new Size(159, 104);
             // 
             // DatabaseViewRename
             // 
             DatabaseViewRename.Image = (Image)resources.GetObject("DatabaseViewRename.Image");
             DatabaseViewRename.Name = "DatabaseViewRename";
-            DatabaseViewRename.Size = new Size(166, 30);
+            DatabaseViewRename.Size = new Size(158, 22);
             DatabaseViewRename.Text = "Rename";
             DatabaseViewRename.Click += DatabaseViewMenuItem_Click;
             // 
             // toolStripSeparator12
             // 
             toolStripSeparator12.Name = "toolStripSeparator12";
-            toolStripSeparator12.Size = new Size(163, 6);
+            toolStripSeparator12.Size = new Size(155, 6);
             // 
             // DatabaseViewRemove
             // 
             DatabaseViewRemove.Image = (Image)resources.GetObject("DatabaseViewRemove.Image");
             DatabaseViewRemove.Name = "DatabaseViewRemove";
-            DatabaseViewRemove.Size = new Size(166, 30);
+            DatabaseViewRemove.Size = new Size(158, 22);
             DatabaseViewRemove.Text = "Remove";
             DatabaseViewRemove.Click += DatabaseViewMenuItem_Click;
             // 
             // toolStripSeparator13
             // 
             toolStripSeparator13.Name = "toolStripSeparator13";
-            toolStripSeparator13.Size = new Size(163, 6);
+            toolStripSeparator13.Size = new Size(155, 6);
             // 
             // DatabaseViewTypeLegend
             // 
             DatabaseViewTypeLegend.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem10, toolStripMenuItem11, toolStripMenuItem12, toolStripMenuItem13, toolStripMenuItem14, toolStripMenuItem15, toolStripMenuItem16, toolStripMenuItem17, toolStripMenuItem18 });
             DatabaseViewTypeLegend.Image = (Image)resources.GetObject("DatabaseViewTypeLegend.Image");
             DatabaseViewTypeLegend.Name = "DatabaseViewTypeLegend";
-            DatabaseViewTypeLegend.Size = new Size(166, 30);
+            DatabaseViewTypeLegend.Size = new Size(158, 22);
             DatabaseViewTypeLegend.Text = "Type Legend";
             // 
             // toolStripMenuItem10
@@ -3073,7 +3070,7 @@
             DatabaseViewStatusLegend.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem19, toolStripMenuItem20, toolStripMenuItem21, toolStripMenuItem22, toolStripMenuItem23, toolStripMenuItem24, toolStripMenuItem25, toolStripMenuItem26 });
             DatabaseViewStatusLegend.Image = (Image)resources.GetObject("DatabaseViewStatusLegend.Image");
             DatabaseViewStatusLegend.Name = "DatabaseViewStatusLegend";
-            DatabaseViewStatusLegend.Size = new Size(166, 30);
+            DatabaseViewStatusLegend.Size = new Size(158, 22);
             DatabaseViewStatusLegend.Text = "Status Legend";
             // 
             // toolStripMenuItem19
@@ -3174,16 +3171,15 @@
             // 
             // CatalogTreeMenu
             // 
-            CatalogTreeMenu.ImageScalingSize = new Size(24, 24);
             CatalogTreeMenu.Items.AddRange(new ToolStripItem[] { CatalogTreeNodeRename, CatalogTreeNodeRemove, toolStripSeparator9, CatalogTreeNodeRefresh, toolStripSeparator10, LegendMenuItem });
             CatalogTreeMenu.Name = "forestNodeMenu";
-            CatalogTreeMenu.Size = new Size(132, 136);
+            CatalogTreeMenu.Size = new Size(124, 104);
             // 
             // CatalogTreeNodeRename
             // 
             CatalogTreeNodeRename.Image = Properties.Resources.edit;
             CatalogTreeNodeRename.Name = "CatalogTreeNodeRename";
-            CatalogTreeNodeRename.Size = new Size(131, 30);
+            CatalogTreeNodeRename.Size = new Size(123, 22);
             CatalogTreeNodeRename.Text = "Rename";
             CatalogTreeNodeRename.Click += CatalogTreeMenuItem_Click;
             // 
@@ -3191,34 +3187,34 @@
             // 
             CatalogTreeNodeRemove.Image = Properties.Resources.trash;
             CatalogTreeNodeRemove.Name = "CatalogTreeNodeRemove";
-            CatalogTreeNodeRemove.Size = new Size(131, 30);
+            CatalogTreeNodeRemove.Size = new Size(123, 22);
             CatalogTreeNodeRemove.Text = "Remove";
             CatalogTreeNodeRemove.Click += CatalogTreeMenuItem_Click;
             // 
             // toolStripSeparator9
             // 
             toolStripSeparator9.Name = "toolStripSeparator9";
-            toolStripSeparator9.Size = new Size(128, 6);
+            toolStripSeparator9.Size = new Size(120, 6);
             // 
             // CatalogTreeNodeRefresh
             // 
             CatalogTreeNodeRefresh.Image = Properties.Resources.refresh;
             CatalogTreeNodeRefresh.Name = "CatalogTreeNodeRefresh";
-            CatalogTreeNodeRefresh.Size = new Size(131, 30);
+            CatalogTreeNodeRefresh.Size = new Size(123, 22);
             CatalogTreeNodeRefresh.Text = "Refresh";
             CatalogTreeNodeRefresh.Click += CatalogTreeMenuItem_Click;
             // 
             // toolStripSeparator10
             // 
             toolStripSeparator10.Name = "toolStripSeparator10";
-            toolStripSeparator10.Size = new Size(128, 6);
+            toolStripSeparator10.Size = new Size(120, 6);
             // 
             // LegendMenuItem
             // 
             LegendMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItem2, toolStripMenuItem1, toolStripMenuItem3, toolStripMenuItem4, toolStripMenuItem5, toolStripMenuItem6, toolStripMenuItem7, toolStripMenuItem8, toolStripMenuItem9 });
             LegendMenuItem.Image = (Image)resources.GetObject("LegendMenuItem.Image");
             LegendMenuItem.Name = "LegendMenuItem";
-            LegendMenuItem.Size = new Size(131, 30);
+            LegendMenuItem.Size = new Size(123, 22);
             LegendMenuItem.Text = "Legend";
             // 
             // toolStripMenuItem2
@@ -3538,7 +3534,6 @@
             FormatStandardBox.Size = new Size(160, 67);
             FormatStandardBox.TabIndex = 6;
             FormatStandardBox.Text = "Loading ...";
-            FormatStandardBox.WordWrap = false;
             // 
             // FormatTMSBox
             // 
@@ -3551,7 +3546,6 @@
             FormatTMSBox.Size = new Size(127, 67);
             FormatTMSBox.TabIndex = 7;
             FormatTMSBox.Text = "Loading ...";
-            FormatTMSBox.WordWrap = false;
             // 
             // FormatMapcruncherBox
             // 
@@ -3564,7 +3558,6 @@
             FormatMapcruncherBox.Size = new Size(127, 67);
             FormatMapcruncherBox.TabIndex = 8;
             FormatMapcruncherBox.Text = "Loading ...";
-            FormatMapcruncherBox.WordWrap = false;
             // 
             // FormatArcGISBox
             // 
@@ -3577,7 +3570,6 @@
             FormatArcGISBox.Size = new Size(127, 67);
             FormatArcGISBox.TabIndex = 9;
             FormatArcGISBox.Text = "Loading ...";
-            FormatArcGISBox.WordWrap = false;
             // 
             // FormatDeepZoomBox
             // 
@@ -3590,7 +3582,6 @@
             FormatDeepZoomBox.Size = new Size(127, 67);
             FormatDeepZoomBox.TabIndex = 10;
             FormatDeepZoomBox.Text = "Loading ...";
-            FormatDeepZoomBox.WordWrap = false;
             // 
             // FormatRasterBox
             // 
@@ -3603,7 +3594,6 @@
             FormatRasterBox.Size = new Size(128, 67);
             FormatRasterBox.TabIndex = 11;
             FormatRasterBox.Text = "Loading ...";
-            FormatRasterBox.WordWrap = false;
             // 
             // localTileFolder
             // 
@@ -3673,7 +3663,6 @@
             wmtsTipBox.Size = new Size(749, 60);
             wmtsTipBox.TabIndex = 45;
             wmtsTipBox.Text = "Loading ...";
-            wmtsTipBox.WordWrap = false;
             // 
             // panel42
             // 
@@ -3859,7 +3848,6 @@
             modelTipBox.Size = new Size(749, 67);
             modelTipBox.TabIndex = 33;
             modelTipBox.Text = "Loading ...";
-            modelTipBox.WordWrap = false;
             // 
             // tableLayoutPanel7
             // 
@@ -3994,7 +3982,6 @@
             convertTipBox.Size = new Size(749, 62);
             convertTipBox.TabIndex = 35;
             convertTipBox.Text = "Loading ...";
-            convertTipBox.WordWrap = false;
             // 
             // panel14
             // 
@@ -4290,7 +4277,6 @@
             readmeTextBox.Size = new Size(950, 420);
             readmeTextBox.TabIndex = 5;
             readmeTextBox.Text = "Loading ...";
-            readmeTextBox.WordWrap = false;
             // 
             // tableLayoutPanel4
             // 
@@ -4379,7 +4365,6 @@
             apiTextBox.Size = new Size(950, 420);
             apiTextBox.TabIndex = 7;
             apiTextBox.Text = "Loading ...";
-            apiTextBox.WordWrap = false;
             // 
             // tableLayoutPanel5
             // 
