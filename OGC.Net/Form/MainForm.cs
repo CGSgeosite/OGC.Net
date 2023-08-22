@@ -9006,16 +9006,19 @@ namespace Geosite
         /// <param name="e"></param>
         private void MapBox_FeatureClick(object itemTag, MouseEventArgs e)
         {
-            BeginInvoke(method: () =>
+            BeginInvoke(
+                method: () =>
                 {
                     if (e.Button != MouseButtons.Left || itemTag == null)
                         return;
                     try
                     {
-                        //var style = (((JObject property, JObject style))itemTag).style;
-                        var descriptionJson = (((JObject property, JObject style))itemTag).property.ToString(formatting: Formatting.Indented);
+                        var descriptionJson = (((JObject property, JObject style))itemTag).property?.ToString(formatting: Formatting.Indented);
                         //var descriptionXml = JsonConvert.DeserializeXNode(descriptionJson, "property")?.Root?.ToString(SaveOptions.None);
                         MapBoxProperty.Text = descriptionJson; //descriptionXml
+
+                        var styleJson = (((JObject property, JObject style))itemTag).style?.ToString(formatting: Formatting.Indented);
+                        MapBoxStyle.Text = styleJson;
                     }
                     catch (Exception error)
                     {
@@ -9441,6 +9444,25 @@ namespace Geosite
                 case "MapBoxProperty":
                     {
                         var viewObject = MapBoxProperty;
+                        switch (theSender.Text)
+                        {
+                            case "Select All":
+                                {
+                                    viewObject.SelectAll();
+                                    break;
+                                }
+                            case "Copy to Clipboard":
+                                {
+                                    if (viewObject.SelectionLength > 0)
+                                        Clipboard.SetText(text: viewObject.SelectedText, format: TextDataFormat.Text);
+                                    break;
+                                }
+                        }
+                        break;
+                    }
+                case "MapBoxStyle":
+                    {
+                        var viewObject = MapBoxStyle;
                         switch (theSender.Text)
                         {
                             case "Select All":

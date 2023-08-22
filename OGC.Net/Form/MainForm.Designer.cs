@@ -30,14 +30,14 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle27 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle28 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle29 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle30 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle21 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle31 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle32 = new DataGridViewCellStyle();
             OGCtoolTip = new ToolTip(components);
             deleteTree = new Button();
             lastPage = new Button();
@@ -109,7 +109,6 @@
             fileSaveToolStrip = new ToolStrip();
             vectorSaveButton = new ToolStripButton();
             vectorTargetFile = new ToolStripSpringTextBox();
-            toolStripTextBox2 = new ToolStripTextBox();
             FileRunButton = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             SaveAsFormat = new ToolStripComboBox();
@@ -130,6 +129,7 @@
             SelectAllItem = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             RemoveFileItem = new ToolStripMenuItem();
+            TabPageImageList = new ImageList(components);
             panel46 = new Panel();
             PreviewTabControl = new TabControl();
             MapTabPage = new TabPage();
@@ -188,13 +188,11 @@
             MapBoxClearCacheMenuItem = new ToolStripMenuItem();
             toolStripSeparator22 = new ToolStripSeparator();
             MapBoxSaveAS = new ToolStripMenuItem();
-            propertyPanel = new Panel();
-            tableLayoutPanel13 = new TableLayoutPanel();
+            tabControl3 = new TabControl();
+            FeatureContent = new TabPage();
             MapBoxProperty = new RichTextBox();
-            panel22 = new Panel();
-            tableLayoutPanel14 = new TableLayoutPanel();
-            pictureBox8 = new PictureBox();
-            label8 = new Label();
+            FeatureStyle = new TabPage();
+            MapBoxStyle = new RichTextBox();
             TileLoadProgressBar = new ProgressBar();
             fileOpenToolStrip = new ToolStrip();
             vectorOpenButton = new ToolStripButton();
@@ -420,10 +418,9 @@
             previewToolStrip.SuspendLayout();
             gMapPanel.SuspendLayout();
             MapBoxMenuStrip.SuspendLayout();
-            propertyPanel.SuspendLayout();
-            tableLayoutPanel13.SuspendLayout();
-            tableLayoutPanel14.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
+            tabControl3.SuspendLayout();
+            FeatureContent.SuspendLayout();
+            FeatureStyle.SuspendLayout();
             fileOpenToolStrip.SuspendLayout();
             box.SuspendLayout();
             panel1.SuspendLayout();
@@ -1470,7 +1467,7 @@
             fileSaveToolStrip.Dock = DockStyle.None;
             fileSaveToolStrip.GripStyle = ToolStripGripStyle.Hidden;
             fileSaveToolStrip.ImageScalingSize = new Size(32, 32);
-            fileSaveToolStrip.Items.AddRange(new ToolStripItem[] { vectorSaveButton, vectorTargetFile, toolStripTextBox2, FileRunButton, toolStripSeparator3, SaveAsFormat });
+            fileSaveToolStrip.Items.AddRange(new ToolStripItem[] { vectorSaveButton, vectorTargetFile, FileRunButton, toolStripSeparator3, SaveAsFormat });
             fileSaveToolStrip.Location = new Point(4, 20);
             fileSaveToolStrip.Name = "fileSaveToolStrip";
             fileSaveToolStrip.Padding = new Padding(0, 0, 2, 0);
@@ -1495,17 +1492,7 @@
             // 
             vectorTargetFile.BorderStyle = BorderStyle.FixedSingle;
             vectorTargetFile.Name = "vectorTargetFile";
-            vectorTargetFile.Size = new Size(647, 48);
-            // 
-            // toolStripTextBox2
-            // 
-            toolStripTextBox2.AutoCompleteMode = AutoCompleteMode.Append;
-            toolStripTextBox2.BackColor = Color.WhiteSmoke;
-            toolStripTextBox2.BorderStyle = BorderStyle.FixedSingle;
-            toolStripTextBox2.Name = "toolStripTextBox2";
-            toolStripTextBox2.Padding = new Padding(4, 0, 4, 0);
-            toolStripTextBox2.RightToLeft = RightToLeft.No;
-            toolStripTextBox2.Size = new Size(0, 48);
+            vectorTargetFile.Size = new Size(713, 48);
             // 
             // FileRunButton
             // 
@@ -1527,7 +1514,6 @@
             toolStripSeparator3.AutoSize = false;
             toolStripSeparator3.Margin = new Padding(12, 0, 0, 0);
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Padding = new Padding(4, 0, 4, 0);
             toolStripSeparator3.Size = new Size(6, 58);
             // 
             // SaveAsFormat
@@ -1536,7 +1522,7 @@
             SaveAsFormat.BackColor = Color.White;
             SaveAsFormat.FlatStyle = FlatStyle.Standard;
             SaveAsFormat.Name = "SaveAsFormat";
-            SaveAsFormat.Size = new Size(162, 48);
+            SaveAsFormat.Size = new Size(98, 48);
             // 
             // groupBox4
             // 
@@ -1598,6 +1584,7 @@
             FileTabControl.Alignment = TabAlignment.Bottom;
             FileTabControl.Controls.Add(FileTabPage);
             FileTabControl.Dock = DockStyle.Fill;
+            FileTabControl.ImageList = TabPageImageList;
             FileTabControl.Location = new Point(0, 0);
             FileTabControl.Margin = new Padding(0);
             FileTabControl.Name = "FileTabControl";
@@ -1610,6 +1597,7 @@
             // 
             FileTabPage.BackColor = Color.White;
             FileTabPage.Controls.Add(tableLayoutPanel11);
+            FileTabPage.ImageIndex = 5;
             FileTabPage.Location = new Point(4, 4);
             FileTabPage.Margin = new Padding(0);
             FileTabPage.Name = "FileTabPage";
@@ -1666,14 +1654,14 @@
             FileGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             FileGridView.BackgroundColor = Color.White;
             FileGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
-            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            FileGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle27.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle27.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle27.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle27.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle27.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle27.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle27.WrapMode = DataGridViewTriState.True;
+            FileGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle27;
             FileGridView.ColumnHeadersHeight = 39;
             FileGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             FileGridView.Columns.AddRange(new DataGridViewColumn[] { FilePath, FileProjection, FilePreview });
@@ -1692,8 +1680,8 @@
             // FilePath
             // 
             FilePath.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            FilePath.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle28.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            FilePath.DefaultCellStyle = dataGridViewCellStyle28;
             FilePath.HeaderText = "File";
             FilePath.MinimumWidth = 8;
             FilePath.Name = "FilePath";
@@ -1702,11 +1690,11 @@
             // 
             // FileProjection
             // 
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.Padding = new Padding(3);
-            dataGridViewCellStyle3.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle3.SelectionForeColor = Color.Transparent;
-            FileProjection.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle29.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle29.Padding = new Padding(3);
+            dataGridViewCellStyle29.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle29.SelectionForeColor = Color.Transparent;
+            FileProjection.DefaultCellStyle = dataGridViewCellStyle29;
             FileProjection.HeaderText = "Projection";
             FileProjection.MinimumWidth = 8;
             FileProjection.Name = "FileProjection";
@@ -1716,11 +1704,11 @@
             // 
             // FilePreview
             // 
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.Padding = new Padding(3);
-            dataGridViewCellStyle4.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle4.SelectionForeColor = Color.Transparent;
-            FilePreview.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle30.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle30.Padding = new Padding(3);
+            dataGridViewCellStyle30.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle30.SelectionForeColor = Color.Transparent;
+            FilePreview.DefaultCellStyle = dataGridViewCellStyle30;
             FilePreview.HeaderText = "Preview";
             FilePreview.MinimumWidth = 8;
             FilePreview.Name = "FilePreview";
@@ -1757,6 +1745,27 @@
             RemoveFileItem.Text = "Remove Selected";
             RemoveFileItem.Click += FileListMenuItem_Click;
             // 
+            // TabPageImageList
+            // 
+            TabPageImageList.ColorDepth = ColorDepth.Depth8Bit;
+            TabPageImageList.ImageStream = (ImageListStreamer)resources.GetObject("TabPageImageList.ImageStream");
+            TabPageImageList.TransparentColor = Color.Transparent;
+            TabPageImageList.Images.SetKeyName(0, "list.gif");
+            TabPageImageList.Images.SetKeyName(1, "GrayScaleMode.png");
+            TabPageImageList.Images.SetKeyName(2, "hybrid.gif");
+            TabPageImageList.Images.SetKeyName(3, "database.gif");
+            TabPageImageList.Images.SetKeyName(4, "help.gif");
+            TabPageImageList.Images.SetKeyName(5, "copy.png");
+            TabPageImageList.Images.SetKeyName(6, "zoombox.png");
+            TabPageImageList.Images.SetKeyName(7, "geositeserver.gif");
+            TabPageImageList.Images.SetKeyName(8, "wms.gif");
+            TabPageImageList.Images.SetKeyName(9, "tree.gif");
+            TabPageImageList.Images.SetKeyName(10, "rastertile.gif");
+            TabPageImageList.Images.SetKeyName(11, "grids.gif");
+            TabPageImageList.Images.SetKeyName(12, "latlng.gif");
+            TabPageImageList.Images.SetKeyName(13, "image.gif");
+            TabPageImageList.Images.SetKeyName(14, "convert.gif");
+            // 
             // panel46
             // 
             panel46.Controls.Add(PreviewTabControl);
@@ -1772,6 +1781,7 @@
             PreviewTabControl.Alignment = TabAlignment.Bottom;
             PreviewTabControl.Controls.Add(MapTabPage);
             PreviewTabControl.Dock = DockStyle.Fill;
+            PreviewTabControl.ImageList = TabPageImageList;
             PreviewTabControl.Location = new Point(0, 0);
             PreviewTabControl.Margin = new Padding(0);
             PreviewTabControl.Name = "PreviewTabControl";
@@ -1784,6 +1794,7 @@
             // 
             MapTabPage.BackColor = Color.White;
             MapTabPage.Controls.Add(tableLayoutPanel12);
+            MapTabPage.ImageIndex = 6;
             MapTabPage.Location = new Point(4, 4);
             MapTabPage.Margin = new Padding(0);
             MapTabPage.Name = "MapTabPage";
@@ -1821,7 +1832,7 @@
             // 
             // FileMapSplitContainer.Panel2
             // 
-            FileMapSplitContainer.Panel2.Controls.Add(propertyPanel);
+            FileMapSplitContainer.Panel2.Controls.Add(tabControl3);
             FileMapSplitContainer.Size = new Size(677, 341);
             FileMapSplitContainer.SplitterDistance = 225;
             FileMapSplitContainer.SplitterWidth = 6;
@@ -2223,7 +2234,7 @@
             MapBoxMenuStrip.ImageScalingSize = new Size(24, 24);
             MapBoxMenuStrip.Items.AddRange(new ToolStripItem[] { MapBoxClearMenuItem, MapBoxBreakTaskMenuItem, toolStripSeparator21, MapBoxZoomMenuItem, MapBearingMenuItem, toolStripSeparator6, MapBoxClearCacheMenuItem, toolStripSeparator22, MapBoxSaveAS });
             MapBoxMenuStrip.Name = "MapBoxMenuStrip";
-            MapBoxMenuStrip.Size = new Size(202, 188);
+            MapBoxMenuStrip.Size = new Size(202, 166);
             // 
             // MapBoxClearMenuItem
             // 
@@ -2341,34 +2352,29 @@
             MapBoxSaveAS.Text = "Vector SaveAs ...";
             MapBoxSaveAS.Click += MapBoxMenuItem_Click;
             // 
-            // propertyPanel
+            // tabControl3
             // 
-            propertyPanel.BorderStyle = BorderStyle.FixedSingle;
-            propertyPanel.Controls.Add(tableLayoutPanel13);
-            propertyPanel.Dock = DockStyle.Fill;
-            propertyPanel.Location = new Point(0, 0);
-            propertyPanel.Margin = new Padding(0);
-            propertyPanel.Name = "propertyPanel";
-            propertyPanel.Size = new Size(677, 110);
-            propertyPanel.TabIndex = 0;
+            tabControl3.Controls.Add(FeatureContent);
+            tabControl3.Controls.Add(FeatureStyle);
+            tabControl3.Dock = DockStyle.Fill;
+            tabControl3.ImageList = TabPageImageList;
+            tabControl3.Location = new Point(0, 0);
+            tabControl3.Name = "tabControl3";
+            tabControl3.SelectedIndex = 0;
+            tabControl3.Size = new Size(677, 110);
+            tabControl3.TabIndex = 0;
             // 
-            // tableLayoutPanel13
+            // FeatureContent
             // 
-            tableLayoutPanel13.ColumnCount = 1;
-            tableLayoutPanel13.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel13.Controls.Add(MapBoxProperty, 0, 2);
-            tableLayoutPanel13.Controls.Add(panel22, 0, 1);
-            tableLayoutPanel13.Controls.Add(tableLayoutPanel14, 0, 0);
-            tableLayoutPanel13.Dock = DockStyle.Fill;
-            tableLayoutPanel13.Location = new Point(0, 0);
-            tableLayoutPanel13.Margin = new Padding(0);
-            tableLayoutPanel13.Name = "tableLayoutPanel13";
-            tableLayoutPanel13.RowCount = 3;
-            tableLayoutPanel13.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel13.RowStyles.Add(new RowStyle(SizeType.Absolute, 1F));
-            tableLayoutPanel13.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel13.Size = new Size(675, 108);
-            tableLayoutPanel13.TabIndex = 0;
+            FeatureContent.Controls.Add(MapBoxProperty);
+            FeatureContent.ImageIndex = 0;
+            FeatureContent.Location = new Point(4, 26);
+            FeatureContent.Name = "FeatureContent";
+            FeatureContent.Padding = new Padding(3);
+            FeatureContent.Size = new Size(669, 80);
+            FeatureContent.TabIndex = 0;
+            FeatureContent.Text = "Properties  ";
+            FeatureContent.UseVisualStyleBackColor = true;
             // 
             // MapBoxProperty
             // 
@@ -2376,61 +2382,37 @@
             MapBoxProperty.BorderStyle = BorderStyle.None;
             MapBoxProperty.ContextMenuStrip = TextBoxMenuStrip;
             MapBoxProperty.Dock = DockStyle.Fill;
-            MapBoxProperty.Location = new Point(3, 36);
+            MapBoxProperty.Location = new Point(3, 3);
             MapBoxProperty.Name = "MapBoxProperty";
             MapBoxProperty.ReadOnly = true;
-            MapBoxProperty.Size = new Size(669, 69);
+            MapBoxProperty.Size = new Size(663, 74);
             MapBoxProperty.TabIndex = 20;
             MapBoxProperty.Text = "";
             // 
-            // panel22
+            // FeatureStyle
             // 
-            panel22.BackColor = Color.LightGray;
-            panel22.Dock = DockStyle.Fill;
-            panel22.Location = new Point(0, 32);
-            panel22.Margin = new Padding(0);
-            panel22.Name = "panel22";
-            panel22.Size = new Size(675, 1);
-            panel22.TabIndex = 19;
+            FeatureStyle.Controls.Add(MapBoxStyle);
+            FeatureStyle.ImageIndex = 1;
+            FeatureStyle.Location = new Point(4, 26);
+            FeatureStyle.Name = "FeatureStyle";
+            FeatureStyle.Padding = new Padding(3);
+            FeatureStyle.Size = new Size(669, 80);
+            FeatureStyle.TabIndex = 1;
+            FeatureStyle.Text = "Style  ";
+            FeatureStyle.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel14
+            // MapBoxStyle
             // 
-            tableLayoutPanel14.ColumnCount = 2;
-            tableLayoutPanel14.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 22F));
-            tableLayoutPanel14.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel14.Controls.Add(pictureBox8, 0, 0);
-            tableLayoutPanel14.Controls.Add(label8, 1, 0);
-            tableLayoutPanel14.Dock = DockStyle.Fill;
-            tableLayoutPanel14.Location = new Point(0, 0);
-            tableLayoutPanel14.Margin = new Padding(0);
-            tableLayoutPanel14.Name = "tableLayoutPanel14";
-            tableLayoutPanel14.Padding = new Padding(3);
-            tableLayoutPanel14.RowCount = 1;
-            tableLayoutPanel14.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel14.Size = new Size(675, 32);
-            tableLayoutPanel14.TabIndex = 0;
-            // 
-            // pictureBox8
-            // 
-            pictureBox8.BackgroundImage = (Image)resources.GetObject("pictureBox8.BackgroundImage");
-            pictureBox8.BackgroundImageLayout = ImageLayout.Center;
-            pictureBox8.Location = new Point(6, 6);
-            pictureBox8.Name = "pictureBox8";
-            pictureBox8.Size = new Size(16, 18);
-            pictureBox8.TabIndex = 17;
-            pictureBox8.TabStop = false;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Dock = DockStyle.Fill;
-            label8.Location = new Point(25, 3);
-            label8.Margin = new Padding(0);
-            label8.Name = "label8";
-            label8.Padding = new Padding(0, 3, 0, 0);
-            label8.Size = new Size(647, 26);
-            label8.TabIndex = 18;
-            label8.Text = "Content";
+            MapBoxStyle.BackColor = Color.White;
+            MapBoxStyle.BorderStyle = BorderStyle.None;
+            MapBoxStyle.ContextMenuStrip = TextBoxMenuStrip;
+            MapBoxStyle.Dock = DockStyle.Fill;
+            MapBoxStyle.Location = new Point(3, 3);
+            MapBoxStyle.Name = "MapBoxStyle";
+            MapBoxStyle.ReadOnly = true;
+            MapBoxStyle.Size = new Size(663, 74);
+            MapBoxStyle.TabIndex = 0;
+            MapBoxStyle.Text = "";
             // 
             // TileLoadProgressBar
             // 
@@ -2627,6 +2609,7 @@
             ogcCard.Controls.Add(fileCard);
             ogcCard.Controls.Add(databaseCard);
             ogcCard.Controls.Add(helpCard);
+            ogcCard.ImageList = TabPageImageList;
             ogcCard.Location = new Point(6, 6);
             ogcCard.Margin = new Padding(0);
             ogcCard.Name = "ogcCard";
@@ -2639,24 +2622,26 @@
             // fileCard
             // 
             fileCard.Controls.Add(box);
+            fileCard.ImageIndex = 2;
             fileCard.Location = new Point(4, 26);
             fileCard.Margin = new Padding(4);
             fileCard.Name = "fileCard";
             fileCard.Padding = new Padding(4);
             fileCard.Size = new Size(982, 579);
             fileCard.TabIndex = 0;
-            fileCard.Text = "File";
+            fileCard.Text = "File  ";
             fileCard.UseVisualStyleBackColor = true;
             // 
             // databaseCard
             // 
             databaseCard.Controls.Add(splitContainer1);
+            databaseCard.ImageIndex = 3;
             databaseCard.Location = new Point(4, 26);
             databaseCard.Margin = new Padding(4);
             databaseCard.Name = "databaseCard";
             databaseCard.Size = new Size(982, 579);
             databaseCard.TabIndex = 2;
-            databaseCard.Text = "Database";
+            databaseCard.Text = "Database  ";
             databaseCard.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
@@ -2701,6 +2686,7 @@
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Dock = DockStyle.Fill;
+            tabControl1.ImageList = TabPageImageList;
             tabControl1.Location = new Point(0, 0);
             tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
@@ -2723,12 +2709,13 @@
             tabPage1.Controls.Add(deleteForest);
             tabPage1.Controls.Add(pictureBox2);
             tabPage1.Controls.Add(GeositeServerUser);
+            tabPage1.ImageIndex = 7;
             tabPage1.Location = new Point(4, 26);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
             tabPage1.Size = new Size(320, 191);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "GeositeServer";
+            tabPage1.Text = "GeositeServer  ";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // panel5
@@ -2756,6 +2743,7 @@
             DatabaseTabControl.Controls.Add(LayerPage);
             DatabaseTabControl.Controls.Add(CatalogPage);
             DatabaseTabControl.Dock = DockStyle.Fill;
+            DatabaseTabControl.ImageList = TabPageImageList;
             DatabaseTabControl.Location = new Point(0, 0);
             DatabaseTabControl.Multiline = true;
             DatabaseTabControl.Name = "DatabaseTabControl";
@@ -2767,12 +2755,13 @@
             // LayerPage
             // 
             LayerPage.Controls.Add(dataGridPanel);
+            LayerPage.ImageIndex = 8;
             LayerPage.Location = new Point(4, 26);
             LayerPage.Name = "LayerPage";
             LayerPage.Padding = new Padding(3);
             LayerPage.Size = new Size(634, 191);
             LayerPage.TabIndex = 0;
-            LayerPage.Text = "Layer";
+            LayerPage.Text = "Layer  ";
             LayerPage.UseVisualStyleBackColor = true;
             // 
             // dataGridPanel
@@ -2890,13 +2879,13 @@
             DatabaseGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             DatabaseGridView.BackgroundColor = Color.White;
             DatabaseGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle5.BackColor = SystemColors.Control;
-            dataGridViewCellStyle5.Font = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            DatabaseGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle21.BackColor = SystemColors.Control;
+            dataGridViewCellStyle21.Font = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle21.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle21.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle21.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle21.WrapMode = DataGridViewTriState.True;
+            DatabaseGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
             DatabaseGridView.ColumnHeadersHeight = 36;
             DatabaseGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             DatabaseGridView.Columns.AddRange(new DataGridViewColumn[] { LayerName, ThemeRank, ThemeStatus, ThemeType, ThemeView });
@@ -2924,8 +2913,8 @@
             // 
             // ThemeRank
             // 
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            ThemeRank.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle31.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            ThemeRank.DefaultCellStyle = dataGridViewCellStyle31;
             ThemeRank.HeaderText = "Rank";
             ThemeRank.MinimumWidth = 36;
             ThemeRank.Name = "ThemeRank";
@@ -3146,12 +3135,13 @@
             // CatalogPage
             // 
             CatalogPage.Controls.Add(CatalogTreeView);
+            CatalogPage.ImageIndex = 9;
             CatalogPage.Location = new Point(4, 26);
             CatalogPage.Name = "CatalogPage";
             CatalogPage.Padding = new Padding(3);
             CatalogPage.Size = new Size(634, 191);
             CatalogPage.TabIndex = 1;
-            CatalogPage.Text = "Catalog";
+            CatalogPage.Text = "Catalog  ";
             CatalogPage.UseVisualStyleBackColor = true;
             // 
             // CatalogTreeView
@@ -3301,6 +3291,7 @@
             dataCards.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataCards.Controls.Add(RasterPage);
             dataCards.Controls.Add(VectorPage);
+            dataCards.ImageList = TabPageImageList;
             dataCards.Location = new Point(4, 4);
             dataCards.Margin = new Padding(4);
             dataCards.Name = "dataCards";
@@ -3312,12 +3303,13 @@
             // 
             RasterPage.Controls.Add(PushPanel);
             RasterPage.Controls.Add(tilesource);
+            RasterPage.ImageIndex = 10;
             RasterPage.Location = new Point(4, 26);
             RasterPage.Margin = new Padding(4);
             RasterPage.Name = "RasterPage";
             RasterPage.Size = new Size(891, 310);
             RasterPage.TabIndex = 2;
-            RasterPage.Text = "Raster";
+            RasterPage.Text = "Raster  ";
             RasterPage.UseVisualStyleBackColor = true;
             // 
             // PushPanel
@@ -3403,6 +3395,7 @@
             tilesource.Controls.Add(RemoteTilePage);
             tilesource.Controls.Add(ModelPage);
             tilesource.Controls.Add(TileConvertPage);
+            tilesource.ImageList = TabPageImageList;
             tilesource.Location = new Point(4, 4);
             tilesource.Margin = new Padding(4);
             tilesource.Name = "tilesource";
@@ -3416,13 +3409,14 @@
             LocalTilePage.Controls.Add(localTileOpen);
             LocalTilePage.Controls.Add(FormatGroupBox);
             LocalTilePage.Controls.Add(localTileFolder);
+            LocalTilePage.ImageIndex = 11;
             LocalTilePage.Location = new Point(4, 26);
             LocalTilePage.Margin = new Padding(4);
             LocalTilePage.Name = "LocalTilePage";
             LocalTilePage.Padding = new Padding(4);
             LocalTilePage.Size = new Size(875, 194);
             LocalTilePage.TabIndex = 0;
-            LocalTilePage.Text = "Folder";
+            LocalTilePage.Text = "Tiles  ";
             LocalTilePage.UseVisualStyleBackColor = true;
             // 
             // FormatGroupBox
@@ -3629,13 +3623,14 @@
             RemoteTilePage.Controls.Add(label4);
             RemoteTilePage.Controls.Add(wmtsSpider);
             RemoteTilePage.Controls.Add(pictureBox7);
+            RemoteTilePage.ImageIndex = 12;
             RemoteTilePage.Location = new Point(4, 26);
             RemoteTilePage.Margin = new Padding(4);
             RemoteTilePage.Name = "RemoteTilePage";
             RemoteTilePage.Padding = new Padding(4);
             RemoteTilePage.Size = new Size(875, 194);
             RemoteTilePage.TabIndex = 1;
-            RemoteTilePage.Text = "WM[T]S";
+            RemoteTilePage.Text = "WM[T]S  ";
             RemoteTilePage.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel10
@@ -3815,12 +3810,13 @@
             ModelPage.Controls.Add(ModelOpen);
             ModelPage.Controls.Add(ModelOpenTextBox);
             ModelPage.Controls.Add(pictureBox5);
+            ModelPage.ImageIndex = 13;
             ModelPage.Location = new Point(4, 26);
             ModelPage.Margin = new Padding(4);
             ModelPage.Name = "ModelPage";
             ModelPage.Size = new Size(875, 194);
             ModelPage.TabIndex = 4;
-            ModelPage.Text = "Model";
+            ModelPage.Text = "Model  ";
             ModelPage.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel9
@@ -3931,12 +3927,13 @@
             TileConvertPage.Controls.Add(tileconvert);
             TileConvertPage.Controls.Add(TileFormatSaveBox);
             TileConvertPage.Controls.Add(TileFormatOpenBox);
+            TileConvertPage.ImageIndex = 14;
             TileConvertPage.Location = new Point(4, 26);
             TileConvertPage.Margin = new Padding(4);
             TileConvertPage.Name = "TileConvertPage";
             TileConvertPage.Size = new Size(875, 194);
             TileConvertPage.TabIndex = 3;
-            TileConvertPage.Text = "Convert";
+            TileConvertPage.Text = "Convert  ";
             TileConvertPage.UseVisualStyleBackColor = true;
             // 
             // panel16
@@ -4095,13 +4092,14 @@
             VectorPage.Controls.Add(panel4);
             VectorPage.Controls.Add(VectorFileClear);
             VectorPage.Controls.Add(VectorOpen);
+            VectorPage.ImageIndex = 2;
             VectorPage.Location = new Point(4, 26);
             VectorPage.Margin = new Padding(4);
             VectorPage.Name = "VectorPage";
             VectorPage.Padding = new Padding(4);
             VectorPage.Size = new Size(891, 310);
             VectorPage.TabIndex = 0;
-            VectorPage.Text = "Vector";
+            VectorPage.Text = "Vector  ";
             VectorPage.UseVisualStyleBackColor = true;
             // 
             // panel4
@@ -4155,11 +4153,11 @@
             // 
             // VectorProjection
             // 
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.Padding = new Padding(3);
-            dataGridViewCellStyle7.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle7.SelectionForeColor = Color.Transparent;
-            VectorProjection.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle15.Padding = new Padding(3);
+            dataGridViewCellStyle15.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle15.SelectionForeColor = Color.Transparent;
+            VectorProjection.DefaultCellStyle = dataGridViewCellStyle15;
             VectorProjection.HeaderText = "Projection";
             VectorProjection.MinimumWidth = 8;
             VectorProjection.Name = "VectorProjection";
@@ -4168,10 +4166,10 @@
             // 
             // VectorStatus
             // 
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle8.SelectionForeColor = Color.Transparent;
-            VectorStatus.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle32.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle32.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle32.SelectionForeColor = Color.Transparent;
+            VectorStatus.DefaultCellStyle = dataGridViewCellStyle32;
             VectorStatus.HeaderText = "※";
             VectorStatus.MinimumWidth = 8;
             VectorStatus.Name = "VectorStatus";
@@ -4216,13 +4214,14 @@
             // 
             helpCard.AutoScroll = true;
             helpCard.Controls.Add(tabControl2);
+            helpCard.ImageIndex = 4;
             helpCard.Location = new Point(4, 26);
             helpCard.Margin = new Padding(4);
             helpCard.Name = "helpCard";
             helpCard.Padding = new Padding(4);
             helpCard.Size = new Size(982, 579);
             helpCard.TabIndex = 1;
-            helpCard.Text = "Help";
+            helpCard.Text = "Help  ";
             helpCard.UseVisualStyleBackColor = true;
             // 
             // tabControl2
@@ -4435,7 +4434,7 @@
             statusBar.Name = "statusBar";
             statusBar.Padding = new Padding(1, 0, 16, 0);
             statusBar.ShowItemToolTips = true;
-            statusBar.Size = new Size(999, 22);
+            statusBar.Size = new Size(1001, 22);
             statusBar.SizingGrip = false;
             statusBar.TabIndex = 18;
             // 
@@ -4451,7 +4450,7 @@
             // 
             statusText.DoubleClickEnabled = true;
             statusText.Name = "statusText";
-            statusText.Size = new Size(982, 17);
+            statusText.Size = new Size(984, 17);
             statusText.Spring = true;
             // 
             // dataGridViewImageColumn1
@@ -4467,7 +4466,7 @@
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(999, 643);
+            ClientSize = new Size(1001, 643);
             Controls.Add(statusBar);
             Controls.Add(ogcCard);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -4524,11 +4523,9 @@
             previewToolStrip.PerformLayout();
             gMapPanel.ResumeLayout(false);
             MapBoxMenuStrip.ResumeLayout(false);
-            propertyPanel.ResumeLayout(false);
-            tableLayoutPanel13.ResumeLayout(false);
-            tableLayoutPanel14.ResumeLayout(false);
-            tableLayoutPanel14.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
+            tabControl3.ResumeLayout(false);
+            FeatureContent.ResumeLayout(false);
+            FeatureStyle.ResumeLayout(false);
             fileOpenToolStrip.ResumeLayout(false);
             fileOpenToolStrip.PerformLayout();
             box.ResumeLayout(false);
@@ -4766,7 +4763,6 @@
         private DataGridView FileGridView;
         private ToolStrip fileSaveToolStrip;
         private ToolStripButton vectorSaveButton;
-        private ToolStripTextBox toolStripTextBox2;
         //private ToolStripSpringTextBox vectorTargetFile;
         private ToolStripButton FileRunButton;
         private ToolStripSeparator toolStripSeparator3;
@@ -4775,7 +4771,6 @@
         private SplitContainer FileMapSplitContainer;
         private Panel gMapPanel;
         public GMap.NET.WindowsForms.GMapControl MapBox;
-        private Panel propertyPanel;
         private Panel panel12;
         private Panel panel18;
         private ToolStrip previewToolStrip;
@@ -4799,9 +4794,6 @@
         private ToolStripButton ImageMaker;
         private ToolStripSeparator toolStripSeparator7;
         private ToolStripSeparator toolStripSeparator8;
-        private Panel panel22;
-        private Label label8;
-        private PictureBox pictureBox8;
         private RichTextBox MapBoxProperty;
         private Panel panel3;
         private ProgressBar FilePreviewProgressBar;
@@ -4951,8 +4943,6 @@
         private ToolStripMenuItem MapBoxClearMenuItem;
         private ToolStripSeparator toolStripSeparator6;
         private ToolStripMenuItem MapBoxClearCacheMenuItem;
-        private TableLayoutPanel tableLayoutPanel13;
-        private TableLayoutPanel tableLayoutPanel14;
         private ToolStripMenuItem MapBoxBreakTaskMenuItem;
         private ToolStripButton PreviewStyle;
         private ToolStripSeparator toolStripSeparator11;
@@ -4977,6 +4967,11 @@
         private ToolStripMenuItem MapBoxSaveAS;
         private Button DataConvert;
         private ToolStripSpringTextBox vectorTargetFile;
+        private TabControl tabControl3;
+        private TabPage FeatureContent;
+        private TabPage FeatureStyle;
+        private RichTextBox MapBoxStyle;
+        private ImageList TabPageImageList;
     }
 }
 
