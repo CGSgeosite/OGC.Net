@@ -1069,19 +1069,25 @@ namespace Geosite
                                                 {
                                                     case "Point":
                                                     case "MultiPoint":
+                                                    {
                                                         Point(type: type, coordinate: coordinate, property: property,
                                                             style: style);
                                                         break;
+                                                    }
                                                     case "LineString":
                                                     case "MultiLineString":
+                                                    {
                                                         Line(type: type, coordinate: coordinate, property: property,
                                                             style: style);
                                                         break;
+                                                    }
                                                     case "Polygon":
                                                     case "MultiPolygon":
+                                                    {
                                                         Polygon(type: type, coordinate: coordinate, property: property,
                                                             style: style);
                                                         break;
+                                                    }
                                                 }
                                             }
                                             catch (Exception ex)
@@ -1549,13 +1555,13 @@ namespace Geosite
                     {
                         if (_projectionHelper != null)
                             coordinate = _projectionHelper.Project(geometry: coordinate, type: type);
-                        //[[[x,y,...],[x,y,...],[x,y,...],[x,y,...],[x,y,...],...],...]
-                        //POLYGON((80 20,90 20,90 30,80 30,80 20),(85 25,88 25,88 26,85 26))
+                        //单面：  [[[x,y,...],[x,y,...],...],...]
+                        //母子面：[[[x,y,...],[x,y,...],...],[[x,y,...],[x,y,...],[x,y,...],...],...]
                         for (var index = 0; index < coordinate.Count; index++)
                         {
-                            var ring = coordinate[index: index];
+                            var ring = (JArray)coordinate[index: index];
                             var lineList = new List<PointLatLng>();
-                            foreach (var line in (JArray)ring)
+                            foreach (var line in ring)
                             {
                                 if (line != null)
                                 {
@@ -1586,7 +1592,6 @@ namespace Geosite
                                     }
                                 }
                             }
-
                             lock (Features.Polygons)
                             {
                                 //var polygonShow = new GMapPolygonArea(
@@ -1599,13 +1604,27 @@ namespace Geosite
                                 //        : new SolidBrush(color: Color.FromArgb(alpha: 255, red: 255, green: 255,
                                 //            blue: 255))
                                 //);
+
                                 var polygonShow = new GMapPolygonArea(
                                     points: lineList,
                                     name: "Polygon",
                                     strokeNormal: _polygonStyle,
-                                    fillNormal: new SolidBrush(color: Color.FromArgb(alpha: 50,
-                                        red: _polygonStyle.Color.R,
-                                        green: _polygonStyle.Color.G, blue: _polygonStyle.Color.B))
+                                    //fillNormal: new SolidBrush(
+                                    //    color: Color.FromArgb(
+                                    //        alpha: index == 0 ? 50 : 255,
+                                    //        red: index == 0 ? _polygonStyle.Color.R : Color.White.R,
+                                    //        green: index == 0 ? _polygonStyle.Color.G : Color.White.G,
+                                    //        blue: index == 0 ? _polygonStyle.Color.B : Color.White.B
+                                    //    )
+                                    //)
+                                    fillNormal: new SolidBrush(
+                                        color: Color.FromArgb(
+                                            alpha: 50,
+                                            red: _polygonStyle.Color.R,
+                                            green: _polygonStyle.Color.G,
+                                            blue: _polygonStyle.Color.B
+                                        )
+                                    )
                                 );
                                 if (index == 0)
                                 {
@@ -1613,14 +1632,10 @@ namespace Geosite
                                     polygonShow.Tag = (property, style);
                                 }
                                 else
-                                {
                                     polygonShow.IsHitTestVisible = false;
-                                }
-
                                 Features.Polygons.Add(item: polygonShow);
                             }
                         }
-
                         return;
                     }
                     case "MultiPolygon":
@@ -1684,9 +1699,14 @@ namespace Geosite
                                         points: lineList,
                                         name: "Polygon",
                                         strokeNormal: _polygonStyle,
-                                        fillNormal: new SolidBrush(color: Color.FromArgb(alpha: 50,
-                                            red: _polygonStyle.Color.R,
-                                            green: _polygonStyle.Color.G, blue: _polygonStyle.Color.B))
+                                        fillNormal: new SolidBrush(
+                                            color: Color.FromArgb(
+                                                alpha: 50,
+                                                red: _polygonStyle.Color.R,
+                                                green: _polygonStyle.Color.G, 
+                                                blue: _polygonStyle.Color.B
+                                            )
+                                        )
                                     );
                                     if (index == 0)
                                     {
@@ -1694,15 +1714,11 @@ namespace Geosite
                                         polygonShow.Tag = (property, style);
                                     }
                                     else
-                                    {
                                         polygonShow.IsHitTestVisible = false;
-                                    }
-
                                     Features.Polygons.Add(item: polygonShow);
                                 }
                             }
                         }
-
                         return;
                     }
                     default:
