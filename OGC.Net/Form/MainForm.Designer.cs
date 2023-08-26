@@ -30,14 +30,14 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            DataGridViewCellStyle dataGridViewCellStyle27 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle28 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle29 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle30 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle21 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle31 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle32 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             OGCtoolTip = new ToolTip(components);
             deleteTree = new Button();
             lastPage = new Button();
@@ -1492,7 +1492,7 @@
             // 
             vectorTargetFile.BorderStyle = BorderStyle.FixedSingle;
             vectorTargetFile.Name = "vectorTargetFile";
-            vectorTargetFile.Size = new Size(713, 48);
+            vectorTargetFile.Size = new Size(651, 48);
             // 
             // FileRunButton
             // 
@@ -1522,7 +1522,7 @@
             SaveAsFormat.BackColor = Color.White;
             SaveAsFormat.FlatStyle = FlatStyle.Standard;
             SaveAsFormat.Name = "SaveAsFormat";
-            SaveAsFormat.Size = new Size(98, 48);
+            SaveAsFormat.Size = new Size(160, 48);
             // 
             // groupBox4
             // 
@@ -1654,14 +1654,14 @@
             FileGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             FileGridView.BackgroundColor = Color.White;
             FileGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle27.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle27.BackColor = Color.WhiteSmoke;
-            dataGridViewCellStyle27.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle27.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle27.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle27.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle27.WrapMode = DataGridViewTriState.True;
-            FileGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
+            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            FileGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             FileGridView.ColumnHeadersHeight = 39;
             FileGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             FileGridView.Columns.AddRange(new DataGridViewColumn[] { FilePath, FileProjection, FilePreview });
@@ -1680,8 +1680,8 @@
             // FilePath
             // 
             FilePath.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle28.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            FilePath.DefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            FilePath.DefaultCellStyle = dataGridViewCellStyle2;
             FilePath.HeaderText = "File";
             FilePath.MinimumWidth = 8;
             FilePath.Name = "FilePath";
@@ -1690,11 +1690,11 @@
             // 
             // FileProjection
             // 
-            dataGridViewCellStyle29.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle29.Padding = new Padding(3);
-            dataGridViewCellStyle29.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle29.SelectionForeColor = Color.Transparent;
-            FileProjection.DefaultCellStyle = dataGridViewCellStyle29;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.Padding = new Padding(3);
+            dataGridViewCellStyle3.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle3.SelectionForeColor = Color.Transparent;
+            FileProjection.DefaultCellStyle = dataGridViewCellStyle3;
             FileProjection.HeaderText = "Projection";
             FileProjection.MinimumWidth = 8;
             FileProjection.Name = "FileProjection";
@@ -1704,11 +1704,11 @@
             // 
             // FilePreview
             // 
-            dataGridViewCellStyle30.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle30.Padding = new Padding(3);
-            dataGridViewCellStyle30.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle30.SelectionForeColor = Color.Transparent;
-            FilePreview.DefaultCellStyle = dataGridViewCellStyle30;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.Padding = new Padding(3);
+            dataGridViewCellStyle4.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle4.SelectionForeColor = Color.Transparent;
+            FilePreview.DefaultCellStyle = dataGridViewCellStyle4;
             FilePreview.HeaderText = "Preview";
             FilePreview.MinimumWidth = 8;
             FilePreview.Name = "FilePreview";
@@ -2879,13 +2879,13 @@
             DatabaseGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             DatabaseGridView.BackgroundColor = Color.White;
             DatabaseGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle21.BackColor = SystemColors.Control;
-            dataGridViewCellStyle21.Font = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle21.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle21.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle21.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle21.WrapMode = DataGridViewTriState.True;
-            DatabaseGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.Font = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            DatabaseGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             DatabaseGridView.ColumnHeadersHeight = 36;
             DatabaseGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             DatabaseGridView.Columns.AddRange(new DataGridViewColumn[] { LayerName, ThemeRank, ThemeStatus, ThemeType, ThemeView });
@@ -2913,8 +2913,8 @@
             // 
             // ThemeRank
             // 
-            dataGridViewCellStyle31.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            ThemeRank.DefaultCellStyle = dataGridViewCellStyle31;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            ThemeRank.DefaultCellStyle = dataGridViewCellStyle6;
             ThemeRank.HeaderText = "Rank";
             ThemeRank.MinimumWidth = 36;
             ThemeRank.Name = "ThemeRank";
@@ -4153,11 +4153,11 @@
             // 
             // VectorProjection
             // 
-            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle15.Padding = new Padding(3);
-            dataGridViewCellStyle15.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle15.SelectionForeColor = Color.Transparent;
-            VectorProjection.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.Padding = new Padding(3);
+            dataGridViewCellStyle7.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle7.SelectionForeColor = Color.Transparent;
+            VectorProjection.DefaultCellStyle = dataGridViewCellStyle7;
             VectorProjection.HeaderText = "Projection";
             VectorProjection.MinimumWidth = 8;
             VectorProjection.Name = "VectorProjection";
@@ -4166,10 +4166,10 @@
             // 
             // VectorStatus
             // 
-            dataGridViewCellStyle32.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle32.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle32.SelectionForeColor = Color.Transparent;
-            VectorStatus.DefaultCellStyle = dataGridViewCellStyle32;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle8.SelectionForeColor = Color.Transparent;
+            VectorStatus.DefaultCellStyle = dataGridViewCellStyle8;
             VectorStatus.HeaderText = "※";
             VectorStatus.MinimumWidth = 8;
             VectorStatus.Name = "VectorStatus";
