@@ -109,7 +109,7 @@ namespace Geosite
         private const string EmptyMapProviderKey = "None";
 
         /// <summary>
-        /// 底图字典
+        /// 可视化窗体底图字典
         /// </summary>
         public Dictionary<string, GMapProvider> GMapProviderDictionary = new();
 
@@ -1983,11 +1983,12 @@ namespace Geosite
                                               <Forest Root="Data" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
                                             </User>                                         
                                          */
-                                        var host = server?.Element(name: "Host")?.Value.Trim();
+                                        var host = server?.Element(name: "Host")?.Value.Trim(); //允许指定多台主机（逗号分隔，每台均可携带端口号）
                                         try
                                         {
-                                            var postgresAddress =
-                                                new Ping().Send(hostNameOrAddress: host!, timeout: 3000);
+                                            //本程序目前仅支持单台服务器通讯！
+                                            host = Regex.Split(host!, "[,]+")[0];
+                                            var postgresAddress = new Ping().Send(hostNameOrAddress: host!, timeout: 3000);
                                             if (postgresAddress is { Status: IPStatus.Success })
                                             {
                                                 host = postgresAddress.Address.ToString();
@@ -5169,9 +5170,18 @@ namespace Geosite
                                                                             options: RegexOptions.IgnoreCase |
                                                                                      RegexOptions.Singleline |
                                                                                      RegexOptions.Multiline);
-                                                                        elementDescriptionX.Add(
-                                                                            content: new XElement(name: fieldName,
-                                                                                content: fieldValues[item]));
+                                                                        try
+                                                                        {
+                                                                            elementDescriptionX.Add(
+                                                                                content: new XElement(name: fieldName,
+                                                                                    content: fieldValues[item]));
+                                                                        }
+                                                                        catch (Exception fieldError)
+                                                                        {
+                                                                            //暂忽略不符合xml规定的字段名称
+                                                                            statusCell.Value = "!";
+                                                                            DatabaseLogAdd(input: statusCell.ToolTipText = fieldError.Message);
+                                                                        }
                                                                     }
                                                                 }
                                                                 else
@@ -9013,12 +9023,16 @@ namespace Geosite
                         return;
                     try
                     {
-                        var descriptionJson = (((JObject property, JObject style))itemTag).property?.ToString(formatting: Formatting.Indented);
+                        var descriptionJson =
+                            (((JObject property, JObject style))itemTag).property?.ToString(
+                                formatting: Formatting.Indented);
                         //var descriptionXml = JsonConvert.DeserializeXNode(descriptionJson, "property")?.Root?.ToString(SaveOptions.None);
-                        MapBoxProperty.Text = descriptionJson; //descriptionXml
+                        MapBoxProperty.Text = descriptionJson ?? ""; //descriptionXml
 
-                        var styleJson = (((JObject property, JObject style))itemTag).style?.ToString(formatting: Formatting.Indented);
-                        MapBoxStyle.Text = styleJson;
+                        var styleJson =
+                            (((JObject property, JObject style))itemTag).style?.ToString(
+                                formatting: Formatting.Indented);
+                        MapBoxStyle.Text = styleJson ?? "";
                     }
                     catch (Exception error)
                     {

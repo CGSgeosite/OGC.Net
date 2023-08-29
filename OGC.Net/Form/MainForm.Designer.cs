@@ -4127,7 +4127,6 @@
             vectorFilePool.Name = "vectorFilePool";
             vectorFilePool.RowHeadersWidth = 62;
             vectorFilePool.RowTemplate.Height = 23;
-            vectorFilePool.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             vectorFilePool.Size = new Size(809, 296);
             vectorFilePool.TabIndex = 3;
             vectorFilePool.CellBeginEdit += VectorFilePool_CellBeginEdit;
@@ -4161,6 +4160,7 @@
             VectorProjection.HeaderText = "Projection";
             VectorProjection.MinimumWidth = 8;
             VectorProjection.Name = "VectorProjection";
+            VectorProjection.ReadOnly = true;
             VectorProjection.Text = "?";
             VectorProjection.Width = 150;
             // 
@@ -4174,6 +4174,7 @@
             VectorStatus.MinimumWidth = 8;
             VectorStatus.Name = "VectorStatus";
             VectorStatus.ReadOnly = true;
+            VectorStatus.SortMode = DataGridViewColumnSortMode.NotSortable;
             VectorStatus.ToolTipText = "status";
             VectorStatus.Width = 48;
             // 
@@ -4959,10 +4960,6 @@
         private DataGridViewTextBoxColumn FilePath;
         private DataGridViewButtonColumn FileProjection;
         private DataGridViewButtonColumn FilePreview;
-        private DataGridViewTextBoxColumn VectorTheme;
-        private DataGridViewTextBoxColumn VectorURI;
-        private DataGridViewButtonColumn VectorProjection;
-        private DataGridViewTextBoxColumn VectorStatus;
         private ToolStripSeparator toolStripSeparator22;
         private ToolStripMenuItem MapBoxSaveAS;
         private Button DataConvert;
@@ -4972,6 +4969,10 @@
         private TabPage FeatureStyle;
         private RichTextBox MapBoxStyle;
         private ImageList TabPageImageList;
+        private DataGridViewTextBoxColumn VectorTheme;
+        private DataGridViewTextBoxColumn VectorURI;
+        private DataGridViewButtonColumn VectorProjection;
+        private DataGridViewTextBoxColumn VectorStatus;
     }
 }
 
