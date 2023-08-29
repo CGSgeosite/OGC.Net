@@ -124,7 +124,7 @@ namespace Geosite
         /// <returns>返回指定层级以及所属子级分类的摘要信息（包括专题层名称、所处层级、是否包含子级专题层）</returns>
         public XElement GetNodes(string typeName = null)
         {
-            var layerArray = Regex.Split
+            var layerArray = Regex.Split 
                 (
                     input: Regex.Replace
                     (
@@ -221,96 +221,98 @@ namespace Geosite
                 parameters: withParameters
             );
             if (kvps == null)
-                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                throw new Exception(message: PostgreSqlHelper.ErrorMessage); 
+            XElement layersX = null;
             var rows = kvps.Rows;
             var numberMatched = rows.Count;
-            if (numberMatched == 0)
-                throw new Exception(message: "Nothing was found.");
-            var layersX = new XElement(
-                name: "DescribeLayerResponse",
-                new XAttribute(name: "version", value: "1.0.0"),
-                new XAttribute(name: "forest", value: _forest),
-                new XAttribute(name: "numberReturned", value: numberMatched),
-                new XAttribute(name: "numberMatched", value: numberMatched)
-            );
-            foreach (DataRow kvpValue in rows)
+            if (numberMatched > 0) //throw new Exception(message: "Nothing was found."); 
             {
-                var property = $"{kvpValue[columnName: "property"]}".Trim();
-                var detail = $"{kvpValue[columnName: "detail"]}".Trim();
-                var layer = string.Join(separator: ".", value: (string[])kvpValue[columnName: "layer"]);
-                var name = $"{kvpValue[columnName: "name"]}";
-                var type = string.Join(separator: ",", values: (int[])kvpValue[columnName: "type"]); 
-                var owsType = new List<string>();
-                foreach (
-                    var theType in 
-                    Regex.Split(
-                        input: type, 
-                        pattern: @"[,\s]+",
-                             options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline
-                        )
-                    )
+                layersX = new XElement(
+                    name: "DescribeLayerResponse",
+                    new XAttribute(name: "version", value: "1.0.0"),
+                    new XAttribute(name: "forest", value: _forest),
+                    new XAttribute(name: "numberReturned", value: numberMatched),
+                    new XAttribute(name: "numberMatched", value: numberMatched)
+                );
+                foreach (DataRow kvpValue in rows)
                 {
-                    if (int.TryParse(s: theType, result: out var typeCode))
+                    var property = $"{kvpValue[columnName: "property"]}".Trim();
+                    var detail = $"{kvpValue[columnName: "detail"]}".Trim();
+                    var layer = string.Join(separator: ".", value: (string[])kvpValue[columnName: "layer"]);
+                    var name = $"{kvpValue[columnName: "name"]}";
+                    var type = string.Join(separator: ",", values: (int[])kvpValue[columnName: "type"]);
+                    var owsType = new List<string>();
+                    foreach (
+                        var theType in
+                        Regex.Split(
+                            input: type,
+                            pattern: @"[,\s]+",
+                                 options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline
+                            )
+                        )
                     {
-                        switch (typeCode)
+                        if (int.TryParse(s: theType, result: out var typeCode))
                         {
-                            case >= 1 and <= 4:
+                            switch (typeCode)
                             {
-                                if (!owsType.Contains(item: "WFS"))
-                                    owsType.Add(item: "WFS");
-                                break;
+                                case >= 1 and <= 4:
+                                    {
+                                        if (!owsType.Contains(item: "WFS"))
+                                            owsType.Add(item: "WFS");
+                                        break;
+                                    }
+                                case >= 10000 and <= 10002:
+                                    {
+                                        if (!owsType.Contains(item: "WMS"))
+                                            owsType.Add(item: "WMS");
+                                        break;
+                                    }
+                                case >= 11000 and <= 11002:
+                                    {
+                                        if (!owsType.Contains(item: "WMTS"))
+                                            owsType.Add(item: "WMTS");
+                                        break;
+                                    }
+                                case >= 12000 and <= 12002 when !owsType.Contains(item: "WPS"):
+                                    owsType.Add(item: "WPS");
+                                    break;
                             }
-                            case >= 10000 and <= 10002:
-                            {
-                                if (!owsType.Contains(item: "WMS"))
-                                    owsType.Add(item: "WMS");
-                                break;
-                            }
-                            case >= 11000 and <= 11002:
-                            {
-                                if (!owsType.Contains(item: "WMTS"))
-                                    owsType.Add(item: "WMTS");
-                                break;
-                            }
-                            case >= 12000 and <= 12002 when !owsType.Contains(item: "WPS"):
-                                owsType.Add(item: "WPS");
-                                break;
                         }
                     }
+                    layersX.Add(
+                        content: new XElement(
+                            name: "LayerDescription",
+                            new XAttribute(name: "name", value: name),
+                            new XAttribute(name: "layer", value: layer),
+                            new XAttribute(name: "tree", value: kvpValue[columnName: "tree"]),
+                            new XAttribute(name: "trees", value: kvpValue[columnName: "trees"]),
+                            new XAttribute(name: "theme", value: kvpValue[columnName: "theme"]),
+                            new XAttribute(name: "uri", value: kvpValue[columnName: "uri"]),
+                            new XAttribute(name: "branch", value: kvpValue[columnName: "branch"]),
+                            new XAttribute(name: "leaf", value: kvpValue[columnName: "leaf"]),
+                            new XAttribute(name: "type", value: type),
+                            new XAttribute(name: "level", value: kvpValue[columnName: "level"]),
+                            new XAttribute(name: "children", value: kvpValue[columnName: "children"]),
+                            new XAttribute(name: "status", value: kvpValue[columnName: "status"]),
+                            new XElement(name: "typeName", content: name),
+                            new XElement(
+                                name: "owsType",
+                                content: string.Join(separator: ",", values: owsType) //wfs wcf wms wps wmts
+                            ),
+                            string.IsNullOrWhiteSpace(value: property)
+                                ? null
+                                : GeositeXmlFormatting.JsonStringToXElement(
+                                    json: property,
+                                    rootName: "property"),
+                            string.IsNullOrWhiteSpace(value: detail)
+                                ? null
+                                : new XElement(
+                                    name: "relation",
+                                    content: XElement.Parse(text: detail)
+                                )
+                        )
+                    );
                 }
-                layersX.Add(
-                    content: new XElement(
-                        name: "LayerDescription",
-                        new XAttribute(name: "name", value: name),
-                        new XAttribute(name: "layer", value: layer),
-                        new XAttribute(name: "tree", value: kvpValue[columnName: "tree"]),
-                        new XAttribute(name: "trees", value: kvpValue[columnName: "trees"]),
-                        new XAttribute(name: "theme", value: kvpValue[columnName: "theme"]),
-                        new XAttribute(name: "uri", value: kvpValue[columnName: "uri"]),
-                        new XAttribute(name: "branch", value: kvpValue[columnName: "branch"]),
-                        new XAttribute(name: "leaf", value: kvpValue[columnName: "leaf"]),
-                        new XAttribute(name: "type", value: type),
-                        new XAttribute(name: "level", value: kvpValue[columnName: "level"]),
-                        new XAttribute(name: "children", value: kvpValue[columnName: "children"]),
-                        new XAttribute(name: "status", value: kvpValue[columnName: "status"]),
-                        new XElement(name: "typeName", content: name),
-                        new XElement(
-                            name: "owsType",
-                            content: string.Join(separator: ",", values: owsType) //wfs wcf wms wps wmts
-                        ),
-                        string.IsNullOrWhiteSpace(value: property)
-                            ? null
-                            : GeositeXmlFormatting.JsonStringToXElement(
-                                json: property,
-                                rootName: "property"),
-                        string.IsNullOrWhiteSpace(value: detail)
-                            ? null
-                            : new XElement(
-                                name: "relation",
-                                content: XElement.Parse(text: detail)
-                            )
-                    )
-                );
             }
             return layersX;
         }
@@ -342,79 +344,82 @@ namespace Geosite
                         currentNode.Nodes.Clear();
                         //获取当前节点下欲新建的全部子节点信息
                         var describeLayerResponseX = GetNodes(typeName);
-                        /*
-                            <DescribeLayerResponse version="1.0.0" forest="-1" numberReturned="2" numberMatched="2">
-                            </DescribeLayerResponse>           
-                         */
-                        var numberReturned = int.Parse(describeLayerResponseX.Attribute("numberReturned")?.Value ?? "0");
-                        if (numberReturned > 0)
+                        if (describeLayerResponseX != null)
                         {
-                            foreach (var layerDescription in describeLayerResponseX.Elements(name: "LayerDescription"))
+                            /*
+                                <DescribeLayerResponse version="1.0.0" forest="-1" numberReturned="2" numberMatched="2">
+                                </DescribeLayerResponse>           
+                             */
+                            var numberReturned = int.Parse(describeLayerResponseX.Attribute("numberReturned")?.Value ?? "0");
+                            if (numberReturned > 0)
                             {
-                                var typeArray = Regex.Split(
-                                    layerDescription.Attribute("type")?.Value ?? "0",
-                                    @"[\s,]+",
-                                    RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline
-                                );
-                                var typeIndex = typeArray.Length == 1
-                                    ? typeArray[0] switch
-                                    {
-                                        "0" => 8,
-                                        "1" => 1,
-                                        "2" => 2,
-                                        "3" => 3,
-                                        "4" => 4,
-                                        "10000" or
-                                            "10001" or
-                                            "10002" => 5,
-                                        "11000" or
-                                            "11001" or
-                                            "11002" => 6,
-                                        "12000" or
-                                            "12001" or
-                                            "12002" => 7,
-                                        _ => 9
-                                    }
-                                    : 9;
-                                /*
-                                      <LayerDescription name="test" layer="test" teees="4" tree="1" theme="googlemap" uri="E:\test\googlemap" branch="1" leaf="" type="11002" level="1" children="1" status="5">
-                                        <typeName>test</typeName>
-                                        <owsType>WMTS</owsType>
-                                      </LayerDescription>          
-                                 */
-                                var trees= int.Parse(layerDescription.Attribute("trees")?.Value ?? "0");
-                                //本级节点下的各级嵌套子节点个数，只要不为0，就表明有子节点
-                                var children = int.Parse(layerDescription.Attribute("children")?.Value ?? "0");
-                                var theNode = new TreeNode(
-                                    (
-                                        layerDescription.Attribute("name")?.Value ?? "unknown"
-                                    ) +
-                                    (
-                                        //为方便与数据表中的专题名称对照，特追加【theme】后缀
-                                        children > 0
-                                            ? ""
-                                            : $" - [{layerDescription.Attribute("theme")?.Value}{(trees > 1 ? " ..." : "")}]"
-                                    )
-                                )
+                                foreach (var layerDescription in describeLayerResponseX.Elements(name: "LayerDescription"))
                                 {
-                                    ImageIndex = typeIndex,
-                                    SelectedImageIndex = typeIndex,
-                                    ToolTipText = $"Layer - [{layerDescription.Attribute("layer")?.Value}]\nTree - [{layerDescription.Attribute("tree")?.Value}]\nTrees - [{layerDescription.Attribute("trees")?.Value}]\nBranch - [{layerDescription.Attribute("branch")?.Value}]\nLeaf - [{layerDescription.Attribute("leaf")?.Value}]\nLevel - [{layerDescription.Attribute("level")?.Value}]\nStatus - [{layerDescription.Attribute("status")?.Value}]\nChildren - [{children}]\nUri - [{layerDescription.Attribute("uri")?.Value}]",
-                                    Tag = children > 0 ? 1 : 0
-                                };
-                                if (children > 0)
-                                    theNode.Nodes.Add(
-                                        new TreeNode("loading ...")
-                                        {
-                                            ImageIndex = 10,
-                                            SelectedImageIndex = 10
-                                        }
+                                    var typeArray = Regex.Split(
+                                        layerDescription.Attribute("type")?.Value ?? "0",
+                                        @"[\s,]+",
+                                        RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline
                                     );
-                                theNode.Collapse();
-                                currentNode.Nodes.Add(theNode);
+                                    var typeIndex = typeArray.Length == 1
+                                        ? typeArray[0] switch
+                                        {
+                                            "0" => 8,
+                                            "1" => 1,
+                                            "2" => 2,
+                                            "3" => 3,
+                                            "4" => 4,
+                                            "10000" or
+                                                "10001" or
+                                                "10002" => 5,
+                                            "11000" or
+                                                "11001" or
+                                                "11002" => 6,
+                                            "12000" or
+                                                "12001" or
+                                                "12002" => 7,
+                                            _ => 9
+                                        }
+                                        : 9;
+                                    /*
+                                          <LayerDescription name="test" layer="test" teees="4" tree="1" theme="googlemap" uri="E:\test\googlemap" branch="1" leaf="" type="11002" level="1" children="1" status="5">
+                                            <typeName>test</typeName>
+                                            <owsType>WMTS</owsType>
+                                          </LayerDescription>          
+                                     */
+                                    var trees = int.Parse(layerDescription.Attribute("trees")?.Value ?? "0");
+                                    //本级节点下的各级嵌套子节点个数，只要不为0，就表明有子节点
+                                    var children = int.Parse(layerDescription.Attribute("children")?.Value ?? "0");
+                                    var theNode = new TreeNode(
+                                        (
+                                            layerDescription.Attribute("name")?.Value ?? "unknown"
+                                        ) +
+                                        (
+                                            //为方便与数据表中的专题名称对照，特追加【theme】后缀
+                                            children > 0
+                                                ? ""
+                                                : $" - [{layerDescription.Attribute("theme")?.Value}{(trees > 1 ? " ..." : "")}]"
+                                        )
+                                    )
+                                    {
+                                        ImageIndex = typeIndex,
+                                        SelectedImageIndex = typeIndex,
+                                        ToolTipText = $"Layer - [{layerDescription.Attribute("layer")?.Value}]\nTree - [{layerDescription.Attribute("tree")?.Value}]\nTrees - [{layerDescription.Attribute("trees")?.Value}]\nBranch - [{layerDescription.Attribute("branch")?.Value}]\nLeaf - [{layerDescription.Attribute("leaf")?.Value}]\nLevel - [{layerDescription.Attribute("level")?.Value}]\nStatus - [{layerDescription.Attribute("status")?.Value}]\nChildren - [{children}]\nUri - [{layerDescription.Attribute("uri")?.Value}]",
+                                        Tag = children > 0 ? 1 : 0
+                                    };
+                                    if (children > 0)
+                                        theNode.Nodes.Add(
+                                            new TreeNode("loading ...")
+                                            {
+                                                ImageIndex = 10,
+                                                SelectedImageIndex = 10
+                                            }
+                                        );
+                                    theNode.Collapse();
+                                    currentNode.Nodes.Add(theNode);
+                                }
+                                currentNode.Tag = 0;
+                                currentNode.Expand();
                             }
-                            currentNode.Tag = 0;
-                            currentNode.Expand();
                         }
                     }
                 );
