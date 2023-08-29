@@ -2896,7 +2896,6 @@
             DatabaseGridView.RowHeadersWidth = 62;
             DatabaseGridView.RowTemplate.Height = 23;
             DatabaseGridView.RowTemplate.Resizable = DataGridViewTriState.False;
-            DatabaseGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             DatabaseGridView.ShowCellToolTips = false;
             DatabaseGridView.Size = new Size(619, 144);
             DatabaseGridView.TabIndex = 20;

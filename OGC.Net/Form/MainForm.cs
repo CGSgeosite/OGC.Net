@@ -1965,8 +1965,8 @@ namespace Geosite
                                             <User>
                                               <Servers>
                                                 <Server>
-                                                  <Host>localhost</Host>
-                                                  <Version>7.2023.2.28</Version>
+                                                  <Host>192.168.0.123</Host>
+                                                  <Version>7.2023.8.29</Version>
                                                   <Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
                                                   <Error></Error>
                                                   <Username>postgres</Username>
@@ -2019,31 +2019,19 @@ namespace Geosite
                                                         port = 5432;
                                                     var databaseX = server?.Element(name: "Database");
                                                     var database = databaseX?.Value.Trim();
-                                                    try
-                                                    {
-                                                        var postgresqlVersion = databaseX
-                                                            ?.Attribute(name: "Postgresql_Version")?.Value;
-                                                        if (!string.IsNullOrWhiteSpace(value: postgresqlVersion))
-                                                            DatabaseLogAdd(
-                                                                input: $"PostgreSQL Version - {postgresqlVersion}");
-                                                        var postgisVersion = databaseX
-                                                            ?.Attribute(name: "Postgis_Version")?.Value;
-                                                        if (!string.IsNullOrWhiteSpace(value: postgisVersion))
-                                                            DatabaseLogAdd(
-                                                                input: $"PostGIS Version - {postgisVersion}");
-                                                        var pgroongaVersion = databaseX
-                                                            ?.Attribute(name: "Pgroonga_Version")?.Value;
-                                                        if (!string.IsNullOrWhiteSpace(value: pgroongaVersion))
-                                                            DatabaseLogAdd(
-                                                                input: $"PGroonga Version - {pgroongaVersion}");
-                                                        var databaseSize = databaseX?.Attribute(name: "Size")?.Value;
-                                                        if (!string.IsNullOrWhiteSpace(value: databaseSize))
-                                                            DatabaseLogAdd(input: $"Database Size - {databaseSize}");
-                                                    }
-                                                    catch
-                                                    {
-                                                        //
-                                                    }
+
+                                                    var postgresqlVersion = databaseX?.Attribute(name: "Postgresql_Version")?.Value;
+                                                    if (!string.IsNullOrWhiteSpace(value: postgresqlVersion))
+                                                        DatabaseLogAdd(input: $"PostgreSQL Version - {postgresqlVersion}");
+                                                    var postgisVersion = databaseX?.Attribute(name: "Postgis_Version")?.Value;
+                                                    if (!string.IsNullOrWhiteSpace(value: postgisVersion))
+                                                        DatabaseLogAdd(input: $"PostGIS Version - {postgisVersion}");
+                                                    var pgroongaVersion = databaseX?.Attribute(name: "Pgroonga_Version")?.Value;
+                                                    if (!string.IsNullOrWhiteSpace(value: pgroongaVersion))
+                                                        DatabaseLogAdd(input: $"PGroonga Version - {pgroongaVersion}");
+                                                    var databaseSize = databaseX?.Attribute(name: "Size")?.Value;
+                                                    if (!string.IsNullOrWhiteSpace(value: databaseSize))
+                                                        DatabaseLogAdd(input: $"Database Size - {databaseSize}");
 
                                                     var username = server?.Element(name: "Username")?.Value.Trim();
                                                     var password = server?.Element(name: "Password")?.Value.Trim();
@@ -2063,17 +2051,25 @@ namespace Geosite
                                                             username: username,
                                                             password: password,
                                                             tables: "forest,tree,branch,leaf");
+                                                    //  PostgreSQL连接标志如下：
+                                                    //  0：  连接成功[指定的数据库及主表已存在]；
+                                                    //  -1： PG未安装或者连接参数不正确，无法创建数据库；
+                                                    //  -2： PG版本太低[小于12.0.0]，不创建数据库；
+                                                    //  1：  指定的数据库不存在，可尝试创建数据库；
+                                                    //  2：  数据库同名且未发现任何相关主表，可进一步创建子表；
+                                                    //  3：  数据库同名且发现某个主表也同名，不宜继续创建子表）
                                                     switch (geositeServerLink.flag)
                                                     {
                                                         case -1:
                                                         case -2:
-                                                        case 2:
+                                                        case 3:
                                                             {
                                                                 _clusterUser.status = false;
                                                                 errorMessage = geositeServerLink.Message;
                                                                 break;
                                                             }
                                                         case 1:
+                                                        case 2:
                                                             {
                                                                 _clusterUser.status = false;
                                                                 Invoke(
@@ -2083,14 +2079,17 @@ namespace Geosite
                                                                         statusProgress.Value = 0;
                                                                     }
                                                                 );
+                                                                //表分区个数介于【1～96】之间
                                                                 var tablePartitions =
                                                                     Math.Min(96, int.Parse(s: forestX
                                                                         ?.Attribute(name: "ProcessorCount")
                                                                         ?.Value ?? "1"));
-                                                                if (PostgreSqlHelper.NonQuery(
+                                                                if (
+                                                                    geositeServerLink.flag != 1 || (PostgreSqlHelper.NonQuery(
                                                                         cmd:
                                                                         $"CREATE DATABASE {database} WITH OWNER = {username};",
                                                                         pooling: false, postgres: true, timeout: 0) != null)
+                                                                    )
                                                                 {
                                                                     if ((long)PostgreSqlHelper.Scalar(
                                                                             cmd:
@@ -2102,11 +2101,11 @@ namespace Geosite
                                                                             {
                                                                                 statusProgress.Value = 10;
                                                                                 DatabaseLogAdd(input: statusText.Text =
-                                                                                    @"Create PostGIS extension ...");
+                                                                                    @"Create or find PostGIS extension ...");
                                                                             }
                                                                         );
                                                                         PostgreSqlHelper.NonQuery(
-                                                                            cmd: "CREATE EXTENSION postgis;",
+                                                                            cmd: "CREATE EXTENSION IF NOT EXISTS postgis;",
                                                                             pooling: false, timeout: 0);
                                                                         if ((long)PostgreSqlHelper.Scalar(
                                                                                 cmd:
@@ -2118,11 +2117,11 @@ namespace Geosite
                                                                                 {
                                                                                     statusProgress.Value = 16;
                                                                                     DatabaseLogAdd(input: statusText.Text =
-                                                                                        @"Create postgis_raster extension ...");
+                                                                                        @"Create or find postgis_raster extension ...");
                                                                                 }
                                                                             );
                                                                             PostgreSqlHelper.NonQuery(
-                                                                                cmd: "CREATE EXTENSION postgis_raster;",
+                                                                                cmd: "CREATE EXTENSION IF NOT EXISTS postgis_raster;",
                                                                                 pooling: false, timeout: 0);
                                                                             if ((long)PostgreSqlHelper.Scalar(
                                                                                     cmd:
@@ -2135,11 +2134,11 @@ namespace Geosite
                                                                                         statusProgress.Value = 22;
                                                                                         DatabaseLogAdd(
                                                                                             input: statusText.Text =
-                                                                                                @"Create intarray extension ...");
+                                                                                                @"Create or find intarray extension ...");
                                                                                     }
                                                                                 );
                                                                                 PostgreSqlHelper.NonQuery(
-                                                                                    cmd: "CREATE EXTENSION intarray;",
+                                                                                    cmd: "CREATE EXTENSION IF NOT EXISTS intarray;",
                                                                                     pooling: false, timeout: 0);
                                                                                 if ((long)PostgreSqlHelper.Scalar(
                                                                                         cmd:
@@ -2152,11 +2151,11 @@ namespace Geosite
                                                                                             statusProgress.Value = 28;
                                                                                             DatabaseLogAdd(
                                                                                                 input: statusText.Text =
-                                                                                                    @"Create pgroonga extension ...");
+                                                                                                    @"Create or find pgroonga extension ...");
                                                                                         }
                                                                                     );
                                                                                     PostgreSqlHelper.NonQuery(
-                                                                                        cmd: "CREATE EXTENSION pgroonga;",
+                                                                                        cmd: "CREATE EXTENSION IF NOT EXISTS pgroonga;",
                                                                                         pooling: false, timeout: 0);
                                                                                     Invoke(
                                                                                         method: () =>
