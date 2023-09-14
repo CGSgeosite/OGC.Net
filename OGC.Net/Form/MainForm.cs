@@ -364,10 +364,10 @@ namespace Geosite
             defaultValue = RegEdit.Getkey(keyname: key);
             rankList.Text = defaultValue ?? "-1";
 
-            const string embedPath = "rtf"; // Path.Combine(path1: Directory.GetCurrentDirectory(), path2: "embed");
+            var rtfPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "rtf"); 
             try
             {
-                FormatStandardBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "standard.rtf"), fileType: RichTextBoxStreamType.RichText);
+                FormatStandardBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "standard.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -375,7 +375,7 @@ namespace Geosite
             }
             try
             {
-                FormatTMSBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "tms.rtf"), fileType: RichTextBoxStreamType.RichText);
+                FormatTMSBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "tms.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -383,7 +383,7 @@ namespace Geosite
             }
             try
             {
-                FormatMapcruncherBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "mapcruncher.rtf"), fileType: RichTextBoxStreamType.RichText);
+                FormatMapcruncherBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "mapcruncher.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -391,7 +391,7 @@ namespace Geosite
             }
             try
             {
-                FormatArcGISBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "arcgis.rtf"), fileType: RichTextBoxStreamType.RichText);
+                FormatArcGISBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "arcgis.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -399,7 +399,7 @@ namespace Geosite
             }
             try
             {
-                FormatDeepZoomBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "deepzoom.rtf"), fileType: RichTextBoxStreamType.RichText);
+                FormatDeepZoomBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "deepzoom.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -407,7 +407,7 @@ namespace Geosite
             }
             try
             {
-                FormatRasterBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "raster.rtf"), fileType: RichTextBoxStreamType.RichText);
+                FormatRasterBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "raster.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -415,7 +415,7 @@ namespace Geosite
             }
             try
             {
-                wmtsTipBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "wmtstip.rtf"), fileType: RichTextBoxStreamType.RichText);
+                wmtsTipBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "wmtstip.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -423,7 +423,7 @@ namespace Geosite
             }
             try
             {
-                modelTipBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "modeltip.rtf"), fileType: RichTextBoxStreamType.RichText);
+                modelTipBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "modeltip.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -431,7 +431,7 @@ namespace Geosite
             }
             try
             {
-                convertTipBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "converttip.rtf"), fileType: RichTextBoxStreamType.RichText);
+                convertTipBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "converttip.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -439,7 +439,7 @@ namespace Geosite
             }
             try
             {
-                readmeTextBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "readme.rtf"), fileType: RichTextBoxStreamType.RichText);
+                readmeTextBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "readme.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -447,7 +447,7 @@ namespace Geosite
             }
             try
             {
-                apiTextBox.LoadFile(path: Path.Combine(path1: embedPath, path2: "api.rtf"), fileType: RichTextBoxStreamType.RichText);
+                apiTextBox.LoadFile(path: Path.Combine(path1: rtfPath, path2: "api.rtf"), fileType: RichTextBoxStreamType.RichText);
             }
             catch (Exception error)
             {
@@ -1961,12 +1961,11 @@ namespace Geosite
                                         var server = userX.result.Element(name: "Servers")?.Element(name: "Server");
                                         var geositeServerVersion = server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
                                         DatabaseLogAdd(input: $"GeositeServer Version - {geositeServerVersion}");
-
                                         /*  样例如下：
                                             <User>
                                               <Servers>
                                                 <Server>
-                                                  <Host>192.168.0.10:5432,192.168.0.11:5432</Host>
+                                                  <Host>192.168.0.123</Host>
                                                   <Version>7.2023.8.29</Version>
                                                   <Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
                                                   <Error></Error>
@@ -2025,7 +2024,6 @@ namespace Geosite
                                                             .Trim() ?? "false", result: out _administrator))
                                                     _administrator = false;
                                                 var rootName = forestX?.Attribute(name: "Root")?.Value ?? "Root";
-                                                DatabaseLogAdd(input: statusText.Text = @"PostgreSQL Connecting ...");
                                                 var geositeServerLink =
                                                     PostgreSqlHelper.Connection(
                                                         host: host,
@@ -3246,7 +3244,8 @@ namespace Geosite
                                                 }
                                             }
                                             else
-                                                errorMessage = @"Please connect to a higher version of GeositeServer.";
+                                                errorMessage =
+                                                    @"Please connect to a higher version of GeositeServer.";
                                         }
                                         catch (Exception ex)
                                         {
@@ -3295,7 +3294,7 @@ namespace Geosite
                     else
                         Invoke(method: () =>
                             {
-                                DatabaseLogAdd(input: statusText.Text = $@"GeositeServer [{serverUrl}] connection failed.");
+                                DatabaseLogAdd(input: statusText.Text = @"GeositeServer connection failed.");
                             }
                         );
                 }
@@ -3303,7 +3302,7 @@ namespace Geosite
                 {
                     Invoke(method: () =>
                     {
-                        DatabaseLogAdd(input: statusText.Text = $@"GeositeServer [{serverUrl}] connection failed.");
+                        DatabaseLogAdd(input: statusText.Text = @"GeositeServer database connection failed.");
                     });
                 }
             }
