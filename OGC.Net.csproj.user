@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_LastSelectedProfileId>D:\Geosite\Geosite.Net\OGC.net\OGC.Net\OGC.Net\Properties\PublishProfiles\OGC.net.macOS.console.pubxml</_LastSelectedProfileId>
+    <_LastSelectedProfileId>D:\Geosite\Geosite.Net\OGC.Net\OGC.Net.Desktop\OGC.Net\Properties\PublishProfiles\OGC.net.arm64.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="Code\ToolStripSpringTextBox.cs">
