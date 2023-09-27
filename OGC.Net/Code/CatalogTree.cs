@@ -65,7 +65,7 @@ namespace Geosite
         {
             _catalogTreeView = catalogTreeView;
             _forest = forest;
-            _rootName= rootName;
+            _rootName = rootName;
 
             _catalogTreeView.Invoke(
                 method: () =>
@@ -101,7 +101,8 @@ namespace Geosite
             )
             {
                 IsBackground = true
-            }.Start();
+            }
+                .Start();
         }
 
         /// <summary>
@@ -124,7 +125,7 @@ namespace Geosite
         /// <returns>返回指定层级以及所属子级分类的摘要信息（包括专题层名称、所处层级、是否包含子级专题层）</returns>
         public XElement GetNodes(string typeName = null)
         {
-            var layerArray = Regex.Split 
+            var layerArray = Regex.Split
                 (
                     input: Regex.Replace
                     (
@@ -144,7 +145,7 @@ namespace Geosite
                 .ToList();
             if (layerArray.Count == 0)
                 layerArray.Add(item: "*");
-            var level = layerArray.Count; 
+            var level = layerArray.Count;
             var withParameters = new Dictionary<string, object>();
             var layerName = layerArray[index: level - 1];
             var routeArray = new List<string>();
@@ -162,7 +163,7 @@ namespace Geosite
                 "   SELECT outerlevel.*, CASE WHEN branch.parent IS null THEN 0 ELSE 1 END AS children FROM" +
                 "   (" +
                 "    SELECT branch.*, branch_relation.detail FROM branch LEFT JOIN branch_relation ON branch.id = branch_relation.branch" +
-                $"    WHERE branch.level = {level}" + 
+                $"    WHERE branch.level = {level}" +
                 (layerName != "*" && layerName != "＊" ? $" AND name ILIKE @name{level}::TEXT" : string.Empty) +
                 "   ) AS outerlevel LEFT JOIN branch ON outerlevel.id = branch.parent" +
                 $" ) AS level{level}";
@@ -221,7 +222,7 @@ namespace Geosite
                 parameters: withParameters
             );
             if (kvps == null)
-                throw new Exception(message: PostgreSqlHelper.ErrorMessage); 
+                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
             XElement layersX = null;
             var rows = kvps.Rows;
             var numberMatched = rows.Count;
@@ -334,7 +335,7 @@ namespace Geosite
                             _catalogTreeView.Nodes.Clear();
                             _catalogTreeView.Nodes.Add(currentNode = new TreeNode(_rootName)
                             {
-                                ToolTipText = $"Forest - [{_forest}]",
+                                ToolTipText = $"ForestID - [{_forest}]",
                                 ImageIndex = 0,
                                 SelectedImageIndex = 0,
                                 Tag = 1 //1=需要异步通讯获取子节点; 0=不再需要执行异步通讯
@@ -344,6 +345,7 @@ namespace Geosite
                         currentNode.Nodes.Clear();
                         //获取当前节点下欲新建的全部子节点信息
                         var describeLayerResponseX = GetNodes(typeName);
+
                         if (describeLayerResponseX != null)
                         {
                             /*
@@ -389,21 +391,37 @@ namespace Geosite
                                     var trees = int.Parse(layerDescription.Attribute("trees")?.Value ?? "0");
                                     //本级节点下的各级嵌套子节点个数，只要不为0，就表明有子节点
                                     var children = int.Parse(layerDescription.Attribute("children")?.Value ?? "0");
+                                    var leaf = layerDescription.Attribute("leaf")?.Value;
+
                                     var theNode = new TreeNode(
                                         (
                                             layerDescription.Attribute("name")?.Value ?? "unknown"
-                                        ) +
-                                        (
-                                            //为方便与数据表中的专题名称对照，特追加【theme】后缀
-                                            children > 0
-                                                ? ""
-                                                : $" - [{layerDescription.Attribute("theme")?.Value}{(trees > 1 ? " ..." : "")}]"
                                         )
                                     )
                                     {
                                         ImageIndex = typeIndex,
                                         SelectedImageIndex = typeIndex,
-                                        ToolTipText = $"Layer - [{layerDescription.Attribute("layer")?.Value}]\nTree - [{layerDescription.Attribute("tree")?.Value}]\nTrees - [{layerDescription.Attribute("trees")?.Value}]\nBranch - [{layerDescription.Attribute("branch")?.Value}]\nLeaf - [{layerDescription.Attribute("leaf")?.Value}]\nLevel - [{layerDescription.Attribute("level")?.Value}]\nStatus - [{layerDescription.Attribute("status")?.Value}]\nChildren - [{children}]\nUri - [{layerDescription.Attribute("uri")?.Value}]",
+                                        ToolTipText =
+                                            $"Path - [{layerDescription.Attribute("layer")?.Value}]\n" +
+                                            (
+                                                children == 0
+                                                    ? $"Layer - [{layerDescription.Attribute("theme")?.Value}{(trees > 1 ? ", ..." : "")}]\n"
+                                                    : ""
+                                            ) +
+                                            $"TreeID - [{layerDescription.Attribute("tree")?.Value}]\n" +
+                                            $"TreeCount - [{layerDescription.Attribute("trees")?.Value}]\n" +
+                                            $"BranchID - [{layerDescription.Attribute("branch")?.Value}]\n" +
+                                            (
+                                                string.IsNullOrWhiteSpace(leaf) ? "" : $"Leaf - [{leaf}]\n"
+                                            ) +
+                                            $"Level - [{layerDescription.Attribute("level")?.Value}]\n" +
+                                            $"Status - [{layerDescription.Attribute("status")?.Value}]\n" +
+                                            $"Children - [{children > 0}]\n" +
+                                            (
+                                                children == 0
+                                                    ? $"Uri - [{layerDescription.Attribute("uri")?.Value}]"
+                                                    : ""
+                                            ),
                                         Tag = children > 0 ? 1 : 0
                                     };
                                     if (children > 0)
@@ -437,12 +455,12 @@ namespace Geosite
         /// <param name="label">新标签</param>
         public void EditNodeLabel(TreeNode node, string label)
         {
-            var level = node.Level; 
+            var level = node.Level;
             var toolTipText = node.ToolTipText.Split(separator: '\n');
             var layers = Regex.Split(
                 Regex.Replace(
                     input: toolTipText[0],
-                    pattern: @"^Layer[^\[]*?\[([\s\S]*)\]$",
+                    pattern: @"^Path[^\[]*?\[([\s\S]*)\]$",
                     replacement: "$1",
                     options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline
                 ).Trim(),
@@ -486,7 +504,7 @@ namespace Geosite
             var layers = Regex.Split(
                 Regex.Replace(
                     input: toolTipText[0],
-                    pattern: @"^Layer[^\[]*?\[([\s\S]*)\]$",
+                    pattern: @"^Path[^\[]*?\[([\s\S]*)\]$",
                     replacement: "$1",
                     options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline
                 ).Trim(),
