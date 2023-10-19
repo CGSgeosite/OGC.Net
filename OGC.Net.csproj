@@ -2,13 +2,13 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net7.0-windows</TargetFramework>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>Geosite</RootNamespace>
 		<ApplicationIcon>OGC.net.ico</ApplicationIcon>
 		<Title>OGC.net</Title>
-		<Version>7.2023.9.26</Version>
+		<Version>8.2023.10.12</Version>
 		<Authors>ZhanchangWang</Authors>
 		<Company>CGS</Company>
 		<Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
@@ -56,13 +56,13 @@
 	  <PackageReference Include="MaxRev.Gdal.MacosRuntime.Minimal.x64" Version="3.7.0.217" />
 	  <PackageReference Include="MaxRev.Gdal.WindowsRuntime.Minimal" Version="3.7.0.100" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	  <PackageReference Include="Npgsql" Version="7.0.6" />
-	  <PackageReference Include="RestSharp" Version="110.2.0" />
+	  <PackageReference Include="Npgsql" Version="8.0.0-rc.2" />
+	  <PackageReference Include="RestSharp" Version="110.2.1-alpha.0.13" />
 	  <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 	  <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
-	  <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
-	  <PackageReference Include="System.Text.Encodings.Web" Version="7.0.0" />
-	  <PackageReference Include="System.Text.Json" Version="7.0.3" />
+	  <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0-rc.2.23479.6" />
+	  <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0-rc.2.23479.6" />
+	  <PackageReference Include="System.Text.Json" Version="8.0.0-rc.2.23479.6" />
 	</ItemGroup>
 
 	<ItemGroup>
