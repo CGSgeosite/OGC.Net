@@ -6,9 +6,9 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "OGC.Net.Core/8.2023.10.12": {
+      "OGC.Net.Core/8.2023.10.30": {
         "dependencies": {
-          "Magick.NET-Q16-AnyCPU": "13.3.0",
+          "Magick.NET-Q16-AnyCPU": "13.4.0",
           "MaxRev.Gdal.Core": "3.7.0.217",
           "MaxRev.Gdal.LinuxRuntime.Minimal": "3.7.0.100",
           "MaxRev.Gdal.MacosRuntime.Minimal.arm64": "3.7.0.217",
@@ -23,14 +23,14 @@
           "OGC.Net.Core.dll": {}
         }
       },
-      "Magick.NET-Q16-AnyCPU/13.3.0": {
+      "Magick.NET-Q16-AnyCPU/13.4.0": {
         "dependencies": {
-          "Magick.NET.Core": "13.3.0"
+          "Magick.NET.Core": "13.4.0"
         },
         "runtime": {
           "lib/netstandard21/Magick.NET-Q16-AnyCPU.dll": {
-            "assemblyVersion": "13.3.0.0",
-            "fileVersion": "13.3.0.0"
+            "assemblyVersion": "13.4.0.0",
+            "fileVersion": "13.4.0.0"
           }
         },
         "runtimeTargets": {
@@ -62,25 +62,25 @@
           "runtimes/win-arm64/native/Magick.Native-Q16-arm64.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "7.1.1.17"
+            "fileVersion": "7.1.1.20"
           },
           "runtimes/win-x64/native/Magick.Native-Q16-x64.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "7.1.1.17"
+            "fileVersion": "7.1.1.20"
           },
           "runtimes/win-x86/native/Magick.Native-Q16-x86.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "7.1.1.17"
+            "fileVersion": "7.1.1.20"
           }
         }
       },
-      "Magick.NET.Core/13.3.0": {
+      "Magick.NET.Core/13.4.0": {
         "runtime": {
           "lib/netstandard21/Magick.NET.Core.dll": {
-            "assemblyVersion": "13.3.0.0",
-            "fileVersion": "13.3.0.0"
+            "assemblyVersion": "13.4.0.0",
+            "fileVersion": "13.4.0.0"
           }
         }
       },
@@ -2393,24 +2393,24 @@
     }
   },
   "libraries": {
-    "OGC.Net.Core/8.2023.10.12": {
+    "OGC.Net.Core/8.2023.10.30": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Magick.NET-Q16-AnyCPU/13.3.0": {
+    "Magick.NET-Q16-AnyCPU/13.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vLGas9RWBLqfMkAerS+ekkclDu5gFAwqYkG8MzMv418tAI8T1p6NbSda0DfRlrvCkhagmcthDmG4jxyVA9vlVQ==",
-      "path": "magick.net-q16-anycpu/13.3.0",
-      "hashPath": "magick.net-q16-anycpu.13.3.0.nupkg.sha512"
+      "sha512": "sha512-OgOv1V8KHMp1wnAmFma7Aafe1CsYViQEGrxHGTaUzPdaiRBk3GCv6dV1iDL+nCDgsciFs1gBKNMaSsxByrHbDw==",
+      "path": "magick.net-q16-anycpu/13.4.0",
+      "hashPath": "magick.net-q16-anycpu.13.4.0.nupkg.sha512"
     },
-    "Magick.NET.Core/13.3.0": {
+    "Magick.NET.Core/13.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-5d6hy5QusOYBmj4AUoPvPmgg8FWMdsyJPhs/QAiHGhX1XLB9xn8C05JWj63tQO6u+1KdDq3nn1RLchJEJ5GSBQ==",
-      "path": "magick.net.core/13.3.0",
-      "hashPath": "magick.net.core.13.3.0.nupkg.sha512"
+      "sha512": "sha512-Z1om0NiXREKUUI2BYKM86RSgMpBJFuc+OCI25fPtF/evpWsWm83kpACMODuNs60Bv/I4sn8VCGqezQA2/azWKA==",
+      "path": "magick.net.core/13.4.0",
+      "hashPath": "magick.net.core.13.4.0.nupkg.sha512"
     },
     "MaxRev.Gdal.Core/3.7.0.217": {
       "type": "package",
