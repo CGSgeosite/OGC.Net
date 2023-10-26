@@ -228,8 +228,7 @@ namespace Geosite
                                 var locationY = int.Parse(s: splitArray[2]);
                                 if (locationY < 0)
                                     locationY = 0;
-                                //Location = new System.Drawing.Point(x: locationX, y: locationY);
-                                Location = new Point(x: locationX, y: locationY);
+                                Location = new System.Drawing.Point(x: locationX, y: locationY);
                                 Size = new Size(width: int.Parse(s: splitArray[3]), height: int.Parse(s: splitArray[4]));
                                 break;
                             }
@@ -1966,7 +1965,7 @@ namespace Geosite
                                               <Servers>
                                                 <Server>
                                                   <Host>192.168.0.123</Host>
-                                                  <Version>7.2023.8.29</Version>
+                                                  <Version>8.2023.10.30</Version>
                                                   <Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
                                                   <Error></Error>
                                                   <Username>postgres</Username>
@@ -1991,7 +1990,7 @@ namespace Geosite
                                             var versionYear = long.Parse(s: versionArray[1]) * 1e4;
                                             var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
                                             var versionDay = long.Parse(s: versionArray[3]);
-                                            if (versionMain + versionYear + versionMonth + versionDay >= 820231012) // 8.2023.10.12
+                                            if (versionMain + versionYear + versionMonth + versionDay >= 820231030) // 8.2023.10.30
                                             {
                                                 if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(), result: out var port))
                                                     port = 5432;
@@ -2060,11 +2059,16 @@ namespace Geosite
                                                                     statusProgress.Value = 0;
                                                                 }
                                                             );
-                                                            //表分区个数介于【1～96】之间
-                                                            var tablePartitions =
-                                                                Math.Min(96, int.Parse(s: forestX
-                                                                    ?.Attribute(name: "ProcessorCount")
-                                                                    ?.Value ?? "1"));
+
+                                                            //---- OGC.net 创建数据库暂不采用多分区方式创建
+                                                            //---- 如果采用多分区，管理员可在GeositeServer站点提供的[Refresh]指令实施
+
+                                                            ////表分区个数介于【1～96】之间
+                                                            //var tablePartitions =
+                                                            //    Math.Min(96, int.Parse(s: forestX
+                                                            //        ?.Attribute(name: "ProcessorCount")
+                                                            //        ?.Value ?? "1"));
+
                                                             if (
                                                                 geositeServerLink.flag != 1 || (PostgreSqlHelper.NonQuery(
                                                                     cmd:
@@ -2156,7 +2160,9 @@ namespace Geosite
                                                                                         "id INTEGER, name TEXT, property JSONB, timestamp INTEGER[], status SmallInt DEFAULT 0" +
                                                                                         ",CONSTRAINT forest_pkey PRIMARY KEY (id)" +
                                                                                         ",CONSTRAINT forest_status_constraint CHECK (status >= 0 AND status <= 7)" +
-                                                                                        ") PARTITION BY HASH (id);" +
+                                                                                        ")"+
+                                                                                        //" PARTITION BY HASH (id)"+
+                                                                                        ";" +
                                                                                         "COMMENT ON TABLE forest IS '森林表，此表是本系统的第一张表，用于存放节点森林基本信息，每片森林（节点群）将由若干颗文档树（GeositeXml）构成';" +
                                                                                         "COMMENT ON COLUMN forest.id IS '森林序号标识码（通常由注册表[register.xml]中[forest]节的先后顺序决定，亦可通过接口函数赋值），充当主键（唯一性约束）且通常大于等于0，若设为负值，便不参与后续对等，需通过额外工具进行【增删改】操作';" +
                                                                                         "COMMENT ON COLUMN forest.name IS '森林简要名称';" +
@@ -2177,13 +2183,14 @@ namespace Geosite
                                                                                     //1        1        0         |  6=持久化暗数据（不参与对等）失败          
                                                                                     //1        1        1         |  7=持久化暗数据（不参与对等）正常 
 
-                                                                                    for (var i = 0;
-                                                                                     i < tablePartitions;
-                                                                                     i++)
-                                                                                        PostgreSqlHelper.NonQuery(
-                                                                                            cmd:
-                                                                                            $"CREATE TABLE forest_{i} PARTITION OF forest FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                            timeout: 0);
+                                                                                    //for (var i = 0;
+                                                                                    // i < tablePartitions;
+                                                                                    // i++)
+                                                                                    //    PostgreSqlHelper.NonQuery(
+                                                                                    //        cmd:
+                                                                                    //        $"CREATE TABLE forest_{i} PARTITION OF forest FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                    //        timeout: 0);
+
                                                                                     if (PostgreSqlHelper.NonQuery(
                                                                                          cmd:
                                                                                          "CREATE INDEX forest_name ON forest USING BTREE (name);" +
@@ -2202,19 +2209,23 @@ namespace Geosite
                                                                                             "forest INTEGER, action JSONB, detail XML" +
                                                                                             ",CONSTRAINT forest_relation_pkey PRIMARY KEY (forest)" +
                                                                                             ",CONSTRAINT forest_relation_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                            ") PARTITION BY HASH (forest);" +
+                                                                                            ")"+
+                                                                                            //" PARTITION BY HASH (forest)"+
+                                                                                            ";" +
                                                                                             "COMMENT ON TABLE forest_relation IS '节点森林关系描述表';" +
                                                                                             "COMMENT ON COLUMN forest_relation.forest IS '节点森林序号标识码';" +
                                                                                             "COMMENT ON COLUMN forest_relation.action IS '节点森林事务活动容器';" +
                                                                                             "COMMENT ON COLUMN forest_relation.detail IS '节点森林关系描述容器';",
                                                                                             timeout: 0);
-                                                                                        for (var i = 0;
-                                                                                         i < tablePartitions;
-                                                                                         i++)
-                                                                                            PostgreSqlHelper.NonQuery(
-                                                                                                cmd:
-                                                                                                $"CREATE TABLE forest_relation_{i} PARTITION OF forest_relation FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                timeout: 0);
+
+                                                                                        //for (var i = 0;
+                                                                                        // i < tablePartitions;
+                                                                                        // i++)
+                                                                                        //    PostgreSqlHelper.NonQuery(
+                                                                                        //        cmd:
+                                                                                        //        $"CREATE TABLE forest_relation_{i} PARTITION OF forest_relation FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                        //        timeout: 0);
+
                                                                                         PostgreSqlHelper.NonQuery(
                                                                                             cmd:
                                                                                             "CREATE INDEX forest_relation_action_FTS ON forest_relation USING PGROONGA (action);" +
@@ -2238,7 +2249,9 @@ namespace Geosite
                                                                                              "forest INTEGER, sequence INTEGER, id INTEGER, name TEXT, property JSONB, uri TEXT, timestamp INTEGER[], type INTEGER[], status SmallInt DEFAULT 0" +
                                                                                              ",CONSTRAINT tree_pkey PRIMARY KEY (id)" +
                                                                                              ",CONSTRAINT tree_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                             ") PARTITION BY HASH (id);" +
+                                                                                             ")"+
+                                                                                             //" PARTITION BY HASH (id)"+
+                                                                                             ";" +
                                                                                              "COMMENT ON TABLE tree IS '树根表，此表是本系统的第二张表，用于存放某片森林（节点群）中的若干颗文档树（GeositeXML）';" +
                                                                                              "COMMENT ON COLUMN tree.forest IS '文档树所属节点森林标识码';" +
                                                                                              "COMMENT ON COLUMN tree.sequence IS '文档树在节点森林中排列顺序号（由所在森林内的[GeositeXML]文档编号顺序决定）且大于等于0';" +
@@ -2251,14 +2264,15 @@ namespace Geosite
                                                                                              "COMMENT ON COLUMN tree.status IS '文档树状态码（介于0～7之间），继承自[forest.status]';",
                                                                                              timeout: 0) != null)
                                                                                         {
-                                                                                            for (var i = 0;
-                                                                                             i < tablePartitions;
-                                                                                             i++)
-                                                                                                PostgreSqlHelper
-                                                                                                    .NonQuery(
-                                                                                                        cmd:
-                                                                                                        $"CREATE TABLE tree_{i} PARTITION OF tree FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                        timeout: 0);
+                                                                                            //for (var i = 0;
+                                                                                            // i < tablePartitions;
+                                                                                            // i++)
+                                                                                            //    PostgreSqlHelper
+                                                                                            //        .NonQuery(
+                                                                                            //            cmd:
+                                                                                            //            $"CREATE TABLE tree_{i} PARTITION OF tree FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                            //            timeout: 0);
+
                                                                                             PostgreSqlHelper.NonQuery(
                                                                                                 cmd:
                                                                                                 "CREATE SEQUENCE tree_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
@@ -2288,20 +2302,24 @@ namespace Geosite
                                                                                                         "tree INTEGER, action JSONB, detail XML" +
                                                                                                         ",CONSTRAINT tree_relation_pkey PRIMARY KEY (tree)" +
                                                                                                         ",CONSTRAINT tree_relation_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                        ") PARTITION BY HASH (tree);" +
+                                                                                                        ")"+
+                                                                                                        //" PARTITION BY HASH (tree)"+
+                                                                                                        ";" +
                                                                                                         "COMMENT ON TABLE tree_relation IS '文档树关系描述表';" +
                                                                                                         "COMMENT ON COLUMN tree_relation.tree IS '文档树的标识码';" +
                                                                                                         "COMMENT ON COLUMN tree_relation.action IS '文档树事务活动容器';" +
                                                                                                         "COMMENT ON COLUMN tree_relation.detail IS '文档树关系描述容器';",
                                                                                                         timeout: 0);
-                                                                                                for (var i = 0;
-                                                                                                 i < tablePartitions;
-                                                                                                 i++)
-                                                                                                    PostgreSqlHelper
-                                                                                                        .NonQuery(
-                                                                                                            cmd:
-                                                                                                            $"CREATE TABLE tree_relation_{i} PARTITION OF tree_relation FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                            timeout: 0);
+
+                                                                                                //for (var i = 0;
+                                                                                                // i < tablePartitions;
+                                                                                                // i++)
+                                                                                                //    PostgreSqlHelper
+                                                                                                //        .NonQuery(
+                                                                                                //            cmd:
+                                                                                                //            $"CREATE TABLE tree_relation_{i} PARTITION OF tree_relation FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                //            timeout: 0);
+
                                                                                                 PostgreSqlHelper
                                                                                                     .NonQuery(
                                                                                                         cmd:
@@ -2328,7 +2346,9 @@ namespace Geosite
                                                                                                          "tree INTEGER, level SmallInt, name TEXT, property JSONB, id INTEGER, parent INTEGER DEFAULT 0" +
                                                                                                          ",CONSTRAINT branch_pkey PRIMARY KEY (id)" +
                                                                                                          ",CONSTRAINT branch_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                         ") PARTITION BY HASH (id);" +
+                                                                                                         ")"+
+                                                                                                         //" PARTITION BY HASH (id)"+
+                                                                                                         ";" +
                                                                                                          "COMMENT ON TABLE branch IS '枝干谱系表，此表是本系统第三张表，用于存放某棵树（GeositeXml文档）的枝干体系';" +
                                                                                                          "COMMENT ON COLUMN branch.tree IS '枝干隶属文档树的标识码';" +
                                                                                                          "COMMENT ON COLUMN branch.level IS '枝干所处分类级别：1是树干、2是树枝、3是树杈、...、n是树梢';" +
@@ -2339,16 +2359,17 @@ namespace Geosite
                                                                                                          timeout:
                                                                                                          0) != null)
                                                                                                 {
-                                                                                                    for (var i = 0;
-                                                                                                     i <
-                                                                                                     tablePartitions;
-                                                                                                     i++)
-                                                                                                        PostgreSqlHelper
-                                                                                                            .NonQuery(
-                                                                                                                cmd:
-                                                                                                                $"CREATE TABLE branch_{i} PARTITION OF branch FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                timeout:
-                                                                                                                0);
+                                                                                                    //for (var i = 0;
+                                                                                                    // i <
+                                                                                                    // tablePartitions;
+                                                                                                    // i++)
+                                                                                                    //    PostgreSqlHelper
+                                                                                                    //        .NonQuery(
+                                                                                                    //            cmd:
+                                                                                                    //            $"CREATE TABLE branch_{i} PARTITION OF branch FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                    //            timeout:
+                                                                                                    //            0);
+
                                                                                                     PostgreSqlHelper
                                                                                                         .NonQuery(
                                                                                                             cmd:
@@ -2375,23 +2396,26 @@ namespace Geosite
                                                                                                                 "branch INTEGER, action JSONB, detail XML" +
                                                                                                                 ",CONSTRAINT branch_relation_pkey PRIMARY KEY (branch)" +
                                                                                                                 ",CONSTRAINT branch_relation_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                ") PARTITION BY HASH (branch);" +
+                                                                                                                ")"+
+                                                                                                                //" PARTITION BY HASH (branch)"+
+                                                                                                                ";" +
                                                                                                                 "COMMENT ON TABLE branch_relation IS '枝干关系描述表';" +
                                                                                                                 "COMMENT ON COLUMN branch_relation.branch IS '枝干标识码';" +
                                                                                                                 "COMMENT ON COLUMN branch_relation.action IS '枝干事务活动容器';" +
                                                                                                                 "COMMENT ON COLUMN branch_relation.detail IS '枝干关系描述容器';",
                                                                                                                 timeout:
                                                                                                                 0);
-                                                                                                        for (var i = 0;
-                                                                                                         i <
-                                                                                                         tablePartitions;
-                                                                                                         i++)
-                                                                                                            PostgreSqlHelper
-                                                                                                                .NonQuery(
-                                                                                                                    cmd:
-                                                                                                                    $"CREATE TABLE branch_relation_{i} PARTITION OF branch_relation FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                    timeout
-                                                                                                                    : 0);
+                                                                                                        //for (var i = 0;
+                                                                                                        // i <
+                                                                                                        // tablePartitions;
+                                                                                                        // i++)
+                                                                                                        //    PostgreSqlHelper
+                                                                                                        //        .NonQuery(
+                                                                                                        //            cmd:
+                                                                                                        //            $"CREATE TABLE branch_relation_{i} PARTITION OF branch_relation FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                        //            timeout
+                                                                                                        //            : 0);
+
                                                                                                         PostgreSqlHelper
                                                                                                             .NonQuery(
                                                                                                                 cmd:
@@ -2422,7 +2446,9 @@ namespace Geosite
                                                                                                                      "branch INTEGER, id BigInt, rank SmallInt DEFAULT -1, type INT DEFAULT 0, name TEXT, property INTEGER, timestamp INT[], frequency BigInt DEFAULT 0" +
                                                                                                                      ",CONSTRAINT leaf_pkey PRIMARY KEY (id)" +
                                                                                                                      ",CONSTRAINT leaf_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                     ") PARTITION BY HASH (id);" +
+                                                                                                                     ")"+
+                                                                                                                     //" PARTITION BY HASH (id)"+
+                                                                                                                     ";" +
                                                                                                                      "COMMENT ON TABLE leaf IS '叶子表，此表是本系统第四表，用于存放某个树梢挂接的若干叶子（实体要素）的摘要信息';" +
                                                                                                                      "COMMENT ON COLUMN leaf.branch IS '叶子要素隶属树梢（父级枝干）标识码';" +
                                                                                                                      "COMMENT ON COLUMN leaf.id IS '叶子要素标识码，充当主键（唯一性约束）';" +
@@ -2436,17 +2462,18 @@ namespace Geosite
                                                                                                                      : 0) !=
                                                                                                              null)
                                                                                                         {
-                                                                                                            for (var i =
-                                                                                                                 0;
-                                                                                                             i <
-                                                                                                             tablePartitions;
-                                                                                                             i++)
-                                                                                                                PostgreSqlHelper
-                                                                                                                    .NonQuery(
-                                                                                                                        cmd
-                                                                                                                        : $"CREATE TABLE leaf_{i} PARTITION OF leaf FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                        timeout
-                                                                                                                        : 0);
+                                                                                                            //for (var i =
+                                                                                                            //     0;
+                                                                                                            // i <
+                                                                                                            // tablePartitions;
+                                                                                                            // i++)
+                                                                                                            //    PostgreSqlHelper
+                                                                                                            //        .NonQuery(
+                                                                                                            //            cmd
+                                                                                                            //            : $"CREATE TABLE leaf_{i} PARTITION OF leaf FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                            //            timeout
+                                                                                                            //            : 0);
+
                                                                                                             PostgreSqlHelper
                                                                                                                 .NonQuery(
                                                                                                                     cmd:
@@ -2480,26 +2507,29 @@ namespace Geosite
                                                                                                                         "leaf BigInt, action JSONB, detail XML" +
                                                                                                                         ",CONSTRAINT leaf_relation_pkey PRIMARY KEY (leaf)" +
                                                                                                                         ",CONSTRAINT leaf_relation_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                        ") PARTITION BY HASH (leaf);" +
+                                                                                                                        ")"+
+                                                                                                                        //" PARTITION BY HASH (leaf)"+
+                                                                                                                        ";" +
                                                                                                                         "COMMENT ON TABLE leaf_relation IS '叶子关系描述表';" +
                                                                                                                         "COMMENT ON COLUMN leaf_relation.leaf IS '叶子要素标识码';" +
                                                                                                                         "COMMENT ON COLUMN leaf_relation.action IS '叶子事务活动容器';" +
                                                                                                                         "COMMENT ON COLUMN leaf_relation.detail IS '叶子关系描述容器';",
                                                                                                                         timeout
                                                                                                                         : 0);
-                                                                                                                for
-                                                                                                                    (var
-                                                                                                                     i =
-                                                                                                                         0;
-                                                                                                                     i <
-                                                                                                                     tablePartitions;
-                                                                                                                     i++)
-                                                                                                                    PostgreSqlHelper
-                                                                                                                        .NonQuery(
-                                                                                                                            cmd
-                                                                                                                            : $"CREATE TABLE leaf_relation_{i} PARTITION OF leaf_relation FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                            timeout
-                                                                                                                            : 0);
+                                                                                                                //for
+                                                                                                                //    (var
+                                                                                                                //     i =
+                                                                                                                //         0;
+                                                                                                                //     i <
+                                                                                                                //     tablePartitions;
+                                                                                                                //     i++)
+                                                                                                                //    PostgreSqlHelper
+                                                                                                                //        .NonQuery(
+                                                                                                                //            cmd
+                                                                                                                //            : $"CREATE TABLE leaf_relation_{i} PARTITION OF leaf_relation FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                                //            timeout
+                                                                                                                //            : 0);
+
                                                                                                                 PostgreSqlHelper
                                                                                                                     .NonQuery(
                                                                                                                         cmd
@@ -2533,7 +2563,9 @@ namespace Geosite
                                                                                                                              "leaf bigint, level SmallInt, sequence SmallInt, parent SmallInt, name TEXT, attribute JSONB, flag BOOLEAN DEFAULT false, type SmallInt DEFAULT 0, content Text, numericvalue Numeric" +
                                                                                                                              ",CONSTRAINT leaf_description_pkey PRIMARY KEY (leaf, level, sequence, parent)" +
                                                                                                                              ",CONSTRAINT leaf_description_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                             ") PARTITION BY HASH (leaf, level, sequence, parent);" +
+                                                                                                                             ")"+
+                                                                                                                             //" PARTITION BY HASH (leaf, level, sequence, parent)"+
+                                                                                                                             ";" +
                                                                                                                              "COMMENT ON TABLE leaf_description IS '叶子要素表（leaf）的属性描述子表';" +
                                                                                                                              "COMMENT ON COLUMN leaf_description.leaf IS '叶子要素的标识码';" +
                                                                                                                              "COMMENT ON COLUMN leaf_description.level IS '字段（键）的嵌套层级';" +
@@ -2549,19 +2581,20 @@ namespace Geosite
                                                                                                                              : 0) !=
                                                                                                                      null)
                                                                                                                 {
-                                                                                                                    for
-                                                                                                                        (var
-                                                                                                                         i =
-                                                                                                                             0;
-                                                                                                                         i <
-                                                                                                                         tablePartitions;
-                                                                                                                         i++)
-                                                                                                                        PostgreSqlHelper
-                                                                                                                            .NonQuery(
-                                                                                                                                cmd
-                                                                                                                                : $"CREATE TABLE leaf_description_{i} PARTITION OF leaf_description FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                                timeout
-                                                                                                                                : 0);
+                                                                                                                    //for
+                                                                                                                    //    (var
+                                                                                                                    //     i =
+                                                                                                                    //         0;
+                                                                                                                    //     i <
+                                                                                                                    //     tablePartitions;
+                                                                                                                    //     i++)
+                                                                                                                    //    PostgreSqlHelper
+                                                                                                                    //        .NonQuery(
+                                                                                                                    //            cmd
+                                                                                                                    //            : $"CREATE TABLE leaf_description_{i} PARTITION OF leaf_description FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                                    //            timeout
+                                                                                                                    //            : 0);
+
                                                                                                                     if
                                                                                                                         (PostgreSqlHelper
                                                                                                                              .NonQuery(
@@ -2600,7 +2633,9 @@ namespace Geosite
                                                                                                                                      "leaf BigInt, style JSONB" +
                                                                                                                                      ",CONSTRAINT leaf_style_pkey PRIMARY KEY (leaf)" +
                                                                                                                                      ",CONSTRAINT leaf_style_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                     ") PARTITION BY HASH (leaf);" +
+                                                                                                                                     ")"+
+                                                                                                                                     //" PARTITION BY HASH (leaf)"+
+                                                                                                                                     ";" +
                                                                                                                                      "COMMENT ON TABLE leaf_style IS '叶子要素表（leaf）的样式子表';" +
                                                                                                                                      "COMMENT ON COLUMN leaf_style.leaf IS '叶子要素的标识码';" +
                                                                                                                                      "COMMENT ON COLUMN leaf_style.style IS '叶子要素可视化样式信息，由若干键值对（KVP）构成';",
@@ -2608,19 +2643,20 @@ namespace Geosite
                                                                                                                                      : 0) !=
                                                                                                                              null)
                                                                                                                         {
-                                                                                                                            for
-                                                                                                                                (var
-                                                                                                                                 i =
-                                                                                                                                     0;
-                                                                                                                                 i <
-                                                                                                                                 tablePartitions;
-                                                                                                                                 i++)
-                                                                                                                                PostgreSqlHelper
-                                                                                                                                    .NonQuery(
-                                                                                                                                        cmd
-                                                                                                                                        : $"CREATE TABLE leaf_style_{i} PARTITION OF leaf_style FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                                        timeout
-                                                                                                                                        : 0);
+                                                                                                                            //for
+                                                                                                                            //    (var
+                                                                                                                            //     i =
+                                                                                                                            //         0;
+                                                                                                                            //     i <
+                                                                                                                            //     tablePartitions;
+                                                                                                                            //     i++)
+                                                                                                                            //    PostgreSqlHelper
+                                                                                                                            //        .NonQuery(
+                                                                                                                            //            cmd
+                                                                                                                            //            : $"CREATE TABLE leaf_style_{i} PARTITION OF leaf_style FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                                            //            timeout
+                                                                                                                            //            : 0);
+
                                                                                                                             if
                                                                                                                                 (PostgreSqlHelper
                                                                                                                                      .NonQuery(
@@ -2654,7 +2690,9 @@ namespace Geosite
                                                                                                                                              "leaf BigInt, coordinate GEOMETRY, boundary GEOMETRY, centroid GEOMETRY" +
                                                                                                                                              ",CONSTRAINT leaf_geometry_pkey PRIMARY KEY (leaf)" +
                                                                                                                                              ",CONSTRAINT leaf_geometry_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                             ") PARTITION BY HASH (leaf);" +
+                                                                                                                                             ")"+
+                                                                                                                                             //" PARTITION BY HASH (leaf)"+
+                                                                                                                                             ";" +
                                                                                                                                              "COMMENT ON TABLE leaf_geometry IS '叶子要素表（leaf）的几何坐标子表';" +
                                                                                                                                              "COMMENT ON COLUMN leaf_geometry.leaf IS '叶子要素的标识码';" +
                                                                                                                                              "COMMENT ON COLUMN leaf_geometry.coordinate IS '叶子要素几何坐标（【EPSG:4326】）';" +
@@ -2664,19 +2702,20 @@ namespace Geosite
                                                                                                                                              : 0) !=
                                                                                                                                      null)
                                                                                                                                 {
-                                                                                                                                    for
-                                                                                                                                        (var
-                                                                                                                                         i =
-                                                                                                                                             0;
-                                                                                                                                         i <
-                                                                                                                                         tablePartitions;
-                                                                                                                                         i++)
-                                                                                                                                        PostgreSqlHelper
-                                                                                                                                            .NonQuery(
-                                                                                                                                                cmd
-                                                                                                                                                : $"CREATE TABLE leaf_geometry_{i} PARTITION OF leaf_geometry FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                                                timeout
-                                                                                                                                                : 0);
+                                                                                                                                    //for
+                                                                                                                                    //    (var
+                                                                                                                                    //     i =
+                                                                                                                                    //         0;
+                                                                                                                                    //     i <
+                                                                                                                                    //     tablePartitions;
+                                                                                                                                    //     i++)
+                                                                                                                                    //    PostgreSqlHelper
+                                                                                                                                    //        .NonQuery(
+                                                                                                                                    //            cmd
+                                                                                                                                    //            : $"CREATE TABLE leaf_geometry_{i} PARTITION OF leaf_geometry FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                                                    //            timeout
+                                                                                                                                    //            : 0);
+
                                                                                                                                     if
                                                                                                                                         (PostgreSqlHelper
                                                                                                                                              .NonQuery(
@@ -2711,7 +2750,9 @@ namespace Geosite
                                                                                                                                                      "leaf BigInt, z INTEGER, x INTEGER, y INTEGER, tile RASTER, boundary geometry" +
                                                                                                                                                      ",CONSTRAINT leaf_tile_pkey PRIMARY KEY (leaf, z, x, y)" +
                                                                                                                                                      ",CONSTRAINT leaf_tile_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                                     ") PARTITION BY HASH (leaf, z, x, y);" +
+                                                                                                                                                     ")"+
+                                                                                                                                                     //" PARTITION BY HASH (leaf, z, x, y)"+
+                                                                                                                                                     ";" +
                                                                                                                                                      "COMMENT ON TABLE leaf_tile IS '叶子要素表（leaf）的栅格瓦片子表，支持【四叉树金字塔式瓦片】和【平铺式地图瓦片】两种类型，每类瓦片的元数据信息需在叶子属性子表中的type进行表述';" +
                                                                                                                                                      "COMMENT ON COLUMN leaf_tile.leaf IS '叶子要素的标识码';" +
                                                                                                                                                      "COMMENT ON COLUMN leaf_tile.z IS '叶子瓦片缩放级（注：平铺式瓦片类型的z值强制为【-1】，四叉树金字塔式瓦片类型的z值通常介于【0～24】之间）';" +
@@ -2723,19 +2764,20 @@ namespace Geosite
                                                                                                                                                      : 0) !=
                                                                                                                                              null)
                                                                                                                                         {
-                                                                                                                                            for
-                                                                                                                                                (var
-                                                                                                                                                 i =
-                                                                                                                                                     0;
-                                                                                                                                                 i <
-                                                                                                                                                 tablePartitions;
-                                                                                                                                                 i++)
-                                                                                                                                                PostgreSqlHelper
-                                                                                                                                                    .NonQuery(
-                                                                                                                                                        cmd
-                                                                                                                                                        : $"CREATE TABLE leaf_tile_{i} PARTITION OF leaf_tile FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                                                        timeout
-                                                                                                                                                        : 0);
+                                                                                                                                            //for
+                                                                                                                                            //    (var
+                                                                                                                                            //     i =
+                                                                                                                                            //         0;
+                                                                                                                                            //     i <
+                                                                                                                                            //     tablePartitions;
+                                                                                                                                            //     i++)
+                                                                                                                                            //    PostgreSqlHelper
+                                                                                                                                            //        .NonQuery(
+                                                                                                                                            //            cmd
+                                                                                                                                            //            : $"CREATE TABLE leaf_tile_{i} PARTITION OF leaf_tile FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                                                            //            timeout
+                                                                                                                                            //            : 0);
+
                                                                                                                                             if
                                                                                                                                                 (PostgreSqlHelper
                                                                                                                                                      .NonQuery(
@@ -2770,7 +2812,9 @@ namespace Geosite
                                                                                                                                                              "leaf BigInt, wms TEXT, boundary geometry" +
                                                                                                                                                              ",CONSTRAINT leaf_wms_pkey PRIMARY KEY (leaf)" +
                                                                                                                                                              ",CONSTRAINT leaf_wms_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                                             ") PARTITION BY HASH (leaf);" +
+                                                                                                                                                             ")"+
+                                                                                                                                                             //" PARTITION BY HASH (leaf)"+
+                                                                                                                                                             ";" +
                                                                                                                                                              "COMMENT ON TABLE leaf_wms IS '叶子要素表（leaf）的瓦片服务子表，元数据信息需在叶子属性表中的type中进行表述';" +
                                                                                                                                                              "COMMENT ON COLUMN leaf_wms.leaf IS '叶子要素的标识码';" +
                                                                                                                                                              "COMMENT ON COLUMN leaf_wms.wms IS '叶子要素服务地址模板，暂支持【OGC】、【BingMap】、【DeepZoom】和【ESRI】瓦片编码类型';" +
@@ -2779,19 +2823,20 @@ namespace Geosite
                                                                                                                                                              : 0) !=
                                                                                                                                                      null)
                                                                                                                                                 {
-                                                                                                                                                    for
-                                                                                                                                                        (var
-                                                                                                                                                         i =
-                                                                                                                                                             0;
-                                                                                                                                                         i <
-                                                                                                                                                         tablePartitions;
-                                                                                                                                                         i++)
-                                                                                                                                                        PostgreSqlHelper
-                                                                                                                                                            .NonQuery(
-                                                                                                                                                                cmd
-                                                                                                                                                                : $"CREATE TABLE leaf_wms_{i} PARTITION OF leaf_wms FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                                                                timeout
-                                                                                                                                                                : 0);
+                                                                                                                                                    //for
+                                                                                                                                                    //    (var
+                                                                                                                                                    //     i =
+                                                                                                                                                    //         0;
+                                                                                                                                                    //     i <
+                                                                                                                                                    //     tablePartitions;
+                                                                                                                                                    //     i++)
+                                                                                                                                                    //    PostgreSqlHelper
+                                                                                                                                                    //        .NonQuery(
+                                                                                                                                                    //            cmd
+                                                                                                                                                    //            : $"CREATE TABLE leaf_wms_{i} PARTITION OF leaf_wms FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                                                                    //            timeout
+                                                                                                                                                    //            : 0);
+
                                                                                                                                                     if
                                                                                                                                                         (PostgreSqlHelper
                                                                                                                                                              .NonQuery(
@@ -2824,7 +2869,9 @@ namespace Geosite
                                                                                                                                                                      "leaf BigInt, hits BigInt DEFAULT 0" +
                                                                                                                                                                      ",CONSTRAINT leaf_hits_pkey PRIMARY KEY (leaf)" +
                                                                                                                                                                      ",CONSTRAINT leaf_hits_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                                                     ") PARTITION BY HASH (leaf);" +
+                                                                                                                                                                     ")"+
+                                                                                                                                                                     //" PARTITION BY HASH (leaf)"+
+                                                                                                                                                                     ";" +
                                                                                                                                                                      "COMMENT ON TABLE leaf_hits IS '叶子要素表（leaf）的搜索命中率子表';" +
                                                                                                                                                                      "COMMENT ON COLUMN leaf_hits.leaf IS '叶子要素的标识码';" +
                                                                                                                                                                      "COMMENT ON COLUMN leaf_hits.hits IS '叶子要素的命中次数';",
@@ -2832,19 +2879,20 @@ namespace Geosite
                                                                                                                                                                      : 0) !=
                                                                                                                                                              null)
                                                                                                                                                         {
-                                                                                                                                                            for
-                                                                                                                                                                (var
-                                                                                                                                                                 i =
-                                                                                                                                                                     0;
-                                                                                                                                                                 i <
-                                                                                                                                                                 tablePartitions;
-                                                                                                                                                                 i++)
-                                                                                                                                                                PostgreSqlHelper
-                                                                                                                                                                    .NonQuery(
-                                                                                                                                                                        cmd
-                                                                                                                                                                        : $"CREATE TABLE leaf_hits_{i} PARTITION OF leaf_hits FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                                                                        timeout
-                                                                                                                                                                        : 0);
+                                                                                                                                                            //for
+                                                                                                                                                            //    (var
+                                                                                                                                                            //     i =
+                                                                                                                                                            //         0;
+                                                                                                                                                            //     i <
+                                                                                                                                                            //     tablePartitions;
+                                                                                                                                                            //     i++)
+                                                                                                                                                            //    PostgreSqlHelper
+                                                                                                                                                            //        .NonQuery(
+                                                                                                                                                            //            cmd
+                                                                                                                                                            //            : $"CREATE TABLE leaf_hits_{i} PARTITION OF leaf_hits FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                                                                            //            timeout
+                                                                                                                                                            //            : 0);
+
                                                                                                                                                             Invoke(
                                                                                                                                                                 method
                                                                                                                                                                 : () =>
@@ -2868,7 +2916,9 @@ namespace Geosite
                                                                                                                                                                          "leaf BigInt, birth BigInt[], death BigInt[]" +
                                                                                                                                                                          ",CONSTRAINT leaf_temporal_pkey PRIMARY KEY (leaf)" +
                                                                                                                                                                          ",CONSTRAINT leaf_temporal_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                                                         ") PARTITION BY HASH (leaf);" +
+                                                                                                                                                                         ")"+
+                                                                                                                                                                         //" PARTITION BY HASH (leaf)"+
+                                                                                                                                                                         ";" +
                                                                                                                                                                          "COMMENT ON TABLE leaf_temporal IS '叶子要素表（leaf）的现世（生命期）子表';" +
                                                                                                                                                                          "COMMENT ON COLUMN leaf_temporal.leaf IS '叶子要素的标识码';" +
                                                                                                                                                                          "COMMENT ON COLUMN leaf_temporal.birth IS '叶子要素生命期的起始时间（由【年月日、时分秒】两个整型数据成员构成）';" +
@@ -2877,19 +2927,20 @@ namespace Geosite
                                                                                                                                                                          : 0) !=
                                                                                                                                                                  null)
                                                                                                                                                             {
-                                                                                                                                                                for
-                                                                                                                                                                    (var
-                                                                                                                                                                     i =
-                                                                                                                                                                         0;
-                                                                                                                                                                     i <
-                                                                                                                                                                     tablePartitions;
-                                                                                                                                                                     i++)
-                                                                                                                                                                    PostgreSqlHelper
-                                                                                                                                                                        .NonQuery(
-                                                                                                                                                                            cmd
-                                                                                                                                                                            : $"CREATE TABLE leaf_temporal_{i} PARTITION OF leaf_temporal FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
-                                                                                                                                                                            timeout
-                                                                                                                                                                            : 0);
+                                                                                                                                                                //for
+                                                                                                                                                                //    (var
+                                                                                                                                                                //     i =
+                                                                                                                                                                //         0;
+                                                                                                                                                                //     i <
+                                                                                                                                                                //     tablePartitions;
+                                                                                                                                                                //     i++)
+                                                                                                                                                                //    PostgreSqlHelper
+                                                                                                                                                                //        .NonQuery(
+                                                                                                                                                                //            cmd
+                                                                                                                                                                //            : $"CREATE TABLE leaf_temporal_{i} PARTITION OF leaf_temporal FOR VALUES WITH (MODULUS {tablePartitions}, REMAINDER {i});",
+                                                                                                                                                                //            timeout
+                                                                                                                                                                //            : 0);
+
                                                                                                                                                                 if
                                                                                                                                                                     (PostgreSqlHelper
                                                                                                                                                                          .NonQuery(
@@ -3100,87 +3151,87 @@ namespace Geosite
                                                                                                                                                                 }
                                                                                                                                                                 else
                                                                                                                                                                     errorMessage =
-                                                                                                                                                                        $"Failed to create some indexes of leaf_temporal - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                                                        $"Failed to create some indexes of leaf_temporal - {PostgreSqlHelper.Message}";
                                                                                                                                                             }
                                                                                                                                                             else
                                                                                                                                                                 errorMessage =
-                                                                                                                                                                    $"Failed to create leaf_temporal - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                                                    $"Failed to create leaf_temporal - {PostgreSqlHelper.Message}";
                                                                                                                                                         }
                                                                                                                                                         else
                                                                                                                                                             errorMessage =
-                                                                                                                                                                $"Failed to create leaf_hits - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                                                $"Failed to create leaf_hits - {PostgreSqlHelper.Message}";
                                                                                                                                                     }
                                                                                                                                                     else
                                                                                                                                                         errorMessage =
-                                                                                                                                                            $"Failed to create some indexes of leaf_wms - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                                            $"Failed to create some indexes of leaf_wms - {PostgreSqlHelper.Message}";
                                                                                                                                                 }
                                                                                                                                                 else
                                                                                                                                                     errorMessage =
-                                                                                                                                                        $"Failed to create leaf_wms - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                                        $"Failed to create leaf_wms - {PostgreSqlHelper.Message}";
                                                                                                                                             }
                                                                                                                                             else
                                                                                                                                                 errorMessage =
-                                                                                                                                                    $"Failed to create some indexes of leaf_tile - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                                    $"Failed to create some indexes of leaf_tile - {PostgreSqlHelper.Message}";
                                                                                                                                         }
                                                                                                                                         else
                                                                                                                                             errorMessage =
-                                                                                                                                                $"Failed to create leaf_tile - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                                $"Failed to create leaf_tile - {PostgreSqlHelper.Message}";
                                                                                                                                     }
                                                                                                                                     else
                                                                                                                                         errorMessage =
-                                                                                                                                            $"Failed to create some indexes of leaf_geometry - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                            $"Failed to create some indexes of leaf_geometry - {PostgreSqlHelper.Message}";
                                                                                                                                 }
                                                                                                                                 else
                                                                                                                                     errorMessage =
-                                                                                                                                        $"Failed to create leaf_geometry - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                        $"Failed to create leaf_geometry - {PostgreSqlHelper.Message}";
                                                                                                                             }
                                                                                                                             else
                                                                                                                                 errorMessage =
-                                                                                                                                    $"Failed to create some indexes of leaf_style - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                    $"Failed to create some indexes of leaf_style - {PostgreSqlHelper.Message}";
                                                                                                                         }
                                                                                                                         else
                                                                                                                             errorMessage =
-                                                                                                                                $"Failed to create leaf_style - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                                $"Failed to create leaf_style - {PostgreSqlHelper.Message}";
                                                                                                                     }
                                                                                                                     else
                                                                                                                         errorMessage =
-                                                                                                                            $"Failed to create some indexes of leaf_description - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                            $"Failed to create some indexes of leaf_description - {PostgreSqlHelper.Message}";
                                                                                                                 }
                                                                                                                 else
                                                                                                                     errorMessage =
-                                                                                                                        $"Failed to create leaf_description - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                        $"Failed to create leaf_description - {PostgreSqlHelper.Message}";
                                                                                                             }
                                                                                                             else
                                                                                                                 errorMessage =
-                                                                                                                    $"Failed to create some indexes of leaf - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                    $"Failed to create some indexes of leaf - {PostgreSqlHelper.Message}";
                                                                                                         }
                                                                                                         else
                                                                                                             errorMessage =
-                                                                                                                $"Failed to create leaf - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                                $"Failed to create leaf - {PostgreSqlHelper.Message}";
                                                                                                     }
                                                                                                     else
                                                                                                         errorMessage =
-                                                                                                            $"Failed to create some indexes of branch - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                            $"Failed to create some indexes of branch - {PostgreSqlHelper.Message}";
                                                                                                 }
                                                                                                 else
                                                                                                     errorMessage =
-                                                                                                        $"Failed to create branch - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                        $"Failed to create branch - {PostgreSqlHelper.Message}";
                                                                                             }
                                                                                             else
                                                                                                 errorMessage =
-                                                                                                    $"Failed to create some indexes of tree - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                    $"Failed to create some indexes of tree - {PostgreSqlHelper.Message}";
                                                                                         }
                                                                                         else
                                                                                             errorMessage =
-                                                                                                $"Failed to create tree - {PostgreSqlHelper.ErrorMessage}";
+                                                                                                $"Failed to create tree - {PostgreSqlHelper.Message}";
                                                                                     }
                                                                                     else
                                                                                         errorMessage =
-                                                                                            $"Failed to create some indexes of forest - {PostgreSqlHelper.ErrorMessage}";
+                                                                                            $"Failed to create some indexes of forest - {PostgreSqlHelper.Message}";
                                                                                 }
                                                                                 else
                                                                                     errorMessage =
-                                                                                        $"Failed to create forest - {PostgreSqlHelper.ErrorMessage}";
+                                                                                        $"Failed to create forest - {PostgreSqlHelper.Message}";
                                                                             }
                                                                             else
                                                                                 errorMessage =
@@ -3200,7 +3251,7 @@ namespace Geosite
                                                             }
                                                             else
                                                                 errorMessage =
-                                                                    $"Unable to create database [{PostgreSqlHelper.ErrorMessage}].";
+                                                                    $"Unable to create database [{PostgreSqlHelper.Message}].";
 
                                                             break;
                                                         }
@@ -3378,7 +3429,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE forest;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3387,7 +3438,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE forest_relation;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3396,7 +3447,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE tree;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3405,7 +3456,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE tree_relation;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3414,7 +3465,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE branch;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3423,7 +3474,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE branch_relation;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3432,7 +3483,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3441,7 +3492,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf_relation;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3450,7 +3501,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf_description;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3459,7 +3510,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf_style;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3468,7 +3519,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf_geometry;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3477,7 +3528,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf_tile;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3486,7 +3537,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf_wms;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3495,7 +3546,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf_temporal;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3504,7 +3555,7 @@ namespace Geosite
                                 }
                             );
                             if (PostgreSqlHelper.NonQuery(cmd: "REINDEX TABLE leaf_hits;", timeout: 0) == null)
-                                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                                throw new Exception(message: PostgreSqlHelper.Message);
                             Invoke(
                                 method: () =>
                                 {
@@ -3567,7 +3618,7 @@ namespace Geosite
                         );
 
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE forest;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3590,7 +3641,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE forest_relation;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3601,7 +3652,7 @@ namespace Geosite
                         //GeositeServer不允许没有枝干的树根存在，此处强制执行删除清理操作
                         PostgreSqlHelper.NonQuery(cmd: "DELETE FROM tree WHERE id NOT IN (SELECT DISTINCT tree FROM branch);", timeout: 0);
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE tree;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         
                         Invoke(
                             method: () =>
@@ -3625,7 +3676,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE tree_relation;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3634,7 +3685,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE branch;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3657,7 +3708,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE branch_relation;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3666,7 +3717,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3689,7 +3740,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_relation;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3698,7 +3749,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_description;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3721,7 +3772,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_style;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3744,7 +3795,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_geometry;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3767,7 +3818,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_tile;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3790,7 +3841,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_wms;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3813,7 +3864,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_temporal;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -3836,7 +3887,7 @@ namespace Geosite
                             }
                         );
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE leaf_hits;", timeout: 0) == null)
-                            throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(message: PostgreSqlHelper.Message);
                         Invoke(
                             method: () =>
                             {
@@ -4190,7 +4241,7 @@ namespace Geosite
                                         if (PostgreSqlHelper.NonQuery(cmd: "UPDATE tree SET name = @name WHERE id = @id;", parameters: new Dictionary<string, object> { { "name", newValue }, { "id", long.Parse(s: id) } }) == null)
                                         {
                                             col.Value = oldValue;
-                                            DatabaseLogAdd(input: statusText.Text = PostgreSqlHelper.ErrorMessage);
+                                            DatabaseLogAdd(input: statusText.Text = PostgreSqlHelper.Message);
                                         }
                                         else
                                             DatabaseLogAdd(input: statusText.Text = @"Update completed.");
@@ -4224,7 +4275,7 @@ namespace Geosite
                                         DatabaseLogAdd(input: statusText.Text = $@"Update completed. [count: {updateCount}]");
                                     else
                                     {
-                                        DatabaseLogAdd(input: statusText.Text = PostgreSqlHelper.ErrorMessage);
+                                        DatabaseLogAdd(input: statusText.Text = PostgreSqlHelper.Message);
                                         col.Value = oldValue;
                                     }
                                 }
@@ -7250,7 +7301,7 @@ namespace Geosite
                                         );
                                     else
                                     {
-                                        var errorMessage = PostgreSqlHelper.ErrorMessage;
+                                        var errorMessage = PostgreSqlHelper.Message;
                                         Invoke(
                                             method: () =>
                                             {
@@ -9077,8 +9128,16 @@ namespace Geosite
         {
             Invoke(method: () =>
                 {
-                    Clipboard.SetData(format: DataFormats.Text, data: PositionBox.Text);
-                    MessageBox.Show(text: @"Successfully copied to Clipboard", caption: @"Tip");
+                    if (PositionBox.Text != null)
+                        try
+                        {
+                            Clipboard.SetData(format: DataFormats.Text, data: PositionBox.Text);
+                            MessageBox.Show(text: @"Successfully copied to Clipboard", caption: @"Tip");
+                        }
+                        catch
+                        {
+                            //
+                        }
                 }
             );
         }
@@ -9433,8 +9492,19 @@ namespace Geosite
                                         if (index != viewObject.SelectedItems.Count - 1)
                                             sb.AppendLine();
                                     }
-                                    if (sb.Length > 0)
-                                        Clipboard.SetData(format: DataFormats.Text, data: sb.ToString());
+
+                                    if (sb is {Length: > 0})
+                                    {
+                                        try
+                                        {
+                                            Clipboard.SetData(format: DataFormats.Text, data: sb.ToString());
+                                        }
+                                        catch
+                                        {
+                                            //
+                                        }
+                                    }
+
                                     break;
                                 }
                         }
