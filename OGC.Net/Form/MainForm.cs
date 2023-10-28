@@ -4114,7 +4114,6 @@ namespace Geosite
                             {
                                 DatabaseLogAdd(
                                     input: statusText.Text =
-                                        @"Layer - [" +
                                         (string)PostgreSqlHelper.Scalar
                                         (
                                             cmd:
@@ -4123,8 +4122,7 @@ namespace Geosite
                                             {
                                                 { "tree", tree }
                                             }
-                                        ) +
-                                        @"]"
+                                        )
                                 );
                                 _loading.Run(onOff: false);
                             }
