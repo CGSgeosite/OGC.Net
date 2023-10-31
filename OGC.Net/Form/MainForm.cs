@@ -228,7 +228,8 @@ namespace Geosite
                                 var locationY = int.Parse(s: splitArray[2]);
                                 if (locationY < 0)
                                     locationY = 0;
-                                Location = new System.Drawing.Point(x: locationX, y: locationY);
+                                //Location = new System.Drawing.Point(x: locationX, y: locationY);
+                                Location = new Point(x: locationX, y: locationY);
                                 Size = new Size(width: int.Parse(s: splitArray[3]), height: int.Parse(s: splitArray[4]));
                                 break;
                             }
@@ -739,12 +740,13 @@ namespace Geosite
                         vectorTargetFile.Text = string.Empty;
                         FileGridView.SelectAll();
                         CleanFileGridView();
-                        var theFileFormat = openFileDialog.FilterIndex
-                            switch
-                        {
-                            1 or 2 => "MapGIS",
-                            _ => null
-                        };
+                        var theFileFormat =
+                            openFileDialog.FilterIndex
+                                switch
+                                {
+                                    1 or 2 => "MapGIS",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -854,12 +856,13 @@ namespace Geosite
                         vectorTargetFile.Text = string.Empty;
                         FileGridView.SelectAll();
                         CleanFileGridView();
-                        var theFileFormat = openFileDialog.FilterIndex
-                            switch
-                        {
-                            1 => "ShapeFile",
-                            _ => null
-                        };
+                        var theFileFormat =
+                            openFileDialog.FilterIndex
+                                switch
+                                {
+                                    1 => "ShapeFile",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -918,13 +921,14 @@ namespace Geosite
                         vectorTargetFile.Text = string.Empty;
                         SaveAsFormat.Text = string.Empty;
                         SaveAsFormat.Items.Clear();
-                        var theFileFormat = openFileDialog.FilterIndex
-                            switch
-                        {
-                            1 => "Excel",
-                            2 => "TXT/CSV",
-                            _ => null
-                        };
+                        var theFileFormat =
+                            openFileDialog.FilterIndex
+                                switch
+                                {
+                                    1 => "Excel",
+                                    2 => "TXT/CSV",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -986,12 +990,13 @@ namespace Geosite
                         SaveAsFormat.Items.Clear();
                         FileGridView.SelectAll();
                         CleanFileGridView();
-                        var theFileFormat = openFileDialog.FilterIndex
-                            switch
-                        {
-                            1 => "GeoJSON",
-                            _ => null
-                        };
+                        var theFileFormat =
+                            openFileDialog.FilterIndex
+                                switch
+                                {
+                                    1 => "GeoJSON",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1048,12 +1053,13 @@ namespace Geosite
                         SaveAsFormat.Items.Clear();
                         FileGridView.SelectAll();
                         CleanFileGridView();
-                        var theFileFormat = openFileDialog.FilterIndex
-                            switch
-                        {
-                            1 => "GeositeXML",
-                            _ => null
-                        };
+                        var theFileFormat =
+                            openFileDialog.FilterIndex
+                                switch
+                                {
+                                    1 => "GeositeXML",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1113,12 +1119,13 @@ namespace Geosite
                         SaveAsFormat.Items.Clear();
                         FileGridView.SelectAll();
                         CleanFileGridView();
-                        var theFileFormat = openFileDialog.FilterIndex
-                            switch
-                        {
-                            1 => "KML",
-                            _ => null
-                        };
+                        var theFileFormat =
+                            openFileDialog.FilterIndex
+                                switch
+                                {
+                                    1 => "KML",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1224,7 +1231,7 @@ namespace Geosite
             statusProgress.Visible = true;
             fileWorker.RunWorkerAsync
             (
-            argument: (FileGridViewRow: FileGridView.Rows.Cast<DataGridViewRow>().ToList(), TargetPath: vectorTargetFile.Text, SaveAsFormat: SaveAsFormat.Text)
+                argument: (FileGridViewRow: FileGridView.Rows.Cast<DataGridViewRow>().ToList(), TargetPath: vectorTargetFile.Text, SaveAsFormat: SaveAsFormat.Text)
             );
         }
 
@@ -2032,9 +2039,9 @@ namespace Geosite
                                                         password: password,
                                                         tables: "forest,tree,branch,leaf");
                                                 //  PostgreSQL连接标志如下：
-                                                //  0：  连接成功[指定的数据库及主表已存在]；
                                                 //  -1： PG未安装或者连接参数不正确，无法创建数据库；
                                                 //  -2： PG版本太低[小于12.0.0]，不创建数据库；
+                                                //  0：  连接成功[指定的数据库及主表已存在]；
                                                 //  1：  指定的数据库不存在，可尝试创建数据库；
                                                 //  2：  数据库同名且未发现任何相关主表，可进一步创建子表；
                                                 //  3：  数据库同名且发现某个主表也同名，不宜继续创建子表）
@@ -2071,31 +2078,21 @@ namespace Geosite
 
                                                             if (
                                                                 geositeServerLink.flag != 1 || (PostgreSqlHelper.NonQuery(
-                                                                    cmd:
-                                                                    $"CREATE DATABASE {database} WITH OWNER = {username};",
+                                                                    cmd: $"CREATE DATABASE {database} WITH OWNER = {username};",
                                                                     pooling: false, postgres: true, timeout: 0) != null)
                                                             )
                                                             {
-                                                                if ((long)PostgreSqlHelper.Scalar(
-                                                                        cmd:
-                                                                        "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis';",
-                                                                        timeout: 0) > 0)
+                                                                if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis';", timeout: 0) > 0)
                                                                 {
                                                                     Invoke(
                                                                         method: () =>
                                                                         {
                                                                             statusProgress.Value = 10;
-                                                                            DatabaseLogAdd(input: statusText.Text =
-                                                                                @"Create or find PostGIS extension ...");
+                                                                            DatabaseLogAdd(input: statusText.Text = @"Create or find PostGIS extension ...");
                                                                         }
                                                                     );
-                                                                    PostgreSqlHelper.NonQuery(
-                                                                        cmd: "CREATE EXTENSION IF NOT EXISTS postgis;",
-                                                                        pooling: false, timeout: 0);
-                                                                    if ((long)PostgreSqlHelper.Scalar(
-                                                                            cmd:
-                                                                            "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis_raster';") >
-                                                                        0)
+                                                                    PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS postgis;", pooling: false, timeout: 0);
+                                                                    if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis_raster';") > 0)
                                                                     {
                                                                         Invoke(
                                                                             method: () =>
@@ -2105,53 +2102,32 @@ namespace Geosite
                                                                                     @"Create or find postgis_raster extension ...");
                                                                             }
                                                                         );
-                                                                        PostgreSqlHelper.NonQuery(
-                                                                            cmd:
-                                                                            "CREATE EXTENSION IF NOT EXISTS postgis_raster;",
-                                                                            pooling: false, timeout: 0);
-                                                                        if ((long)PostgreSqlHelper.Scalar(
-                                                                                cmd:
-                                                                                "SELECT count(*) FROM pg_available_extensions WHERE name = 'intarray';",
-                                                                                timeout: 0) > 0)
+                                                                        PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS postgis_raster;", pooling: false, timeout: 0);
+                                                                        if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'intarray';", timeout: 0) > 0)
                                                                         {
                                                                             Invoke(
                                                                                 method: () =>
                                                                                 {
                                                                                     statusProgress.Value = 22;
-                                                                                    DatabaseLogAdd(
-                                                                                        input: statusText.Text =
-                                                                                            @"Create or find intarray extension ...");
+                                                                                    DatabaseLogAdd(input: statusText.Text = @"Create or find intarray extension ...");
                                                                                 }
                                                                             );
-                                                                            PostgreSqlHelper.NonQuery(
-                                                                                cmd:
-                                                                                "CREATE EXTENSION IF NOT EXISTS intarray;",
-                                                                                pooling: false, timeout: 0);
-                                                                            if ((long)PostgreSqlHelper.Scalar(
-                                                                                    cmd:
-                                                                                    "SELECT count(*) FROM pg_available_extensions WHERE name = 'pgroonga';",
-                                                                                    timeout: 0) > 0)
+                                                                            PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS intarray;", pooling: false, timeout: 0);
+                                                                            if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'pgroonga';", timeout: 0) > 0)
                                                                             {
                                                                                 Invoke(
                                                                                     method: () =>
                                                                                     {
                                                                                         statusProgress.Value = 28;
-                                                                                        DatabaseLogAdd(
-                                                                                            input: statusText.Text =
-                                                                                                @"Create or find pgroonga extension ...");
+                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create or find pgroonga extension ...");
                                                                                     }
                                                                                 );
-                                                                                PostgreSqlHelper.NonQuery(
-                                                                                    cmd:
-                                                                                    "CREATE EXTENSION IF NOT EXISTS pgroonga;",
-                                                                                    pooling: false, timeout: 0);
+                                                                                PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS pgroonga;", pooling: false, timeout: 0);
                                                                                 Invoke(
                                                                                     method: () =>
                                                                                     {
                                                                                         statusProgress.Value = 34;
-                                                                                        DatabaseLogAdd(
-                                                                                            input: statusText.Text =
-                                                                                                @"Create forest table（forest）...");
+                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create forest table（forest）...");
                                                                                     }
                                                                                 );
                                                                                 if (PostgreSqlHelper.NonQuery(
@@ -2234,12 +2210,8 @@ namespace Geosite
                                                                                         Invoke(
                                                                                             method: () =>
                                                                                             {
-                                                                                                statusProgress.Value =
-                                                                                                    40;
-                                                                                                DatabaseLogAdd(
-                                                                                                    input: statusText
-                                                                                                            .Text =
-                                                                                                        @"Create tree table（tree）...");
+                                                                                                statusProgress.Value = 40;
+                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create tree table（tree）...");
                                                                                             }
                                                                                         );
                                                                                         if (PostgreSqlHelper.NonQuery(
@@ -2329,13 +2301,8 @@ namespace Geosite
                                                                                                 Invoke(
                                                                                                     method: () =>
                                                                                                     {
-                                                                                                        statusProgress
-                                                                                                            .Value = 46;
-                                                                                                        DatabaseLogAdd(
-                                                                                                            input:
-                                                                                                            statusText
-                                                                                                                    .Text =
-                                                                                                                @"Create branch table（branch）...");
+                                                                                                        statusProgress.Value = 46;
+                                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create branch table（branch）...");
                                                                                                     }
                                                                                                 );
                                                                                                 if (PostgreSqlHelper
@@ -2427,14 +2394,8 @@ namespace Geosite
                                                                                                             method:
                                                                                                             () =>
                                                                                                             {
-                                                                                                                statusProgress
-                                                                                                                        .Value =
-                                                                                                                    52;
-                                                                                                                DatabaseLogAdd(
-                                                                                                                    input
-                                                                                                                    : statusText
-                                                                                                                            .Text =
-                                                                                                                        @"Create leaf table（leaf）...");
+                                                                                                                statusProgress.Value = 52;
+                                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf）...");
                                                                                                             }
                                                                                                         );
                                                                                                         if
@@ -6953,7 +6914,7 @@ namespace Geosite
                         {
                             EPSG4326.Enabled = true;
                             EPSG4326.ThreeState = EPSG4326.Checked = false;
-                            tileLevels.Text = @"-1";
+                            //tileLevels.Text = @"-1";
                             tileLevels.Enabled = true;
                         }
                         else
@@ -6961,7 +6922,7 @@ namespace Geosite
                             if (FormatTMS.Checked || FormatMapcruncher.Checked || FormatArcGIS.Checked)
                             {
                                 EPSG4326.Enabled = EPSG4326.ThreeState = EPSG4326.Checked = false;
-                                tileLevels.Text = @"-1";
+                                //tileLevels.Text = @"-1";
                                 tileLevels.Enabled = true;
                             }
                             else
@@ -6969,7 +6930,7 @@ namespace Geosite
                                 EPSG4326.Enabled = false;
                                 EPSG4326.ThreeState = true;
                                 EPSG4326.CheckState = CheckState.Indeterminate;
-                                tileLevels.Text = @"-1";
+                                //tileLevels.Text = @"-1";
                                 tileLevels.Enabled = false;
                             }
                         }
@@ -6979,7 +6940,7 @@ namespace Geosite
                     {
                         EPSG4326.Enabled = true;
                         EPSG4326.ThreeState = EPSG4326.Checked = false;
-                        tileLevels.Text = @"0";
+                        //tileLevels.Text = @"0";
                         tileLevels.Enabled = true;
                         break;
                     }
@@ -6988,7 +6949,7 @@ namespace Geosite
                         EPSG4326.Enabled = true;
                         EPSG4326.ThreeState = false;
                         EPSG4326.Checked = true;
-                        tileLevels.Text = @"-1";
+                        //tileLevels.Text = @"-1";
                         tileLevels.Enabled = false;
                         break;
                     }
@@ -6997,7 +6958,7 @@ namespace Geosite
                         EPSG4326.Enabled = false;
                         EPSG4326.ThreeState = true;
                         EPSG4326.CheckState = CheckState.Indeterminate;
-                        tileLevels.Text = @"-1";
+                        //tileLevels.Text = @"-1";
                         tileLevels.Enabled = false;
                         break;
                     }
@@ -8644,11 +8605,14 @@ namespace Geosite
                 if (item.GetType().Name == "ToolStripMenuItem")
                 {
                     var theItem = (ToolStripMenuItem)item;
-                    theItem.Checked = (string)theItem.Tag == mapBearingItem;
-                    if (theItem.Checked)
+                    if (theItem.Tag != null)
                     {
-                        MapBearingMenuItem.Tag = theItem.Tag;
-                        MapBox.Bearing = float.Parse((string)theItem.Tag);
+                        theItem.Checked = (string)theItem.Tag == mapBearingItem;
+                        if (theItem.Checked)
+                        {
+                            MapBearingMenuItem.Tag = theItem.Tag;
+                            MapBox.Bearing = float.Parse((string)theItem.Tag);
+                        }
                     }
                 }
             ZoomLevelLabel.Text = $@"{MapBox.Zoom:#0.#} / {MapBox.MaxZoom:#0.#}";
@@ -8678,51 +8642,54 @@ namespace Geosite
             BeginInvoke(
                 method: () =>
                 {
-                    var positionBoxTag = ((string srid, (double? lng, double? lat) position))PositionBox.Tag;
-                    double lng, lat;
-                    if (e != null)
+                    if (PositionBox.Tag != null)
                     {
-                        base.OnMouseMove(e: e);
-                        var position = MapBox.FromLocalToLatLng(x: e.X, y: e.Y);
-                        positionBoxTag.position.lng = lng = position.Lng;
-                        positionBoxTag.position.lat = lat = position.Lat;
-                    }
-                    else
-                    {
-                        lng = positionBoxTag.position.lng ?? 0.0;
-                        lat = positionBoxTag.position.lat ?? 0.0;
-                    }
-                    PositionBox.Text = positionBoxTag.srid switch
-                    {
-                        "DEG" => $@"{lng:###.0000000000} / {lat:##.0000000000}",
-                        "DMS" => $@"{Ellipsoid.Degree2Dms(Degree: $"{lng}", Digit: "2")} / {Ellipsoid.Degree2Dms(Degree: $"{lat}", Digit: "2")}",
-                        "Beijing 1954" => string.Join(separator: " / ",
-                                values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "1954")
-                                    .Split(separator: ',')
-                                    .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
-                        "Xian 1980" => string.Join(separator: " / ",
-                                values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "1980")
-                                    .Split(separator: ',')
-                                    .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
-                        "CGCS 2000" => string.Join(separator: " / ",
-                                values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "2000")
-                                    .Split(separator: ',')
-                                    .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
-                        "Web Mercator" => string.Join(separator: " / ",
-                                values: Ellipsoid.WebMercator(lng: lng, lat: lat).Split(separator: ',')
-                                    .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
-                        _ => string.Empty
-                    };
-                    var scaleX = Models.MapGrids.Run(lamuda: lng, fai: lat, scale: MapGrid.AutoScale);
-                    if (MapGrids.Tag.ToString() != "None")
-                    {
-                        MapGrids.Text = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
-                        MapGrids.ToolTipText = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
-                    }
-                    else
-                    {
-                        MapGrids.Text = "";
-                        MapGrids.ToolTipText = "";
+                        var positionBoxTag = ((string srid, (double? lng, double? lat) position))PositionBox.Tag;
+                        double lng, lat;
+                        if (e != null)
+                        {
+                            base.OnMouseMove(e: e);
+                            var position = MapBox.FromLocalToLatLng(x: e.X, y: e.Y);
+                            positionBoxTag.position.lng = lng = position.Lng;
+                            positionBoxTag.position.lat = lat = position.Lat;
+                        }
+                        else
+                        {
+                            lng = positionBoxTag.position.lng ?? 0.0;
+                            lat = positionBoxTag.position.lat ?? 0.0;
+                        }
+                        PositionBox.Text = positionBoxTag.srid switch
+                        {
+                            "DEG" => $@"{lng:###.0000000000} / {lat:##.0000000000}",
+                            "DMS" => $@"{Ellipsoid.Degree2Dms(Degree: $"{lng}", Digit: "2")} / {Ellipsoid.Degree2Dms(Degree: $"{lat}", Digit: "2")}",
+                            "Beijing 1954" => string.Join(separator: " / ",
+                                    values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "1954")
+                                        .Split(separator: ',')
+                                        .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
+                            "Xian 1980" => string.Join(separator: " / ",
+                                    values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "1980")
+                                        .Split(separator: ',')
+                                        .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
+                            "CGCS 2000" => string.Join(separator: " / ",
+                                    values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "2000")
+                                        .Split(separator: ',')
+                                        .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
+                            "Web Mercator" => string.Join(separator: " / ",
+                                    values: Ellipsoid.WebMercator(lng: lng, lat: lat).Split(separator: ',')
+                                        .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
+                            _ => string.Empty
+                        };
+                        var scaleX = Models.MapGrids.Run(lamuda: lng, fai: lat, scale: MapGrid.AutoScale);
+                        if (MapGrids.Tag?.ToString() != "None")
+                        {
+                            MapGrids.Text = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
+                            MapGrids.ToolTipText = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
+                        }
+                        else
+                        {
+                            MapGrids.Text = "";
+                            MapGrids.ToolTipText = "";
+                        }
                     }
                 }
             );
@@ -8752,7 +8719,7 @@ namespace Geosite
             BeginInvoke(
                 method: () =>
                 {
-                    var scaleOption = MapGrids.Tag.ToString();
+                    var scaleOption = MapGrids.Tag?.ToString();
                     if (scaleOption != "None")
                     {
                         var viewArea = MapBox.ViewArea; //MapBox.ClientRectangle; --> 图窗尺寸变更事件发生后，此值并非调整后的范围！ 
@@ -9100,19 +9067,22 @@ namespace Geosite
         {
             BeginInvoke(method: () =>
                 {
-                    var previousTag = ((string srid, (double? lng, double? lat) position))PositionBox.Tag;
-                    var lng = previousTag.position.lng;
-                    var lat = previousTag.position.lat;
-                    var checkedItem = (ToolStripMenuItem)sender;
-                    foreach (var item in PositionBox.DropDownItems)
-                        if (item.GetType().Name == "ToolStripMenuItem")
-                        {
-                            var theItem = (ToolStripMenuItem)item;
-                            theItem.Checked = theItem.Name == checkedItem.Name;
-                        }
-                    PositionBox.Tag = (checkedItem.Text, (lng, lat));
-                    MapBox_MouseMove(sender: sender);
-                    RegEdit.Setkey(keyname: PositionBox.Name, defaultvalue: checkedItem.Text);
+                    if (PositionBox.Tag != null)
+                    {
+                        var previousTag = ((string srid, (double? lng, double? lat) position))PositionBox.Tag;
+                        var lng = previousTag.position.lng;
+                        var lat = previousTag.position.lat;
+                        var checkedItem = (ToolStripMenuItem)sender;
+                        foreach (var item in PositionBox.DropDownItems)
+                            if (item.GetType().Name == "ToolStripMenuItem")
+                            {
+                                var theItem = (ToolStripMenuItem)item;
+                                theItem.Checked = theItem.Name == checkedItem.Name;
+                            }
+                        PositionBox.Tag = (checkedItem.Text, (lng, lat));
+                        MapBox_MouseMove(sender: sender);
+                        RegEdit.Setkey(keyname: PositionBox.Name, defaultvalue: checkedItem.Text);
+                    }
                 }
             );
         }
@@ -9150,16 +9120,19 @@ namespace Geosite
             BeginInvoke(method: () =>
                 {
                     var baseMap = (ToolStripMenuItem)sender;
-                    MapProviderDropDown.Text = baseMap.Text;
-                    foreach (var item in MapProviderDropDown.DropDownItems)
+                    if (baseMap.Text != null)
                     {
-                        if (item.GetType().Name != "ToolStripMenuItem")
-                            continue;
-                        var theItem = (ToolStripMenuItem)item;
-                        theItem.Checked = theItem.Text == baseMap.Text;
+                        MapProviderDropDown.Text = baseMap.Text;
+                        foreach (var item in MapProviderDropDown.DropDownItems)
+                        {
+                            if (item.GetType().Name != "ToolStripMenuItem")
+                                continue;
+                            var theItem = (ToolStripMenuItem)item;
+                            theItem.Checked = theItem.Text == baseMap.Text;
+                        }
+                        MapBox.MapProvider = GMapProviderDictionary[key: baseMap.Text];
+                        RegEdit.Setkey(keyname: MapProviderDropDown.Name, defaultvalue: baseMap.Text);
                     }
-                    MapBox.MapProvider = GMapProviderDictionary[key: baseMap.Text];
-                    RegEdit.Setkey(keyname: MapProviderDropDown.Name, defaultvalue: baseMap.Text);
                 }
             );
         }
@@ -9418,7 +9391,7 @@ namespace Geosite
         private void FileListMenuItem_Click(object sender, EventArgs e)
         {
             var theSender = (ToolStripMenuItem)sender;
-            var grid = ((ContextMenuStrip)theSender.Owner).SourceControl?.Name == "FileGridView" ? FileGridView : vectorFilePool;
+            var grid = (((ContextMenuStrip)theSender.Owner)!).SourceControl?.Name == "FileGridView" ? FileGridView : vectorFilePool;
             switch (theSender.Text)
             {
                 case "Select All":
@@ -9466,7 +9439,7 @@ namespace Geosite
         private void TextBoxMenuItem_Click(object sender, EventArgs e)
         {
             var theSender = (ToolStripMenuItem)sender;
-            var viewName = ((ContextMenuStrip)theSender.Owner).SourceControl?.Name;
+            var viewName = (((ContextMenuStrip)theSender.Owner)!).SourceControl?.Name;
             switch (viewName)
             {
                 case "FileLoadLog" or "DatabaseLog":
