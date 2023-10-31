@@ -16,7 +16,7 @@
           "MaxRev.Gdal.WindowsRuntime.Minimal": "3.7.0.100",
           "Newtonsoft.Json": "13.0.3",
           "Npgsql": "8.0.0-rc.2",
-          "RestSharp": "110.2.1-alpha.0.13",
+          "RestSharp": "110.2.1-alpha.0.16",
           "System.Text.Encoding.CodePages": "8.0.0-rc.2.23479.6"
         },
         "runtime": {
@@ -2372,7 +2372,7 @@
           }
         }
       },
-      "RestSharp/110.2.1-alpha.0.13": {
+      "RestSharp/110.2.1-alpha.0.16": {
         "dependencies": {
           "System.Text.Json": "7.0.3"
         },
@@ -2475,12 +2475,12 @@
       "path": "npgsql/8.0.0-rc.2",
       "hashPath": "npgsql.8.0.0-rc.2.nupkg.sha512"
     },
-    "RestSharp/110.2.1-alpha.0.13": {
+    "RestSharp/110.2.1-alpha.0.16": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zSNPpUdspzahAjPzbqbmCbBx+9jfUHMz/tb3vG2gjI6AeEwHmt9VA6O8nig3XOw8+hLkWbXKa0Qq381QAlva+g==",
-      "path": "restsharp/110.2.1-alpha.0.13",
-      "hashPath": "restsharp.110.2.1-alpha.0.13.nupkg.sha512"
+      "sha512": "sha512-3+Nb8GEeWwYCx+DTb7t+msz7CZBFiInE7Ejd4a2iivqTTP/BhNB3vpXibK5NKLUHsn0z6MDFxVhzPNaXaT5yCA==",
+      "path": "restsharp/110.2.1-alpha.0.16",
+      "hashPath": "restsharp.110.2.1-alpha.0.16.nupkg.sha512"
     },
     "System.Text.Encoding.CodePages/8.0.0-rc.2.23479.6": {
       "type": "package",
