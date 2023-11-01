@@ -222,7 +222,7 @@ namespace Geosite
                 parameters: withParameters
             );
             if (kvps == null)
-                throw new Exception(message: PostgreSqlHelper.ErrorMessage);
+                throw new Exception(message: PostgreSqlHelper.Message);
             XElement layersX = null;
             var rows = kvps.Rows;
             var numberMatched = rows.Count;
@@ -485,7 +485,7 @@ namespace Geosite
                             parameters: parameters
                         );
                         if (result == null)
-                            throw new Exception(PostgreSqlHelper.ErrorMessage);
+                            throw new Exception(PostgreSqlHelper.Message);
                     }
                 );
         }
@@ -538,13 +538,13 @@ namespace Geosite
                     parameters: parameters
                 );
                 if (result == null)
-                    throw new Exception(PostgreSqlHelper.ErrorMessage);
+                    throw new Exception(PostgreSqlHelper.Message);
                 flag |= 1;
                 var treeIds = string.Join(",", from DataRow row in result.Rows select row[0]);
                 //继续判断树表内是否有记录，若无，也顺便删除树表对应的记录，也就是说，不允许出现没有枝干的树记录
                 sql = @$"DELETE FROM tree WHERE id IN (SELECT * from UNNEST(ARRAY[{treeIds}]) AS tree EXCEPT (SELECT tree FROM branch WHERE tree IN ({treeIds})));";
                 if (PostgreSqlHelper.NonQuery(cmd: sql) == null)
-                    throw new Exception(PostgreSqlHelper.ErrorMessage);
+                    throw new Exception(PostgreSqlHelper.Message);
                 flag |= 2;
             }
             return flag; //3
