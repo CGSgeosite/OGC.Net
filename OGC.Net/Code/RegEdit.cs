@@ -32,36 +32,39 @@ using Microsoft.Win32;
 
 namespace Geosite
 {
+    /// <summary>
+    /// 注册表类
+    /// </summary>
     static class RegEdit
     {
         static string _registerKeyName;
 
-        private static string Registerkey =>
+        private static string RegisterKey =>
             !string.IsNullOrWhiteSpace(_registerKeyName)
                 ? _registerKeyName
                 : _registerKeyName = Path.GetFileNameWithoutExtension(Process.GetCurrentProcess().MainModule?.FileName);
 
-        public static string Getkey(string keyname, string defaultvalue = null)
+        public static string GetKey(string key, string defaultValue = null)
         {
-            using var oldRegistryKey = Registry.CurrentUser.OpenSubKey(Registerkey, false);
-            return oldRegistryKey?.GetValue(keyname, defaultvalue)?.ToString();
+            using var oldRegistryKey = Registry.CurrentUser.OpenSubKey(RegisterKey, false);
+            return oldRegistryKey?.GetValue(key, defaultValue)?.ToString();
         }
 
-        public static void Setkey(string keyname, string defaultvalue = null)
+        public static void SetKey(string key, string defaultValue)
         {
-            using var oldRegistryKey = Registry.CurrentUser.OpenSubKey(Registerkey, true);
+            using var oldRegistryKey = Registry.CurrentUser.OpenSubKey(RegisterKey, true);
             if (oldRegistryKey != null)
-                oldRegistryKey.SetValue(keyname, defaultvalue);
+                oldRegistryKey.SetValue(key, defaultValue);
             else
             {
-                using var newRegistryKey = Registry.CurrentUser.CreateSubKey(Registerkey);
-                newRegistryKey?.SetValue(keyname, defaultvalue);
+                using var newRegistryKey = Registry.CurrentUser.CreateSubKey(RegisterKey);
+                newRegistryKey?.SetValue(key, defaultValue);
             }
         }
 
         public static void DeleteRegistry()
         {
-            Registry.CurrentUser.DeleteSubKey(Registerkey);
+            Registry.CurrentUser.DeleteSubKey(RegisterKey);
         }
     }
 }
