@@ -185,19 +185,19 @@ namespace Geosite
             _loading = new LoadingBar(bar: DatabaseProgressBar);
 
             var key = ogcCard.Name;
-            var defaultValue = RegEdit.Getkey(keyname: key);
+            var defaultValue = RegEdit.GetKey(key: key);
             ogcCard.SelectedIndex = int.Parse(s: defaultValue ?? "2");
 
             key = DatabaseTabControl.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             DatabaseTabControl.SelectedIndex = int.Parse(s: defaultValue ?? "0");
 
             key = GeositeServerUrl.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             GeositeServerUrl.Text = defaultValue ?? "";
 
             key = Name;
-            defaultValue = RegEdit.Getkey(keyname: key, defaultvalue: string.Empty);
+            defaultValue = RegEdit.GetKey(key: key, defaultValue: string.Empty);
             if (!string.IsNullOrWhiteSpace(value: defaultValue))
             {
                 var splitArray = Regex.Split(
@@ -240,128 +240,128 @@ namespace Geosite
                 StartPosition = FormStartPosition.CenterScreen;
 
             key = GeositeServerUser.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             GeositeServerUser.Text = defaultValue ?? "";
 
             key = GeositeServerPassword.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             GeositeServerPassword.Text = defaultValue ?? "";
 
             key = FormatStandard.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             FormatStandard.Checked = bool.Parse(value: defaultValue ?? "True");
 
             key = FormatTMS.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             FormatTMS.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = FormatMapcruncher.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             FormatMapcruncher.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = FormatArcGIS.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             FormatArcGIS.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = FormatDeepZoom.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             FormatDeepZoom.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = FormatRaster.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             FormatRaster.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = EPSG4326.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             EPSG4326.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = UpdateBox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             UpdateBox.Checked = bool.Parse(value: defaultValue ?? "True");
 
             key = tileLevels.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             tileLevels.Text = defaultValue ?? "-1";
 
             key = themeNameBox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             themeNameBox.Text = defaultValue ?? "";
 
             key = localTileFolder.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             localTileFolder.Text = defaultValue ?? "";
 
             key = ModelOpenTextBox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             ModelOpenTextBox.Text = defaultValue ?? "";
             ModelSave.Enabled = !string.IsNullOrWhiteSpace(value: ModelOpenTextBox.Text);
 
             key = tilewebapi.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             tilewebapi.Text = defaultValue ?? "";
 
             key = wmtsNorth.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             wmtsNorth.Text = defaultValue ?? "90";
 
             key = wmtsSouth.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             wmtsSouth.Text = defaultValue ?? "-90";
 
             key = wmtsWest.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             wmtsWest.Text = defaultValue ?? "-180";
 
             key = wmtsEast.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             wmtsEast.Text = defaultValue ?? "180";
 
             key = subdomainsBox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             subdomainsBox.Text = defaultValue ?? "";
 
             key = wmtsMinZoom.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             wmtsMinZoom.Text = defaultValue ?? "0";
 
             key = wmtsSpider.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             wmtsMinZoom.Enabled = wmtsMaxZoom.Enabled = !(wmtsSpider.Checked = bool.Parse(value: defaultValue ?? "False"));
 
             key = wmtsMaxZoom.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             wmtsMaxZoom.Text = defaultValue ?? "18";
 
             key = rasterTileSize.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             rasterTileSize.Text = defaultValue ?? "100";
 
             key = nodatabox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             nodatabox.Text = defaultValue ?? "";
 
             key = maptilertoogc.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             maptilertoogc.Checked = bool.Parse(value: defaultValue ?? "True");
 
             key = mapcrunchertoogc.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             mapcrunchertoogc.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = ogctomapcruncher.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             ogctomapcruncher.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = ogctomaptiler.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             ogctomaptiler.Checked = bool.Parse(value: defaultValue ?? "False");
 
             key = MIMEBox.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             MIMEBox.Text = defaultValue ?? "png";
 
             key = rankList.Name;
-            defaultValue = RegEdit.Getkey(keyname: key);
+            defaultValue = RegEdit.GetKey(key: key);
             rankList.Text = defaultValue ?? "-1";
 
             var rtfPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "rtf");
@@ -491,15 +491,15 @@ namespace Geosite
             foreach (var task in MapView.Tasks)
                 task.CancelTask();
 
-            RegEdit.Setkey(
-                keyname: Name,
-                defaultvalue:
+            RegEdit.SetKey(
+                key: Name,
+                defaultValue:
                 $"{WindowState},{Location.X},{Location.Y},{Size.Width},{Size.Height}"
             );
 
-            RegEdit.Setkey(
-                keyname: MapBox.Name,
-                defaultvalue: $"{MapBox.Zoom},{MapBox.Position.Lng},{MapBox.Position.Lat}"
+            RegEdit.SetKey(
+                key: MapBox.Name,
+                defaultValue: $"{MapBox.Zoom},{MapBox.Position.Lng},{MapBox.Position.Lat}"
             );
 
             var fadeOut = new System.Windows.Forms.Timer
@@ -563,10 +563,10 @@ namespace Geosite
         private void VectorOpenFile_Click(object sender, EventArgs e)
         {
             var key = vectorOpenButton.Name;
-            if (!int.TryParse(s: RegEdit.Getkey(keyname: key), result: out var filterIndex))
+            if (!int.TryParse(s: RegEdit.GetKey(key: key), result: out var filterIndex))
                 filterIndex = 0;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
                 Filter =
@@ -588,8 +588,8 @@ namespace Geosite
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RegEdit.Setkey(keyname: key, defaultvalue: $"{openFileDialog.FilterIndex}");
-                    RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+                    RegEdit.SetKey(key: key, defaultValue: $"{openFileDialog.FilterIndex}");
+                    RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
                     var vectorSourceFiles = openFileDialog.FileNames;
                     if (vectorSourceFiles.Length > 0)
                     {
@@ -715,8 +715,8 @@ namespace Geosite
         {
             var key = mapgisButton.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
-            if (!int.TryParse(s: RegEdit.Getkey(keyname: key), result: out var filterIndex))
+            var oldPath = RegEdit.GetKey(key: path);
+            if (!int.TryParse(s: RegEdit.GetKey(key: key), result: out var filterIndex))
                 filterIndex = 0;
             var openFileDialog = new OpenFileDialog
             {
@@ -730,8 +730,8 @@ namespace Geosite
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RegEdit.Setkey(keyname: key, defaultvalue: $"{openFileDialog.FilterIndex}");
-                    RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+                    RegEdit.SetKey(key: key, defaultValue: $"{openFileDialog.FilterIndex}");
+                    RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
                     var vectorSourceFiles = openFileDialog.FileNames;
                     if (vectorSourceFiles.Length > 0)
                     {
@@ -743,10 +743,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                                {
-                                    1 or 2 => "MapGIS",
-                                    _ => null
-                                };
+                            {
+                                1 or 2 => "MapGIS",
+                                _ => null
+                            };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -834,7 +834,7 @@ namespace Geosite
         {
             var key = arcgisIconButton.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
                 Filter = @"ShapeFile|*.shp",
@@ -847,7 +847,7 @@ namespace Geosite
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+                    RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
                     var vectorSourceFiles = openFileDialog.FileNames;
                     if (vectorSourceFiles.Length > 0)
                     {
@@ -859,10 +859,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                                {
-                                    1 => "ShapeFile",
-                                    _ => null
-                                };
+                            {
+                                1 => "ShapeFile",
+                                _ => null
+                            };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -901,7 +901,7 @@ namespace Geosite
         {
             var key = tableIconButton.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
                 Filter = @"Excel|*.xls;*.xlsx;*.xlsb|Textual format|*.txt;*.csv",
@@ -914,7 +914,7 @@ namespace Geosite
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+                    RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
                     var vectorSourceFiles = openFileDialog.FileNames;
                     if (vectorSourceFiles.Length > 0)
                     {
@@ -924,11 +924,11 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                                {
-                                    1 => "Excel",
-                                    2 => "TXT/CSV",
-                                    _ => null
-                                };
+                            {
+                                1 => "Excel",
+                                2 => "TXT/CSV",
+                                _ => null
+                            };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -968,7 +968,7 @@ namespace Geosite
         {
             var key = geojsonIconButton.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
                 Filter = @"GeoJSON|*.geojson",
@@ -982,7 +982,7 @@ namespace Geosite
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+                    RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
                     var vectorSourceFiles = openFileDialog.FileNames;
                     if (vectorSourceFiles.Length > 0)
                     {
@@ -993,10 +993,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                                {
-                                    1 => "GeoJSON",
-                                    _ => null
-                                };
+                            {
+                                1 => "GeoJSON",
+                                _ => null
+                            };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1032,7 +1032,7 @@ namespace Geosite
         {
             var key = geositeIconButton.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
                 Filter = @"GeositeXML|*.xml",
@@ -1045,7 +1045,7 @@ namespace Geosite
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+                    RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
                     var vectorSourceFiles = openFileDialog.FileNames;
                     if (vectorSourceFiles.Length > 0)
                     {
@@ -1056,10 +1056,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                                {
-                                    1 => "GeositeXML",
-                                    _ => null
-                                };
+                            {
+                                1 => "GeositeXML",
+                                _ => null
+                            };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1098,7 +1098,7 @@ namespace Geosite
         {
             var key = kmlIconButton.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
                 Filter = @"GoogleEarth(*.kml)|*.kml",
@@ -1111,7 +1111,7 @@ namespace Geosite
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+                    RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
                     var vectorSourceFiles = openFileDialog.FileNames;
                     if (vectorSourceFiles.Length > 0)
                     {
@@ -1122,10 +1122,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                                {
-                                    1 => "KML",
-                                    _ => null
-                                };
+                            {
+                                1 => "KML",
+                                _ => null
+                            };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1171,11 +1171,11 @@ namespace Geosite
                 }
                 var key = vectorSaveButton.Name;
                 var path = key + "_path";
-                var oldPath = RegEdit.Getkey(keyname: path);
+                var oldPath = RegEdit.GetKey(key: path);
                 if (vectorSourceFileCount == 1)
                 {
                     var sourceFileExt = Path.GetExtension(path: vectorSourceFileText).ToLower();
-                    int.TryParse(s: RegEdit.Getkey(keyname: key), result: out var filterIndex);
+                    int.TryParse(s: RegEdit.GetKey(key: key), result: out var filterIndex);
                     var saveFileDialog = new SaveFileDialog
                     {
                         Filter = sourceFileExt == ".geojson"
@@ -1193,8 +1193,8 @@ namespace Geosite
                         saveFileDialog.InitialDirectory = oldPath;
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        RegEdit.Setkey(keyname: key, defaultvalue: $"{saveFileDialog.FilterIndex}");
-                        RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: saveFileDialog.FileName));
+                        RegEdit.SetKey(key: key, defaultValue: $"{saveFileDialog.FilterIndex}");
+                        RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: saveFileDialog.FileName));
                         vectorTargetFile.Text = saveFileDialog.FileName;
                     }
                     else
@@ -1211,7 +1211,7 @@ namespace Geosite
                         openFolderDialog.SelectedPath = oldPath;
                     if (openFolderDialog.ShowDialog() == DialogResult.OK)
                     {
-                        RegEdit.Setkey(keyname: path, defaultvalue: openFolderDialog.SelectedPath);
+                        RegEdit.SetKey(key: path, defaultValue: openFolderDialog.SelectedPath);
                         vectorTargetFile.Text = openFolderDialog.SelectedPath;
                     }
                 }
@@ -1894,19 +1894,19 @@ namespace Geosite
                     switch (sender)
                     {
                         case TextBox textBox:
-                            RegEdit.Setkey(keyname: textBox.Name, defaultvalue: textBox.Text);
+                            RegEdit.SetKey(key: textBox.Name, defaultValue: textBox.Text);
                             break;
                         case RadioButton radioButton:
-                            RegEdit.Setkey(keyname: radioButton.Name, defaultvalue: $"{radioButton.Checked}");
+                            RegEdit.SetKey(key: radioButton.Name, defaultValue: $"{radioButton.Checked}");
                             break;
                         case CheckBox checkBox:
-                            RegEdit.Setkey(keyname: checkBox.Name, defaultvalue: $"{checkBox.Checked}");
+                            RegEdit.SetKey(key: checkBox.Name, defaultValue: $"{checkBox.Checked}");
                             break;
                         case ComboBox comboBox:
-                            RegEdit.Setkey(keyname: comboBox.Name, defaultvalue: comboBox.Text);
+                            RegEdit.SetKey(key: comboBox.Name, defaultValue: comboBox.Text);
                             break;
                         case TabControl tabControl:
-                            RegEdit.Setkey(keyname: tabControl.Name, defaultvalue: $"{tabControl.SelectedIndex}");
+                            RegEdit.SetKey(key: tabControl.Name, defaultValue: $"{tabControl.SelectedIndex}");
                             break;
                     }
                 }
@@ -2019,7 +2019,6 @@ namespace Geosite
                                                 var databaseSize = databaseX?.Attribute(name: "Size")?.Value;
                                                 if (!string.IsNullOrWhiteSpace(value: databaseSize))
                                                     DatabaseLogAdd(input: $"Database Size - {databaseSize}");
-
                                                 var username = server?.Element(name: "Username")?.Value.Trim();
                                                 var password = server?.Element(name: "Password")?.Value.Trim();
                                                 var forestX = userX.result.Element(name: "Forest");
@@ -3213,15 +3212,15 @@ namespace Geosite
                                                             break;
                                                         }
                                                     default:
-                                                    {
-                                                        //  -3： 连接串未创建
-                                                        //  -2： PG版本太低[小于12.0.0]，不创建数据库；
-                                                        //  -1： PG未安装或者连接参数不正确，无法创建数据库；
-                                                        //  3：  数据库同名且发现某个主表也同名，不宜继续创建子表）
-                                                        _clusterUser.status = false;
-                                                        errorMessage = databaseStatus.Message;
-                                                        break;
-                                                    }
+                                                        {
+                                                            //  -3： 连接串未创建
+                                                            //  -2： PG版本太低[小于12.0.0]，不创建数据库；
+                                                            //  -1： PG未安装或者连接参数不正确，无法创建数据库；
+                                                            //  3：  数据库同名且发现某个主表也同名，不宜继续创建子表）
+                                                            _clusterUser.status = false;
+                                                            errorMessage = databaseStatus.Message;
+                                                            break;
+                                                        }
                                                 }
                                                 if (string.IsNullOrWhiteSpace(value: errorMessage))
                                                 {
@@ -3258,6 +3257,21 @@ namespace Geosite
                                                         )
                                                     };
                                                     Task.WaitAll(tasks: tasks);
+                                                    var geositeServerLicense = userX.result.Element(name: "License");
+                                                    if (geositeServerLicense != null)
+                                                    {
+                                                        //<License>
+                                                        //   <Flag>0</Flag>         //0：未授权；1=已授权
+                                                        //   <Days>100</Days>       //可空的整型数：空意味着永久授权；0意味着时间戳已无效；正值是剩余天数；负值是过期天数
+                                                        //</License>
+                                                        if (int.TryParse(geositeServerLicense.Element("Flag")?.Value, out var flag))
+                                                        {
+                                                            DatabaseLogAdd(input: $"GeositeServer {(flag == 0 ? "not" : "is")} licensed.");
+                                                            var daysValue = geositeServerLicense.Element("Days")?.Value;
+                                                            if (!string.IsNullOrWhiteSpace(daysValue) && long.TryParse(daysValue, out var days))
+                                                                DatabaseLogAdd(input: $"GeositeServer license remaining {days} days.");
+                                                        }
+                                                    }
                                                 }
                                             }
                                             else
@@ -3307,9 +3321,9 @@ namespace Geosite
                     }
                     else
                         Invoke(method: () =>
-                            {
-                                DatabaseLogAdd(input: statusText.Text = @"GeositeServer connection failed.");
-                            }
+                        {
+                            DatabaseLogAdd(input: statusText.Text = @"GeositeServer connection failed.");
+                        }
                         );
                 }
                 catch
@@ -3322,9 +3336,9 @@ namespace Geosite
             }
             else
                 Invoke(method: () =>
-                    {
-                        DatabaseLogAdd(input: statusText.Text = @"GeositeServer URI cannot be empty.");
-                    }
+                {
+                    DatabaseLogAdd(input: statusText.Text = @"GeositeServer URI cannot be empty.");
+                }
                 );
         }
 
@@ -3616,7 +3630,7 @@ namespace Geosite
                         PostgreSqlHelper.NonQuery(cmd: "DELETE FROM tree WHERE id NOT IN (SELECT DISTINCT tree FROM branch);", timeout: 0);
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE tree;", timeout: 0) == null)
                             throw new Exception(message: PostgreSqlHelper.Message);
-                        
+
                         Invoke(
                             method: () =>
                             {
@@ -4074,21 +4088,21 @@ namespace Geosite
                     {
                         _loading.Run();
                         Invoke(method: () =>
-                            {
-                                DatabaseLogAdd(
-                                    input: statusText.Text =
-                                        (string)PostgreSqlHelper.Scalar
-                                        (
-                                            cmd:
-                                            "SELECT array_to_string(array_agg(name), '.') FROM (SELECT distinct on(level) name FROM branch WHERE tree = @tree ORDER BY level,id) AS route;",
-                                            parameters: new Dictionary<string, object>
-                                            {
+                        {
+                            DatabaseLogAdd(
+                                input: statusText.Text =
+                                    (string)PostgreSqlHelper.Scalar
+                                    (
+                                        cmd:
+                                        "SELECT array_to_string(array_agg(name), '.') FROM (SELECT distinct on(level) name FROM branch WHERE tree = @tree ORDER BY level,id) AS route;",
+                                        parameters: new Dictionary<string, object>
+                                        {
                                                 { "tree", tree }
-                                            }
-                                        )
-                                );
-                                _loading.Run(onOff: false);
-                            }
+                                        }
+                                    )
+                            );
+                            _loading.Run(onOff: false);
+                        }
                         );
                     }
                     else
@@ -4166,82 +4180,82 @@ namespace Geosite
                         col.Value = newValue;
                         _loading.Run();
                         Invoke(method: () =>
+                        {
+                            var forest = _clusterUser.forest;
+                            if (colIndex == 0)
                             {
-                                var forest = _clusterUser.forest;
-                                if (colIndex == 0)
-                                {
-                                    var oldId = PostgreSqlHelper.Scalar(
-                                        cmd:
-                                        "SELECT id FROM tree WHERE forest = @forest AND name ILIKE @name::text LIMIT 1;",
-                                        parameters: new Dictionary<string, object>()
-                                        {
+                                var oldId = PostgreSqlHelper.Scalar(
+                                    cmd:
+                                    "SELECT id FROM tree WHERE forest = @forest AND name ILIKE @name::text LIMIT 1;",
+                                    parameters: new Dictionary<string, object>()
+                                    {
                                             {"forest", forest},
                                             {"name", newValue}
-                                        }
+                                    }
+                                );
+                                if (oldId != null)
+                                {
+                                    //row.Cells[index: colIndex].Value = oldValue;
+                                    MessageBox.Show(
+                                        text: $@"Duplicate [{newValue}] are not allowed.",
+                                        caption: @"Tip",
+                                        buttons: MessageBoxButtons.OK,
+                                        icon: MessageBoxIcon.Error
                                     );
-                                    if (oldId != null)
-                                    {
-                                        //row.Cells[index: colIndex].Value = oldValue;
-                                        MessageBox.Show(
-                                            text: $@"Duplicate [{newValue}] are not allowed.",
-                                            caption: @"Tip",
-                                            buttons: MessageBoxButtons.OK,
-                                            icon: MessageBoxIcon.Error
-                                        );
-                                        col.Value = oldValue;
-                                    }
-                                    else
-                                    {
-                                        var typeCellArray = Regex.Split(
-                                            input: row.Cells[index: 1].ToolTipText,
-                                            pattern: @"[\b]",
-                                            options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
-                                        var id = typeCellArray[0];
-                                        DatabaseLogAdd(input: statusText.Text = @"Updating ...");
-                                        Application.DoEvents();
-                                        if (PostgreSqlHelper.NonQuery(cmd: "UPDATE tree SET name = @name WHERE id = @id;", parameters: new Dictionary<string, object> { { "name", newValue }, { "id", long.Parse(s: id) } }) == null)
-                                        {
-                                            col.Value = oldValue;
-                                            DatabaseLogAdd(input: statusText.Text = PostgreSqlHelper.Message);
-                                        }
-                                        else
-                                            DatabaseLogAdd(input: statusText.Text = @"Update completed.");
-                                    }
+                                    col.Value = oldValue;
                                 }
                                 else
                                 {
+                                    var typeCellArray = Regex.Split(
+                                        input: row.Cells[index: 1].ToolTipText,
+                                        pattern: @"[\b]",
+                                        options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+                                    var id = typeCellArray[0];
                                     DatabaseLogAdd(input: statusText.Text = @"Updating ...");
                                     Application.DoEvents();
-                                    var updateCount = PostgreSqlHelper.NonQuery(
-                                        cmd: "WITH " +
-                                                             "treeId AS " +
-                                                             "( " +
-                                                             "    SELECT id FROM tree WHERE forest = @forest AND name ILIKE @name::text LIMIT 1 " +
-                                                             ")," +
-                                                             "branchId AS " +
-                                                             "( " +
-                                                             "    SELECT id FROM branch WHERE tree = ANY(SELECT * FROM treeId) " +
-                                                             "    EXCEPT " + //仅保留树梢
-                                                             "    SELECT parent FROM branch WHERE tree = ANY(SELECT * FROM treeId) " +
-                                                             ") " +
-                                                             "UPDATE leaf SET rank = @rank WHERE branch = ANY(SELECT * FROM branchId);",
-                                        parameters: new Dictionary<string, object>()
-                                        {
+                                    if (PostgreSqlHelper.NonQuery(cmd: "UPDATE tree SET name = @name WHERE id = @id;", parameters: new Dictionary<string, object> { { "name", newValue }, { "id", long.Parse(s: id) } }) == null)
+                                    {
+                                        col.Value = oldValue;
+                                        DatabaseLogAdd(input: statusText.Text = PostgreSqlHelper.Message);
+                                    }
+                                    else
+                                        DatabaseLogAdd(input: statusText.Text = @"Update completed.");
+                                }
+                            }
+                            else
+                            {
+                                DatabaseLogAdd(input: statusText.Text = @"Updating ...");
+                                Application.DoEvents();
+                                var updateCount = PostgreSqlHelper.NonQuery(
+                                    cmd: "WITH " +
+                                                         "treeId AS " +
+                                                         "( " +
+                                                         "    SELECT id FROM tree WHERE forest = @forest AND name ILIKE @name::text LIMIT 1 " +
+                                                         ")," +
+                                                         "branchId AS " +
+                                                         "( " +
+                                                         "    SELECT id FROM branch WHERE tree = ANY(SELECT * FROM treeId) " +
+                                                         "    EXCEPT " + //仅保留树梢
+                                                         "    SELECT parent FROM branch WHERE tree = ANY(SELECT * FROM treeId) " +
+                                                         ") " +
+                                                         "UPDATE leaf SET rank = @rank WHERE branch = ANY(SELECT * FROM branchId);",
+                                    parameters: new Dictionary<string, object>()
+                                    {
                                             {"forest", forest},
                                             {"name", row.Cells[index: 0].Value.ToString()},
                                             {"rank", short.Parse(s: newValue)}
-                                        }
-                                    );
-                                    if (updateCount != null)
-                                        DatabaseLogAdd(input: statusText.Text = $@"Update completed. [count: {updateCount}]");
-                                    else
-                                    {
-                                        DatabaseLogAdd(input: statusText.Text = PostgreSqlHelper.Message);
-                                        col.Value = oldValue;
                                     }
+                                );
+                                if (updateCount != null)
+                                    DatabaseLogAdd(input: statusText.Text = $@"Update completed. [count: {updateCount}]");
+                                else
+                                {
+                                    DatabaseLogAdd(input: statusText.Text = PostgreSqlHelper.Message);
+                                    col.Value = oldValue;
                                 }
-                                _loading.Run(onOff: false);
                             }
+                            _loading.Run(onOff: false);
+                        }
                         );
                     }
                 }
@@ -4252,9 +4266,9 @@ namespace Geosite
         private void VectorOpen_Click(object sender, EventArgs e)
         {
             var key = VectorOpen.Name;
-            int.TryParse(s: RegEdit.Getkey(keyname: key), result: out var filterIndex);
+            int.TryParse(s: RegEdit.GetKey(key: key), result: out var filterIndex);
             var pathKey = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: pathKey);
+            var oldPath = RegEdit.GetKey(key: pathKey);
             var openFileDialog = new OpenFileDialog
             {
                 Filter = @"MapGIS|*.wt;*.wl;*.wp|MapGIS|*.mpj|ShapeFile|*.shp|Excel Tab Delimited|*.txt|Excel Comma Delimited|*.csv|Excel|*.xls;*.xlsx;*.xlsb|GoogleEarth(*.kml)|*.kml|GeositeXML|*.xml|GeoJson|*.geojson",
@@ -4265,8 +4279,8 @@ namespace Geosite
                 openFileDialog.InitialDirectory = oldPath;
             if (openFileDialog.ShowDialog() != DialogResult.OK)
                 return;
-            RegEdit.Setkey(keyname: key, defaultvalue: $"{openFileDialog.FilterIndex}");
-            RegEdit.Setkey(keyname: pathKey, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+            RegEdit.SetKey(key: key, defaultValue: $"{openFileDialog.FilterIndex}");
+            RegEdit.SetKey(key: pathKey, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
             foreach (var path in openFileDialog.FileNames)
             {
                 var fileType = Path.GetExtension(path: path).ToLower();
@@ -6753,7 +6767,7 @@ namespace Geosite
         {
             var key = localTileOpen.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFolderDialog = new FolderBrowserDialog
             {
                 Description = @"Please select a folder",
@@ -6763,7 +6777,7 @@ namespace Geosite
                 openFolderDialog.SelectedPath = oldPath;
             if (openFolderDialog.ShowDialog() == DialogResult.OK)
             {
-                RegEdit.Setkey(keyname: path, defaultvalue: openFolderDialog.SelectedPath);
+                RegEdit.SetKey(key: path, defaultValue: openFolderDialog.SelectedPath);
                 localTileFolder.Text = openFolderDialog.SelectedPath;
             }
             else
@@ -6773,10 +6787,10 @@ namespace Geosite
         private void ModelOpen_Click(object sender, EventArgs e)
         {
             var key = ModelOpen.Name;
-            if (!int.TryParse(s: RegEdit.Getkey(keyname: key), result: out var filterIndex))
+            if (!int.TryParse(s: RegEdit.GetKey(key: key), result: out var filterIndex))
                 filterIndex = 0;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog()
             {
                 Title = @"Please select raster file[s]",
@@ -6790,8 +6804,8 @@ namespace Geosite
             {
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RegEdit.Setkey(keyname: key, defaultvalue: $"{openFileDialog.FilterIndex}");
-                    RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: openFileDialog.FileName));
+                    RegEdit.SetKey(key: key, defaultValue: $"{openFileDialog.FilterIndex}");
+                    RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: openFileDialog.FileName));
                     ModelOpenTextBox.Text = string.Join(separator: "|", value: openFileDialog.FileNames);
                     var rasterSourceFiles = Regex.Split(input: ModelOpenTextBox.Text.Trim(), pattern: @"[\s]*[|][\s]*")
                         .Where(predicate: s => !string.IsNullOrWhiteSpace(value: s)).ToArray();
@@ -6822,10 +6836,10 @@ namespace Geosite
             if (rasterSourceFileCount > 0)
             {
                 var key = ModelSave.Name;
-                if (!int.TryParse(s: RegEdit.Getkey(keyname: key), result: out var filterIndex))
+                if (!int.TryParse(s: RegEdit.GetKey(key: key), result: out var filterIndex))
                     filterIndex = 0;
                 var path = key + "_path";
-                var oldPath = RegEdit.Getkey(keyname: path);
+                var oldPath = RegEdit.GetKey(key: path);
                 string saveAs = null;
                 if (rasterSourceFileCount == 1)
                 {
@@ -6838,8 +6852,8 @@ namespace Geosite
                         saveFileDialog.InitialDirectory = oldPath;
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        RegEdit.Setkey(keyname: key, defaultvalue: $"{saveFileDialog.FilterIndex}");
-                        RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: saveFileDialog.FileName));
+                        RegEdit.SetKey(key: key, defaultValue: $"{saveFileDialog.FilterIndex}");
+                        RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: saveFileDialog.FileName));
                         saveAs = saveFileDialog.FileName;
                     }
                 }
@@ -6854,7 +6868,7 @@ namespace Geosite
                         openFolderDialog.SelectedPath = oldPath;
                     if (openFolderDialog.ShowDialog() == DialogResult.OK)
                     {
-                        RegEdit.Setkey(keyname: path, defaultvalue: openFolderDialog.SelectedPath);
+                        RegEdit.SetKey(key: path, defaultValue: openFolderDialog.SelectedPath);
                         saveAs = openFolderDialog.SelectedPath;
                     }
                 }
@@ -6966,7 +6980,7 @@ namespace Geosite
         {
             var key = TileFormatOpen.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFolderDialog = new FolderBrowserDialog
             {
                 Description = @"Please select a folder that contains tiles",
@@ -6977,7 +6991,7 @@ namespace Geosite
             var result = openFolderDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                RegEdit.Setkey(keyname: path, defaultvalue: openFolderDialog.SelectedPath);
+                RegEdit.SetKey(key: path, defaultValue: openFolderDialog.SelectedPath);
                 TileFormatOpenBox.Text = openFolderDialog.SelectedPath;
             }
             else
@@ -6988,7 +7002,7 @@ namespace Geosite
         {
             var key = TileFormatOpen.Name;
             var path = key + "_path";
-            var oldPath = RegEdit.Getkey(keyname: path);
+            var oldPath = RegEdit.GetKey(key: path);
             var openFolderDialog = new FolderBrowserDialog()
             {
                 Description = @"Please select a destination folder",
@@ -6999,7 +7013,7 @@ namespace Geosite
             var result = openFolderDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                RegEdit.Setkey(keyname: path, defaultvalue: openFolderDialog.SelectedPath);
+                RegEdit.SetKey(key: path, defaultValue: openFolderDialog.SelectedPath);
                 TileFormatSaveBox.Text = openFolderDialog.SelectedPath;
             }
             else
@@ -7750,10 +7764,10 @@ namespace Geosite
                             rasterTileSize.Text = int.TryParse(s: rasterTileSize.Text, result: out var size)
                                 ? size < 10
                                     ? @"10"
-                                    : size > 1024
-                                        ? "1024"
+                                    : size > 4096 //太大时容易导致内存溢出
+                                        ? "4096" //WCS推荐尺寸
                                         : $"{size}"
-                                : @"100";
+                                : @"100"; //WPS推荐尺寸
                             tileType = TileType.Standard;
                             EPSG4326.Checked = true;
                             typeCode = EPSG4326.Checked ? 12001 : 12002;
@@ -8030,9 +8044,33 @@ namespace Geosite
                                           </boundary>
                                         </property>                                     
                                      */
+                                    /*
+                                        <property>
+                                           <name>raster</name>
+                                           <bands>4</bands>
+                                           <bandDepth>16</bandDepth>
+                                           <tileSize>100</tileSize>
+                                           <overlap>0</overlap>
+                                           <minZoom>-1</minZoom>
+                                           <maxZoom>-1</maxZoom>
+                                           <type>raster</type>
+                                           <crs>0</crs>
+                                           <serverFormat>Default</serverFormat>
+                                           <size>
+                                               <width>7300</width>
+                                               <height>6908</height>
+                                           </size>
+                                           <boundary>
+                                               <north>0</north>
+                                               <south>6908</south>
+                                               <west>0</west>
+                                               <east>7300</east>
+                                           </boundary>
+                                       </property>                                     
+                                     */
                                     if (!int.TryParse(themeMetadataX.Element("crs").Value, out var crs) || crs is not (4326 or 3857))
                                     {
-                                        return $"The coordinate reference system [EPSG:{parameter.srid}] should be set to EPSG:4326 or 3857.";
+                                        return $"The coordinate reference system [EPSG:{crs}] should be set to EPSG:4326 or 3857.";
                                     }
                                     if (parameter.srid != crs)
                                     {
@@ -8500,7 +8538,7 @@ namespace Geosite
             MapBox.ShowCenter = //默认情况下，GMap.NET 控件在地图上显示一个【红十字】，以便准确显示中心的位置
                 MapBox.MapScaleInfoEnabled = //线状比例尺
                                              //MapBox.ShowTileGridLines = //瓦片网格
-            RegEdit.Getkey(keyname: ZoomLevelLabel.Name, defaultvalue: "0") == "1";
+            RegEdit.GetKey(key: ZoomLevelLabel.Name, defaultValue: "0") == "1";
             TileLoading = new LoadingBar(bar: TileLoadProgressBar);
             FilePreviewLoading = new LoadingBar(bar: FilePreviewProgressBar);
             GMapProviderDictionary.Add(key: EmptyMapProviderKey, value: EmptyProvider.Instance);
@@ -8526,7 +8564,7 @@ namespace Geosite
             }
             //else
             //    GMaps.Instance.Mode = AccessMode.CacheOnly;
-            var mapProviderDropDownItem = RegEdit.Getkey(keyname: MapProviderDropDown.Name, defaultvalue: EmptyMapProviderKey);
+            var mapProviderDropDownItem = RegEdit.GetKey(key: MapProviderDropDown.Name, defaultValue: EmptyMapProviderKey);
             var mapProviderExist = false;
             foreach (var baseMapProvider in GMapProviderDictionary)
             {
@@ -8560,7 +8598,7 @@ namespace Geosite
             MapBox.Overlays.Add(item: MapView.Features = new GMapOverlay(id: "features"));
             MapBox.Overlays.Add(item: MapGrid.Features = new GMapOverlay(id: "features"));
             MapBox.Overlays.Add(item: TopologyCheckerForm.Features = new GMapOverlay(id: "features"));
-            var zoomAndPosition = RegEdit.Getkey(keyname: MapBox.Name, defaultvalue: string.Empty);
+            var zoomAndPosition = RegEdit.GetKey(key: MapBox.Name, defaultValue: string.Empty);
             if (!string.IsNullOrWhiteSpace(value: zoomAndPosition))
             {
                 var splitArray = Regex.Split(input: zoomAndPosition, pattern: @"[\s]*,[\s]*", options: RegexOptions.Singleline | RegexOptions.Multiline);
@@ -8580,7 +8618,7 @@ namespace Geosite
                 MapBox.Position = new PointLatLng(lat: 34.26098708, lng: 108.94236401);
                 MapBox.Zoom = 5D;
             }
-            var positionBoxItem = RegEdit.Getkey(keyname: PositionBox.Name, defaultvalue: "DEG");
+            var positionBoxItem = RegEdit.GetKey(key: PositionBox.Name, defaultValue: "DEG");
             PositionBox.Tag = (positionBoxItem, ((double?)null, (double?)null));
             foreach (var item in PositionBox.DropDownItems)
                 if (item.GetType().Name == "ToolStripMenuItem")
@@ -8588,7 +8626,7 @@ namespace Geosite
                     var theItem = (ToolStripMenuItem)item;
                     theItem.Checked = theItem.Text == positionBoxItem;
                 }
-            var mapGridItem = RegEdit.Getkey(keyname: MapGrids.Name, defaultvalue: "None");
+            var mapGridItem = RegEdit.GetKey(key: MapGrids.Name, defaultValue: "None");
             foreach (var item in MapGrids.DropDownItems)
                 if (item.GetType().Name == "ToolStripMenuItem")
                 {
@@ -8597,7 +8635,7 @@ namespace Geosite
                     if (theItem.Checked)
                         MapGrids.Tag = theItem.Tag;
                 }
-            var mapBearingItem = RegEdit.Getkey(keyname: MapBearingMenuItem.Name, defaultvalue: "0");
+            var mapBearingItem = RegEdit.GetKey(key: MapBearingMenuItem.Name, defaultValue: "0");
             foreach (var item in MapBearingMenuItem.DropDownItems)
                 if (item.GetType().Name == "ToolStripMenuItem")
                 {
@@ -8763,7 +8801,7 @@ namespace Geosite
                             }
                         }
                     }
-                    RegEdit.Setkey(keyname: MapGrids.Name, defaultvalue: checkedItem.Text);
+                    RegEdit.SetKey(key: MapGrids.Name, defaultValue: checkedItem.Text);
                 }
             );
         }
@@ -8829,48 +8867,48 @@ namespace Geosite
         private void MapBox_OnMarkerEnter(GMapMarker item)
         {
             BeginInvoke(method: () =>
+            {
+                try
                 {
-                    try
+                    switch (item.GetType().Name)
                     {
-                        switch (item.GetType().Name)
-                        {
-                            case "GMapMarkerPushpin":
-                                {
-                                    var marker = (GMapMarkerPushpin)item;
-                                    marker.IsSelected = true;
-                                    marker.IsVisible = true;
-                                    break;
-                                }
-                            case "GMapMarkerRect":
-                                {
-                                    var marker = (GMapMarkerRect)item;
-                                    marker.IsSelected = true;
-                                    marker.IsVisible = true;
-                                    break;
-                                }
-                            case "GMapMarkerCircle":
-                                {
-                                    var marker = (GMapMarkerCircle)item;
-                                    marker.IsSelected = true;
-                                    marker.IsVisible = true;
-                                    break;
-                                }
-                            case "GMapMarkerGround":
-                                {
-                                    var marker = (GMapMarkerGround)item;
-                                    marker.IsSelected = true;
-                                    marker.IsVisible = true;
-                                    break;
-                                }
-                                //default:
-                                //    break;
-                        }
-                    }
-                    catch
-                    {
-                        //
+                        case "GMapMarkerPushpin":
+                            {
+                                var marker = (GMapMarkerPushpin)item;
+                                marker.IsSelected = true;
+                                marker.IsVisible = true;
+                                break;
+                            }
+                        case "GMapMarkerRect":
+                            {
+                                var marker = (GMapMarkerRect)item;
+                                marker.IsSelected = true;
+                                marker.IsVisible = true;
+                                break;
+                            }
+                        case "GMapMarkerCircle":
+                            {
+                                var marker = (GMapMarkerCircle)item;
+                                marker.IsSelected = true;
+                                marker.IsVisible = true;
+                                break;
+                            }
+                        case "GMapMarkerGround":
+                            {
+                                var marker = (GMapMarkerGround)item;
+                                marker.IsSelected = true;
+                                marker.IsVisible = true;
+                                break;
+                            }
+                            //default:
+                            //    break;
                     }
                 }
+                catch
+                {
+                    //
+                }
+            }
             );
         }
 
@@ -8881,48 +8919,48 @@ namespace Geosite
         private void MapBox_OnMarkerLeave(GMapMarker item)
         {
             BeginInvoke(method: () =>
+            {
+                try
                 {
-                    try
+                    switch (item.GetType().Name)
                     {
-                        switch (item.GetType().Name)
-                        {
-                            case "GMapMarkerPushpin":
-                                {
-                                    var marker = (GMapMarkerPushpin)item;
-                                    marker.IsSelected = false;
-                                    marker.IsVisible = true;
-                                    break;
-                                }
-                            case "GMapMarkerRect":
-                                {
-                                    var marker = (GMapMarkerRect)item;
-                                    marker.IsSelected = false;
-                                    marker.IsVisible = true;
-                                    break;
-                                }
-                            case "GMapMarkerCircle":
-                                {
-                                    var marker = (GMapMarkerCircle)item;
-                                    marker.IsSelected = false;
-                                    marker.IsVisible = true;
-                                    break;
-                                }
-                            case "GMapMarkerGround":
-                                {
-                                    var marker = (GMapMarkerGround)item;
-                                    marker.IsSelected = false;
-                                    marker.IsVisible = true;
-                                    break;
-                                }
-                                //default:
-                                //    break;
-                        }
-                    }
-                    catch
-                    {
-                        //
+                        case "GMapMarkerPushpin":
+                            {
+                                var marker = (GMapMarkerPushpin)item;
+                                marker.IsSelected = false;
+                                marker.IsVisible = true;
+                                break;
+                            }
+                        case "GMapMarkerRect":
+                            {
+                                var marker = (GMapMarkerRect)item;
+                                marker.IsSelected = false;
+                                marker.IsVisible = true;
+                                break;
+                            }
+                        case "GMapMarkerCircle":
+                            {
+                                var marker = (GMapMarkerCircle)item;
+                                marker.IsSelected = false;
+                                marker.IsVisible = true;
+                                break;
+                            }
+                        case "GMapMarkerGround":
+                            {
+                                var marker = (GMapMarkerGround)item;
+                                marker.IsSelected = false;
+                                marker.IsVisible = true;
+                                break;
+                            }
+                            //default:
+                            //    break;
                     }
                 }
+                catch
+                {
+                    //
+                }
+            }
             );
         }
 
@@ -8943,11 +8981,11 @@ namespace Geosite
         private void MapBox_OnRouteEnter(GMapRoute item)
         {
             BeginInvoke(method: () =>
-                {
-                    var line = (GMapRouteLine)item;
-                    line.IsSelected = true;
-                    line.IsVisible = true;
-                }
+            {
+                var line = (GMapRouteLine)item;
+                line.IsSelected = true;
+                line.IsVisible = true;
+            }
             );
         }
 
@@ -8984,11 +9022,11 @@ namespace Geosite
         private void MapBox_OnPolygonLeave(GMapPolygon item)
         {
             BeginInvoke(method: () =>
-                {
-                    var polygon = (GMapPolygonArea)item;
-                    polygon.IsSelected = false;
-                    polygon.IsVisible = true;
-                }
+            {
+                var polygon = (GMapPolygonArea)item;
+                polygon.IsSelected = false;
+                polygon.IsVisible = true;
+            }
             );
         }
 
@@ -8999,11 +9037,11 @@ namespace Geosite
         private void MapBox_OnPolygonEnter(GMapPolygon item)
         {
             BeginInvoke(method: () =>
-                {
-                    var polygon = (GMapPolygonArea)item;
-                    polygon.IsSelected = true;
-                    polygon.IsVisible = true;
-                }
+            {
+                var polygon = (GMapPolygonArea)item;
+                polygon.IsSelected = true;
+                polygon.IsVisible = true;
+            }
             );
         }
 
@@ -9063,24 +9101,24 @@ namespace Geosite
         private void PositionMenuItem_Click(object sender, EventArgs e)
         {
             BeginInvoke(method: () =>
+            {
+                if (PositionBox.Tag != null)
                 {
-                    if (PositionBox.Tag != null)
-                    {
-                        var previousTag = ((string srid, (double? lng, double? lat) position))PositionBox.Tag;
-                        var lng = previousTag.position.lng;
-                        var lat = previousTag.position.lat;
-                        var checkedItem = (ToolStripMenuItem)sender;
-                        foreach (var item in PositionBox.DropDownItems)
-                            if (item.GetType().Name == "ToolStripMenuItem")
-                            {
-                                var theItem = (ToolStripMenuItem)item;
-                                theItem.Checked = theItem.Name == checkedItem.Name;
-                            }
-                        PositionBox.Tag = (checkedItem.Text, (lng, lat));
-                        MapBox_MouseMove(sender: sender);
-                        RegEdit.Setkey(keyname: PositionBox.Name, defaultvalue: checkedItem.Text);
-                    }
+                    var previousTag = ((string srid, (double? lng, double? lat) position))PositionBox.Tag;
+                    var lng = previousTag.position.lng;
+                    var lat = previousTag.position.lat;
+                    var checkedItem = (ToolStripMenuItem)sender;
+                    foreach (var item in PositionBox.DropDownItems)
+                        if (item.GetType().Name == "ToolStripMenuItem")
+                        {
+                            var theItem = (ToolStripMenuItem)item;
+                            theItem.Checked = theItem.Name == checkedItem.Name;
+                        }
+                    PositionBox.Tag = (checkedItem.Text, (lng, lat));
+                    MapBox_MouseMove(sender: sender);
+                    RegEdit.SetKey(key: PositionBox.Name, defaultValue: checkedItem.Text);
                 }
+            }
             );
         }
 
@@ -9092,18 +9130,18 @@ namespace Geosite
         private void PositionBox_DoubleClick(object sender, EventArgs e)
         {
             Invoke(method: () =>
-                {
-                    if (PositionBox.Text != null)
-                        try
-                        {
-                            Clipboard.SetData(format: DataFormats.Text, data: PositionBox.Text);
-                            MessageBox.Show(text: @"Successfully copied to Clipboard", caption: @"Tip");
-                        }
-                        catch
-                        {
-                            //
-                        }
-                }
+            {
+                if (PositionBox.Text != null)
+                    try
+                    {
+                        Clipboard.SetData(format: DataFormats.Text, data: PositionBox.Text);
+                        MessageBox.Show(text: @"Successfully copied to Clipboard", caption: @"Tip");
+                    }
+                    catch
+                    {
+                        //
+                    }
+            }
             );
         }
 
@@ -9115,22 +9153,22 @@ namespace Geosite
         private void MapProviderMenuItem_Click(object sender, EventArgs e)
         {
             BeginInvoke(method: () =>
+            {
+                var baseMap = (ToolStripMenuItem)sender;
+                if (baseMap.Text != null)
                 {
-                    var baseMap = (ToolStripMenuItem)sender;
-                    if (baseMap.Text != null)
+                    MapProviderDropDown.Text = baseMap.Text;
+                    foreach (var item in MapProviderDropDown.DropDownItems)
                     {
-                        MapProviderDropDown.Text = baseMap.Text;
-                        foreach (var item in MapProviderDropDown.DropDownItems)
-                        {
-                            if (item.GetType().Name != "ToolStripMenuItem")
-                                continue;
-                            var theItem = (ToolStripMenuItem)item;
-                            theItem.Checked = theItem.Text == baseMap.Text;
-                        }
-                        MapBox.MapProvider = GMapProviderDictionary[key: baseMap.Text];
-                        RegEdit.Setkey(keyname: MapProviderDropDown.Name, defaultvalue: baseMap.Text);
+                        if (item.GetType().Name != "ToolStripMenuItem")
+                            continue;
+                        var theItem = (ToolStripMenuItem)item;
+                        theItem.Checked = theItem.Text == baseMap.Text;
                     }
+                    MapBox.MapProvider = GMapProviderDictionary[key: baseMap.Text];
+                    RegEdit.SetKey(key: MapProviderDropDown.Name, defaultValue: baseMap.Text);
                 }
+            }
             );
         }
 
@@ -9142,16 +9180,16 @@ namespace Geosite
         private void ZoomLevelLabel_Click(object sender, EventArgs e)
         {
             BeginInvoke(method: () =>
-                {
-                    var redCross = !MapBox.ShowCenter;
-                    MapBox.ShowCenter = //默认情况下，GMap.NET 控件在地图上显示一个【红十字】，以便准确显示中心的位置
-                        MapBox.MapScaleInfoEnabled =
-                            //线状比例尺
-                            //MapBox.ShowTileGridLines = //瓦片网格
-                            redCross;
-                    RegEdit.Setkey(keyname: ZoomLevelLabel.Name, defaultvalue: redCross ? "1" : "0");
-                    MapBox.Refresh();
-                }
+            {
+                var redCross = !MapBox.ShowCenter;
+                MapBox.ShowCenter = //默认情况下，GMap.NET 控件在地图上显示一个【红十字】，以便准确显示中心的位置
+                    MapBox.MapScaleInfoEnabled =
+                        //线状比例尺
+                        //MapBox.ShowTileGridLines = //瓦片网格
+                        redCross;
+                RegEdit.SetKey(key: ZoomLevelLabel.Name, defaultValue: redCross ? "1" : "0");
+                MapBox.Refresh();
+            }
             );
         }
 
@@ -9367,7 +9405,7 @@ namespace Geosite
                     if (!theItem.Checked)
                         continue;
                     MapBearingMenuItem.Tag = theItem.Tag;
-                    RegEdit.Setkey(keyname: MapBearingMenuItem.Name, defaultvalue: bearing);
+                    RegEdit.SetKey(key: MapBearingMenuItem.Name, defaultValue: bearing);
                 }
         }
 
@@ -9461,7 +9499,7 @@ namespace Geosite
                                             sb.AppendLine();
                                     }
 
-                                    if (sb is {Length: > 0})
+                                    if (sb is { Length: > 0 })
                                     {
                                         try
                                         {
@@ -9622,8 +9660,8 @@ namespace Geosite
                             Application.DoEvents();
                             var key = vectorSaveButton.Name;
                             var path = key + "_path";
-                            var oldPath = RegEdit.Getkey(keyname: path);
-                            int.TryParse(s: RegEdit.Getkey(keyname: key), result: out var filterIndex);
+                            var oldPath = RegEdit.GetKey(key: path);
+                            int.TryParse(s: RegEdit.GetKey(key: key), result: out var filterIndex);
                             var saveFileDialog = new SaveFileDialog
                             {
                                 Filter = @"ESRI ShapeFile(*.shp)|*.shp|GeoJSON(*.geojson)|*.geojson|GoogleEarth(*.kml)|*.kml|Gml(*.gml)|*.gml|GeositeXML(*.xml)|*.xml",
@@ -9633,8 +9671,8 @@ namespace Geosite
                                 saveFileDialog.InitialDirectory = oldPath;
                             if (saveFileDialog.ShowDialog() == DialogResult.OK)
                             {
-                                RegEdit.Setkey(keyname: key, defaultvalue: $"{saveFileDialog.FilterIndex}");
-                                RegEdit.Setkey(keyname: path, defaultvalue: Path.GetDirectoryName(path: saveFileDialog.FileName));
+                                RegEdit.SetKey(key: key, defaultValue: $"{saveFileDialog.FilterIndex}");
+                                RegEdit.SetKey(key: path, defaultValue: Path.GetDirectoryName(path: saveFileDialog.FileName));
                                 var saveAsFileName = saveFileDialog.FileName;
                                 var fileType = Path.GetExtension(path: saveAsFileName).ToLower();
                                 try
@@ -9945,8 +9983,7 @@ namespace Geosite
                                                                     : null
                                                                 , $"(({string.Join(",", from vertex in geometry[0] select $"{vertex[0]} {vertex[1]}")}))"
                                                             ),
-                                                            propertyX ?? new XElement("property",
-                                                                new XElement("id", featureId)),
+                                                            propertyX ?? new XElement("property", new XElement("id", featureId)),
                                                             styleX
                                                         )
                                                     );

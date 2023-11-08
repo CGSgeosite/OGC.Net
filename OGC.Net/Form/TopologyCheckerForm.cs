@@ -72,11 +72,11 @@ namespace Geosite
             _backgroundWorker.ProgressChanged += backgroundWorker_ProgressChanged;
             _backgroundWorker.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
 
-            CheckBoxDangle.Checked = RegEdit.Getkey(keyname: "CheckBoxDangle", defaultvalue: "0") == "1";
-            CheckBoxPseudo.Checked = RegEdit.Getkey(keyname: "CheckBoxPseudo", defaultvalue: "0") == "1";
-            CheckBoxCoincide.Checked = RegEdit.Getkey(keyname: "CheckBoxCoincide", defaultvalue: "0") == "1";
-            CheckBoxOverlay.Checked = RegEdit.Getkey(keyname: "CheckBoxOverlay", defaultvalue: "0") == "1";
-            CheckBoxIntersection.Checked = RegEdit.Getkey(keyname: "CheckBoxIntersection", defaultvalue: "0") == "1";
+            CheckBoxDangle.Checked = RegEdit.GetKey(key: "CheckBoxDangle", defaultValue: "0") == "1";
+            CheckBoxPseudo.Checked = RegEdit.GetKey(key: "CheckBoxPseudo", defaultValue: "0") == "1";
+            CheckBoxCoincide.Checked = RegEdit.GetKey(key: "CheckBoxCoincide", defaultValue: "0") == "1";
+            CheckBoxOverlay.Checked = RegEdit.GetKey(key: "CheckBoxOverlay", defaultValue: "0") == "1";
+            CheckBoxIntersection.Checked = RegEdit.GetKey(key: "CheckBoxIntersection", defaultValue: "0") == "1";
 
             TopologyStatusLabel.Text = _mainForm.GetCopyright;
         }
@@ -349,7 +349,7 @@ namespace Geosite
         private void TopologyCheck_Click(object sender, EventArgs e)
         {
             var theCheckBox = (CheckBox)sender;
-            RegEdit.Setkey(keyname: theCheckBox.Name, defaultvalue: theCheckBox.Checked ? "1" : "0");
+            RegEdit.SetKey(key: theCheckBox.Name, defaultValue: theCheckBox.Checked ? "1" : "0");
         }
 
         // 线或面要素拓扑检查：
