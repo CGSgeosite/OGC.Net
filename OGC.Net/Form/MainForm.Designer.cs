@@ -35,12 +35,12 @@
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
             OGCtoolTip = new ToolTip(components);
             deleteTree = new Button();
             lastPage = new Button();
@@ -235,6 +235,11 @@
             panel27 = new Panel();
             panel2 = new Panel();
             DatabaseGridView = new DataGridView();
+            LayerName = new DataGridViewTextBoxColumn();
+            ThemeRank = new DataGridViewTextBoxColumn();
+            ThemeStatus = new DataGridViewImageColumn();
+            ThemeType = new DataGridViewImageColumn();
+            ThemeView = new DataGridViewImageColumn();
             DatabaseViewMenu = new ContextMenuStrip(components);
             DatabaseViewRename = new ToolStripMenuItem();
             toolStripSeparator12 = new ToolStripSeparator();
@@ -372,11 +377,6 @@
             statusProgress = new ToolStripProgressBar();
             statusText = new ToolStripStatusLabel();
             dataGridViewImageColumn1 = new DataGridViewImageColumn();
-            LayerName = new DataGridViewTextBoxColumn();
-            ThemeRank = new DataGridViewTextBoxColumn();
-            ThemeStatus = new DataGridViewImageColumn();
-            ThemeType = new DataGridViewImageColumn();
-            ThemeView = new DataGridViewImageColumn();
             groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
@@ -512,7 +512,7 @@
             deleteTree.Cursor = Cursors.Hand;
             deleteTree.Dock = DockStyle.Fill;
             deleteTree.Enabled = false;
-            deleteTree.Font = new Font("宋体", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            deleteTree.Font = new Font("宋体", 9F, FontStyle.Bold);
             deleteTree.ForeColor = Color.Black;
             deleteTree.Location = new Point(0, 0);
             deleteTree.Margin = new Padding(4);
@@ -530,7 +530,7 @@
             lastPage.Cursor = Cursors.Hand;
             lastPage.Dock = DockStyle.Fill;
             lastPage.Enabled = false;
-            lastPage.Font = new Font("宋体", 8F, FontStyle.Bold, GraphicsUnit.Point);
+            lastPage.Font = new Font("宋体", 8F, FontStyle.Bold);
             lastPage.Location = new Point(0, 0);
             lastPage.Margin = new Padding(4);
             lastPage.Name = "lastPage";
@@ -547,7 +547,7 @@
             nextPage.Cursor = Cursors.Hand;
             nextPage.Dock = DockStyle.Fill;
             nextPage.Enabled = false;
-            nextPage.Font = new Font("宋体", 8F, FontStyle.Bold, GraphicsUnit.Point);
+            nextPage.Font = new Font("宋体", 8F, FontStyle.Bold);
             nextPage.Location = new Point(0, 0);
             nextPage.Margin = new Padding(4);
             nextPage.Name = "nextPage";
@@ -564,7 +564,7 @@
             previousPage.Cursor = Cursors.Hand;
             previousPage.Dock = DockStyle.Fill;
             previousPage.Enabled = false;
-            previousPage.Font = new Font("宋体", 8F, FontStyle.Bold, GraphicsUnit.Point);
+            previousPage.Font = new Font("宋体", 8F, FontStyle.Bold);
             previousPage.Location = new Point(0, 0);
             previousPage.Margin = new Padding(4);
             previousPage.Name = "previousPage";
@@ -581,7 +581,7 @@
             firstPage.Cursor = Cursors.Hand;
             firstPage.Dock = DockStyle.Fill;
             firstPage.Enabled = false;
-            firstPage.Font = new Font("宋体", 8F, FontStyle.Bold, GraphicsUnit.Point);
+            firstPage.Font = new Font("宋体", 8F, FontStyle.Bold);
             firstPage.Location = new Point(0, 0);
             firstPage.Margin = new Padding(4);
             firstPage.Name = "firstPage";
@@ -703,7 +703,7 @@
             deleteForest.BackColor = Color.White;
             deleteForest.Cursor = Cursors.Hand;
             deleteForest.Enabled = false;
-            deleteForest.Font = new Font("宋体", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            deleteForest.Font = new Font("宋体", 9F, FontStyle.Bold);
             deleteForest.ForeColor = Color.Black;
             deleteForest.Location = new Point(160, 37);
             deleteForest.Margin = new Padding(4);
@@ -891,7 +891,7 @@
             tileconvert.BackgroundImageLayout = ImageLayout.Center;
             tileconvert.Cursor = Cursors.Hand;
             tileconvert.Enabled = false;
-            tileconvert.Font = new Font("宋体", 14F, FontStyle.Bold, GraphicsUnit.Point);
+            tileconvert.Font = new Font("宋体", 14F, FontStyle.Bold);
             tileconvert.ForeColor = Color.Black;
             tileconvert.Location = new Point(814, 11);
             tileconvert.Margin = new Padding(4);
@@ -1054,7 +1054,7 @@
             VectorFileClear.BackgroundImageLayout = ImageLayout.Center;
             VectorFileClear.Cursor = Cursors.Hand;
             VectorFileClear.Enabled = false;
-            VectorFileClear.Font = new Font("宋体", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            VectorFileClear.Font = new Font("宋体", 10F, FontStyle.Bold);
             VectorFileClear.ForeColor = Color.Black;
             VectorFileClear.Location = new Point(7, 76);
             VectorFileClear.Margin = new Padding(4);
@@ -1404,7 +1404,7 @@
             DataConvert.BackgroundImage = (Image)resources.GetObject("DataConvert.BackgroundImage");
             DataConvert.BackgroundImageLayout = ImageLayout.Zoom;
             DataConvert.Cursor = Cursors.Hand;
-            DataConvert.Font = new Font("Arial", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            DataConvert.Font = new Font("Arial", 18F, FontStyle.Bold);
             DataConvert.ForeColor = Color.Black;
             DataConvert.Location = new Point(4, 11);
             DataConvert.Margin = new Padding(4);
@@ -1423,7 +1423,7 @@
             PostgresRun.BackgroundImageLayout = ImageLayout.Center;
             PostgresRun.Cursor = Cursors.Hand;
             PostgresRun.Enabled = false;
-            PostgresRun.Font = new Font("Arial", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            PostgresRun.Font = new Font("Arial", 18F, FontStyle.Bold);
             PostgresRun.ForeColor = Color.Black;
             PostgresRun.Location = new Point(3, 273);
             PostgresRun.Margin = new Padding(4);
@@ -1659,7 +1659,7 @@
             FileGridView.BorderStyle = BorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = Color.WhiteSmoke;
-            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new Font("Microsoft YaHei UI", 9F);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -1673,7 +1673,6 @@
             FileGridView.Name = "FileGridView";
             FileGridView.ReadOnly = true;
             FileGridView.RowHeadersWidth = 36;
-            FileGridView.RowTemplate.Height = 25;
             FileGridView.Size = new Size(271, 336);
             FileGridView.TabIndex = 17;
             FileGridView.CellContentClick += FileGridView_CellContentClick;
@@ -1923,6 +1922,7 @@
             MapGrids.Name = "MapGrids";
             MapGrids.Size = new Size(40, 33);
             MapGrids.Tag = "None";
+            MapGrids.ToolTipText = "Map Grids";
             // 
             // MapGridNone
             // 
@@ -1930,7 +1930,7 @@
             MapGridNone.CheckOnClick = true;
             MapGridNone.CheckState = CheckState.Checked;
             MapGridNone.Name = "MapGridNone";
-            MapGridNone.Size = new Size(135, 22);
+            MapGridNone.Size = new Size(180, 22);
             MapGridNone.Tag = "None";
             MapGridNone.Text = "None";
             MapGridNone.Click += MapGridMenuItem_Click;
@@ -1938,13 +1938,13 @@
             // toolStripSeparator15
             // 
             toolStripSeparator15.Name = "toolStripSeparator15";
-            toolStripSeparator15.Size = new Size(132, 6);
+            toolStripSeparator15.Size = new Size(177, 6);
             // 
             // MapGridAuto
             // 
             MapGridAuto.CheckOnClick = true;
             MapGridAuto.Name = "MapGridAuto";
-            MapGridAuto.Size = new Size(135, 22);
+            MapGridAuto.Size = new Size(180, 22);
             MapGridAuto.Tag = "Auto";
             MapGridAuto.Text = "Auto";
             MapGridAuto.Click += MapGridMenuItem_Click;
@@ -1952,13 +1952,13 @@
             // toolStripSeparator16
             // 
             toolStripSeparator16.Name = "toolStripSeparator16";
-            toolStripSeparator16.Size = new Size(132, 6);
+            toolStripSeparator16.Size = new Size(177, 6);
             // 
             // MapGrid1000000
             // 
             MapGrid1000000.CheckOnClick = true;
             MapGrid1000000.Name = "MapGrid1000000";
-            MapGrid1000000.Size = new Size(135, 22);
+            MapGrid1000000.Size = new Size(180, 22);
             MapGrid1000000.Tag = "1000000";
             MapGrid1000000.Text = "1:1000000";
             MapGrid1000000.Click += MapGridMenuItem_Click;
@@ -1967,7 +1967,7 @@
             // 
             MapGrid500000.CheckOnClick = true;
             MapGrid500000.Name = "MapGrid500000";
-            MapGrid500000.Size = new Size(135, 22);
+            MapGrid500000.Size = new Size(180, 22);
             MapGrid500000.Tag = "500000";
             MapGrid500000.Text = "1:500000";
             MapGrid500000.Click += MapGridMenuItem_Click;
@@ -1976,7 +1976,7 @@
             // 
             MapGrid250000.CheckOnClick = true;
             MapGrid250000.Name = "MapGrid250000";
-            MapGrid250000.Size = new Size(135, 22);
+            MapGrid250000.Size = new Size(180, 22);
             MapGrid250000.Tag = "250000";
             MapGrid250000.Text = "1:250000";
             MapGrid250000.Click += MapGridMenuItem_Click;
@@ -1985,7 +1985,7 @@
             // 
             MapGrid200000.CheckOnClick = true;
             MapGrid200000.Name = "MapGrid200000";
-            MapGrid200000.Size = new Size(135, 22);
+            MapGrid200000.Size = new Size(180, 22);
             MapGrid200000.Tag = "200000";
             MapGrid200000.Text = "1:200000";
             MapGrid200000.Click += MapGridMenuItem_Click;
@@ -1994,7 +1994,7 @@
             // 
             MapGrid100000.CheckOnClick = true;
             MapGrid100000.Name = "MapGrid100000";
-            MapGrid100000.Size = new Size(135, 22);
+            MapGrid100000.Size = new Size(180, 22);
             MapGrid100000.Tag = "100000";
             MapGrid100000.Text = "1:100000";
             MapGrid100000.Click += MapGridMenuItem_Click;
@@ -2003,7 +2003,7 @@
             // 
             MapGrid50000.CheckOnClick = true;
             MapGrid50000.Name = "MapGrid50000";
-            MapGrid50000.Size = new Size(135, 22);
+            MapGrid50000.Size = new Size(180, 22);
             MapGrid50000.Tag = "50000";
             MapGrid50000.Text = "1:50000";
             MapGrid50000.Click += MapGridMenuItem_Click;
@@ -2012,7 +2012,7 @@
             // 
             MapGrid25000.CheckOnClick = true;
             MapGrid25000.Name = "MapGrid25000";
-            MapGrid25000.Size = new Size(135, 22);
+            MapGrid25000.Size = new Size(180, 22);
             MapGrid25000.Tag = "25000";
             MapGrid25000.Text = "1:25000";
             MapGrid25000.Click += MapGridMenuItem_Click;
@@ -2020,13 +2020,13 @@
             // toolStripSeparator17
             // 
             toolStripSeparator17.Name = "toolStripSeparator17";
-            toolStripSeparator17.Size = new Size(132, 6);
+            toolStripSeparator17.Size = new Size(177, 6);
             // 
             // MapGrid10000
             // 
             MapGrid10000.CheckOnClick = true;
             MapGrid10000.Name = "MapGrid10000";
-            MapGrid10000.Size = new Size(135, 22);
+            MapGrid10000.Size = new Size(180, 22);
             MapGrid10000.Tag = "10000";
             MapGrid10000.Text = "1:10000";
             MapGrid10000.Click += MapGridMenuItem_Click;
@@ -2035,7 +2035,7 @@
             // 
             MapGrid5000.CheckOnClick = true;
             MapGrid5000.Name = "MapGrid5000";
-            MapGrid5000.Size = new Size(135, 22);
+            MapGrid5000.Size = new Size(180, 22);
             MapGrid5000.Tag = "5000";
             MapGrid5000.Text = "1:5000";
             MapGrid5000.Click += MapGridMenuItem_Click;
@@ -2883,7 +2883,7 @@
             DatabaseGridView.BackgroundColor = Color.White;
             DatabaseGridView.BorderStyle = BorderStyle.None;
             dataGridViewCellStyle5.BackColor = SystemColors.Control;
-            dataGridViewCellStyle5.Font = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.Font = new Font("宋体", 9F);
             dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
@@ -2905,6 +2905,68 @@
             DatabaseGridView.CellBeginEdit += DataPool_CellBeginEdit;
             DatabaseGridView.CellClick += DataPool_CellClick;
             DatabaseGridView.CellEndEdit += DataPool_CellEndEdit;
+            // 
+            // LayerName
+            // 
+            LayerName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            LayerName.HeaderText = "Name";
+            LayerName.MinimumWidth = 8;
+            LayerName.Name = "LayerName";
+            // 
+            // ThemeRank
+            // 
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            ThemeRank.DefaultCellStyle = dataGridViewCellStyle6;
+            ThemeRank.HeaderText = "Rank";
+            ThemeRank.MinimumWidth = 36;
+            ThemeRank.Name = "ThemeRank";
+            ThemeRank.Resizable = DataGridViewTriState.True;
+            ThemeRank.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ThemeRank.ToolTipText = "[-1] for all users, Other escalation";
+            ThemeRank.Width = 48;
+            // 
+            // ThemeStatus
+            // 
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.NullValue = resources.GetObject("dataGridViewCellStyle7.NullValue");
+            dataGridViewCellStyle7.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle7.SelectionForeColor = Color.Transparent;
+            ThemeStatus.DefaultCellStyle = dataGridViewCellStyle7;
+            ThemeStatus.HeaderText = "Status";
+            ThemeStatus.MinimumWidth = 16;
+            ThemeStatus.Name = "ThemeStatus";
+            ThemeStatus.ReadOnly = true;
+            ThemeStatus.Resizable = DataGridViewTriState.False;
+            ThemeStatus.Width = 48;
+            // 
+            // ThemeType
+            // 
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.NullValue = resources.GetObject("dataGridViewCellStyle8.NullValue");
+            dataGridViewCellStyle8.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle8.SelectionForeColor = Color.Transparent;
+            ThemeType.DefaultCellStyle = dataGridViewCellStyle8;
+            ThemeType.HeaderText = "Type";
+            ThemeType.MinimumWidth = 16;
+            ThemeType.Name = "ThemeType";
+            ThemeType.ReadOnly = true;
+            ThemeType.Resizable = DataGridViewTriState.False;
+            ThemeType.Width = 48;
+            // 
+            // ThemeView
+            // 
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.NullValue = resources.GetObject("dataGridViewCellStyle9.NullValue");
+            dataGridViewCellStyle9.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle9.SelectionForeColor = Color.Transparent;
+            ThemeView.DefaultCellStyle = dataGridViewCellStyle9;
+            ThemeView.HeaderText = "View";
+            ThemeView.Image = (Image)resources.GetObject("ThemeView.Image");
+            ThemeView.MinimumWidth = 16;
+            ThemeView.Name = "ThemeView";
+            ThemeView.ReadOnly = true;
+            ThemeView.Resizable = DataGridViewTriState.False;
+            ThemeView.Width = 48;
             // 
             // DatabaseViewMenu
             // 
@@ -3548,7 +3610,7 @@
             // 
             localTileFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             localTileFolder.BackColor = SystemColors.Window;
-            localTileFolder.Font = new Font("宋体", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            localTileFolder.Font = new Font("宋体", 9F);
             localTileFolder.Location = new Point(72, 21);
             localTileFolder.Margin = new Padding(4);
             localTileFolder.MaxLength = 3276700;
@@ -4416,68 +4478,6 @@
             dataGridViewImageColumn1.MinimumWidth = 8;
             dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
             dataGridViewImageColumn1.Width = 150;
-            // 
-            // LayerName
-            // 
-            LayerName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            LayerName.HeaderText = "Name";
-            LayerName.MinimumWidth = 8;
-            LayerName.Name = "LayerName";
-            // 
-            // ThemeRank
-            // 
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            ThemeRank.DefaultCellStyle = dataGridViewCellStyle6;
-            ThemeRank.HeaderText = "Rank";
-            ThemeRank.MinimumWidth = 36;
-            ThemeRank.Name = "ThemeRank";
-            ThemeRank.Resizable = DataGridViewTriState.True;
-            ThemeRank.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ThemeRank.ToolTipText = "[-1] for all users, Other escalation";
-            ThemeRank.Width = 48;
-            // 
-            // ThemeStatus
-            // 
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.NullValue = resources.GetObject("dataGridViewCellStyle7.NullValue");
-            dataGridViewCellStyle7.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle7.SelectionForeColor = Color.Transparent;
-            ThemeStatus.DefaultCellStyle = dataGridViewCellStyle7;
-            ThemeStatus.HeaderText = "Status";
-            ThemeStatus.MinimumWidth = 16;
-            ThemeStatus.Name = "ThemeStatus";
-            ThemeStatus.ReadOnly = true;
-            ThemeStatus.Resizable = DataGridViewTriState.False;
-            ThemeStatus.Width = 48;
-            // 
-            // ThemeType
-            // 
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.NullValue = resources.GetObject("dataGridViewCellStyle8.NullValue");
-            dataGridViewCellStyle8.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle8.SelectionForeColor = Color.Transparent;
-            ThemeType.DefaultCellStyle = dataGridViewCellStyle8;
-            ThemeType.HeaderText = "Type";
-            ThemeType.MinimumWidth = 16;
-            ThemeType.Name = "ThemeType";
-            ThemeType.ReadOnly = true;
-            ThemeType.Resizable = DataGridViewTriState.False;
-            ThemeType.Width = 48;
-            // 
-            // ThemeView
-            // 
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle9.NullValue = resources.GetObject("dataGridViewCellStyle9.NullValue");
-            dataGridViewCellStyle9.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle9.SelectionForeColor = Color.Transparent;
-            ThemeView.DefaultCellStyle = dataGridViewCellStyle9;
-            ThemeView.HeaderText = "View";
-            ThemeView.Image = (Image)resources.GetObject("ThemeView.Image");
-            ThemeView.MinimumWidth = 16;
-            ThemeView.Name = "ThemeView";
-            ThemeView.ReadOnly = true;
-            ThemeView.Resizable = DataGridViewTriState.False;
-            ThemeView.Width = 48;
             // 
             // MainForm
             // 
