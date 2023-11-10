@@ -7049,7 +7049,7 @@ namespace Geosite
                                 break;
                         }
                     };
-                    statusText.Text = $@"{tileFormatTask.Convert(source: TileFormatOpenBox.Text, target: TileFormatSaveBox.Text, method: methodCode)} tiles were processed.";
+                    statusText.Text = $@"{tileFormatTask.Convert(source: TileFormatOpenBox.Text, target: TileFormatSaveBox.Text, method: methodCode)} tiles were processed";
                 }
             }
         }
@@ -7324,7 +7324,7 @@ namespace Geosite
                 case 0:
                     {
                         if (!Directory.Exists(path: localTileFolder.Text))
-                            statusError = @"Folder does not exist.";
+                            statusError = @"Folder does not exist";
                         else
                         {
                             if (FormatStandard.Checked)
@@ -7332,7 +7332,7 @@ namespace Geosite
                                 tileType = TileType.Standard;
                                 typeCode = EPSG4326.Checked ? 11001 : 11002;
                                 if (!Directory.GetDirectories(path: localTileFolder.Text).Any(predicate: dir => Regex.IsMatch(input: Path.GetFileName(path: dir), pattern: @"^\d+$", options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline)))
-                                    statusError = @"Folder does not meet the requirements.";
+                                    statusError = @"Folder does not meet the requirements";
                             }
                             else if (FormatTMS.Checked)
                             {
@@ -7342,7 +7342,7 @@ namespace Geosite
                                         .GetDirectories(path: localTileFolder.Text)
                                         .Any(predicate: dir => Regex.IsMatch(input: Path.GetFileName(path: dir), pattern: @"^\d+$", options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline))
                                    )
-                                    statusError = @"Folder does not meet the requirements.";
+                                    statusError = @"Folder does not meet the requirements";
                             }
                             else if (FormatMapcruncher.Checked)
                             {
@@ -7355,7 +7355,7 @@ namespace Geosite
                                             options: RegexOptions.IgnoreCase | RegexOptions.Singleline |
                                                      RegexOptions.Multiline))
                                    )
-                                    statusError = @"Folder does not meet the requirements.";
+                                    statusError = @"Folder does not meet the requirements";
                             }
                             else if (FormatArcGIS.Checked)
                             {
@@ -7509,7 +7509,7 @@ namespace Geosite
                                             options: RegexOptions.IgnoreCase | RegexOptions.Singleline |
                                                      RegexOptions.Multiline))
                                    )
-                                    statusError = @"Folder does not meet the requirements.";
+                                    statusError = @"Folder does not meet the requirements";
                                 else
                                 {
                                     var jsonFile = Path.Combine(path1: localTileFolder.Text, path2: "metadata.json");
@@ -7611,13 +7611,13 @@ namespace Geosite
                                                 );
                                             }
                                             else
-                                                statusError = @"[metadata.json] metadata format is incorrect.";
+                                                statusError = @"[metadata.json] metadata format is incorrect";
                                         }
                                         else
-                                            statusError = @"[metadata.json] metadata format is incorrect.";
+                                            statusError = @"[metadata.json] metadata format is incorrect";
                                     }
                                     else
-                                        statusError = @"[metadata.json] metadata file not found.";
+                                        statusError = @"[metadata.json] metadata file not found";
                                 }
                             }
                         }
@@ -7642,30 +7642,30 @@ namespace Geosite
                             {
                                 if (tilesWest == string.Empty || double.Parse(s: tilesWest) < -180 ||
                                     double.Parse(s: tilesWest) > 180)
-                                    statusError = @"West Should be between [-180，180].";
+                                    statusError = @"West Should be between [-180，180]";
                                 else
                                 {
                                     if (tilesEast == string.Empty || double.Parse(s: tilesEast) < -180 ||
                                         double.Parse(s: tilesEast) > 180)
-                                        statusError = @"East Should be between [-180，180].";
+                                        statusError = @"East Should be between [-180，180]";
                                     else
                                     {
                                         if (tilesSouth == string.Empty || double.Parse(s: tilesSouth) < -90 ||
                                             double.Parse(s: tilesSouth) > 90)
-                                            statusError = @"South Should be between [-90，90].";
+                                            statusError = @"South Should be between [-90，90]";
                                         else
                                         {
                                             if (tilesNorth == string.Empty || double.Parse(s: tilesNorth) < -90 ||
                                                 double.Parse(s: tilesNorth) > 90)
-                                                statusError = @"North Should be between [-90，90].";
+                                                statusError = @"North Should be between [-90，90]";
                                             else
                                             {
                                                 if (double.Parse(s: tilesWest) > double.Parse(s: tilesEast))
-                                                    statusError = @"West should not exceed East.";
+                                                    statusError = @"West should not exceed East";
                                                 else
                                                 {
                                                     if (double.Parse(s: tilesSouth) > double.Parse(s: tilesNorth))
-                                                        statusError = @"South should not exceed North.";
+                                                        statusError = @"South should not exceed North";
                                                     else
                                                     {
                                                         typeCode = EPSG4326.Checked ? 10001 : 10002;
@@ -7714,7 +7714,7 @@ namespace Geosite
                                                                     statusError = @"Subdomains should be blank.";
                                                             }
                                                             if (wmtsSpider.Checked && int.Parse(s: wmtsMinZoom.Text) > int.Parse(s: wmtsMaxZoom.Text))
-                                                                statusError = @"MinZoom Should be <= MaxZoom.";
+                                                                statusError = @"MinZoom Should be <= MaxZoom";
                                                             if (string.IsNullOrWhiteSpace(value: statusError) && !wmtsSpider.Checked)
                                                             {
                                                                 themeMetadataX = new XElement(
@@ -8635,6 +8635,7 @@ namespace Geosite
                     if (theItem.Checked)
                         MapGrids.Tag = theItem.Tag;
                 }
+
             if (mapGridItem == "None")
             {
                 MapGrids.Text = @"None";
@@ -8768,7 +8769,8 @@ namespace Geosite
                             zoom: (int)MapBox.Zoom,
                             boundary: (
                                 TopLeft: (Latitude: viewArea.Lat, Longitude: viewArea.Lng),
-                                BottomRight: (Latitude: viewArea.Lat - viewArea.HeightLat, Longitude: viewArea.Lng + viewArea.WidthLng)
+                                BottomRight: (Latitude: viewArea.Lat - viewArea.HeightLat,
+                                    Longitude: viewArea.Lng + viewArea.WidthLng)
                             ),
                             gridPen: PreviewStyleForm.Style == null
                                 ? new Pen(Color.FromArgb(255, 255, 255), 1)
@@ -9094,7 +9096,9 @@ namespace Geosite
         {
             foreach (var task in MapView.Tasks)
                 task.CancelTask();
-            DatabaseLogAdd(input: statusText.Text = @"Preview drawing task canceled.");
+            var tip = @"Preview drawing task canceled.";
+            FileLoadLogAdd(input: statusText.Text = tip);
+            DatabaseLogAdd(input: statusText.Text = tip); 
         }
 
         /// <summary>
@@ -10114,14 +10118,18 @@ namespace Geosite
                     DataConvert.Enabled = true;
                 }
                 else
+                {
                     statusText.Text = string.IsNullOrWhiteSpace(TileFormatSaveBox.Text)
                         ? @"Please select a target folder."
                         : @$"[{TileFormatSaveBox.Text}] does not exist.";
+                }
             }
             else
+            {
                 statusText.Text = string.IsNullOrWhiteSpace(TileFormatOpenBox.Text)
                     ? @"Please select a source folder."
                     : @$"[{TileFormatOpenBox.Text}] does not exist.";
+            }
         }
     }
 }

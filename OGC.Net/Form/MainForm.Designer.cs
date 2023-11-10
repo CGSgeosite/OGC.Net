@@ -1922,7 +1922,6 @@
             MapGrids.Name = "MapGrids";
             MapGrids.Size = new Size(40, 33);
             MapGrids.Tag = "None";
-            MapGrids.ToolTipText = "Map Grids";
             // 
             // MapGridNone
             // 
