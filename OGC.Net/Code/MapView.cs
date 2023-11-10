@@ -825,10 +825,15 @@ namespace Geosite
                                         }
 
                                         var theCount = count;
+
+                                        var tip = $"{theCount} / {numberMatched} features loading ...";
+                                        //_backgroundWorker.ReportProgress(
+                                        //    percentProgress: -1,
+                                        //    userState:
+                                        //    tip);
                                         _mainForm.MapBox.BeginInvoke(method: () =>
                                         {
-                                            _mainForm.SetStatusText(
-                                                text: $"{theCount} / {numberMatched} features loading ...");
+                                            _mainForm.SetStatusText(text: tip);
                                         });
                                         Application.DoEvents();
                                         getResponse = new WebProxy().Call(
@@ -977,7 +982,7 @@ namespace Geosite
                             realZoom: false);
                     }
 
-                    var resultMessage = $@"[{count}] loaded completed.";
+                    var resultMessage = $@"[{count}] feature{(count > 1 ? "s" : "")} loaded completed.";
                     _backgroundWorker.ReportProgress(
                         percentProgress: -1,
                         userState: resultMessage);
