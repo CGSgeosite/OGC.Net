@@ -81,9 +81,7 @@ namespace Geosite
                         //GML-layer名称需符合xml元素命名规则，至少不能出现特殊字符、括号、纯数字 ...,也不允许出现小数点，因为有特殊含义
                         var xmlNodeName = new XElement(layer);
                         if (xmlNodeName.Name.LocalName != layer || Regex.IsMatch(layer, @"[\.]+", RegexOptions.IgnoreCase))
-                        {
                             throw new Exception($"[{layer}] does not conform to XML naming rules");
-                        }
                         layers.Add(new XElement(layer).Name.LocalName);
                     }
                     catch (Exception error)
@@ -100,9 +98,7 @@ namespace Geosite
                     tipsBox.Text = @"Incorrect input";
                 }
                 else
-                {
                     TreePathString = string.Join("/", layers);
-                }
             }
 
             if (!string.IsNullOrWhiteSpace(downloadBox.Text))

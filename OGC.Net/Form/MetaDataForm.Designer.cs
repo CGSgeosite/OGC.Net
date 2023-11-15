@@ -145,7 +145,7 @@ namespace Geosite
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
             Name = "MetaDataForm";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "MetaData";
             TopMost = true;
             metaBox.ResumeLayout(false);

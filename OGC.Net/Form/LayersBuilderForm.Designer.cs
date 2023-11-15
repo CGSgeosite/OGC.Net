@@ -401,7 +401,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "LayersBuilderForm";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Classification & Supplementary information";
             TopMost = true;
             treePathTab.ResumeLayout(false);

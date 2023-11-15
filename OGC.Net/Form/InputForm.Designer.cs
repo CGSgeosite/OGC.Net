@@ -29,88 +29,83 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputForm));
-            this.inputTextBox = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.yes = new System.Windows.Forms.Button();
-            this.no = new System.Windows.Forms.Button();
-            this.tipTextBox = new System.Windows.Forms.TextBox();
-            this.SuspendLayout();
+            inputTextBox = new TextBox();
+            panel1 = new Panel();
+            yes = new Button();
+            no = new Button();
+            tipTextBox = new TextBox();
+            SuspendLayout();
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.inputTextBox.Location = new System.Drawing.Point(12, 134);
-            this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new System.Drawing.Size(459, 23);
-            this.inputTextBox.TabIndex = 1;
+            inputTextBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            inputTextBox.Location = new Point(12, 134);
+            inputTextBox.Name = "inputTextBox";
+            inputTextBox.Size = new Size(459, 23);
+            inputTextBox.TabIndex = 1;
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.panel1.Location = new System.Drawing.Point(12, 179);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(459, 1);
-            this.panel1.TabIndex = 2;
+            panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BackColor = SystemColors.ButtonShadow;
+            panel1.Location = new Point(12, 179);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(459, 1);
+            panel1.TabIndex = 2;
             // 
             // yes
             // 
-            this.yes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.yes.Location = new System.Drawing.Point(189, 197);
-            this.yes.Name = "yes";
-            this.yes.Size = new System.Drawing.Size(131, 33);
-            this.yes.TabIndex = 3;
-            this.yes.Text = "Yes";
-            this.yes.UseVisualStyleBackColor = true;
-            this.yes.Click += new System.EventHandler(this.Yes_Click);
+            yes.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            yes.Location = new Point(189, 197);
+            yes.Name = "yes";
+            yes.Size = new Size(131, 33);
+            yes.TabIndex = 3;
+            yes.Text = "Yes";
+            yes.UseVisualStyleBackColor = true;
+            yes.Click += Yes_Click;
             // 
             // no
             // 
-            this.no.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.no.Location = new System.Drawing.Point(340, 197);
-            this.no.Name = "no";
-            this.no.Size = new System.Drawing.Size(131, 33);
-            this.no.TabIndex = 3;
-            this.no.Text = "No";
-            this.no.UseVisualStyleBackColor = true;
-            this.no.Click += new System.EventHandler(this.No_Click);
+            no.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            no.Location = new Point(340, 197);
+            no.Name = "no";
+            no.Size = new Size(131, 33);
+            no.TabIndex = 3;
+            no.Text = "No";
+            no.UseVisualStyleBackColor = true;
+            no.Click += No_Click;
             // 
             // tipTextBox
             // 
-            this.tipTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tipTextBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.tipTextBox.Location = new System.Drawing.Point(12, 12);
-            this.tipTextBox.Multiline = true;
-            this.tipTextBox.Name = "tipTextBox";
-            this.tipTextBox.ReadOnly = true;
-            this.tipTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tipTextBox.Size = new System.Drawing.Size(459, 103);
-            this.tipTextBox.TabIndex = 4;
+            tipTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tipTextBox.BackColor = SystemColors.ButtonHighlight;
+            tipTextBox.Location = new Point(12, 12);
+            tipTextBox.Multiline = true;
+            tipTextBox.Name = "tipTextBox";
+            tipTextBox.ReadOnly = true;
+            tipTextBox.ScrollBars = ScrollBars.Vertical;
+            tipTextBox.Size = new Size(459, 103);
+            tipTextBox.TabIndex = 4;
             // 
             // InputForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 246);
-            this.Controls.Add(this.tipTextBox);
-            this.Controls.Add(this.no);
-            this.Controls.Add(this.yes);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.inputTextBox);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "InputForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Caution";
-            this.TopMost = true;
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(483, 246);
+            Controls.Add(tipTextBox);
+            Controls.Add(no);
+            Controls.Add(yes);
+            Controls.Add(panel1);
+            Controls.Add(inputTextBox);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "InputForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Caution";
+            TopMost = true;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

@@ -1997,7 +1997,7 @@ namespace Geosite
                                             var versionYear = long.Parse(s: versionArray[1]) * 1e4;
                                             var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
                                             var versionDay = long.Parse(s: versionArray[3]);
-                                            if (versionMain + versionYear + versionMonth + versionDay >= 820231030) // 8.2023.10.30
+                                            if (versionMain + versionYear + versionMonth + versionDay >= 820231115) // 8.2023.11.15
                                             {
                                                 if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(), result: out var port))
                                                     port = 5432;
@@ -3275,7 +3275,7 @@ namespace Geosite
                                                 }
                                             }
                                             else
-                                                errorMessage = @"Please connect to a more recent version of GeositeServer.";
+                                                errorMessage = @"GeositeServer Connection Failed. The reason is its version is too low.";
                                         }
                                         catch (Exception ex)
                                         {
@@ -7103,9 +7103,9 @@ namespace Geosite
                                         FormatDeepZoom.Checked =
                                             FormatRaster.Checked =
                                                 false;
-                            EPSG4326.Enabled =
-                                EPSG4326.ThreeState =
-                                    EPSG4326.Checked = false;
+                            EPSG4326.Enabled = true;
+                            EPSG4326.ThreeState = false;
+                            //EPSG4326.Checked = false;
                             tileLevels.Text = @"-1";
                             tileLevels.Enabled = true;
                             break;
@@ -7185,8 +7185,8 @@ namespace Geosite
                                             FormatRaster.Checked =
                                                 false;
                             EPSG4326.Enabled = true;
-                            EPSG4326.ThreeState =
-                                EPSG4326.Checked = false;
+                            EPSG4326.ThreeState = false;
+                            //EPSG4326.Checked = false;
                             tileLevels.Text = @"-1";
                             tileLevels.Enabled = true;
                             break;
@@ -7336,11 +7336,12 @@ namespace Geosite
                             }
                             else if (FormatTMS.Checked)
                             {
-                                tileType = TileType.TMS;
+                                tileType = TileType.TMS; //GeoServer
                                 typeCode = EPSG4326.Checked ? 11001 : 11002;
                                 if (!Directory
                                         .GetDirectories(path: localTileFolder.Text)
-                                        .Any(predicate: dir => Regex.IsMatch(input: Path.GetFileName(path: dir), pattern: @"^\d+$", options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline))
+                                        //数字结尾？
+                                        .Any(predicate: dir => Regex.IsMatch(input: Path.GetFileName(path: dir), pattern: @"[\d]+$"))
                                    )
                                     statusError = @"Folder does not meet the requirements";
                             }
@@ -7783,19 +7784,17 @@ namespace Geosite
                 DatabaseLogAdd(input: statusText.Text = statusError);
                 return;
             }
-            if (themeMetadataX == null)
+            if (themeMetadataX == null && !_noPromptMetaData)
             {
-                if (!_noPromptMetaData)
+                var metaData = new MetaDataForm();
+                metaData.ShowDialog();
+                if (metaData.Ok)
                 {
-                    var metaData = new MetaDataForm();
-                    metaData.ShowDialog();
-                    if (metaData.Ok)
-                    {
-                        themeMetadataX = metaData.MetaDataX;
-                        _noPromptMetaData = metaData.DonotPrompt;
-                    }
+                    themeMetadataX = metaData.MetaDataX;
+                    _noPromptMetaData = metaData.DonotPrompt;
                 }
             }
+
             if (themeMetadataX != null && themeMetadataX.Name != "property")
                 themeMetadataX.Name = "property";
             _loading.Run();
