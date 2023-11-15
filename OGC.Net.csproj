@@ -8,7 +8,7 @@
 		<RootNamespace>Geosite</RootNamespace>
 		<ApplicationIcon>OGC.net.ico</ApplicationIcon>
 		<Title>OGC.net</Title>
-		<Version>8.2023.10.12</Version>
+		<Version>8.2023.11.15</Version>
 		<Authors>ZhanchangWang</Authors>
 		<Company>CGS</Company>
 		<Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
@@ -49,7 +49,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.3.0" />
+	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.4.0" />
 	  <PackageReference Include="MaxRev.Gdal.Core" Version="3.7.0.217" />
 	  <PackageReference Include="MaxRev.Gdal.LinuxRuntime.Minimal" Version="3.7.0.100" />
 	  <PackageReference Include="MaxRev.Gdal.MacosRuntime.Minimal.arm64" Version="3.7.0.217" />
@@ -57,12 +57,24 @@
 	  <PackageReference Include="MaxRev.Gdal.WindowsRuntime.Minimal" Version="3.7.0.100" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="Npgsql" Version="8.0.0-rc.2" />
-	  <PackageReference Include="RestSharp" Version="110.2.1-alpha.0.13" />
+	  <PackageReference Include="RestSharp" Version="110.2.1-alpha.0.16" />
 	  <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 	  <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
-	  <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0-rc.2.23479.6" />
-	  <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0-rc.2.23479.6" />
-	  <PackageReference Include="System.Text.Json" Version="8.0.0-rc.2.23479.6" />
+	  <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+	  <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
+	  <PackageReference Include="System.Text.Json" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="GMap.NET.Core">
+	    <HintPath>Resources\GMap.NET.Core.dll</HintPath>
+	  </Reference>
+	  <Reference Include="GMap.NET.WindowsForms">
+	    <HintPath>Resources\GMap.NET.WindowsForms.dll</HintPath>
+	  </Reference>
+	  <Reference Include="OGC.Net.Core">
+	    <HintPath>Resources\OGC.Net.Core.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -84,17 +96,6 @@
 	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
- <ItemGroup>
-   <Reference Include="GMap.NET.Core">
-     <HintPath>Resources\GMap.NET.Core.dll</HintPath>
-   </Reference>
-   <Reference Include="GMap.NET.WindowsForms">
-     <HintPath>Resources\GMap.NET.WindowsForms.dll</HintPath>
-   </Reference>
-   <Reference Include="OGC.Net.Core">
-     <HintPath>Resources\OGC.Net.Core.dll</HintPath>
-   </Reference>
- </ItemGroup>
 	<ItemGroup>
 	  <None Update="OGC.net.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
