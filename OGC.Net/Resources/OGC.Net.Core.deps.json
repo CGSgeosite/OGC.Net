@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "OGC.Net.Core/8.2023.11.15": {
+      "OGC.Net.Core/8.2023.11.20": {
         "dependencies": {
           "Magick.NET-Q16-AnyCPU": "13.4.0",
           "MaxRev.Gdal.Core": "3.7.0.217",
@@ -2393,7 +2393,7 @@
     }
   },
   "libraries": {
-    "OGC.Net.Core/8.2023.11.15": {
+    "OGC.Net.Core/8.2023.11.20": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
