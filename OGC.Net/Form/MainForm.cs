@@ -1997,7 +1997,7 @@ namespace Geosite
                                             var versionYear = long.Parse(s: versionArray[1]) * 1e4;
                                             var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
                                             var versionDay = long.Parse(s: versionArray[3]);
-                                            if (versionMain + versionYear + versionMonth + versionDay >= 820231115) // 8.2023.11.15
+                                            if (versionMain + versionYear + versionMonth + versionDay >= 820231030) // 8.2023.10.30
                                             {
                                                 if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(), result: out var port))
                                                     port = 5432;
