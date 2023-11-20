@@ -46,11 +46,10 @@ using Newtonsoft.Json.Linq;
 using GMap.NET.WindowsForms;
 using GMap.NET;
 using GMap.NET.MapProviders;
-using GMap.NET.MapProviders.TiandituProviders;
-using GMap.NET.MapProviders.ArcGISProviders;
 using GMap.NET.Extend;
 using Formatting = Newtonsoft.Json.Formatting;
 using Geosite.QuickCopyFile;
+using GMap.NET.MapProviders.WmtsProvider;
 
 namespace Geosite
 {
@@ -228,7 +227,6 @@ namespace Geosite
                                 var locationY = int.Parse(s: splitArray[2]);
                                 if (locationY < 0)
                                     locationY = 0;
-                                //Location = new System.Drawing.Point(x: locationX, y: locationY);
                                 Location = new Point(x: locationX, y: locationY);
                                 Size = new Size(width: int.Parse(s: splitArray[3]), height: int.Parse(s: splitArray[4]));
                                 break;
@@ -8296,9 +8294,9 @@ namespace Geosite
             }
             timeWatch.Stop();
             var duration = timeWatch.Elapsed.ToString(format: @"d\.hh\:mm\:ss\.f");
-            var errprMessage = total > 0 ? $"{$"Pushed {total} tile" + (total > 1 ? "s" : "")} - {duration}" : "No tile pushed.";
-            Invoke(method: () => { DatabaseLogAdd(input: statusText.Text = errprMessage); });
-            return errprMessage;
+            var errorMessage = total > 0 ? $"{$"Pushed {total} tile" + (total > 1 ? "s" : "")} - {duration}" : "No tile pushed.";
+            Invoke(method: () => { DatabaseLogAdd(input: statusText.Text = errorMessage); });
+            return errorMessage;
         }
 
         private void RasterWorkProgress(object sender, ProgressChangedEventArgs e)
@@ -8536,33 +8534,170 @@ namespace Geosite
             MapBox.ScalePenBorder.Width = 3;
             MapBox.ShowCenter = //默认情况下，GMap.NET 控件在地图上显示一个【红十字】，以便准确显示中心的位置
                 MapBox.MapScaleInfoEnabled = //线状比例尺
-                                             //MapBox.ShowTileGridLines = //瓦片网格
-            RegEdit.GetKey(key: ZoomLevelLabel.Name, defaultValue: "0") == "1";
+                    //MapBox.ShowTileGridLines = //瓦片网格
+                        RegEdit.GetKey(key: ZoomLevelLabel.Name, defaultValue: "0") == "1";
             TileLoading = new LoadingBar(bar: TileLoadProgressBar);
             FilePreviewLoading = new LoadingBar(bar: FilePreviewProgressBar);
+
+            //先强制添加一空白底图图层
             GMapProviderDictionary.Add(key: EmptyMapProviderKey, value: EmptyProvider.Instance);
-            //if (new Ping().Send(hostNameOrAddress: (new UriBuilder(uri: "https://cn.bing.com/maps")).Host, timeout: 3000) is { Status: IPStatus.Success })
             {
-                GMapProviderDictionary.Add(key: "Separator0", value: null);
-                BingOSMapProvider.Instance.MinZoom = 1;
-                GMapProviderDictionary.Add(key: "Bing Roads", value: BingOSMapProvider.Instance); //地理线划+注释
-                BingSatelliteMapProvider.Instance.MinZoom = 1;
-                GMapProviderDictionary.Add(key: "Bing Imagery", value: BingSatelliteMapProvider.Instance); //遥感
-                BingHybridMapProvider.Instance.MinZoom = 1;
-                GMapProviderDictionary.Add(key: "Bing Hybrid", value: BingHybridMapProvider.Instance); //遥感+注释
-                BingMapProvider.Instance.MinZoom = 1;
-                GMapProviderDictionary.Add(key: "Bing Terrain", value: BingMapProvider.Instance); //模型+注释
-                GMapProviderDictionary.Add(key: "Separator1", value: null);
-                GMapProviderDictionary.Add(key: "ArcGIS Imagery", value: ArcGISImageryProvider.Instance); //遥感
-                //GMapProviderDictionary.Add(key: "ArcGIS Terrain", value: ArcGIS_World_Terrain_Base_MapProvider.Instance); //单色模型
-                GMapProviderDictionary.Add(key: "Separator2", value: null);
-                GMapProviderDictionary.Add(key: "Tianditu Roads", value: TiandituRoadsMapProvider.Instance); //地理线划+注释
-                GMapProviderDictionary.Add(key: "Tianditu Imagery", value: TiandituImageryMapProvider.Instance); //遥感+注释
-                GMapProviderDictionary.Add(key: "Tianditu Terrain", value: TiandituTerrainMapProvider.Instance); //模型+注释
+                var customMapProviderFile = Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MapProvider"), "MapProvider.json");
+                if (File.Exists(customMapProviderFile))
+                {
+                    try
+                    {
+                        using var sr = FreeText.FreeTextEncoding.OpenFreeTextFile(customMapProviderFile);
+                        var baseMaps = JArray.Parse(sr.ReadToEnd());
+                        var i = 0;
+                        if (baseMaps.Count > 0)
+                        {
+                            //------------------------菜单分隔符---------------------------
+                            GMapProviderDictionary.Add(key: $"Separator{i++}", value: null);
+                            foreach (var baseMap in baseMaps)
+                            {
+                                if (baseMap != null)
+                                {
+                                    var baseMapObject = (JObject)baseMap;
+                                    var name = baseMapObject["name"]?.Value<string>();
+                                    if (!string.IsNullOrWhiteSpace(name))
+                                    {
+                                        if (!GMapProviderDictionary.ContainsKey(name))
+                                        {
+                                            var tip = baseMapObject["tip"]?.Value<string>();
+                                            var copyright = baseMapObject["copyright"]?.Value<string>();
+                                            var layers = baseMapObject["layers"];
+                                            if (layers != null)
+                                            {
+                                                var layersArray = (JArray) layers;
+                                                if (layersArray.Count > 0)
+                                                {
+                                                    var overlays = new List<GMapProvider>();
+                                                    foreach (var layer in layersArray)
+                                                    {
+                                                        var layerObject = (JObject)layer;
+                                                        var url = layerObject["url"]?.Value<string>();
+                                                        if (!string.IsNullOrWhiteSpace(url))
+                                                        {
+                                                            var minZoom = 0;
+                                                            var maxZoom = 18;
+                                                            var opacity = 1.0f;
+                                                            string subdomains = null;
+                                                            var north = 85.0511287798066;
+                                                            var south = -85.0511287798066;
+                                                            var west = -180.0;
+                                                            var east = 180.0;
+                                                            var options = layerObject["options"];
+                                                            if (options != null)
+                                                            {
+                                                                try
+                                                                {
+                                                                    var optionsObject = (JObject)options;
+                                                                    var minZoomValue = optionsObject["minZoom"];
+                                                                    if (minZoomValue != null)
+                                                                    {
+                                                                        minZoom = int.Parse(minZoomValue.Value<string>());
+                                                                    }
+                                                                    var maxZoomValue = optionsObject["maxZoom"];
+                                                                    if (maxZoomValue != null)
+                                                                    {
+                                                                        maxZoom = int.Parse(maxZoomValue.Value<string>());
+                                                                    }
+                                                                    var opacityValue = optionsObject["opacity"];
+                                                                    if (opacityValue != null)
+                                                                    {
+                                                                        opacity = float.Parse(opacityValue.Value<string>());
+                                                                    }
+                                                                    var subdomainsValue = optionsObject["subdomains"];
+                                                                    if (subdomainsValue != null)
+                                                                    {
+                                                                        subdomains = subdomainsValue.Value<string>();
+                                                                    }
+                                                                    var boundaryValue = optionsObject["boundary"];
+                                                                    if (boundaryValue != null)
+                                                                    {
+                                                                        var boundaryObject = (JObject) boundaryValue;
+                                                                        var northValue = boundaryObject["north"]
+                                                                            ?.Value<double>();
+                                                                        if (northValue != null)
+                                                                        {
+                                                                            north = northValue.Value;
+                                                                        }
+
+                                                                        var southValue = boundaryObject["south"]
+                                                                            ?.Value<double>();
+                                                                        if (southValue != null)
+                                                                        {
+                                                                            south = southValue.Value;
+                                                                        }
+
+                                                                        var westValue = boundaryObject["west"]
+                                                                            ?.Value<double>();
+                                                                        if (westValue != null)
+                                                                        {
+                                                                            west = westValue.Value;
+                                                                        }
+
+                                                                        var eastValue = boundaryObject["east"]
+                                                                            ?.Value<double>();
+                                                                        if (eastValue != null)
+                                                                        {
+                                                                            east = eastValue.Value;
+                                                                        }
+                                                                    }
+                                                                }
+                                                                catch
+                                                                {
+                                                                    //
+                                                                }
+                                                            }
+                                                            overlays.Add(
+                                                                new WmtsProvider
+                                                                {
+                                                                    UrlFormat = url,
+                                                                    MinZoom = minZoom,
+                                                                    MaxZoom = maxZoom,
+                                                                    Alpha = opacity,
+                                                                    ServerLetters = subdomains,
+                                                                    Copyright = copyright ?? "",
+                                                                    Area = RectLatLng.FromLTRB(leftLng: west, topLat: north, rightLng: east, bottomLat: south),
+                                                                    Tip = tip
+                                                                }
+                                                            );
+                                                        }
+                                                        else
+                                                            throw new Exception("[url] cannot be empty.");
+                                                    }
+                                                    if (overlays.Count>0)
+                                                    {
+                                                        overlays.Reverse();
+                                                        var theLayer = overlays.First();
+                                                        theLayer._overlays = overlays.ToArray();
+                                                        GMapProviderDictionary.Add(
+                                                            key: name,
+                                                            value: theLayer
+                                                        );
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                            throw new Exception($"[{name}] duplicate name.");
+                                    }
+                                    else
+                                        GMapProviderDictionary.Add(key: $"Separator{i++}", value: null);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        statusText.Text = $@"MapProvider.json - {ex.Message}";
+                    }
+                }
                 GMaps.Instance.Mode = AccessMode.ServerAndCache;
             }
-            //else
-            //    GMaps.Instance.Mode = AccessMode.CacheOnly;
+
             var mapProviderDropDownItem = RegEdit.GetKey(key: MapProviderDropDown.Name, defaultValue: EmptyMapProviderKey);
             var mapProviderExist = false;
             foreach (var baseMapProvider in GMapProviderDictionary)
@@ -8590,6 +8725,7 @@ namespace Geosite
                 mapProviderDropDownItem = EmptyMapProviderKey;
             MapProviderDropDown.Text = mapProviderDropDownItem;
             MapBox.MapProvider = GMapProviderDictionary[key: mapProviderDropDownItem];
+            MapProviderDropDown.ToolTipText = MapBox.MapProvider.Tip;
             MapBox.MinZoom = MapBox.MapProvider.MinZoom;
             MapBox.MaxZoom = MapBox.MapProvider.MaxZoom ?? 18;
             //MapBox.GrayScaleMode = true; //瓦片底图灰度模式
@@ -9159,23 +9295,24 @@ namespace Geosite
         /// <param name="e"></param>
         private void MapProviderMenuItem_Click(object sender, EventArgs e)
         {
-            BeginInvoke(method: () =>
-            {
-                var baseMap = (ToolStripMenuItem)sender;
-                if (baseMap.Text != null)
+            BeginInvoke(
+                method: () =>
                 {
+                    var baseMap = (ToolStripMenuItem) sender;
+                    if (baseMap.Text == null) 
+                        return;
                     MapProviderDropDown.Text = baseMap.Text;
                     foreach (var item in MapProviderDropDown.DropDownItems)
                     {
                         if (item.GetType().Name != "ToolStripMenuItem")
                             continue;
-                        var theItem = (ToolStripMenuItem)item;
+                        var theItem = (ToolStripMenuItem) item;
                         theItem.Checked = theItem.Text == baseMap.Text;
                     }
                     MapBox.MapProvider = GMapProviderDictionary[key: baseMap.Text];
+                    MapProviderDropDown.ToolTipText = MapBox.MapProvider.Tip;
                     RegEdit.SetKey(key: MapProviderDropDown.Name, defaultValue: baseMap.Text);
                 }
-            }
             );
         }
 
