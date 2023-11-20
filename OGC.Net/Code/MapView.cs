@@ -1785,17 +1785,19 @@ namespace Geosite
         {
             var propertyJson = property?["property"];
             var propertyHasValues = (propertyJson ?? false).HasValues;
-            var wmsLayer = WmtsProvider.Instance;
-            wmsLayer.UrlFormat = urlFormat;
-            wmsLayer.MaxZoom = propertyHasValues
-                ? propertyJson?[key: "maxZoom"]?.Value<int>() ??
-                  propertyJson?[key: "maxzoom"]?.Value<int>() ?? 18
-                : 18;
-            wmsLayer.MinZoom = propertyHasValues
-                ? propertyJson?[key: "minZoom"]?.Value<int>() ??
-                  propertyJson?[key: "minzoom"]?.Value<int>() ?? 0
-                : 0;
-            
+            var wmsLayer = new WmtsProvider
+            {
+                UrlFormat = urlFormat,
+                MaxZoom = propertyHasValues
+                    ? propertyJson?[key: "maxZoom"]?.Value<int>() ??
+                      propertyJson?[key: "maxzoom"]?.Value<int>() ?? 18
+                    : 18,
+                MinZoom = propertyHasValues
+                    ? propertyJson?[key: "minZoom"]?.Value<int>() ??
+                      propertyJson?[key: "minzoom"]?.Value<int>() ?? 0
+                    : 0
+            };
+
             var boundary = propertyHasValues
                 ? propertyJson?[key: "boundary"]
                 : null;
@@ -1806,17 +1808,24 @@ namespace Geosite
                 var west = boundary[key: "west"]?.Value<double>();
                 var east = boundary[key: "east"]?.Value<double>();
                 if (north != null && south != null && west != null && east != null)
-                    wmsLayer.Area = RectLatLng.FromLTRB(leftLng: west.Value, topLat: north.Value, rightLng: east.Value,
-                        bottomLat: south.Value);
+                    wmsLayer.Area = RectLatLng.FromLTRB(leftLng: west.Value, topLat: north.Value, rightLng: east.Value, bottomLat: south.Value);
             }
 
             wmsLayer.Alpha = propertyHasValues
                 ? propertyJson?[key: "opacity"]?.Value<float>() ?? 1f
                 : 1f;
+
             wmsLayer.ServerLetters = propertyHasValues
-                ? propertyJson?[key: "subdomains"]?.Value<string>() ??
-                  propertyJson?[key: "subDomains"]?.Value<string>()
+                ? propertyJson?[key: "subdomains"]?.Value<string>() ?? propertyJson?[key: "subDomains"]?.Value<string>()
                 : "";
+
+            if (propertyHasValues && propertyJson != null)
+            {
+                var copyright = propertyJson[key: "copyright"]?.Value<string>()?? propertyJson[key: "Copyright"]?.Value<string>();
+                if (!string.IsNullOrWhiteSpace(copyright))
+                    wmsLayer.Copyright = copyright;
+            }
+
             GMapProvider.OverlayTiles.Add(item: wmsLayer);
             _mainForm.MapBox.ReloadMap();
         }
