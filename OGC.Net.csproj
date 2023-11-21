@@ -8,7 +8,7 @@
 		<RootNamespace>Geosite</RootNamespace>
 		<ApplicationIcon>OGC.net.ico</ApplicationIcon>
 		<Title>OGC.net</Title>
-		<Version>8.2023.11.15</Version>
+		<Version>8.2023.11.20</Version>
 		<Authors>ZhanchangWang</Authors>
 		<Company>CGS</Company>
 		<Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
@@ -55,11 +55,18 @@
 	  <PackageReference Include="MaxRev.Gdal.MacosRuntime.Minimal.arm64" Version="3.7.0.217" />
 	  <PackageReference Include="MaxRev.Gdal.MacosRuntime.Minimal.x64" Version="3.7.0.217" />
 	  <PackageReference Include="MaxRev.Gdal.WindowsRuntime.Minimal" Version="3.7.0.100" />
+	  <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
+	  <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	  <PackageReference Include="Npgsql" Version="8.0.0-rc.2" />
-	  <PackageReference Include="RestSharp" Version="110.2.1-alpha.0.16" />
+	  <PackageReference Include="Npgsql" Version="8.0.0" />
+	  <PackageReference Include="RestSharp" Version="110.2.0" />
+	  <PackageReference Include="System.CodeDom" Version="8.0.0" />
+	  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	  <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
 	  <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 	  <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+	  <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+	  <PackageReference Include="System.Security.AccessControl" Version="6.0.0" />
 	  <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
 	  <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
 	  <PackageReference Include="System.Text.Json" Version="8.0.0" />
@@ -97,6 +104,9 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 	<ItemGroup>
+	  <None Update="MapProvider\MapProvider.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="OGC.net.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
