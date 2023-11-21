@@ -8556,137 +8556,107 @@ namespace Geosite
                             GMapProviderDictionary.Add(key: $"Separator{i++}", value: null);
                             foreach (var baseMap in baseMaps)
                             {
-                                if (baseMap != null)
+                                if (baseMap == null) 
+                                    continue;
+                                var baseMapObject = (JObject)baseMap;
+                                var name = baseMapObject["name"]?.Value<string>();
+                                if (!string.IsNullOrWhiteSpace(name))
                                 {
-                                    var baseMapObject = (JObject)baseMap;
-                                    var name = baseMapObject["name"]?.Value<string>();
-                                    if (!string.IsNullOrWhiteSpace(name))
+                                    if (!GMapProviderDictionary.ContainsKey(name))
                                     {
-                                        if (!GMapProviderDictionary.ContainsKey(name))
+                                        var tip = baseMapObject["tip"]?.Value<string>();
+                                        var copyright = baseMapObject["copyright"]?.Value<string>();
+                                        var layers = baseMapObject["layers"];
+                                        if (layers == null) 
+                                            continue;
+                                        var layersArray = (JArray) layers;
+                                        if (layersArray.Count <= 0) 
+                                            continue;
+                                        var overlays = new List<GMapProvider>();
+                                        foreach (var layer in layersArray)
                                         {
-                                            var tip = baseMapObject["tip"]?.Value<string>();
-                                            var copyright = baseMapObject["copyright"]?.Value<string>();
-                                            var layers = baseMapObject["layers"];
-                                            if (layers != null)
+                                            var layerObject = (JObject)layer;
+                                            var url = layerObject["url"]?.Value<string>();
+                                            if (!string.IsNullOrWhiteSpace(url))
                                             {
-                                                var layersArray = (JArray) layers;
-                                                if (layersArray.Count > 0)
+                                                var minZoom = 0;
+                                                var maxZoom = 18;
+                                                var opacity = 1.0f;
+                                                string subdomains = null;
+                                                var north = 85.0511287798066;
+                                                var south = -85.0511287798066;
+                                                var west = -180.0;
+                                                var east = 180.0;
+                                                var options = layerObject["options"];
+                                                if (options != null)
                                                 {
-                                                    var overlays = new List<GMapProvider>();
-                                                    foreach (var layer in layersArray)
+                                                    try
                                                     {
-                                                        var layerObject = (JObject)layer;
-                                                        var url = layerObject["url"]?.Value<string>();
-                                                        if (!string.IsNullOrWhiteSpace(url))
+                                                        var optionsObject = (JObject)options;
+                                                        var minZoomValue = optionsObject["minZoom"];
+                                                        if (minZoomValue != null)
+                                                            minZoom = int.Parse(minZoomValue.Value<string>());
+                                                        var maxZoomValue = optionsObject["maxZoom"];
+                                                        if (maxZoomValue != null)
+                                                            maxZoom = int.Parse(maxZoomValue.Value<string>());
+                                                        var opacityValue = optionsObject["opacity"];
+                                                        if (opacityValue != null)
+                                                            opacity = float.Parse(opacityValue.Value<string>());
+                                                        var subdomainsValue = optionsObject["subdomains"];
+                                                        if (subdomainsValue != null)
+                                                            subdomains = subdomainsValue.Value<string>();
+                                                        var boundaryValue = optionsObject["boundary"];
+                                                        if (boundaryValue != null)
                                                         {
-                                                            var minZoom = 0;
-                                                            var maxZoom = 18;
-                                                            var opacity = 1.0f;
-                                                            string subdomains = null;
-                                                            var north = 85.0511287798066;
-                                                            var south = -85.0511287798066;
-                                                            var west = -180.0;
-                                                            var east = 180.0;
-                                                            var options = layerObject["options"];
-                                                            if (options != null)
-                                                            {
-                                                                try
-                                                                {
-                                                                    var optionsObject = (JObject)options;
-                                                                    var minZoomValue = optionsObject["minZoom"];
-                                                                    if (minZoomValue != null)
-                                                                    {
-                                                                        minZoom = int.Parse(minZoomValue.Value<string>());
-                                                                    }
-                                                                    var maxZoomValue = optionsObject["maxZoom"];
-                                                                    if (maxZoomValue != null)
-                                                                    {
-                                                                        maxZoom = int.Parse(maxZoomValue.Value<string>());
-                                                                    }
-                                                                    var opacityValue = optionsObject["opacity"];
-                                                                    if (opacityValue != null)
-                                                                    {
-                                                                        opacity = float.Parse(opacityValue.Value<string>());
-                                                                    }
-                                                                    var subdomainsValue = optionsObject["subdomains"];
-                                                                    if (subdomainsValue != null)
-                                                                    {
-                                                                        subdomains = subdomainsValue.Value<string>();
-                                                                    }
-                                                                    var boundaryValue = optionsObject["boundary"];
-                                                                    if (boundaryValue != null)
-                                                                    {
-                                                                        var boundaryObject = (JObject) boundaryValue;
-                                                                        var northValue = boundaryObject["north"]
-                                                                            ?.Value<double>();
-                                                                        if (northValue != null)
-                                                                        {
-                                                                            north = northValue.Value;
-                                                                        }
-
-                                                                        var southValue = boundaryObject["south"]
-                                                                            ?.Value<double>();
-                                                                        if (southValue != null)
-                                                                        {
-                                                                            south = southValue.Value;
-                                                                        }
-
-                                                                        var westValue = boundaryObject["west"]
-                                                                            ?.Value<double>();
-                                                                        if (westValue != null)
-                                                                        {
-                                                                            west = westValue.Value;
-                                                                        }
-
-                                                                        var eastValue = boundaryObject["east"]
-                                                                            ?.Value<double>();
-                                                                        if (eastValue != null)
-                                                                        {
-                                                                            east = eastValue.Value;
-                                                                        }
-                                                                    }
-                                                                }
-                                                                catch
-                                                                {
-                                                                    //
-                                                                }
-                                                            }
-                                                            overlays.Add(
-                                                                new WmtsProvider
-                                                                {
-                                                                    UrlFormat = url,
-                                                                    MinZoom = minZoom,
-                                                                    MaxZoom = maxZoom,
-                                                                    Alpha = opacity,
-                                                                    ServerLetters = subdomains,
-                                                                    Copyright = copyright ?? "",
-                                                                    Area = RectLatLng.FromLTRB(leftLng: west, topLat: north, rightLng: east, bottomLat: south),
-                                                                    Tip = tip
-                                                                }
-                                                            );
+                                                            var boundaryObject = (JObject) boundaryValue;
+                                                            var northValue = boundaryObject["north"]?.Value<double>();
+                                                            if (northValue != null) 
+                                                                north = northValue.Value;
+                                                            var southValue = boundaryObject["south"]?.Value<double>();
+                                                            if (southValue != null) 
+                                                                south = southValue.Value;
+                                                            var westValue = boundaryObject["west"]?.Value<double>();
+                                                            if (westValue != null) 
+                                                                west = westValue.Value;
+                                                            var eastValue = boundaryObject["east"]?.Value<double>();
+                                                            if (eastValue != null) 
+                                                                east = eastValue.Value;
                                                         }
-                                                        else
-                                                            throw new Exception("[url] cannot be empty.");
                                                     }
-                                                    if (overlays.Count>0)
+                                                    catch
                                                     {
-                                                        overlays.Reverse();
-                                                        var theLayer = overlays.First();
-                                                        theLayer._overlays = overlays.ToArray();
-                                                        GMapProviderDictionary.Add(
-                                                            key: name,
-                                                            value: theLayer
-                                                        );
+                                                        //
                                                     }
                                                 }
+                                                overlays.Add(
+                                                    new WmtsProvider
+                                                    {
+                                                        UrlFormat = url,
+                                                        MinZoom = minZoom,
+                                                        MaxZoom = maxZoom,
+                                                        Alpha = opacity,
+                                                        ServerLetters = subdomains,
+                                                        Copyright = copyright ?? "",
+                                                        Area = RectLatLng.FromLTRB(leftLng: west, topLat: north, rightLng: east, bottomLat: south),
+                                                        Tip = tip
+                                                    }
+                                                );
                                             }
+                                            else
+                                                throw new Exception("[url] cannot be empty.");
                                         }
-                                        else
-                                            throw new Exception($"[{name}] duplicate name.");
+                                        if (overlays.Count <= 0) 
+                                            continue;
+                                        overlays.Reverse();
+                                        var theLayer = overlays.First();
+                                        theLayer._overlays = overlays.ToArray();
+                                        GMapProviderDictionary.Add(key: name, value: theLayer);
                                     }
                                     else
-                                        GMapProviderDictionary.Add(key: $"Separator{i++}", value: null);
+                                        throw new Exception($"[{name}] duplicate name.");
                                 }
+                                else
+                                    GMapProviderDictionary.Add(key: $"Separator{i++}", value: null);
                             }
                         }
                     }
@@ -8781,15 +8751,13 @@ namespace Geosite
                 if (item.GetType().Name == "ToolStripMenuItem")
                 {
                     var theItem = (ToolStripMenuItem)item;
-                    if (theItem.Tag != null)
-                    {
-                        theItem.Checked = (string)theItem.Tag == mapBearingItem;
-                        if (theItem.Checked)
-                        {
-                            MapBearingMenuItem.Tag = theItem.Tag;
-                            MapBox.Bearing = float.Parse((string)theItem.Tag);
-                        }
-                    }
+                    if (theItem.Tag == null) 
+                        continue;
+                    theItem.Checked = (string)theItem.Tag == mapBearingItem;
+                    if (!theItem.Checked) 
+                        continue;
+                    MapBearingMenuItem.Tag = theItem.Tag;
+                    MapBox.Bearing = float.Parse((string)theItem.Tag);
                 }
             ZoomLevelLabel.Text = $@"{MapBox.Zoom:#0.#} / {MapBox.MaxZoom:#0.#}";
         }
@@ -8818,54 +8786,53 @@ namespace Geosite
             BeginInvoke(
                 method: () =>
                 {
-                    if (PositionBox.Tag != null)
+                    if (PositionBox.Tag == null) 
+                        return;
+                    var positionBoxTag = ((string srid, (double? lng, double? lat) position))PositionBox.Tag;
+                    double lng, lat;
+                    if (e != null)
                     {
-                        var positionBoxTag = ((string srid, (double? lng, double? lat) position))PositionBox.Tag;
-                        double lng, lat;
-                        if (e != null)
-                        {
-                            base.OnMouseMove(e: e);
-                            var position = MapBox.FromLocalToLatLng(x: e.X, y: e.Y);
-                            positionBoxTag.position.lng = lng = position.Lng;
-                            positionBoxTag.position.lat = lat = position.Lat;
-                        }
-                        else
-                        {
-                            lng = positionBoxTag.position.lng ?? 0.0;
-                            lat = positionBoxTag.position.lat ?? 0.0;
-                        }
-                        PositionBox.Text = positionBoxTag.srid switch
-                        {
-                            "DEG" => $@"{lng:###.0000000000} / {lat:##.0000000000}",
-                            "DMS" => $@"{Ellipsoid.Degree2Dms(Degree: $"{lng}", Digit: "2")} / {Ellipsoid.Degree2Dms(Degree: $"{lat}", Digit: "2")}",
-                            "Beijing 1954" => string.Join(separator: " / ",
-                                    values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "1954")
-                                        .Split(separator: ',')
-                                        .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
-                            "Xian 1980" => string.Join(separator: " / ",
-                                    values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "1980")
-                                        .Split(separator: ',')
-                                        .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
-                            "CGCS 2000" => string.Join(separator: " / ",
-                                    values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "2000")
-                                        .Split(separator: ',')
-                                        .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
-                            "Web Mercator" => string.Join(separator: " / ",
-                                    values: Ellipsoid.WebMercator(lng: lng, lat: lat).Split(separator: ',')
-                                        .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
-                            _ => string.Empty
-                        };
-                        var scaleX = Models.MapGrids.Run(lamuda: lng, fai: lat, scale: MapGrid.AutoScale);
-                        if (MapGrids.Tag?.ToString() != "None")
-                        {
-                            MapGrids.Text = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
-                            MapGrids.ToolTipText = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
-                        }
-                        else
-                        {
-                            MapGrids.Text = @"None";
-                            MapGrids.ToolTipText = @"Map Grids";
-                        }
+                        base.OnMouseMove(e: e);
+                        var position = MapBox.FromLocalToLatLng(x: e.X, y: e.Y);
+                        positionBoxTag.position.lng = lng = position.Lng;
+                        positionBoxTag.position.lat = lat = position.Lat;
+                    }
+                    else
+                    {
+                        lng = positionBoxTag.position.lng ?? 0.0;
+                        lat = positionBoxTag.position.lat ?? 0.0;
+                    }
+                    PositionBox.Text = positionBoxTag.srid switch
+                    {
+                        "DEG" => $@"{lng:###.0000000000} / {lat:##.0000000000}",
+                        "DMS" => $@"{Ellipsoid.Degree2Dms(Degree: $"{lng}", Digit: "2")} / {Ellipsoid.Degree2Dms(Degree: $"{lat}", Digit: "2")}",
+                        "Beijing 1954" => string.Join(separator: " / ",
+                            values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "1954")
+                                .Split(separator: ',')
+                                .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
+                        "Xian 1980" => string.Join(separator: " / ",
+                            values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "1980")
+                                .Split(separator: ',')
+                                .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
+                        "CGCS 2000" => string.Join(separator: " / ",
+                            values: Ellipsoid.GaussKruger(longitude: $"{lng}", latitude: $"{lat}", crs: "2000")
+                                .Split(separator: ',')
+                                .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
+                        "Web Mercator" => string.Join(separator: " / ",
+                            values: Ellipsoid.WebMercator(lng: lng, lat: lat).Split(separator: ',')
+                                .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
+                        _ => string.Empty
+                    };
+                    var scaleX = Models.MapGrids.Run(lamuda: lng, fai: lat, scale: MapGrid.AutoScale);
+                    if (MapGrids.Tag?.ToString() != "None")
+                    {
+                        MapGrids.Text = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
+                        MapGrids.ToolTipText = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
+                    }
+                    else
+                    {
+                        MapGrids.Text = @"None";
+                        MapGrids.ToolTipText = @"Map Grids";
                     }
                 }
             );
