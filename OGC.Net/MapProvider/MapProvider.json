@@ -6,7 +6,7 @@
   {
     //图层名称【name】为必选项且唯一，如果缺失，将视为菜单分隔线
     "name": "Bing Roads",
-    //图层热提升信息【tip】为可选项，省略时采用默认值：空
+    //图层热提示信息【tip】为可选项，省略时采用默认值：空
     "tip": "地理线划图",
     //版权信息【copyright】为可选项，省略时采用默认值：空
     "copyright": "© Microsoft Corporation, © 2023 NAVTEQ, Image courtesy of NASA",
