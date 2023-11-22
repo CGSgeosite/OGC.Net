@@ -1,19 +1,21 @@
-//注1：自定义的底图必须采用JSON数组方式声明，也就是采用方括号封闭。图层定义的url暂仅支持【EPSG:3857】
-//注2：如果采用GeositeServer提供的wmts服务充当底图，url模版可为：http://localhost:5000/getTile?layer=(6969)&tileMatrix={z}&tileCol={x}&tileRow={y}
-//     其中，layer可以直接采用圆括号封闭的叶子id码，如上例中的【layer=(6969)】，这种方式比图层名称路由更快更简洁
+// OGC.net 桌面软件图形视窗底图配置文档（JSON格式）
+// 注1：底图必须采用方括号[]封闭的JSON数组方式声明
+// 注2：每类底图必须采用花括号{}封闭的JSON对象方式声明，支持一个基础底图图层和多个叠加图层，每个图层定义必须携带url地址，其投影方式暂仅支持【EPSG:3857】球体墨卡托
+// 注3：如果采用GeositeServer提供的wmts服务充当底图，推荐的url地址模版为：http://xxx.xxx.xxx:端口号/getTile?layer=(叶子id码)&tileMatrix={z}&tileCol={x}&tileRow={y}
+//      其中，layer可以直接采用圆括号封闭的整型数值型叶子id码，如上例中的【layer=(叶子id码)】，此种方式比图层名称路由更快更简洁；z为缩放级占位符，x为从左到右的横向图块坐标占位符，y为从上到下的纵向图块坐标占位符
 [
-  //每个图层必须采用JSON对象方式声明，也就是采用花括号封闭
+  //每类底图必须采用花括号封闭JSON对象方式声明
   {
-    //图层名称【name】为必选项且唯一，如果缺失，将视为菜单分隔线
+    //图层名称【name】为必选项且唯一（如果缺失，将视为菜单分隔线）
     "name": "Bing Roads",
     //图层热提示信息【tip】为可选项，省略时采用默认值：空
     "tip": "地理线划图",
     //版权信息【copyright】为可选项，省略时采用默认值：空
     "copyright": "© Microsoft Corporation, © 2023 NAVTEQ, Image courtesy of NASA",
-    //图层数组定义区是必选项，支持一个底图图层和多个叠加层，每个图层必须包含【url】
+    //图层数组定义区是必选项，支持一个基础底图图层和多个叠加图层，每个图层必须包含【url】
     "layers": [
       {
-        //注意：必应地图图块坐标系不符合zxy编码方式，因此采用内部{bingmap}占位符转码方案
+        //注意：必应地图图块坐标系不符合zxy编码方式，因此采用内部约定的{bingmap}占位符编码方案
         "url": "http://ecn.t0.tiles.virtualearth.net/tiles/r{bingmap}.jpeg?g=4810"
       }
     ]
@@ -24,7 +26,6 @@
     "copyright": "© Microsoft Corporation, © 2023 NAVTEQ, Image courtesy of NASA",
     "layers": [
       {
-        //注意：必应地图图块坐标系不符合zxy编码方式，因此采用内部{bingmap}占位符转码方案
         "url": "http://ecn.t0.tiles.virtualearth.net/tiles/a{bingmap}.jpeg?g=4810"
       }
     ]
@@ -35,13 +36,12 @@
     "copyright": "© Microsoft Corporation, © 2023 NAVTEQ, Image courtesy of NASA",
     "layers": [
       {
-        //注意：必应地图图块坐标系不符合zxy编码方式，因此采用内部{bingmap}占位符转码方案
         "url": "http://ecn.t0.tiles.virtualearth.net/tiles/r{bingmap}?g=4810"
       }
     ]
   },
   {
-    //---空白对象将视为菜单分隔线---
+    //---空白对象（或缺失name属性）将视为菜单分隔线---
   },
   {
     "name": "ArcGIS Imagery",
@@ -55,7 +55,7 @@
     ]
   },
   {
-    //---空白对象将视为菜单分隔线---
+    //---空白对象（或缺失name属性）将视为菜单分隔线---
   },
   {
     "name": "TianDiTu Roads",
@@ -63,6 +63,7 @@
     "copyright": "© 天地图 - Map data © 2023 TianDiTu",
     "layers": [
       {
+        //图层选项（可选项，省略时采用默认值）
         "options": {
           //最小缩放级，默认：0
           "minZoom": 0,
@@ -70,17 +71,21 @@
           "maxZoom": 18,
           //透明度，默认：1.0，通常，叠加层可设置为【0～1】之间的数值，而底图的透明度设置为1即可
           "opacity": 0.85,
-          //子域（负载均衡）占位符，将用于替换url中对应的占位符
+          //子域（负载均衡）占位符，将用于替换url中对应的占位符，默认：空
           "subdomains": "01234567",
-          //边界范围（地理坐标系）
+          //边界范围（地理坐标系），默认：空
           "boundary": {
+            //上北
             "north": 85.0511287798066,
+            //下南
             "south": -85.0511287798066,
+            //左西
             "west": -180,
+            //右东
             "east": 180
           }
         },
-        //注意：非末端的url为叠加层，比如：注释层
+        //注意：上面的url视为叠加层，比如：注释层
         "url": "http://t{subdomains}.tianditu.gov.cn/cva_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cva&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&tk=85c9d12d5d691d168ba5cb6ecaa749eb"
       },
       {
@@ -96,7 +101,7 @@
             "east": 180
           }
         },
-        //注意：最下面的url为底图图层，比如：地理线划层
+        //注意：最下面的url视为基础底图图层，比如：地理线划层
         "url": "http://t{subdomains}.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&tk=85c9d12d5d691d168ba5cb6ecaa749eb"
       }
     ]
@@ -119,7 +124,6 @@
             "east": 180
           }
         },
-        //注意：非末端的url为叠加层，比如：注释层
         "url": "http://t{subdomains}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&tk=85c9d12d5d691d168ba5cb6ecaa749eb"
       },
       {
@@ -135,7 +139,6 @@
             "east": 180
           }
         },
-        //注意：最下面的url为底图图层，比如：卫星影像层
         "url": "http://t{subdomains}.tianditu.gov.cn/img_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&tk=85c9d12d5d691d168ba5cb6ecaa749eb"
       }
     ]
@@ -158,7 +161,6 @@
             "east": 180
           }
         },
-        //注意：非末端的url为叠加层，比如：注释层
         "url": "http://t{subdomains}.tianditu.gov.cn/cia_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=cia&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&tk=85c9d12d5d691d168ba5cb6ecaa749eb"
       },
       {
@@ -174,7 +176,6 @@
             "east": 180
           }
         },
-        //注意：最下面的url为底图图层，比如：模型影像层
         "url": "http://t{subdomains}.tianditu.gov.cn/ter_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ter&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}&tk=85c9d12d5d691d168ba5cb6ecaa749eb"
       }
     ]
