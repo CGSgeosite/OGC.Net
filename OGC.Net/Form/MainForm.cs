@@ -64,9 +64,9 @@ namespace Geosite
         /// GeositeServer cluster user information, where name will serve as the forest name
         /// </summary>
         private (
-            bool status, //连接状态
-            int forest,  //群号
-            string name  //用户名称
+            bool status, 
+            int forest,  
+            string name  
             ) _clusterUser;
 
         private DatabaseGrid _databaseGridObject;
@@ -93,27 +93,27 @@ namespace Geosite
         private readonly Assembly _asm;
 
         /// <summary>
-        /// 瓦片服务加载视觉体验杆
+        /// Tile service loading visual experience bar
         /// </summary>
         public LoadingBar TileLoading;
 
         /// <summary>
-        /// 文件加载预览视觉体验杆
+        /// File Load Preview Visual Experience Bar
         /// </summary>
         public LoadingBar FilePreviewLoading;
 
         /// <summary>
-        /// 空白底图名称
+        /// Empty BaseMap Layer Name 
         /// </summary>
         private const string EmptyMapProviderKey = "None";
 
         /// <summary>
-        /// 可视化窗体底图字典
+        /// MapView layer dictionary
         /// </summary>
         public Dictionary<string, GMapProvider> GMapProviderDictionary = new();
 
         /// <summary>
-        /// 获取或设置要素属性框的文本内容  
+        /// Get or set the text content of the feature attribute box
         /// </summary>
         public string MapBoxPropertyText
         {
@@ -124,6 +124,10 @@ namespace Geosite
             }
         }
 
+        /// <summary>
+        /// Set status bar text content
+        /// </summary>
+        /// <param name="text"></param>
         public void SetStatusText(string text)
         {
             statusText.Text = text ?? "";
@@ -132,12 +136,12 @@ namespace Geosite
         private string _dataPoolGridCellValue;
 
         /// <summary>
-        /// 集群用户是否具备管理员权限，默认：false
+        /// Cluster user has administrator privileges, default: false
         /// </summary>
         private bool _administrator;
 
         /// <summary>
-        /// 图形窗口内容是否处于拖动状态
+        /// Is the content of the graphical window in a dragging state?
         /// </summary>
         private bool _mapDrag;
 
@@ -150,9 +154,7 @@ namespace Geosite
             InitializeBackgroundWorker();
             _asm = Assembly.GetExecutingAssembly();
             _noPromptMetaData = _noPromptLayersBuilder = false;
-            GetCopyright =
-                ((AssemblyCopyrightAttribute)_asm.GetCustomAttribute(attributeType: typeof(AssemblyCopyrightAttribute)))
-                ?.Copyright;
+            GetCopyright = ((AssemblyCopyrightAttribute)_asm.GetCustomAttribute(attributeType: typeof(AssemblyCopyrightAttribute)))?.Copyright;
         }
 
         private void InitializeBackgroundWorker()
@@ -741,10 +743,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                            {
-                                1 or 2 => "MapGIS",
-                                _ => null
-                            };
+                                {
+                                    1 or 2 => "MapGIS",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -857,10 +859,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                            {
-                                1 => "ShapeFile",
-                                _ => null
-                            };
+                                {
+                                    1 => "ShapeFile",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -882,8 +884,8 @@ namespace Geosite
                                 SaveAsFormat.Items.Add(item: @"GeositeXML(*.xml)");
                                 SaveAsFormat.SelectedIndex = 0;
                                 break;
-                                //default:
-                                //    break;
+                            //default:
+                            //    break;
                         }
                     }
                 }
@@ -922,11 +924,11 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                            {
-                                1 => "Excel",
-                                2 => "TXT/CSV",
-                                _ => null
-                            };
+                                {
+                                    1 => "Excel",
+                                    2 => "TXT/CSV",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -949,8 +951,8 @@ namespace Geosite
                                 SaveAsFormat.Items.Add(item: @"GeositeXML(*.xml)");
                                 SaveAsFormat.SelectedIndex = 0;
                                 break;
-                                //default:
-                                //    break;
+                            //default:
+                            //    break;
                         }
                     }
                 }
@@ -991,10 +993,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                            {
-                                1 => "GeoJSON",
-                                _ => null
-                            };
+                                {
+                                    1 => "GeoJSON",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1013,8 +1015,8 @@ namespace Geosite
                                 SaveAsFormat.Items.Add(item: @"GeositeXML(*.xml)");
                                 SaveAsFormat.SelectedIndex = 0;
                                 break;
-                                //default:
-                                //    break;
+                            //default:
+                            //    break;
                         }
                     }
                 }
@@ -1054,10 +1056,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                            {
-                                1 => "GeositeXML",
-                                _ => null
-                            };
+                                {
+                                    1 => "GeositeXML",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1120,10 +1122,10 @@ namespace Geosite
                         var theFileFormat =
                             openFileDialog.FilterIndex
                                 switch
-                            {
-                                1 => "KML",
-                                _ => null
-                            };
+                                {
+                                    1 => "KML",
+                                    _ => null
+                                };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
                             {
@@ -1270,7 +1272,6 @@ namespace Geosite
                         }
                         var sourceFile = sourceFiles[i];
                         var projectionX = sourceProjections[i];
-
                         string targetFile;
                         if (isDirectory)
                         {
@@ -1342,18 +1343,17 @@ namespace Geosite
                                                             canDo = false;
                                                     }
                                                     else
-                                                    {
-                                                        treePathString = ConsoleIO.FilePathToXPath(path: new FileInfo(fileName: sourceFile).FullName);
-                                                    }
+                                                        treePathString =
+                                                            ConsoleIO.FilePathToXPath(
+                                                                path: new FileInfo(fileName: sourceFile).FullName);
+
                                                     if (canDo)
-                                                    {
                                                         shapeFile.Export(
                                                             saveAs: targetFile,
                                                             format: Path.GetExtension(path: targetFile).ToLower()[1..],
                                                             treePath: treePathString,
                                                             extraDescription: description
                                                         );
-                                                    }
                                                 }
                                                 break;
                                             }
@@ -1453,12 +1453,10 @@ namespace Geosite
                                         case ".gml":
                                             {
                                                 if (isDirectory)
-                                                {
                                                     freeText.Export(
                                                         saveAs: targetFile,
                                                         format: Path.GetExtension(path: targetFile).ToLower()[1..],
                                                         treePath: ConsoleIO.FilePathToXPath(path: sourceFile));
-                                                }
                                                 else
                                                 {
                                                     string treePathString = null;
@@ -1619,7 +1617,6 @@ namespace Geosite
                                             else
                                                 canDo = false;
                                         }
-
                                         if (canDo)
                                             switch (Path.GetExtension(path: targetFile)?.ToLower())
                                             {
@@ -2001,7 +1998,6 @@ namespace Geosite
                                                     port = 5432;
                                                 var databaseX = server?.Element(name: "Database");
                                                 var database = databaseX?.Value.Trim();
-
                                                 var postgresqlVersion = databaseX?.Attribute(name: "Postgresql_Version")
                                                     ?.Value;
                                                 if (!string.IsNullOrWhiteSpace(value: postgresqlVersion))
@@ -3597,14 +3593,7 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
-                                var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT COUNT(*) FROM forest;",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
-                                );
+                                var count = long.Parse(PostgreSqlHelper.Scalar(cmd: "SELECT COUNT(*) FROM forest;", timeout: 0).ToString() ?? "0");
                                 DatabaseLogAdd(input: statusText.Text = $@"{count} record{(count > 1 ? "s" : "")} in forest.");
                             }
                         );
@@ -3628,7 +3617,6 @@ namespace Geosite
                         PostgreSqlHelper.NonQuery(cmd: "DELETE FROM tree WHERE id NOT IN (SELECT DISTINCT tree FROM branch);", timeout: 0);
                         if (PostgreSqlHelper.NonQuery(cmd: "VACUUM ANALYZE tree;", timeout: 0) == null)
                             throw new Exception(message: PostgreSqlHelper.Message);
-
                         Invoke(
                             method: () =>
                             {
@@ -3664,14 +3652,7 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
-                                var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT COUNT(*) FROM branch;",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
-                                );
+                                var count = long.Parse(PostgreSqlHelper.Scalar(cmd: "SELECT COUNT(*) FROM branch;", timeout: 0).ToString() ?? "0");
                                 DatabaseLogAdd(input: statusText.Text = $@"{count} record{(count > 1 ? "s" : "")} in branch.");
                             }
                         );
@@ -3696,14 +3677,7 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
-                                var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf';",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
-                                );
+                                var count = long.Parse(PostgreSqlHelper.Scalar(cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf';", timeout: 0).ToString() ?? "0");
                                 DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf.");
                             }
                         );
@@ -3728,14 +3702,7 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
-                                var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_description';",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
-                                );
+                                var count = long.Parse(PostgreSqlHelper.Scalar(cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_description';", timeout: 0).ToString() ?? "0");
                                 DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_description.");
                             }
                         );
@@ -3751,14 +3718,7 @@ namespace Geosite
                         Invoke(
                             method: () =>
                             {
-                                var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_style';",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
-                                );
+                                var count = long.Parse(PostgreSqlHelper.Scalar(cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_style';", timeout: 0).ToString() ?? "0");
                                 DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_style.");
                             }
                         );
@@ -3775,12 +3735,7 @@ namespace Geosite
                             method: () =>
                             {
                                 var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_geometry';",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
+                                    PostgreSqlHelper.Scalar(cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_geometry';", timeout: 0).ToString() ?? "0"
                                 );
                                 DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_geometry.");
                             }
@@ -3798,12 +3753,7 @@ namespace Geosite
                             method: () =>
                             {
                                 var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_tile';",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
+                                    PostgreSqlHelper.Scalar(cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_tile';", timeout: 0).ToString() ?? "0"
                                 );
                                 DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_tile.");
                             }
@@ -3821,12 +3771,7 @@ namespace Geosite
                             method: () =>
                             {
                                 var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_wms';",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
+                                    PostgreSqlHelper.Scalar(cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_wms';", timeout: 0).ToString() ?? "0"
                                 );
                                 DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_wms.");
                             }
@@ -3844,12 +3789,7 @@ namespace Geosite
                             method: () =>
                             {
                                 var count = long.Parse(
-                                    (
-                                        PostgreSqlHelper.Scalar(
-                                            cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_temporal';",
-                                            timeout: 0
-                                        )
-                                    ).ToString() ?? "0"
+                                    PostgreSqlHelper.Scalar(cmd: "SELECT reltuples::bigint AS estimate FROM pg_class WHERE relname = 'leaf_temporal';", timeout: 0).ToString() ?? "0"
                                 );
                                 DatabaseLogAdd(input: statusText.Text = $@"About {count} record{(count > 1 ? "s" : "")} in leaf_temporal.");
                             }
@@ -3867,8 +3807,7 @@ namespace Geosite
                             method: () =>
                             {
                                 statusProgress.Value = 100;
-                                UpdateDatabaseSize(serverUrl: serverUrl, serverUser: serverUser,
-                                    serverPassword: serverPassword);
+                                UpdateDatabaseSize(serverUrl: serverUrl, serverUser: serverUser, serverPassword: serverPassword);
                                 DatabaseLogAdd(input: statusText.Text = @"Reclean finished.");
                             }
                         );
@@ -3947,11 +3886,15 @@ namespace Geosite
             if (_administrator)
             {
                 var selectedRows = DatabaseGridView.SelectedRows;
-                if (selectedRows.Count > 0 && MessageBox.Show(
+                if (
+                    selectedRows.Count > 0 && 
+                    MessageBox.Show(
                         text: $@"Are you sure you want to delete {selectedRows.Count} selected item{(selectedRows.Count == 1 ? "" : "s")}?",
                         caption: @"Caution",
                         buttons: MessageBoxButtons.YesNo,
-                        icon: MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                        icon: MessageBoxIcon.Exclamation
+                        ) == DialogResult.Yes
+                    )
                 {
                     var ids =
                         selectedRows
@@ -4327,9 +4270,7 @@ namespace Geosite
                                 }
                             }
                             else
-                            {
                                 DatabaseLogAdd(input: $"[{getTheFile}] in mpj does not exist.");
-                            }
                         }
                     }
                 }
@@ -6635,7 +6576,6 @@ namespace Geosite
                 if (string.IsNullOrWhiteSpace(value: newName))
                     col.Value = oldName;
                 else
-                {
                     try
                     {
                         col.Value = new XElement(name: newName).Name.LocalName;
@@ -6644,7 +6584,6 @@ namespace Geosite
                     {
                         col.Value = oldName;
                     }
-                }
             }
             _dataPoolGridCellValue = null;
         }
@@ -6733,15 +6672,13 @@ namespace Geosite
                     else
                     {
                         if (getProjectionSame)
-                        {
                             foreach (var oneRow in senderGrid.Rows)
                             {
-                                var oneCol = ((DataGridViewRow)oneRow).Cells[2];
+                                var oneCol = ((DataGridViewRow) oneRow).Cells[2];
                                 oneCol.Tag = null;
                                 oneCol.Value = "?";
                                 oneCol.ToolTipText = @"Unknown";
                             }
-                        }
                         else
                         {
                             col.Tag = null;
@@ -7244,11 +7181,10 @@ namespace Geosite
                                         }
                                     );
                                     var success = PostgreSqlHelper.NonQuery(
-                                        cmd: "DELETE FROM forest WHERE id = @id;", // AND name = @name::text
+                                        cmd: "DELETE FROM forest WHERE id = @id;",
                                         parameters: new Dictionary<string, object>
                                         {
                                             { "id", _clusterUser.forest }
-                                            //, { "name", _clusterUser.name }
                                         }
                                     ) != null;
                                     if (success)
@@ -8019,60 +7955,12 @@ namespace Geosite
                                     treeUri = fileInfo.FullName;
                                     treeLastWriteTime = fileInfo.LastWriteTime;
                                     themeMetadataX = GeositeTilePush.GetRasterMetaData(sourceFile: treeUri, tileSize: parameter.tileSize);
-                                    /*
-                                        <property>
-                                          <name>raster</name>
-                                          <tileSize>256</tileSize>
-                                          <overlap>0</overlap>
-                                          <minZoom>-1</minZoom>
-                                          <maxZoom>-1</maxZoom>
-                                          <type>raster</type>
-                                          <crs>3857</crs>
-                                          <serverFormat>Default</serverFormat>
-                                          <size>
-                                            <width>22418</width>
-                                            <height>23939</height>
-                                          </size>
-                                          <boundary>
-                                            <north>21396567.2524</north>
-                                            <south>-21397064.618899997</south>
-                                            <west>-20037508.3428</west>
-                                            <east>20037166.4261</east>
-                                          </boundary>
-                                        </property>                                     
-                                     */
-                                    /*
-                                        <property>
-                                           <name>raster</name>
-                                           <bands>4</bands>
-                                           <bandDepth>16</bandDepth>
-                                           <tileSize>100</tileSize>
-                                           <overlap>0</overlap>
-                                           <minZoom>-1</minZoom>
-                                           <maxZoom>-1</maxZoom>
-                                           <type>raster</type>
-                                           <crs>0</crs>
-                                           <serverFormat>Default</serverFormat>
-                                           <size>
-                                               <width>7300</width>
-                                               <height>6908</height>
-                                           </size>
-                                           <boundary>
-                                               <north>0</north>
-                                               <south>6908</south>
-                                               <west>0</west>
-                                               <east>7300</east>
-                                           </boundary>
-                                       </property>                                     
-                                     */
                                     if (!int.TryParse(themeMetadataX.Element("crs").Value, out var crs) || crs is not (4326 or 3857))
-                                    {
-                                        return $"The coordinate reference system [EPSG:{crs}] should be set to EPSG:4326 or 3857.";
-                                    }
+                                        return
+                                            $"The coordinate reference system [EPSG:{crs}] should be set to EPSG:4326 or 3857.";
                                     if (parameter.srid != crs)
-                                    {
-                                        return $"The coordinate reference system [EPSG:{parameter.srid}] is inconsistent with the image [EPSG:{crs}].";
-                                    }
+                                        return
+                                            $"The coordinate reference system [EPSG:{parameter.srid}] is inconsistent with the image [EPSG:{crs}].";
                                     break;
                                 }
                         }
@@ -9881,9 +9769,9 @@ namespace Geosite
                                                         branchX = branchX.Elements("layer")
                                                             .First(x => x.Element("name")?.Value == branch);
                                                     }
-                                                    var verteics = route.Points;
+                                                    var vertices = route.Points;
                                                     var geometry = new JArray();
-                                                    foreach (var vertex in verteics)
+                                                    foreach (var vertex in vertices)
                                                         geometry.Add(new JArray { vertex.Lng, vertex.Lat });
                                                     (JArray Centroid, JArray BBox) lineStringTopology;
                                                     try
@@ -9962,9 +9850,9 @@ namespace Geosite
                                                         branchX = branchX.Elements("layer")
                                                             .First(x => x.Element("name")?.Value == branch);
                                                     }
-                                                    var verteics = route.Points;
+                                                    var vertices = route.Points;
                                                     var geometry = new JArray();
-                                                    foreach (var vertex in verteics)
+                                                    foreach (var vertex in vertices)
                                                         geometry.Add(new JArray { vertex.Lng, vertex.Lat });
                                                     (JArray Centroid, JArray BBox) lineStringTopology;
                                                     try
@@ -10043,9 +9931,9 @@ namespace Geosite
                                                         branchX = branchX.Elements("layer")
                                                             .First(x => x.Element("name")?.Value == branch);
                                                     }
-                                                    var verteics = polygon.Points;
+                                                    var vertices = polygon.Points;
                                                     var geometry = new JArray();
-                                                    foreach (var vertex in verteics)
+                                                    foreach (var vertex in vertices)
                                                         geometry.Add(new JArray { vertex.Lng, vertex.Lat });
                                                     geometry = new JArray { geometry };
                                                     (JArray Centroid, JArray BBox) polygonTopology;
