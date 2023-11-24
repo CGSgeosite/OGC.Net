@@ -28,6 +28,7 @@
  *****************************************************************************/
 
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using Geosite.GeositeServer.PostgreSQL;
 
 namespace Geosite
@@ -196,12 +197,22 @@ namespace Geosite
                                 "7" => Properties.Resources.lock111,
                                 _ => Properties.Resources.lock000
                             };
-                            var propertyX = row.Element("property");
+                            
                             var typeArray = Regex.Split(
                                 type,
                                 @"[\s,]+",
                                 RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline
                             );
+
+                            var propertyX = row.Element("property");
+                            //新增于2023年11月23日 西安
+                            propertyX?.Add(
+                                new XElement(
+                                    "type",
+                                    string.Join(",", typeArray)
+                                )
+                            );
+
                             Bitmap typeBitmap;
                             if (typeArray.Length == 1)
                             {

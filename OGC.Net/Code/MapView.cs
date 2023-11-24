@@ -40,10 +40,10 @@ using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using GMap.NET.MapProviders;
-using GMap.NET.MapProviders.WmtsProvider;
 using GMap.NET;
 using GMap.NET.Extend;
 using GMap.NET.WindowsForms;
+using GMap.NET.MapProviders.GeositeMapProvider;
 
 namespace Geosite
 {
@@ -793,8 +793,7 @@ namespace Geosite
                         typeArray.Contains(value: "3") || typeArray.Contains(value: "4"))
                     {
                         //WFS服务模板示例：http://localhost:5000/getFeature?service=wfs&resultType=hits&typeNames=a.b&outputFormat=2&count=100
-                        var callPath =
-                            $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}";
+                        var callPath = $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}";
                         _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
                         var getResponse = new WebProxy().Call(
                             path: callPath,
@@ -899,7 +898,6 @@ namespace Geosite
                                                             }
                                                         }
                                                     }
-
                                                     count += GeositeXmlView(features: geositeXml, realZoom: false);
                                                 }
                                                 else
@@ -913,79 +911,85 @@ namespace Geosite
                                     }
                                 }
                                 else
-                                    _backgroundWorker.ReportProgress(percentProgress: -1,
-                                        userState: @"No vector features found.");
+                                    _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No vector features found.");
                             }
                             else
-                                _backgroundWorker.ReportProgress(percentProgress: -1,
-                                    userState: @"No vector features found.");
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No vector features found.");
                         }
                         else
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: getResponse.ErrorMessage);
                     }
-
-                    if (typeArray.Contains(value: "10000") || typeArray.Contains(value: "10001") || typeArray.Contains(value: "11000") ||
-                        typeArray.Contains(value: "11001"))
-                        _backgroundWorker.ReportProgress(
-                            percentProgress: -1,
-                            userState: "Non EPSG:3857 type is not currently supported."
-                        );
-                    if (typeArray.Contains(value: "10002"))
+                    else
                     {
-                        //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]
-                        var callPath = $"{webApi}getTile?service=wms&layer={layer}";
-                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
-                        var getResponse = new WebProxy().Call(
-                            path: callPath,
-                            timeout: 5000
-                        );
-                        if (getResponse.IsSuccessful)
+                        if (typeArray.Contains(value: "10002"))
                         {
-                            var content = getResponse.Content;
-                            if (content != null)
+                            //不支持：10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]
+                            //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]
+                            var callPath = $"{webApi}getTile?service=wms&layer={layer}";
+                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
+                            var getResponse = new WebProxy().Call(
+                                path: callPath,
+                                timeout: 5000
+                            );
+                            if (getResponse.IsSuccessful)
+                            {
+                                var content = getResponse.Content;
+                                if (content != null)
+                                    count += GeositeXmlView(
+                                        features: new XElement(
+                                            name: "members",
+                                            content: XElement.Parse(text: content).Descendants(name: "wms").ToArray()
+                                                .Select(
+                                                    selector: wms =>
+                                                        new XElement(
+                                                            name: "member",
+                                                            content: new object[]
+                                                            {
+                                                                new XAttribute(name: "type", value: "Tile"),
+                                                                new XElement(name: "wms", content: wms.Value), 
+                                                                _property
+                                                            })
+                                                ).ToList()
+                                        ),
+                                        realZoom: false);
+                                else
+                                    _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No WMS found.");
+                            }
+                            else
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: getResponse.ErrorMessage);
+                        }
+                        else
+                        {
+                            if (typeArray.Contains(value: "11002"))
+                            {
+                                //不支持：11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]
+                                //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]
                                 count += GeositeXmlView(
                                     features: new XElement(
-                                        name: "members",
-                                        content: XElement.Parse(text: content).Descendants(name: "wms").ToArray().Select(
-                                            selector: wms =>
-                                                new XElement(
-                                                    name: "member",
-                                                    content: new object[]
-                                                    {
-                                                        new XAttribute(name: "type", value: "Tile"),
-                                                        new XElement(name: "wms", content: wms.Value), _property
-                                                    })
-                                        ).ToList()
-                                    ),
+                                        name: "member",
+                                        content: new object[]
+                                        {
+                                            new XAttribute(name: "type", value: "Tile"),
+                                            //注：GeositeServer提供的getTile指令支持采用括号封闭的(叶子id)充当图层路由，这比常规方式更加高效
+                                            new XElement(
+                                                name: "wms",
+                                                content:
+                                                $"{webApi}getTile?service=wmts&layer=({leaf})&tileMatrix={{z}}&tileCol={{x}}&tileRow={{y}}"
+                                            ),
+                                            _property
+                                        }),
                                     realZoom: false);
+                            }
                             else
-                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No WMS found.");
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: $@"[{layer}] layer type is not supported.");
                         }
-                        else
-                            _backgroundWorker.ReportProgress(percentProgress: -1, userState: getResponse.ErrorMessage);
-                    }
-
-                    if (typeArray.Contains(value: "11002"))
-                    {
-                        //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]
-                        count += GeositeXmlView(
-                            features: new XElement(
-                                name: "member",
-                                content: new object[]
-                                {
-                                    new XAttribute(name: "type", value: "Tile"),
-                                    //注：GeositeServer提供的getTile指令支持采用括号封闭的(叶子id)充当图层路由，这比常规方式更加高效
-                                    new XElement(name: "wms",
-                                        content: $"{webApi}getTile?service=wmts&layer=({leaf})&tileMatrix={{z}}&tileCol={{x}}&tileRow={{y}}"),
-                                    _property
-                                }),
-                            realZoom: false);
                     }
 
                     var resultMessage = $@"[{count}] feature{(count > 1 ? "s" : "")} loaded completed.";
                     _backgroundWorker.ReportProgress(
                         percentProgress: -1,
-                        userState: resultMessage);
+                        userState: resultMessage
+                    );
                     _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.SetStatusText(text: resultMessage); });
                     break;
                 }
@@ -1291,8 +1295,7 @@ namespace Geosite
                                                     JObject property = null;
                                                     try
                                                     {
-                                                        property = JObject.Parse(
-                                                            json: JsonConvert.SerializeXNode(node: propertyX));
+                                                        property = JObject.Parse(json: JsonConvert.SerializeXNode(node: propertyX));
                                                     }
                                                     catch
                                                     {
@@ -1325,8 +1328,7 @@ namespace Geosite
                                                 JObject property = null;
                                                 try
                                                 {
-                                                    property = JObject.Parse(
-                                                        json: JsonConvert.SerializeXNode(node: propertyX));
+                                                    property = JObject.Parse(json: JsonConvert.SerializeXNode(node: propertyX));
                                                 }
                                                 catch
                                                 {
@@ -1334,10 +1336,7 @@ namespace Geosite
                                                 }
                                                 finally
                                                 {
-                                                    Tile(
-                                                        urlFormat: wms,
-                                                        property: property
-                                                    );
+                                                    Tile(urlFormat: wms, property: property);
                                                 }
                                             }
 
@@ -1785,7 +1784,48 @@ namespace Geosite
         {
             var propertyJson = property?["property"];
             var propertyHasValues = (propertyJson ?? false).HasValues;
-            var wmsLayer = new WmtsProvider
+            /*
+             <property>
+                   <maxZoom>3</maxZoom>
+                   <minZoom>0</minZoom>
+                   <boundary>
+                       <east>180</east>
+                       <west>-180</west>
+                       <north>90</north>
+                       <south>-90</south>
+                   </boundary>
+                   <tileSize>256</tileSize>
+                   <type>11001</type>
+               </property>
+             */
+            //10000：Wms栅格金字塔瓦片服务类型[epsg:0 - 无投影瓦片]
+            //10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]
+            //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片] ✔
+            //11000：Wmts栅格金字塔瓦片类型[epsg:0 - 无投影瓦片]
+            //11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]
+            //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片] ✔
+            //12000：WPS栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]
+            //12001：WPS栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]
+            //12002：WPS栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]
+
+            var srid =
+                int.Parse(
+                        propertyHasValues
+                            ? Regex.Split(propertyJson?[key: "type"]?.Value<string>() ?? "11002", @"[,\s]+")[0]
+                            : "11002"
+                    ) switch
+                    {
+                        10001 or
+                            11001 or
+                            12001 => 4326,
+                        10002 or
+                            11002 or
+                            12002 => 3857,
+                        _ => 0
+                    };
+            var tileSize = propertyHasValues ? propertyJson?[key: "tileSize"]?.Value<int>() ?? 256 : 256;
+
+            var wmsLayer = new MapProvider(srid, tileSize)
             {
                 UrlFormat = urlFormat,
                 MaxZoom = propertyHasValues
