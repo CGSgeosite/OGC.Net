@@ -49,7 +49,7 @@ using GMap.NET.MapProviders;
 using GMap.NET.Extend;
 using Formatting = Newtonsoft.Json.Formatting;
 using Geosite.QuickCopyFile;
-using GMap.NET.MapProviders.WmtsProvider;
+using GMap.NET.MapProviders.GeositeMapProvider;
 
 namespace Geosite
 {
@@ -274,7 +274,7 @@ namespace Geosite
             key = EPSG4326.Name;
             defaultValue = RegEdit.GetKey(key: key);
             EPSG4326.Checked = bool.Parse(value: defaultValue ?? "False");
-
+            
             key = UpdateBox.Name;
             defaultValue = RegEdit.GetKey(key: key);
             UpdateBox.Checked = bool.Parse(value: defaultValue ?? "True");
@@ -6614,25 +6614,39 @@ namespace Geosite
                         if (FormatStandard.Checked)
                         {
                             EPSG4326.Enabled = true;
-                            EPSG4326.ThreeState = EPSG4326.Checked = false;
+                            EPSG4326.ThreeState = false;
+                            //EPSG4326.Checked = false;
                             //tileLevels.Text = @"-1";
                             tileLevels.Enabled = true;
                         }
                         else
                         {
-                            if (FormatTMS.Checked || FormatMapcruncher.Checked || FormatArcGIS.Checked)
+                            if (FormatTMS.Checked)
                             {
-                                EPSG4326.Enabled = EPSG4326.ThreeState = EPSG4326.Checked = false;
+                                EPSG4326.Enabled = true;
+                                EPSG4326.ThreeState = false;
+                                //EPSG4326.Checked = false;
                                 //tileLevels.Text = @"-1";
                                 tileLevels.Enabled = true;
                             }
                             else
                             {
-                                EPSG4326.Enabled = false;
-                                EPSG4326.ThreeState = true;
-                                EPSG4326.CheckState = CheckState.Indeterminate;
-                                //tileLevels.Text = @"-1";
-                                tileLevels.Enabled = false;
+                                if (FormatMapcruncher.Checked || FormatArcGIS.Checked)
+                                {
+                                    EPSG4326.Enabled =
+                                        EPSG4326.ThreeState =
+                                            EPSG4326.Checked = false;
+                                    //tileLevels.Text = @"-1";
+                                    tileLevels.Enabled = true;
+                                }
+                                else
+                                {
+                                    EPSG4326.Enabled = false;
+                                    EPSG4326.ThreeState = true;
+                                    EPSG4326.CheckState = CheckState.Indeterminate;
+                                    //tileLevels.Text = @"-1";
+                                    tileLevels.Enabled = false;
+                                }
                             }
                         }
                         break;
@@ -7007,7 +7021,7 @@ namespace Geosite
             var tileType = TileType.Standard;
             var typeCode = 0;
             XElement themeMetadataX = null;
-            switch (tilesource.SelectedIndex)
+            switch (tilesource.SelectedIndex) 
             {
                 case 0:
                     {
@@ -7467,7 +7481,7 @@ namespace Geosite
                     light: PostgresLight.Checked,
                     rank: rankList.Text,
                     metadata: themeMetadataX,
-                    srid: tileType is TileType.DeepZoom or TileType.Raster ? 0 : tileType == TileType.Standard && EPSG4326.Checked ? 4326 : 3857,
+                    srid: tileType is TileType.DeepZoom or TileType.Raster ? 0 : tileType == TileType.Standard && EPSG4326.Checked ? 4326 : (tileType == TileType.TMS && EPSG4326.Checked ? 4326 : 3857),
                     tileMatrix,
                     tileSize: rasterTileSize.Text
                 )
@@ -7727,8 +7741,7 @@ namespace Geosite
                                                         new XElement(name: "srid", content: parameter.srid),
                                                         tabIndex == 1 &&
                                                         !string.IsNullOrWhiteSpace(value: subdomainsBox.Text)
-                                                            ? new XElement(name: "subdomains",
-                                                                content: subdomainsBox.Text)
+                                                            ? new XElement(name: "subdomains", content: subdomainsBox.Text)
                                                             : null
                                                     }
                                                 )
@@ -8191,6 +8204,8 @@ namespace Geosite
                                                 var maxZoom = 18;
                                                 var opacity = 1.0f;
                                                 string subdomains = null;
+                                                var srid = 3857;
+                                                var tileSize = 256;
                                                 var north = 85.0511287798066;
                                                 var south = -85.0511287798066;
                                                 var west = -180.0;
@@ -8210,6 +8225,12 @@ namespace Geosite
                                                         var opacityValue = optionsObject["opacity"];
                                                         if (opacityValue != null)
                                                             opacity = float.Parse(opacityValue.Value<string>());
+                                                        var sridValue = optionsObject["srid"];
+                                                        if (sridValue != null)
+                                                            srid = int.Parse(sridValue.Value<string>());
+                                                        var tileSizeValue = optionsObject["tileSize"];
+                                                        if (tileSizeValue != null)
+                                                            tileSize = int.Parse(tileSizeValue.Value<string>());
                                                         var subdomainsValue = optionsObject["subdomains"];
                                                         if (subdomainsValue != null)
                                                             subdomains = subdomainsValue.Value<string>();
@@ -8236,19 +8257,20 @@ namespace Geosite
                                                         //
                                                     }
                                                 }
-                                                overlays.Add(
-                                                    new WmtsProvider
-                                                    {
-                                                        UrlFormat = url,
-                                                        MinZoom = minZoom,
-                                                        MaxZoom = maxZoom,
-                                                        Alpha = opacity,
-                                                        ServerLetters = subdomains,
-                                                        Copyright = copyright ?? "",
-                                                        Area = RectLatLng.FromLTRB(leftLng: west, topLat: north, rightLng: east, bottomLat: south),
-                                                        Tip = tip
-                                                    }
-                                                );
+
+                                                var geositeMapProvider = new MapProvider(srid, tileSize)
+                                                {
+                                                    UrlFormat = url,
+                                                    MinZoom = minZoom,
+                                                    MaxZoom = maxZoom,
+                                                    Alpha = opacity,
+                                                    ServerLetters = subdomains,
+                                                    Copyright = copyright ?? "",
+                                                    Area = RectLatLng.FromLTRB(leftLng: west, topLat: north, rightLng: east, bottomLat: south),
+                                                    Tip = tip,
+                                                };
+
+                                                overlays.Add(geositeMapProvider);
                                             }
                                             else
                                                 throw new Exception("[url] cannot be empty.");
@@ -8431,12 +8453,19 @@ namespace Geosite
                                 .Select(selector: xy => $"{double.Parse(s: xy):#.000}")),
                         _ => string.Empty
                     };
-                    var scaleX = Models.MapGrids.Run(lamuda: lng, fai: lat, scale: MapGrid.AutoScale);
+
                     if (MapGrids.Tag?.ToString() != "None")
-                    {
-                        MapGrids.Text = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
-                        MapGrids.ToolTipText = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
-                    }
+                        try
+                        {
+                            var scaleX = Models.MapGrids.Run(lamuda: lng, fai: lat, scale: MapGrid.AutoScale);
+                            MapGrids.Text = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
+                            MapGrids.ToolTipText = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
+                        }
+                        catch
+                        {
+                            MapGrids.Text = "";
+                            MapGrids.ToolTipText = "";
+                        }
                     else
                     {
                         MapGrids.Text = @"None";
