@@ -921,9 +921,16 @@ namespace Geosite
                     }
                     else
                     {
-                        if (typeArray.Contains(value: "10002"))
+                        var sridMapBox = ((MapProvider)_mainForm.MapBox.MapProvider).Srid;
+                        var sridLayer = typeArray.Contains(value: "10002") || typeArray.Contains(value: "11002")
+                            ? 3857
+                            : 4326;
+                        if (
+                            typeArray.Contains(value: "10001") && sridMapBox == 4326 ||
+                            typeArray.Contains(value: "10002") && sridMapBox == 3857
+                            )
                         {
-                            //不支持：10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]
+                            //10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]
                             //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]
                             var callPath = $"{webApi}getTile?service=wms&layer={layer}";
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
@@ -960,9 +967,12 @@ namespace Geosite
                         }
                         else
                         {
-                            if (typeArray.Contains(value: "11002"))
+                            if (
+                                typeArray.Contains(value: "11001") && sridMapBox == 4326 ||
+                                typeArray.Contains(value: "11002") && sridMapBox == 3857
+                                )
                             {
-                                //不支持：11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]
+                                //11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]
                                 //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]
                                 count += GeositeXmlView(
                                     features: new XElement(
@@ -981,7 +991,7 @@ namespace Geosite
                                     realZoom: false);
                             }
                             else
-                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: $@"[{layer}] layer type is not supported.");
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: $@"MapView is [EPSG:{sridMapBox}], but Layer is [EPSG:{sridLayer}].");
                         }
                     }
 
