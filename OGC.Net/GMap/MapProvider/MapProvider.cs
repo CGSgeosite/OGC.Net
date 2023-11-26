@@ -13,12 +13,12 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         /// <summary>
         /// 投影系代号投影系代号，默认：3857，支持：3857/4326
         /// </summary>
-        private readonly int _srid;
+        public readonly int Srid;
 
         /// <summary>
         /// 瓦片尺寸，默认：256，支持：256/512
         /// </summary>
-        private readonly int _tileSize;
+        public readonly int TileSize;
 
         /// <summary>
         /// 构造函数
@@ -27,13 +27,13 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         /// <param name="tileSize">瓦片尺寸，默认：256，支持：256/512</param>
         public MapProvider(int srid = 3857, int tileSize = 256)
         {
-            _srid = srid switch
+            Srid = srid switch
             {
                 4326 => 4326,
                 _ => 3857
             };
 
-            _tileSize = tileSize switch
+            TileSize = tileSize switch
             {
                 512 => 512,
                 _ => 256
@@ -91,7 +91,7 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         /// <summary>
         /// 投影方式
         /// </summary>
-        public override PureProjection Projection => _srid == 3857 ? MercatorProjection.Instance : PlateCarreeProjection.Instance;
+        public override PureProjection Projection => Srid == 3857 ? MercatorProjection.Instance : PlateCarreeProjection.Instance; //_srid == 3857 ? MercatorProjection.Instance : PlateCarreeProjection.Instance;
 
         /// <summary>
         /// 访问地址
@@ -108,11 +108,24 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         /// <summary>
         /// 依据位置和缩放级获取访问地址
         /// </summary>
-        /// <param name="pos"></param>
-        /// <param name="zoom"></param>
+        /// <param name="pos">图块坐标（X,Y）</param>
+        /// <param name="zoom">缩放级</param>
         /// <returns></returns>
         private string MakeTileImageUrl(GPoint pos, int zoom)
         {
+            var x = pos.X; var y = pos.Y;
+
+            //if (_srid == 4326)
+            //{
+            //    var topLeft = Projection.FromPixelToLatLng(new GPoint(pos.X * _tileSize, pos.Y * _tileSize), zoom);
+            //    var bottomRight = Projection.FromPixelToLatLng(new GPoint((pos.X + 1) * _tileSize, (pos.Y + 1) * _tileSize), zoom);
+            //    var centerLat = (topLeft.Lat + bottomRight.Lat) / 2;
+            //    var centerLng = (topLeft.Lng + bottomRight.Lng) / 2;
+            //    var tile = Map4326.LonLatToTile(centerLng, centerLat, zoom);
+            //    x = tile.x;
+            //    y = tile.y;
+            //}
+
             var index = GetServerNum(pos, Math.Max(ServerLetters?.Length ?? 0, 1));
             var letter = (ServerLetters?.Length > index ? ServerLetters?[index].ToString() : "") ?? "";
             return string.Format(
@@ -120,7 +133,7 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
                     Regex.Replace(
                         Regex.Replace(
                             Regex.Replace(
-                                Regex.Replace(UrlFormat, "{bingmap}", TileXYToQuadKey(pos.X, pos.Y, zoom), RegexOptions.IgnoreCase),
+                                Regex.Replace(UrlFormat, "{bingmap}", TileXYToQuadKey(x, y, zoom), RegexOptions.IgnoreCase),
                                 "{subdomains}|{subdomain}|{s}",
                                 letter,
                                 RegexOptions.IgnoreCase
@@ -138,8 +151,8 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
                     RegexOptions.IgnoreCase
                 ),
                 zoom,
-                pos.X,
-                pos.Y
+                x,
+                y
             );
         }
 
@@ -155,8 +168,6 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         /// <returns>A string containing the QuadKey.</returns>
         private string TileXYToQuadKey(long tileX, long tileY, int levelOfDetail)
         {
-            //var key = TileXYToQuadKey(pos.X, pos.Y, zoom);
-
             var quadKey = new StringBuilder();
             for (var i = levelOfDetail; i > 0; i--)
             {
