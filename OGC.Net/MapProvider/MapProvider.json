@@ -1,7 +1,9 @@
 // OGC.net 桌面软件图形视窗底图配置文档（JSON格式）
 // 注1：底图必须采用方括号[]封闭的JSON数组方式声明
-// 注2：每类底图必须采用花括号{}封闭的JSON对象方式声明，支持一个基础底图图层和多个叠加图层，每个图层定义必须携带url地址，其投影方式暂仅支持【EPSG:3857】球体墨卡托
-// 注3：如果采用GeositeServer提供的wmts服务充当底图，推荐的url地址模版为：http://xxx.xxx.xxx:端口号/getTile?layer=(叶子id码)&tileMatrix={z}&tileCol={x}&tileRow={y}
+// 注2：每类底图必须采用花括号{}封闭的JSON对象方式声明，支持一个基础底图图层和多个叠加图层，每个图层定义必须携带url地址
+// 注3：图层投影方式支持【EPSG:3857(默认)】球体墨卡托和【EPSG:4326】地理经纬度
+// 注4：图层瓦片尺寸支持256×256或者512×512像素
+// 注5：如果采用GeositeServer提供的wmts服务充当底图，推荐的url地址模版为：http://xxx.xxx.xxx:端口号/getTile?layer=(叶子id码)&tileMatrix={z}&tileCol={x}&tileRow={y}
 //      其中，layer可以直接采用圆括号封闭的整型数值型叶子id码，如上例中的【layer=(叶子id码)】，此种方式比图层名称路由更快更简洁；z为缩放级占位符，x为从左到右的横向图块坐标占位符，y为从上到下的纵向图块坐标占位符
 [
   //每类底图必须采用花括号封闭JSON对象方式声明
@@ -69,6 +71,8 @@
           "minZoom": 0,
           //最大缩放级，默认：18
           "maxZoom": 18,
+          //EPSG投影编号，默认：3857 支持：3857/4326
+          "srid": 3857,
           //透明度，默认：1.0，通常，叠加层可设置为【0～1】之间的数值，而底图的透明度设置为1即可
           "opacity": 0.85,
           //子域（负载均衡）占位符，将用于替换url中对应的占位符，默认：空
@@ -92,6 +96,7 @@
         "options": {
           "minZoom": 0,
           "maxZoom": 18,
+          "srid": 3857,
           "opacity": 1,
           "subdomains": "01234567",
           "boundary": {
@@ -115,6 +120,7 @@
         "options": {
           "minZoom": 0,
           "maxZoom": 18,
+          "srid": 3857,
           "opacity": 0.85,
           "subdomains": "01234567",
           "boundary": {
@@ -130,6 +136,7 @@
         "options": {
           "minZoom": 0,
           "maxZoom": 18,
+          "srid": 3857,
           "opacity": 1,
           "subdomains": "01234567",
           "boundary": {
@@ -152,6 +159,7 @@
         "options": {
           "minZoom": 0,
           "maxZoom": 18,
+          "srid": 3857,
           "opacity": 0.85,
           "subdomains": "01234567",
           "boundary": {
@@ -167,6 +175,7 @@
         "options": {
           "minZoom": 0,
           "maxZoom": 18,
+          "srid": 3857,
           "opacity": 1,
           "subdomains": "01234567",
           "boundary": {
