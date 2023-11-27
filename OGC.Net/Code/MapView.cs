@@ -822,9 +822,8 @@ namespace Geosite
                                             e.Cancel = true;
                                             return;
                                         }
-
+                                        _backgroundWorker.ReportProgress(percentProgress: -1, userState: next);
                                         var theCount = count;
-
                                         var tip = $"{theCount} / {numberMatched} features loading ...";
                                         //_backgroundWorker.ReportProgress(
                                         //    percentProgress: -1,
@@ -970,8 +969,10 @@ namespace Geosite
                             if (
                                 typeArray.Contains(value: "11001") && sridMapBox == 4326 ||
                                 typeArray.Contains(value: "11002") && sridMapBox == 3857
-                                )
+                            )
                             {
+                                var url = $"{webApi}getTile?service=wmts&layer=({leaf})&tileMatrix={{z}}&tileCol={{x}}&tileRow={{y}}";
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: url);
                                 //11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]
                                 //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]
                                 count += GeositeXmlView(
@@ -984,7 +985,7 @@ namespace Geosite
                                             new XElement(
                                                 name: "wms",
                                                 content:
-                                                $"{webApi}getTile?service=wmts&layer=({leaf})&tileMatrix={{z}}&tileCol={{x}}&tileRow={{y}}"
+                                                url
                                             ),
                                             _property
                                         }),
