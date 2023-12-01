@@ -1,6 +1,6 @@
 ﻿/******************************************************************************
  *
- * Name: OGC.net
+ * Name: OGC.net - MapView
  * Purpose: A free tool for reading ShapeFile, MapGIS, Excel/TXT/CSV, converting
  *          into GML, GeoJSON, ShapeFile, KML and GeositeXML, and pushing vector
  *          or raster to PostgreSQL database.
