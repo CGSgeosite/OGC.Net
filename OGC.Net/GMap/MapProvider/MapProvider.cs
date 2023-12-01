@@ -2,8 +2,6 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-//GMap.net 默认使用 Web Mercator 投影（EPSG：3857）显示地图瓦片
-
 namespace GMap.NET.MapProviders.GeositeMapProvider
 {
     public class MapProvider : GMapProvider
@@ -40,13 +38,6 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
             };
 
             MaxZoom = 24;
-
-            //Copyright = ""
-            //MinZoom = 1;
-            //MaxZoom = 18;
-            //ServerLetters = ""
-            //Area ==>> RectLatLng
-            //Alpha
         }
 
         static MapProvider()
@@ -91,7 +82,7 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         /// <summary>
         /// 投影方式
         /// </summary>
-        public override PureProjection Projection => Srid == 3857 ? MercatorProjection.Instance : PlateCarreeProjection.Instance; //_srid == 3857 ? MercatorProjection.Instance : PlateCarreeProjection.Instance;
+        public override PureProjection Projection => Srid == 3857 ? MercatorProjection.Instance : PlateCarreeProjection.Instance; 
 
         /// <summary>
         /// 访问地址
@@ -114,18 +105,6 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         private string MakeTileImageUrl(GPoint pos, int zoom)
         {
             var x = pos.X; var y = pos.Y;
-
-            //if (_srid == 4326)
-            //{
-            //    var topLeft = Projection.FromPixelToLatLng(new GPoint(pos.X * _tileSize, pos.Y * _tileSize), zoom);
-            //    var bottomRight = Projection.FromPixelToLatLng(new GPoint((pos.X + 1) * _tileSize, (pos.Y + 1) * _tileSize), zoom);
-            //    var centerLat = (topLeft.Lat + bottomRight.Lat) / 2;
-            //    var centerLng = (topLeft.Lng + bottomRight.Lng) / 2;
-            //    var tile = Map4326.LonLatToTile(centerLng, centerLat, zoom);
-            //    x = tile.x;
-            //    y = tile.y;
-            //}
-
             var index = GetServerNum(pos, Math.Max(ServerLetters?.Length ?? 0, 1));
             var letter = (ServerLetters?.Length > index ? ServerLetters?[index].ToString() : "") ?? "";
             return string.Format(
