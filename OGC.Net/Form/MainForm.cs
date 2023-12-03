@@ -9340,12 +9340,13 @@ namespace Geosite
                     }
                 case "Clear Layer":
                     {
-                        MapView.Features.Markers.Clear();
+                        MapView.Features.Markers.Clear(); 
                         MapView.Features.Routes.Clear();
                         MapView.Features.Polygons.Clear();
                         TopologyCheckerForm.Features.Markers.Clear();
                         TopologyCheckerForm.Features.Routes.Clear();
                         TopologyCheckerForm.Features.Polygons.Clear();
+                        MapBoxProperty.Text = MapBoxStyle.Text = "";
                         GMapProvider.OverlayTiles = new List<GMapProvider>();
                         MapBox.ReloadMap();
                         break;
