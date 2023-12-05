@@ -30,13 +30,13 @@
 using Geosite.FreeText.CSV;
 using Geosite.FreeText.TXT;
 using Geosite.ShapeFileHelper;
-using Geosite.GeositeServer;
 using Geosite.GeositeXML;
 using Geosite.Messager;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Text;
 using System.Xml.Linq;
+using Geosite.GeositeConfuser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using GMap.NET.MapProviders;
@@ -44,6 +44,7 @@ using GMap.NET;
 using GMap.NET.Extend;
 using GMap.NET.WindowsForms;
 using GMap.NET.MapProviders.GeositeMapProvider;
+using WebProxy = Geosite.GeositeServer.WebProxy;
 
 namespace Geosite
 {
@@ -89,6 +90,16 @@ namespace Geosite
         private readonly Pen _polygonStyle;
 
         /// <summary>
+        /// 数据库连接账户名称
+        /// </summary>
+        private string _geositeServerUser;
+
+        /// <summary>
+        /// 数据库连接密码
+        /// </summary>
+        private string _geositeServerPassword;
+
+        /// <summary>
         /// 投影助手
         /// </summary>
         private readonly ProjectionHelper _projectionHelper;
@@ -102,13 +113,18 @@ namespace Geosite
         /// <param name="property">暂支持瓦片服务或瓦片图层的属性</param>
         /// <param name="style">点（flag：0=圆圈 1=方块 2=按钉）线面渲染样式</param>
         /// <param name="projection">投影参照系</param>
+        /// <param name="geositeServerUser">数据库连接账户名称，默认：null</param>
+        /// <param name="geositeServerPassword">数据库连接密码，默认：null</param>
         /// <exception cref="Exception"></exception>
-        public MapView(MainForm mainForm, string path, string type, XElement property, ((Pen pen, int flag) point, Pen line, Pen polygon, Pen mapGrid)? style = null, XContainer projection = null)
+        public MapView(MainForm mainForm, string path, string type, XElement property, ((Pen pen, int flag) point, Pen line, Pen polygon, Pen mapGrid)? style = null, XContainer projection = null,string geositeServerUser = null, string geositeServerPassword = null)
         {
             _mainForm = mainForm;
             _path = path;
             _type = type;
             _property = property;
+
+            _geositeServerUser = geositeServerUser;
+            _geositeServerPassword = geositeServerPassword;
 
             _pointStyle = style?.point ?? (new Pen(color: Color.FromArgb(alpha: 255, red: 13, green: 110, blue: 253), width: 2), 0);
             _lineStyle = style?.line ?? new Pen(color: Color.FromArgb(alpha: 255, red: 0, green: 0, blue: 0), width: 1);
@@ -785,6 +801,14 @@ namespace Geosite
                         input: _path, //path layer leaf
                         pattern: "\b"
                     );
+                    
+                    var token = Cipher.Encrypt($"{_geositeServerUser}\b{_mainForm.ClusterIp}\b9\b\b{_geositeServerPassword ?? ""}");
+                    //0; 用户名    
+                    //1：ip地址列表，空格或逗号分隔
+                    //2：访问级别号，-1～9 或者更大，本次采用：9
+                    //3：截止日期，空=永久有效
+                    //4：密码
+
                     var count = 0L;
                     var webApi = geositeServerArray[0];
                     var layer = geositeServerArray[1];
@@ -793,7 +817,7 @@ namespace Geosite
                         typeArray.Contains(value: "3") || typeArray.Contains(value: "4"))
                     {
                         //WFS服务模板示例：http://localhost:5000/getFeature?service=wfs&resultType=hits&typeNames=a.b&outputFormat=2&count=100
-                        var callPath = $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}";
+                        var callPath = $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}&token={token}";
                         _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
                         var getResponse = new WebProxy().Call(
                             path: callPath,
@@ -931,7 +955,7 @@ namespace Geosite
                         {
                             //10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]
                             //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]
-                            var callPath = $"{webApi}getTile?service=wms&layer={layer}";
+                            var callPath = $"{webApi}getTile?service=wms&layer={layer}&token={token}";
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
                             var getResponse = new WebProxy().Call(
                                 path: callPath,
@@ -971,7 +995,7 @@ namespace Geosite
                                 typeArray.Contains(value: "11002") && sridMapBox == 3857
                             )
                             {
-                                var url = $"{webApi}getTile?service=wmts&layer=({leaf})&tileMatrix={{z}}&tileCol={{x}}&tileRow={{y}}";
+                                var url = $"{webApi}getTile?service=wmts&layer=({leaf})&tileMatrix={{z}}&tileCol={{x}}&tileRow={{y}}&token={token}";
                                 _backgroundWorker.ReportProgress(percentProgress: -1, userState: url);
                                 //11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]
                                 //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]
