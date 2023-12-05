@@ -32,6 +32,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using Geosite.FreeText.CSV;
@@ -50,6 +51,7 @@ using GMap.NET.Extend;
 using Formatting = Newtonsoft.Json.Formatting;
 using Geosite.QuickCopyFile;
 using GMap.NET.MapProviders.GeositeMapProvider;
+using System.Net.Sockets;
 
 namespace Geosite
 {
@@ -68,6 +70,8 @@ namespace Geosite
             int forest,  
             string name  
             ) _clusterUser;
+
+        public string ClusterIp;
 
         private DatabaseGrid _databaseGridObject;
         private CatalogTree _catalogTreeObject;
@@ -1966,8 +1970,8 @@ namespace Geosite
                                             <User>
                                               <Servers>
                                                 <Server>
-                                                  <Host>192.168.0.123</Host>
-                                                  <Version>8.2023.10.30</Version>
+                                                  <Host>10.66.4.10:5432,10.66.4.12:5432</Host>
+                                                  <Version>7.2023.8.30</Version>
                                                   <Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
                                                   <Error></Error>
                                                   <Username>postgres</Username>
@@ -1981,7 +1985,8 @@ namespace Geosite
                                                   <TargetSessionAttributes>any</TargetSessionAttributes>
                                                 </Server>
                                               </Servers>
-                                              <Forest Root="Data" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
+                                              <Forest Root="Data" ClusterIp="" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
+                                              <License></License>
                                             </User>                                         
                                          */
                                         var host = server?.Element(name: "Host")?.Value.Trim(); //允许指定多台主机（逗号分隔，每台均可携带端口号）
@@ -2021,6 +2026,15 @@ namespace Geosite
                                                 if (!bool.TryParse(value: forestX?.Attribute(name: "Administrator")?.Value.Trim() ?? "false", result: out _administrator))
                                                     _administrator = false;
                                                 var rootName = forestX?.Attribute(name: "Root")?.Value ?? "Root";
+
+                                                ClusterIp =
+                                                    forestX?.Attribute(name: "ClusterIp")?.Value ??
+                                                    Dns.GetHostEntry(Dns.GetHostName())
+                                                        .AddressList
+                                                        .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)
+                                                        .MapToIPv4()
+                                                        .ToString();
+
                                                 PostgreSqlHelper.Connection(host, port, username, password, database);
                                                 var databaseStatus = PostgreSqlHelper.Status("forest,tree,branch,leaf");
                                                 switch (databaseStatus.flag)
@@ -3777,7 +3791,7 @@ namespace Geosite
 
         private void DataPool_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            var rowIndex = e.RowIndex;
+            var rowIndex = e.RowIndex; 
             var colIndex = e.ColumnIndex; 
             if (rowIndex >= 0) 
             {
@@ -3817,9 +3831,12 @@ namespace Geosite
                                 mainForm: this,
                                 path: $"{new UriBuilder(GeositeServerUrl.Text.Trim()).Uri}\b{themeInfo[2]}\b{themeInfo[3]}",
                                 type: themeInfo[1],
-                                property: (XElement)themeCell.Tag,
+                                property: (XElement) themeCell.Tag,
                                 style: PreviewStyleForm.Style,
-                                projection: null
+                                projection: null,
+                                geositeServerUser: GeositeServerUser.Text,
+                                geositeServerPassword:
+                                $"{GeositeConfuser.Cryptography.HashEncoder(arg: GeositeServerPassword.Text.Trim())}"
                             ).View();
                         }
                     }
@@ -3914,7 +3931,6 @@ namespace Geosite
                                         options: RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
                                     var id = typeCellArray[0];
                                     DatabaseLogAdd(input: statusText.Text = @"Updating ...");
-                                    Application.DoEvents();
                                     if (PostgreSqlHelper.NonQuery(cmd: "UPDATE tree SET name = @name WHERE id = @id;", parameters: new Dictionary<string, object> { { "name", newValue }, { "id", long.Parse(s: id) } }) == null)
                                     {
                                         col.Value = oldValue;
@@ -3927,7 +3943,6 @@ namespace Geosite
                             else
                             {
                                 DatabaseLogAdd(input: statusText.Text = @"Updating ...");
-                                Application.DoEvents();
                                 var updateCount = PostgreSqlHelper.NonQuery(
                                     cmd: "WITH " +
                                                          "treeId AS " +
@@ -8108,7 +8123,7 @@ namespace Geosite
                                     method: () =>
                                     {
                                         new MapView(
-                                            mainForm: this,
+                                            mainForm: this, 
                                             path: path,
                                             type: type,
                                             property: property,
@@ -9367,7 +9382,7 @@ namespace Geosite
                                 method: () =>
                                 {
                                     FileLoadLogAdd(input: statusText.Text = @"Tiles cache cleaning up ...");
-                                    Application.DoEvents();
+                                    //Application.DoEvents();
                                     MapBox.Manager.PrimaryCache.DeleteOlderThan(date: DateTime.Now, type: null);
                                     FileLoadLogAdd(input: statusText.Text = @"Tiles cache cleaning completed.");
                                 }
@@ -9397,9 +9412,7 @@ namespace Geosite
                         var total = markerCount + routeCount + mapGridCount + polygonCount;
                         if (total > 0)
                         {
-                            FileLoadLogAdd(input: statusText.Text =
-                                @"SaveAs can be implemented using GetFeature / GeositeServer.");
-                            Application.DoEvents();
+                            FileLoadLogAdd(input: statusText.Text = @"SaveAs can be implemented using GetFeature / GeositeServer.");
                             var key = vectorSaveButton.Name;
                             var path = key + "_path";
                             var oldPath = RegEdit.GetKey(key: path);
