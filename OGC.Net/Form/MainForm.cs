@@ -33,7 +33,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using Geosite.FreeText.CSV;
 using Geosite.FreeText.TXT;
@@ -1930,1004 +1929,1275 @@ namespace Geosite
             var serverPassword = GeositeServerPassword.Text.Trim();
             if (!string.IsNullOrWhiteSpace(value: serverUrl))
             {
-                try
-                {
-                    if (new Ping().Send(hostNameOrAddress: new UriBuilder(uri: serverUrl).Host, timeout: 10000) is { Status: IPStatus.Success })
+                new Task(
+                    action: () =>
                     {
-                        new Task(
-                            action: () =>
+                        string errorMessage = null;
+                        _administrator = false;
+                        try
+                        {
+                            Invoke(
+                                method: () =>
+                                {
+                                    _loading.Run();
+                                    DatabaseLogAdd(input: statusText.Text = @"GeositeServer Connecting ...");
+                                    GeositeServerLink.BackgroundImage = Properties.Resources.link;
+                                    dataGridPanel.Enabled =
+                                        CatalogTreeView.Enabled =
+                                            deleteForest.Enabled =
+                                                _clusterUser.status =
+                                                    PostgresRun.Enabled = false;
+                                }
+                            );
+                            var userX = GetClusterUserX(
+                                serverUrl: serverUrl, 
+                                serverUser: serverUser,
+                                serverPassword: serverPassword,
+                                clientVersion: Copyright.VersionAttribute,
+                                timeout: 0
+                            );
+                            if (userX.result != null)
                             {
-                                string errorMessage = null;
-                                _administrator = false;
+                                var server = userX.result.Element(name: "Servers")?.Element(name: "Server");
+                                var geositeServerVersion =
+                                    server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
+                                DatabaseLogAdd(input: $"GeositeServer Version - {geositeServerVersion}");
+                                /*  样例如下：
+                                    <User>
+                                      <Servers>
+                                        <Server>
+                                          <Host>10.66.4.10:5432,10.66.4.12:5432</Host>
+                                          <Version>7.2023.12.1</Version>
+                                          <Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
+                                          <Error></Error>
+                                          <Username>postgres</Username>
+                                          <Password>数据库连接密码</Password>
+                                          <Database Size="4347 MB" Postgresql_Version="15.1 (Debian 15.1-1.pgdg110+1)" Postgis_Version="3.3.2" Pgroonga_Version="2.4.5">geositeserver</Database>
+                                          <Other></Other>
+                                          <CommandTimeout>30</CommandTimeout>
+                                          <Port>5432</Port>
+                                          <Pooling>true</Pooling>
+                                          <LoadBalanceHosts>false</LoadBalanceHosts>
+                                          <TargetSessionAttributes>any</TargetSessionAttributes>
+                                        </Server>
+                                      </Servers>
+                                      <Forest Root="Data" ClusterIp="" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
+                                      <License></License>
+                                    </User>                                         
+                                 */
+                                var host = server?.Element(name: "Host")?.Value.Trim(); //暂不支持多台主机（逗号分隔，每台均可携带端口号）
                                 try
                                 {
-                                    Invoke(
-                                        method: () =>
-                                        {
-                                            _loading.Run();
-                                            DatabaseLogAdd(input: statusText.Text = @"GeositeServer Connecting ...");
-                                            GeositeServerLink.BackgroundImage = Properties.Resources.link;
-                                            dataGridPanel.Enabled =
-                                                CatalogTreeView.Enabled =
-                                                    deleteForest.Enabled =
-                                                        _clusterUser.status =
-                                                            PostgresRun.Enabled = false;
-                                        }
-                                    );
-                                    var userX = GetClusterUserX(
-                                        serverUrl: serverUrl,
-                                        serverUser: serverUser,
-                                        serverPassword: serverPassword,
-                                        clientVersion: Copyright.VersionAttribute,
-                                        timeout: 0
-                                    );
-                                    if (userX.result != null)
+                                    var versionArray = Regex.Split(input: geositeServerVersion, pattern: @"[\.]+");
+                                    var versionMain = long.Parse(s: versionArray[0]) * 1e8;
+                                    var versionYear = long.Parse(s: versionArray[1]) * 1e4;
+                                    var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
+                                    var versionDay = long.Parse(s: versionArray[3]);
+                                    if (versionMain + versionYear + versionMonth + versionDay >= 820231201) // 8.2023.12.1
                                     {
-                                        var server = userX.result.Element(name: "Servers")?.Element(name: "Server");
-                                        var geositeServerVersion = server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
-                                        DatabaseLogAdd(input: $"GeositeServer Version - {geositeServerVersion}");
-                                        /*  样例如下：
-                                            <User>
-                                              <Servers>
-                                                <Server>
-                                                  <Host>10.66.4.10:5432,10.66.4.12:5432</Host>
-                                                  <Version>7.2023.8.30</Version>
-                                                  <Copyright>(C) 2019-2023 Geosite Development Team of CGS (R)</Copyright>
-                                                  <Error></Error>
-                                                  <Username>postgres</Username>
-                                                  <Password>数据库连接密码</Password>
-                                                  <Database Size="4347 MB" Postgresql_Version="15.1 (Debian 15.1-1.pgdg110+1)" Postgis_Version="3.3.2" Pgroonga_Version="2.4.5">geositeserver</Database>
-                                                  <Other></Other>
-                                                  <CommandTimeout>30</CommandTimeout>
-                                                  <Port>5432</Port>
-                                                  <Pooling>true</Pooling>
-                                                  <LoadBalanceHosts>false</LoadBalanceHosts>
-                                                  <TargetSessionAttributes>any</TargetSessionAttributes>
-                                                </Server>
-                                              </Servers>
-                                              <Forest Root="Data" ClusterIp="" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
-                                              <License></License>
-                                            </User>                                         
-                                         */
-                                        var host = server?.Element(name: "Host")?.Value.Trim(); //暂不支持多台主机（逗号分隔，每台均可携带端口号）
-                                        try
-                                        {
-                                            var versionArray = Regex.Split(input: geositeServerVersion, pattern: @"[\.]+");
-                                            var versionMain = long.Parse(s: versionArray[0]) * 1e8;
-                                            var versionYear = long.Parse(s: versionArray[1]) * 1e4;
-                                            var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
-                                            var versionDay = long.Parse(s: versionArray[3]);
-                                            if (versionMain + versionYear + versionMonth + versionDay >= 820231130) // 8.2023.11.30
-                                            {
-                                                if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(), result: out var port))
-                                                    port = 5432;
-                                                var databaseX = server?.Element(name: "Database");
-                                                var database = databaseX?.Value.Trim();
-                                                var postgresqlVersion = databaseX?.Attribute(name: "Postgresql_Version")
-                                                    ?.Value;
-                                                if (!string.IsNullOrWhiteSpace(value: postgresqlVersion))
-                                                    DatabaseLogAdd(input: $"PostgreSQL Version - {postgresqlVersion}");
-                                                var postgisVersion =
-                                                    databaseX?.Attribute(name: "Postgis_Version")?.Value;
-                                                if (!string.IsNullOrWhiteSpace(value: postgisVersion))
-                                                    DatabaseLogAdd(input: $"PostGIS Version - {postgisVersion}");
-                                                var pgroongaVersion = databaseX?.Attribute(name: "Pgroonga_Version")
-                                                    ?.Value;
-                                                if (!string.IsNullOrWhiteSpace(value: pgroongaVersion))
-                                                    DatabaseLogAdd(input: $"PGroonga Version - {pgroongaVersion}");
-                                                var databaseSize = databaseX?.Attribute(name: "Size")?.Value;
-                                                if (!string.IsNullOrWhiteSpace(value: databaseSize))
-                                                    DatabaseLogAdd(input: $"Database Size - {databaseSize}");
-                                                var username = server?.Element(name: "Username")?.Value.Trim();
-                                                var password = server?.Element(name: "Password")?.Value.Trim();
-                                                var forestX = userX.result.Element(name: "Forest");
-                                                if (!int.TryParse(s: forestX?.Value.Trim(), result: out var forest))
-                                                    forest = -1;
-                                                if (!bool.TryParse(value: forestX?.Attribute(name: "Administrator")?.Value.Trim() ?? "false", result: out _administrator))
-                                                    _administrator = false;
-                                                var rootName = forestX?.Attribute(name: "Root")?.Value ?? "Root";
+                                        if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(),
+                                                result: out var port))
+                                            port = 5432;
+                                        var databaseX = server?.Element(name: "Database");
+                                        var database = databaseX?.Value.Trim();
+                                        var postgresqlVersion = databaseX?.Attribute(name: "Postgresql_Version")
+                                            ?.Value;
+                                        if (!string.IsNullOrWhiteSpace(value: postgresqlVersion))
+                                            DatabaseLogAdd(input: $"PostgreSQL Version - {postgresqlVersion}");
+                                        var postgisVersion =
+                                            databaseX?.Attribute(name: "Postgis_Version")?.Value;
+                                        if (!string.IsNullOrWhiteSpace(value: postgisVersion))
+                                            DatabaseLogAdd(input: $"PostGIS Version - {postgisVersion}");
+                                        var pgroongaVersion = databaseX?.Attribute(name: "Pgroonga_Version")
+                                            ?.Value;
+                                        if (!string.IsNullOrWhiteSpace(value: pgroongaVersion))
+                                            DatabaseLogAdd(input: $"PGroonga Version - {pgroongaVersion}");
+                                        var databaseSize = databaseX?.Attribute(name: "Size")?.Value;
+                                        if (!string.IsNullOrWhiteSpace(value: databaseSize))
+                                            DatabaseLogAdd(input: $"Database Size - {databaseSize}");
+                                        var username = server?.Element(name: "Username")?.Value.Trim();
+                                        var password = server?.Element(name: "Password")?.Value.Trim();
+                                        var forestX = userX.result.Element(name: "Forest");
+                                        if (!int.TryParse(s: forestX?.Value.Trim(), result: out var forest))
+                                            forest = -1;
+                                        if (!bool.TryParse(
+                                                value: forestX?.Attribute(name: "Administrator")?.Value.Trim() ??
+                                                       "false", result: out _administrator))
+                                            _administrator = false;
+                                        var rootName = forestX?.Attribute(name: "Root")?.Value ?? "Root";
 
-                                                ClusterIp =
-                                                    forestX?.Attribute(name: "ClusterIp")?.Value ??
-                                                    Dns.GetHostEntry(Dns.GetHostName())
-                                                        .AddressList
-                                                        .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)
-                                                        .MapToIPv4()
-                                                        .ToString();
-                                                var postgresqlHost = Regex.Split(host, @"[,\s]+")[0];
-                                                if (new Ping().Send(hostNameOrAddress: postgresqlHost, timeout: 10000) is { Status: IPStatus.Success })
-                                                {
-                                                    PostgreSqlHelper.Connection(postgresqlHost, port, username, password, database);
-                                                    var databaseStatus = PostgreSqlHelper.Status("forest,tree,branch,leaf");
-                                                    switch (databaseStatus.flag)
+                                        ClusterIp =
+                                            forestX?.Attribute(name: "ClusterIp")?.Value ??
+                                            Dns.GetHostEntry(Dns.GetHostName())
+                                                .AddressList
+                                                .FirstOrDefault(
+                                                    ip => ip.AddressFamily == AddressFamily.InterNetwork)
+                                                .MapToIPv4()
+                                                .ToString();
+
+                                        DatabaseLogAdd(input: statusText.Text = @"PostgreSQL Connecting ...");
+
+                                        var postgresqlHost = Regex.Split(host, @"[,\s]+")[0];
+                                        PostgreSqlHelper.Connection(postgresqlHost, port, username, password, database);
+                                        var databaseStatus = PostgreSqlHelper.Status("forest,tree,branch,leaf");
+                                        switch (databaseStatus.flag)
+                                        {
+                                            case 0: //  0：  连接成功[指定的数据库及主表已存在]；
+                                            {
+                                                DatabaseLogAdd(input: statusText.Text = @"PostgreSQL Connection OK.");
+                                                break;
+                                            }
+                                            case 1: //  1：  指定的数据库不存在，可尝试创建数据库；
+                                            case 2: //  2：  数据库同名且未发现任何相关主表，可进一步创建子表；
+                                            {
+                                                _clusterUser.status = false;
+                                                Invoke(
+                                                    method: () =>
                                                     {
-                                                        case 0: //  0：  连接成功[指定的数据库及主表已存在]；
-                                                            break;
-                                                        case 1: //  1：  指定的数据库不存在，可尝试创建数据库；
-                                                        case 2: //  2：  数据库同名且未发现任何相关主表，可进一步创建子表；
+                                                        statusProgress.Visible = true;
+                                                        statusProgress.Value = 0;
+                                                    }
+                                                );
+
+                                                if (MessageBox.Show(
+                                                        text:
+                                                        databaseStatus.flag == 1
+                                                            ? $@"The database [{database}] does not yet exist, do you want to create it?"
+                                                            : $"Create many tables in the database [{database}]?",
+                                                        caption: @"Tip",
+                                                        buttons: MessageBoxButtons.YesNo,
+                                                        icon: MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                                                {
+                                                    //---- OGC.net 创建数据库暂不采用多分区方式创建
+                                                    //---- 如果采用多分区，管理员可在GeositeServer站点提供的[Refresh]指令实施
+                                                    if (databaseStatus.flag != 1 ||
+                                                        PostgreSqlHelper.NonQuery(
+                                                            cmd:
+                                                            $"CREATE DATABASE {database} WITH OWNER = {username};",
+                                                            postgres: true,
+                                                            timeout: 0
+                                                        ) != null
+                                                       )
+                                                    {
+                                                        if ((long)PostgreSqlHelper.Scalar(
+                                                                cmd:
+                                                                "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis';",
+                                                                timeout: 0) > 0)
+                                                        {
+                                                            Invoke(
+                                                                method: () =>
+                                                                {
+                                                                    statusProgress.Value = 10;
+                                                                    DatabaseLogAdd(input: statusText.Text =
+                                                                        @"Create or find PostGIS extension ...");
+                                                                }
+                                                            );
+                                                            PostgreSqlHelper.NonQuery(
+                                                                cmd: "CREATE EXTENSION IF NOT EXISTS postgis;",
+                                                                timeout: 0);
+                                                            if ((long)PostgreSqlHelper.Scalar(
+                                                                    cmd:
+                                                                    "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis_raster';") >
+                                                                0)
                                                             {
-                                                                _clusterUser.status = false;
                                                                 Invoke(
                                                                     method: () =>
                                                                     {
-                                                                        statusProgress.Visible = true;
-                                                                        statusProgress.Value = 0;
+                                                                        statusProgress.Value = 16;
+                                                                        DatabaseLogAdd(input: statusText.Text =
+                                                                            @"Create or find postgis_raster extension ...");
                                                                     }
                                                                 );
-
-                                                                if (MessageBox.Show(
-                                                                        text:
-                                                                        databaseStatus.flag == 1
-                                                                            ? $@"The database [{database}] does not yet exist, do you want to create it?"
-                                                                            : $"Create many tables in the database [{database}]?",
-                                                                        caption: @"Tip",
-                                                                        buttons: MessageBoxButtons.YesNo,
-                                                                        icon: MessageBoxIcon.Asterisk) ==
-                                                                    DialogResult.Yes)
+                                                                PostgreSqlHelper.NonQuery(
+                                                                    cmd:
+                                                                    "CREATE EXTENSION IF NOT EXISTS postgis_raster;",
+                                                                    timeout: 0);
+                                                                if ((long)PostgreSqlHelper.Scalar(
+                                                                        cmd:
+                                                                        "SELECT count(*) FROM pg_available_extensions WHERE name = 'intarray';",
+                                                                        timeout: 0) > 0)
                                                                 {
-                                                                    //---- OGC.net 创建数据库暂不采用多分区方式创建
-                                                                    //---- 如果采用多分区，管理员可在GeositeServer站点提供的[Refresh]指令实施
-                                                                    if (databaseStatus.flag != 1 ||
-                                                                        PostgreSqlHelper.NonQuery(
-                                                                            cmd: $"CREATE DATABASE {database} WITH OWNER = {username};",
-                                                                            postgres: true,
-                                                                            timeout: 0
-                                                                        ) != null
-                                                                       )
-                                                                    {
-                                                                        if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis';", timeout: 0) > 0)
+                                                                    Invoke(
+                                                                        method: () =>
                                                                         {
-                                                                            Invoke(
-                                                                                method: () =>
-                                                                                {
-                                                                                    statusProgress.Value = 10;
-                                                                                    DatabaseLogAdd(input: statusText.Text = @"Create or find PostGIS extension ...");
-                                                                                }
-                                                                            );
-                                                                            PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS postgis;", timeout: 0);
-                                                                            if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis_raster';") > 0)
+                                                                            statusProgress.Value = 22;
+                                                                            DatabaseLogAdd(
+                                                                                input: statusText.Text =
+                                                                                    @"Create or find intarray extension ...");
+                                                                        }
+                                                                    );
+                                                                    PostgreSqlHelper.NonQuery(
+                                                                        cmd:
+                                                                        "CREATE EXTENSION IF NOT EXISTS intarray;",
+                                                                        timeout: 0);
+                                                                    if ((long)PostgreSqlHelper.Scalar(
+                                                                            cmd:
+                                                                            "SELECT count(*) FROM pg_available_extensions WHERE name = 'pgroonga';",
+                                                                            timeout: 0) > 0)
+                                                                    {
+                                                                        Invoke(
+                                                                            method: () =>
                                                                             {
+                                                                                statusProgress.Value = 28;
+                                                                                DatabaseLogAdd(
+                                                                                    input: statusText.Text =
+                                                                                        @"Create or find pgroonga extension ...");
+                                                                            }
+                                                                        );
+                                                                        PostgreSqlHelper.NonQuery(
+                                                                            cmd:
+                                                                            "CREATE EXTENSION IF NOT EXISTS pgroonga;",
+                                                                            timeout: 0);
+                                                                        Invoke(
+                                                                            method: () =>
+                                                                            {
+                                                                                statusProgress.Value = 34;
+                                                                                DatabaseLogAdd(
+                                                                                    input: statusText.Text =
+                                                                                        @"Create forest table（forest）...");
+                                                                            }
+                                                                        );
+                                                                        if (PostgreSqlHelper.NonQuery(
+                                                                                cmd: "CREATE TABLE forest " +
+                                                                                "(" +
+                                                                                "id INTEGER, name TEXT, property JSONB, timestamp INTEGER[], status SmallInt DEFAULT 0" +
+                                                                                ",CONSTRAINT forest_pkey PRIMARY KEY (id)" +
+                                                                                ",CONSTRAINT forest_status_constraint CHECK (status >= 0 AND status <= 7)" +
+                                                                                ")" +
+                                                                                //" PARTITION BY HASH (id)"+
+                                                                                ";" +
+                                                                                "COMMENT ON TABLE forest IS '森林表，此表是本系统的第一张表，用于存放节点森林基本信息，每片森林（节点群）将由若干颗文档树（GeositeXml）构成';" +
+                                                                                "COMMENT ON COLUMN forest.id IS '森林序号标识码（通常由注册表[register.xml]中[forest]节的先后顺序决定，亦可通过接口函数赋值），充当主键（唯一性约束）且通常大于等于0，若设为负值，便不参与后续对等，需通过额外工具进行【增删改】操作';" +
+                                                                                "COMMENT ON COLUMN forest.name IS '森林简要名称';" +
+                                                                                "COMMENT ON COLUMN forest.property IS '森林属性描述信息，通常放置图标链接、服务文档等显式定制化信息';" +
+                                                                                "COMMENT ON COLUMN forest.timestamp IS '森林创建时间戳（由[年月日：yyyyMMdd,时分秒：HHmmss]二元整型数组编码构成）';" +
+                                                                                "COMMENT ON COLUMN forest.status IS '森林状态码（介于0～7之间：0=非持久化明数据（参与对等）无值或失败、1=非持久化明数据（参与对等）正常、2=非持久化暗数据（参与对等）失败、3=非持久化 暗数据（参与对等）正常、4=持久化明数据（不参与对等）失败、5=持久化明数据（不参与对等）正常、6=持久化暗数据（不参与对等）失败、7=持久化暗数据（不参与对等）正常）';",
+                                                                                timeout: 0) != null)
+                                                                        {
+                                                                            //status 森林状态码（介于0～7之间）约定如下：
+                                                                            //持久化位 暗数据位 完整性位  |  值：含义
+                                                                            //======== ======== ========  |  ======================================
+                                                                            //0        0        0         |  0=非持久化明数据（参与对等）无值或失败    
+                                                                            //0        0        1         |  1=非持久化明数据（参与对等）正常          
+                                                                            //0        1        0         |  2=非持久化暗数据（参与对等）失败          
+                                                                            //0        1        1         |  3=非持久化 暗数据（参与对等）正常          
+                                                                            //1        0        0         |  4=持久化明数据（不参与对等）失败          
+                                                                            //1        0        1         |  5=持久化明数据（不参与对等）正常          
+                                                                            //1        1        0         |  6=持久化暗数据（不参与对等）失败          
+                                                                            //1        1        1         |  7=持久化暗数据（不参与对等）正常 
+
+                                                                            if (PostgreSqlHelper.NonQuery(
+                                                                                    cmd:
+                                                                                    "CREATE INDEX forest_name ON forest USING BTREE (name);" +
+                                                                                    "CREATE INDEX forest_name_FTS ON forest USING PGROONGA (name);" +
+                                                                                    "CREATE INDEX forest_property ON forest USING GIN (property);" +
+                                                                                    "CREATE INDEX forest_property_FTS ON forest USING PGROONGA (property);" +
+                                                                                    "CREATE INDEX forest_timestamp_yyyymmdd ON forest USING BTREE ((timestamp[1]));" +
+                                                                                    "CREATE INDEX forest_timestamp_hhmmss ON forest USING BTREE ((timestamp[2]));" +
+                                                                                    "CREATE INDEX forest_status ON forest USING BTREE (status);",
+                                                                                    timeout: 0) != null)
+                                                                            {
+                                                                                PostgreSqlHelper.NonQuery(
+                                                                                    cmd:
+                                                                                    "CREATE TABLE forest_relation " +
+                                                                                    "(" +
+                                                                                    "forest INTEGER, action JSONB, detail XML" +
+                                                                                    ",CONSTRAINT forest_relation_pkey PRIMARY KEY (forest)" +
+                                                                                    ",CONSTRAINT forest_relation_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                    ")" +
+                                                                                    //" PARTITION BY HASH (forest)"+
+                                                                                    ";" +
+                                                                                    "COMMENT ON TABLE forest_relation IS '节点森林关系描述表';" +
+                                                                                    "COMMENT ON COLUMN forest_relation.forest IS '节点森林序号标识码';" +
+                                                                                    "COMMENT ON COLUMN forest_relation.action IS '节点森林事务活动容器';" +
+                                                                                    "COMMENT ON COLUMN forest_relation.detail IS '节点森林关系描述容器';",
+                                                                                    timeout: 0);
+
+                                                                                PostgreSqlHelper.NonQuery(
+                                                                                    cmd:
+                                                                                    "CREATE INDEX forest_relation_action_FTS ON forest_relation USING PGROONGA (action);" +
+                                                                                    "CREATE INDEX forest_relation_action ON forest_relation USING GIN (action);",
+                                                                                    timeout: 0);
                                                                                 Invoke(
                                                                                     method: () =>
                                                                                     {
-                                                                                        statusProgress.Value = 16;
-                                                                                        DatabaseLogAdd(input: statusText.Text =
-                                                                                            @"Create or find postgis_raster extension ...");
+                                                                                        statusProgress.Value =
+                                                                                            40;
+                                                                                        DatabaseLogAdd(
+                                                                                            input: statusText
+                                                                                                    .Text =
+                                                                                                @"Create tree table（tree）...");
                                                                                     }
                                                                                 );
-                                                                                PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS postgis_raster;", timeout: 0);
-                                                                                if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'intarray';", timeout: 0) > 0)
+                                                                                if (PostgreSqlHelper.NonQuery(
+                                                                                     cmd:
+                                                                                     "CREATE TABLE tree " +
+                                                                                     "(" +
+                                                                                     "forest INTEGER, sequence INTEGER, id INTEGER, name TEXT, property JSONB, uri TEXT, timestamp INTEGER[], type INTEGER[], status SmallInt DEFAULT 0" +
+                                                                                     ",CONSTRAINT tree_pkey PRIMARY KEY (id)" +
+                                                                                     ",CONSTRAINT tree_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                     ")" +
+                                                                                     //" PARTITION BY HASH (id)"+
+                                                                                     ";" +
+                                                                                     "COMMENT ON TABLE tree IS '树根表，此表是本系统的第二张表，用于存放某片森林（节点群）中的若干颗文档树（GeositeXML）';" +
+                                                                                     "COMMENT ON COLUMN tree.forest IS '文档树所属节点森林标识码';" +
+                                                                                     "COMMENT ON COLUMN tree.sequence IS '文档树在节点森林中排列顺序号（由所在森林内的[GeositeXML]文档编号顺序决定）且大于等于0';" +
+                                                                                     "COMMENT ON COLUMN tree.id IS '文档树标识码（相当于每棵树的树根编号），充当主键（唯一性约束）且大于等于0';" +
+                                                                                     "COMMENT ON COLUMN tree.name IS '文档树根节点简要名称';" +
+                                                                                     "COMMENT ON COLUMN tree.property IS '文档树根节点属性描述信息，通常放置根节点辅助说明信息';" +
+                                                                                     "COMMENT ON COLUMN tree.uri IS '文档树数据来源（存放路径及文件名）';" +
+                                                                                     "COMMENT ON COLUMN tree.timestamp IS '文档树编码印章，采用[节点森林序号,文档树序号,年月日（yyyyMMdd）,时分秒（HHmmss）]四元整型数组编码方式';" +
+                                                                                     "COMMENT ON COLUMN tree.type IS '文档树要素类型码构成的数组（类型码约定：0：非空间数据【默认】、1：Point点、2：Line线、3：Polygon面、4：Image地理贴图、10000：Wms栅格金字塔瓦片服务类型[epsg:0 - 无投影瓦片]、10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]、10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]、11000：Wmts栅格金字塔瓦片类型[epsg:0 - 无投影瓦片]、11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]、11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]、12000：WPS栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]、12001：WPS栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]、12002：WPS栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]）';" +
+                                                                                     "COMMENT ON COLUMN tree.status IS '文档树状态码（介于0～7之间），继承自[forest.status]';",
+                                                                                     timeout: 0) != null)
                                                                                 {
-                                                                                    Invoke(
-                                                                                        method: () =>
-                                                                                        {
-                                                                                            statusProgress.Value = 22;
-                                                                                            DatabaseLogAdd(input: statusText.Text = @"Create or find intarray extension ...");
-                                                                                        }
-                                                                                    );
-                                                                                    PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS intarray;", timeout: 0);
-                                                                                    if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'pgroonga';", timeout: 0) > 0)
+                                                                                    PostgreSqlHelper.NonQuery(
+                                                                                        cmd:
+                                                                                        "CREATE SEQUENCE tree_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
+                                                                                        timeout: 0);
+                                                                                    if (PostgreSqlHelper
+                                                                                         .NonQuery(
+                                                                                             cmd:
+                                                                                             "CREATE INDEX tree_forest_sequence ON tree USING BTREE (forest, sequence);" +
+                                                                                             "CREATE INDEX tree_name ON tree USING BTREE (name);" +
+                                                                                             "CREATE INDEX tree_name_FTS ON tree USING PGROONGA (name);" +
+                                                                                             "CREATE INDEX tree_property ON tree USING GIN (property);" +
+                                                                                             "CREATE INDEX tree_property_FTS ON tree USING PGROONGA (property);" +
+                                                                                             "CREATE INDEX tree_timestamp_forest ON tree USING BTREE ((timestamp[1]));" +
+                                                                                             "CREATE INDEX tree_timestamp_tree ON tree USING BTREE ((timestamp[2]));" +
+                                                                                             "CREATE INDEX tree_timestamp_yyyymmdd ON tree USING BTREE ((timestamp[3]));" +
+                                                                                             "CREATE INDEX tree_timestamp_hhmmss ON tree USING BTREE ((timestamp[4]));" +
+                                                                                             "CREATE INDEX tree_type ON tree USING GIST (type gist__int_ops);" +
+                                                                                             "CREATE INDEX tree_status ON tree USING BTREE (status);",
+                                                                                             timeout: 0) !=
+                                                                                     null)
                                                                                     {
-                                                                                        Invoke(
-                                                                                            method: () =>
-                                                                                            {
-                                                                                                statusProgress.Value = 28;
-                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create or find pgroonga extension ...");
-                                                                                            }
-                                                                                        );
-                                                                                        PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS pgroonga;", timeout: 0);
-                                                                                        Invoke(
-                                                                                            method: () =>
-                                                                                            {
-                                                                                                statusProgress.Value = 34;
-                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create forest table（forest）...");
-                                                                                            }
-                                                                                        );
-                                                                                        if (PostgreSqlHelper.NonQuery(
-                                                                                                cmd: "CREATE TABLE forest " +
+                                                                                        PostgreSqlHelper
+                                                                                            .NonQuery(
+                                                                                                cmd:
+                                                                                                "CREATE TABLE tree_relation " +
                                                                                                 "(" +
-                                                                                                "id INTEGER, name TEXT, property JSONB, timestamp INTEGER[], status SmallInt DEFAULT 0" +
-                                                                                                ",CONSTRAINT forest_pkey PRIMARY KEY (id)" +
-                                                                                                ",CONSTRAINT forest_status_constraint CHECK (status >= 0 AND status <= 7)" +
+                                                                                                "tree INTEGER, action JSONB, detail XML" +
+                                                                                                ",CONSTRAINT tree_relation_pkey PRIMARY KEY (tree)" +
+                                                                                                ",CONSTRAINT tree_relation_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                 ")" +
-                                                                                                //" PARTITION BY HASH (id)"+
+                                                                                                //" PARTITION BY HASH (tree)"+
                                                                                                 ";" +
-                                                                                                "COMMENT ON TABLE forest IS '森林表，此表是本系统的第一张表，用于存放节点森林基本信息，每片森林（节点群）将由若干颗文档树（GeositeXml）构成';" +
-                                                                                                "COMMENT ON COLUMN forest.id IS '森林序号标识码（通常由注册表[register.xml]中[forest]节的先后顺序决定，亦可通过接口函数赋值），充当主键（唯一性约束）且通常大于等于0，若设为负值，便不参与后续对等，需通过额外工具进行【增删改】操作';" +
-                                                                                                "COMMENT ON COLUMN forest.name IS '森林简要名称';" +
-                                                                                                "COMMENT ON COLUMN forest.property IS '森林属性描述信息，通常放置图标链接、服务文档等显式定制化信息';" +
-                                                                                                "COMMENT ON COLUMN forest.timestamp IS '森林创建时间戳（由[年月日：yyyyMMdd,时分秒：HHmmss]二元整型数组编码构成）';" +
-                                                                                                "COMMENT ON COLUMN forest.status IS '森林状态码（介于0～7之间：0=非持久化明数据（参与对等）无值或失败、1=非持久化明数据（参与对等）正常、2=非持久化暗数据（参与对等）失败、3=非持久化 暗数据（参与对等）正常、4=持久化明数据（不参与对等）失败、5=持久化明数据（不参与对等）正常、6=持久化暗数据（不参与对等）失败、7=持久化暗数据（不参与对等）正常）';",
-                                                                                                timeout: 0) != null)
-                                                                                        {
-                                                                                            //status 森林状态码（介于0～7之间）约定如下：
-                                                                                            //持久化位 暗数据位 完整性位  |  值：含义
-                                                                                            //======== ======== ========  |  ======================================
-                                                                                            //0        0        0         |  0=非持久化明数据（参与对等）无值或失败    
-                                                                                            //0        0        1         |  1=非持久化明数据（参与对等）正常          
-                                                                                            //0        1        0         |  2=非持久化暗数据（参与对等）失败          
-                                                                                            //0        1        1         |  3=非持久化 暗数据（参与对等）正常          
-                                                                                            //1        0        0         |  4=持久化明数据（不参与对等）失败          
-                                                                                            //1        0        1         |  5=持久化明数据（不参与对等）正常          
-                                                                                            //1        1        0         |  6=持久化暗数据（不参与对等）失败          
-                                                                                            //1        1        1         |  7=持久化暗数据（不参与对等）正常 
+                                                                                                "COMMENT ON TABLE tree_relation IS '文档树关系描述表';" +
+                                                                                                "COMMENT ON COLUMN tree_relation.tree IS '文档树的标识码';" +
+                                                                                                "COMMENT ON COLUMN tree_relation.action IS '文档树事务活动容器';" +
+                                                                                                "COMMENT ON COLUMN tree_relation.detail IS '文档树关系描述容器';",
+                                                                                                timeout: 0);
 
-                                                                                            if (PostgreSqlHelper.NonQuery(
-                                                                                                 cmd:
-                                                                                                 "CREATE INDEX forest_name ON forest USING BTREE (name);" +
-                                                                                                 "CREATE INDEX forest_name_FTS ON forest USING PGROONGA (name);" +
-                                                                                                 "CREATE INDEX forest_property ON forest USING GIN (property);" +
-                                                                                                 "CREATE INDEX forest_property_FTS ON forest USING PGROONGA (property);" +
-                                                                                                 "CREATE INDEX forest_timestamp_yyyymmdd ON forest USING BTREE ((timestamp[1]));" +
-                                                                                                 "CREATE INDEX forest_timestamp_hhmmss ON forest USING BTREE ((timestamp[2]));" +
-                                                                                                 "CREATE INDEX forest_status ON forest USING BTREE (status);",
-                                                                                                 timeout: 0) != null)
+                                                                                        PostgreSqlHelper
+                                                                                            .NonQuery(
+                                                                                                cmd:
+                                                                                                "CREATE INDEX tree_relation_action_FTS ON tree_relation USING PGROONGA (action);" +
+                                                                                                "CREATE INDEX tree_relation_action ON tree_relation USING GIN (action);",
+                                                                                                timeout: 0);
+                                                                                        Invoke(
+                                                                                            method: () =>
                                                                                             {
-                                                                                                PostgreSqlHelper.NonQuery(
+                                                                                                statusProgress
+                                                                                                    .Value = 46;
+                                                                                                DatabaseLogAdd(
+                                                                                                    input:
+                                                                                                    statusText
+                                                                                                            .Text =
+                                                                                                        @"Create branch table（branch）...");
+                                                                                            }
+                                                                                        );
+                                                                                        if (PostgreSqlHelper
+                                                                                             .NonQuery(
+                                                                                                 cmd:
+                                                                                                 "CREATE TABLE branch " +
+                                                                                                 "(" +
+                                                                                                 "tree INTEGER, level SmallInt, name TEXT, property JSONB, id INTEGER, parent INTEGER DEFAULT 0" +
+                                                                                                 ",CONSTRAINT branch_pkey PRIMARY KEY (id)" +
+                                                                                                 ",CONSTRAINT branch_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                 ")" +
+                                                                                                 //" PARTITION BY HASH (id)"+
+                                                                                                 ";" +
+                                                                                                 "COMMENT ON TABLE branch IS '枝干谱系表，此表是本系统第三张表，用于存放某棵树（GeositeXml文档）的枝干体系';" +
+                                                                                                 "COMMENT ON COLUMN branch.tree IS '枝干隶属文档树的标识码';" +
+                                                                                                 "COMMENT ON COLUMN branch.level IS '枝干所处分类级别：1是树干、2是树枝、3是树杈、...、n是树梢';" +
+                                                                                                 "COMMENT ON COLUMN branch.name IS '枝干简要名称';" +
+                                                                                                 "COMMENT ON COLUMN branch.property IS '枝干属性描述信息，通常放置分类别名、分类链接、时间戳等定制化信息';" +
+                                                                                                 "COMMENT ON COLUMN branch.id IS '枝干标识码，充当主键（唯一性约束）';" +
+                                                                                                 "COMMENT ON COLUMN branch.parent IS '枝干的父级标识码（约定树根的标识码为0）';",
+                                                                                                 timeout:
+                                                                                                 0) != null)
+                                                                                        {
+                                                                                            PostgreSqlHelper
+                                                                                                .NonQuery(
                                                                                                     cmd:
-                                                                                                    "CREATE TABLE forest_relation " +
-                                                                                                    "(" +
-                                                                                                    "forest INTEGER, action JSONB, detail XML" +
-                                                                                                    ",CONSTRAINT forest_relation_pkey PRIMARY KEY (forest)" +
-                                                                                                    ",CONSTRAINT forest_relation_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                    ")" +
-                                                                                                    //" PARTITION BY HASH (forest)"+
-                                                                                                    ";" +
-                                                                                                    "COMMENT ON TABLE forest_relation IS '节点森林关系描述表';" +
-                                                                                                    "COMMENT ON COLUMN forest_relation.forest IS '节点森林序号标识码';" +
-                                                                                                    "COMMENT ON COLUMN forest_relation.action IS '节点森林事务活动容器';" +
-                                                                                                    "COMMENT ON COLUMN forest_relation.detail IS '节点森林关系描述容器';",
+                                                                                                    "CREATE SEQUENCE branch_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
                                                                                                     timeout: 0);
+                                                                                            if (PostgreSqlHelper
+                                                                                                 .NonQuery(
+                                                                                                     cmd:
+                                                                                                     "CREATE INDEX branch_tree ON branch USING BTREE (tree);" +
+                                                                                                     "CREATE INDEX branch_level_name_parent ON branch USING BTREE (level, name, parent);" +
+                                                                                                     "CREATE INDEX branch_name ON branch USING BTREE (name);" +
+                                                                                                     "CREATE INDEX branch_name_FTS ON branch USING PGROONGA (name);" +
+                                                                                                     "CREATE INDEX branch_property_FTS ON branch USING PGROONGA (property);" +
+                                                                                                     "CREATE INDEX branch_property ON branch USING GIN (property);",
+                                                                                                     timeout
+                                                                                                     : 0) !=
+                                                                                             null)
+                                                                                            {
+                                                                                                PostgreSqlHelper
+                                                                                                    .NonQuery(
+                                                                                                        cmd:
+                                                                                                        "CREATE TABLE branch_relation " +
+                                                                                                        "(" +
+                                                                                                        "branch INTEGER, action JSONB, detail XML" +
+                                                                                                        ",CONSTRAINT branch_relation_pkey PRIMARY KEY (branch)" +
+                                                                                                        ",CONSTRAINT branch_relation_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                        ")" +
+                                                                                                        //" PARTITION BY HASH (branch)"+
+                                                                                                        ";" +
+                                                                                                        "COMMENT ON TABLE branch_relation IS '枝干关系描述表';" +
+                                                                                                        "COMMENT ON COLUMN branch_relation.branch IS '枝干标识码';" +
+                                                                                                        "COMMENT ON COLUMN branch_relation.action IS '枝干事务活动容器';" +
+                                                                                                        "COMMENT ON COLUMN branch_relation.detail IS '枝干关系描述容器';",
+                                                                                                        timeout:
+                                                                                                        0);
 
-                                                                                                PostgreSqlHelper.NonQuery(
-                                                                                                    cmd:
-                                                                                                    "CREATE INDEX forest_relation_action_FTS ON forest_relation USING PGROONGA (action);" +
-                                                                                                    "CREATE INDEX forest_relation_action ON forest_relation USING GIN (action);",
-                                                                                                    timeout: 0);
+                                                                                                PostgreSqlHelper
+                                                                                                    .NonQuery(
+                                                                                                        cmd:
+                                                                                                        "CREATE INDEX branch_relation_action_FTS ON branch_relation USING PGROONGA (action);" +
+                                                                                                        "CREATE INDEX branch_relation_action ON branch_relation USING GIN (action);",
+                                                                                                        timeout:
+                                                                                                        0);
                                                                                                 Invoke(
-                                                                                                    method: () =>
+                                                                                                    method:
+                                                                                                    () =>
                                                                                                     {
-                                                                                                        statusProgress.Value = 40;
-                                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create tree table（tree）...");
+                                                                                                        statusProgress
+                                                                                                                .Value =
+                                                                                                            52;
+                                                                                                        DatabaseLogAdd(
+                                                                                                            input
+                                                                                                            : statusText
+                                                                                                                    .Text =
+                                                                                                                @"Create leaf table（leaf）...");
                                                                                                     }
                                                                                                 );
-                                                                                                if (PostgreSqlHelper.NonQuery(
-                                                                                                     cmd:
-                                                                                                     "CREATE TABLE tree " +
-                                                                                                     "(" +
-                                                                                                     "forest INTEGER, sequence INTEGER, id INTEGER, name TEXT, property JSONB, uri TEXT, timestamp INTEGER[], type INTEGER[], status SmallInt DEFAULT 0" +
-                                                                                                     ",CONSTRAINT tree_pkey PRIMARY KEY (id)" +
-                                                                                                     ",CONSTRAINT tree_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                     ")" +
-                                                                                                     //" PARTITION BY HASH (id)"+
-                                                                                                     ";" +
-                                                                                                     "COMMENT ON TABLE tree IS '树根表，此表是本系统的第二张表，用于存放某片森林（节点群）中的若干颗文档树（GeositeXML）';" +
-                                                                                                     "COMMENT ON COLUMN tree.forest IS '文档树所属节点森林标识码';" +
-                                                                                                     "COMMENT ON COLUMN tree.sequence IS '文档树在节点森林中排列顺序号（由所在森林内的[GeositeXML]文档编号顺序决定）且大于等于0';" +
-                                                                                                     "COMMENT ON COLUMN tree.id IS '文档树标识码（相当于每棵树的树根编号），充当主键（唯一性约束）且大于等于0';" +
-                                                                                                     "COMMENT ON COLUMN tree.name IS '文档树根节点简要名称';" +
-                                                                                                     "COMMENT ON COLUMN tree.property IS '文档树根节点属性描述信息，通常放置根节点辅助说明信息';" +
-                                                                                                     "COMMENT ON COLUMN tree.uri IS '文档树数据来源（存放路径及文件名）';" +
-                                                                                                     "COMMENT ON COLUMN tree.timestamp IS '文档树编码印章，采用[节点森林序号,文档树序号,年月日（yyyyMMdd）,时分秒（HHmmss）]四元整型数组编码方式';" +
-                                                                                                     "COMMENT ON COLUMN tree.type IS '文档树要素类型码构成的数组（类型码约定：0：非空间数据【默认】、1：Point点、2：Line线、3：Polygon面、4：Image地理贴图、10000：Wms栅格金字塔瓦片服务类型[epsg:0 - 无投影瓦片]、10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片]、10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]、11000：Wmts栅格金字塔瓦片类型[epsg:0 - 无投影瓦片]、11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]、11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]、12000：WPS栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]、12001：WPS栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]、12002：WPS栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]）';" +
-                                                                                                     "COMMENT ON COLUMN tree.status IS '文档树状态码（介于0～7之间），继承自[forest.status]';",
-                                                                                                     timeout: 0) != null)
-                                                                                                {
-                                                                                                    PostgreSqlHelper.NonQuery(
-                                                                                                        cmd:
-                                                                                                        "CREATE SEQUENCE tree_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
-                                                                                                        timeout: 0);
-                                                                                                    if (PostgreSqlHelper.NonQuery(
-                                                                                                             cmd:
-                                                                                                             "CREATE INDEX tree_forest_sequence ON tree USING BTREE (forest, sequence);" +
-                                                                                                             "CREATE INDEX tree_name ON tree USING BTREE (name);" +
-                                                                                                             "CREATE INDEX tree_name_FTS ON tree USING PGROONGA (name);" +
-                                                                                                             "CREATE INDEX tree_property ON tree USING GIN (property);" +
-                                                                                                             "CREATE INDEX tree_property_FTS ON tree USING PGROONGA (property);" +
-                                                                                                             "CREATE INDEX tree_timestamp_forest ON tree USING BTREE ((timestamp[1]));" +
-                                                                                                             "CREATE INDEX tree_timestamp_tree ON tree USING BTREE ((timestamp[2]));" +
-                                                                                                             "CREATE INDEX tree_timestamp_yyyymmdd ON tree USING BTREE ((timestamp[3]));" +
-                                                                                                             "CREATE INDEX tree_timestamp_hhmmss ON tree USING BTREE ((timestamp[4]));" +
-                                                                                                             "CREATE INDEX tree_type ON tree USING GIST (type gist__int_ops);" +
-                                                                                                             "CREATE INDEX tree_status ON tree USING BTREE (status);",
-                                                                                                             timeout: 0) !=
+                                                                                                if
+                                                                                                    (PostgreSqlHelper
+                                                                                                         .NonQuery(
+                                                                                                             cmd
+                                                                                                             : "CREATE TABLE leaf " +
+                                                                                                             "(" +
+                                                                                                             "branch INTEGER, id BigInt, rank SmallInt DEFAULT -1, type INT DEFAULT 0, name TEXT, property INTEGER, timestamp INT[], frequency BigInt DEFAULT 0" +
+                                                                                                             ",CONSTRAINT leaf_pkey PRIMARY KEY (id)" +
+                                                                                                             ",CONSTRAINT leaf_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                             ")" +
+                                                                                                             //" PARTITION BY HASH (id)"+
+                                                                                                             ";" +
+                                                                                                             "COMMENT ON TABLE leaf IS '叶子表，此表是本系统第四表，用于存放某个树梢挂接的若干叶子（实体要素）的摘要信息';" +
+                                                                                                             "COMMENT ON COLUMN leaf.branch IS '叶子要素隶属树梢（父级枝干）标识码';" +
+                                                                                                             "COMMENT ON COLUMN leaf.id IS '叶子要素标识码，充当主键（唯一性约束）';" +
+                                                                                                             "COMMENT ON COLUMN leaf.rank IS '叶子要素访问级别或权限序号，通常用于充当交互访问层的约束条件（比如：-1=不限制；0～n=逐级提升访问权限）';" +
+                                                                                                             "COMMENT ON COLUMN leaf.type IS '叶子要素类别码（0：非空间数据【默认】、1：Point点、2：Line线、3：Polygon面、4：Image地理贴图、10000：Wmts栅格金字塔瓦片服务类型[epsg:0 - 无投影瓦片]、10001：Wmts瓦片服务类型[epsg:4326 - 地理坐标系瓦片]、10002：Wmts栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]、11000：Tile栅格金字塔瓦片类型[epsg:0 - 无投影瓦片]、11001：Tile栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]、11002：Tile栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]、12000：Tile栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]、12001：Tile栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]、12002：Tile栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]）';" +
+                                                                                                             "COMMENT ON COLUMN leaf.name IS '叶子要素名称';" +
+                                                                                                             "COMMENT ON COLUMN leaf.property IS '叶子要素属性架构哈希值';" +
+                                                                                                             "COMMENT ON COLUMN leaf.timestamp IS '叶子要素创建时间戳（由[年月日：yyyyMMdd,时分秒：HHmmss]二元整型数组编码构成）';" +
+                                                                                                             "COMMENT ON COLUMN leaf.frequency IS '叶子要素访问频度';",
+                                                                                                             timeout
+                                                                                                             : 0) !=
                                                                                                      null)
+                                                                                                {
+                                                                                                    PostgreSqlHelper
+                                                                                                        .NonQuery(
+                                                                                                            cmd:
+                                                                                                            "CREATE SEQUENCE leaf_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;",
+                                                                                                            timeout
+                                                                                                            : 0);
+                                                                                                    if
+                                                                                                        (PostgreSqlHelper
+                                                                                                             .NonQuery(
+                                                                                                                 cmd
+                                                                                                                 :
+                                                                                                                 "CREATE INDEX leaf_branch ON leaf USING BTREE (branch);" +
+                                                                                                                 "CREATE INDEX leaf_rank ON leaf USING BTREE (rank);" +
+                                                                                                                 "CREATE INDEX leaf_type ON leaf USING BTREE (type);" +
+                                                                                                                 "CREATE INDEX leaf_name ON leaf USING BTREE (name);" +
+                                                                                                                 "CREATE INDEX leaf_name_FTS ON leaf USING PGROONGA (name);" +
+                                                                                                                 "CREATE INDEX leaf_property ON leaf USING BTREE (property);" +
+                                                                                                                 "CREATE INDEX leaf_timestamp_yyyymmdd ON leaf USING BTREE ((timestamp[1]));" +
+                                                                                                                 "CREATE INDEX leaf_timestamp_hhmmss ON leaf USING BTREE ((timestamp[2]));" +
+                                                                                                                 "CREATE INDEX leaf_frequency_id ON leaf USING BTREE (frequency ASC NULLS LAST, id ASC NULLS LAST);",
+                                                                                                                 timeout
+                                                                                                                 : 0) !=
+                                                                                                         null)
                                                                                                     {
-                                                                                                        PostgreSqlHelper.NonQuery(
-                                                                                                                cmd:
-                                                                                                                "CREATE TABLE tree_relation " +
+                                                                                                        PostgreSqlHelper
+                                                                                                            .NonQuery(
+                                                                                                                cmd
+                                                                                                                :
+                                                                                                                "CREATE TABLE leaf_relation " +
                                                                                                                 "(" +
-                                                                                                                "tree INTEGER, action JSONB, detail XML" +
-                                                                                                                ",CONSTRAINT tree_relation_pkey PRIMARY KEY (tree)" +
-                                                                                                                ",CONSTRAINT tree_relation_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                "leaf BigInt, action JSONB, detail XML" +
+                                                                                                                ",CONSTRAINT leaf_relation_pkey PRIMARY KEY (leaf)" +
+                                                                                                                ",CONSTRAINT leaf_relation_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                 ")" +
-                                                                                                                //" PARTITION BY HASH (tree)"+
+                                                                                                                //" PARTITION BY HASH (leaf)"+
                                                                                                                 ";" +
-                                                                                                                "COMMENT ON TABLE tree_relation IS '文档树关系描述表';" +
-                                                                                                                "COMMENT ON COLUMN tree_relation.tree IS '文档树的标识码';" +
-                                                                                                                "COMMENT ON COLUMN tree_relation.action IS '文档树事务活动容器';" +
-                                                                                                                "COMMENT ON COLUMN tree_relation.detail IS '文档树关系描述容器';",
-                                                                                                                timeout: 0);
+                                                                                                                "COMMENT ON TABLE leaf_relation IS '叶子关系描述表';" +
+                                                                                                                "COMMENT ON COLUMN leaf_relation.leaf IS '叶子要素标识码';" +
+                                                                                                                "COMMENT ON COLUMN leaf_relation.action IS '叶子事务活动容器';" +
+                                                                                                                "COMMENT ON COLUMN leaf_relation.detail IS '叶子关系描述容器';",
+                                                                                                                timeout
+                                                                                                                : 0);
 
                                                                                                         PostgreSqlHelper
                                                                                                             .NonQuery(
-                                                                                                                cmd:
-                                                                                                                "CREATE INDEX tree_relation_action_FTS ON tree_relation USING PGROONGA (action);" +
-                                                                                                                "CREATE INDEX tree_relation_action ON tree_relation USING GIN (action);",
-                                                                                                                timeout: 0);
+                                                                                                                cmd
+                                                                                                                :
+                                                                                                                "CREATE INDEX leaf_relation_action_FTS ON leaf_relation USING PGROONGA (action);" +
+                                                                                                                "CREATE INDEX leaf_relation_action ON leaf_relation USING GIN (action);",
+                                                                                                                timeout
+                                                                                                                : 0);
                                                                                                         Invoke(
-                                                                                                            method: () =>
+                                                                                                            method
+                                                                                                            :
+                                                                                                            () =>
                                                                                                             {
-                                                                                                                statusProgress.Value = 46;
-                                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create branch table（branch）...");
+                                                                                                                statusProgress
+                                                                                                                        .Value =
+                                                                                                                    58;
+                                                                                                                DatabaseLogAdd(
+                                                                                                                    input
+                                                                                                                    : statusText
+                                                                                                                            .Text =
+                                                                                                                        @"Create leaf table（leaf_description）...");
                                                                                                             }
                                                                                                         );
-                                                                                                        if (PostgreSqlHelper.NonQuery(
-                                                                                                                 cmd:
-                                                                                                                 "CREATE TABLE branch " +
-                                                                                                                 "(" +
-                                                                                                                 "tree INTEGER, level SmallInt, name TEXT, property JSONB, id INTEGER, parent INTEGER DEFAULT 0" +
-                                                                                                                 ",CONSTRAINT branch_pkey PRIMARY KEY (id)" +
-                                                                                                                 ",CONSTRAINT branch_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                 ")" +
-                                                                                                                 //" PARTITION BY HASH (id)"+
-                                                                                                                 ";" +
-                                                                                                                 "COMMENT ON TABLE branch IS '枝干谱系表，此表是本系统第三张表，用于存放某棵树（GeositeXml文档）的枝干体系';" +
-                                                                                                                 "COMMENT ON COLUMN branch.tree IS '枝干隶属文档树的标识码';" +
-                                                                                                                 "COMMENT ON COLUMN branch.level IS '枝干所处分类级别：1是树干、2是树枝、3是树杈、...、n是树梢';" +
-                                                                                                                 "COMMENT ON COLUMN branch.name IS '枝干简要名称';" +
-                                                                                                                 "COMMENT ON COLUMN branch.property IS '枝干属性描述信息，通常放置分类别名、分类链接、时间戳等定制化信息';" +
-                                                                                                                 "COMMENT ON COLUMN branch.id IS '枝干标识码，充当主键（唯一性约束）';" +
-                                                                                                                 "COMMENT ON COLUMN branch.parent IS '枝干的父级标识码（约定树根的标识码为0）';",
-                                                                                                                 timeout: 0) != null)
+                                                                                                        if
+                                                                                                            (PostgreSqlHelper
+                                                                                                                 .NonQuery(
+                                                                                                                     cmd
+                                                                                                                     :
+                                                                                                                     "CREATE TABLE leaf_description " +
+                                                                                                                     "(" +
+                                                                                                                     "leaf bigint, level SmallInt, sequence SmallInt, parent SmallInt, name TEXT, attribute JSONB, flag BOOLEAN DEFAULT false, type SmallInt DEFAULT 0, content Text, numericvalue Numeric" +
+                                                                                                                     ",CONSTRAINT leaf_description_pkey PRIMARY KEY (leaf, level, sequence, parent)" +
+                                                                                                                     ",CONSTRAINT leaf_description_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                     ")" +
+                                                                                                                     //" PARTITION BY HASH (leaf, level, sequence, parent)"+
+                                                                                                                     ";" +
+                                                                                                                     "COMMENT ON TABLE leaf_description IS '叶子要素表（leaf）的属性描述子表';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.leaf IS '叶子要素的标识码';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.level IS '字段（键）的嵌套层级';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.sequence IS '字段（键）的同级序号';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.parent IS '字段所属父级层级的排列序号';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.name IS '字段（键）的名称';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.attribute IS '字段（键）的属性，由若干扁平化键值对（KVP）构成';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.flag IS '字段（键）的逻辑标识（false：此键无值；true：此键有值）';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.type IS '字段（值）的数据类型码，目前支持：-1【分类型字段】、0【string（null）】、1【integer】、2【decimal】、3【hybrid】、4【boolean】';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.content IS '字段（值）的全文内容，以便实施全文检索以及自然语言处理';" +
+                                                                                                                     "COMMENT ON COLUMN leaf_description.numericvalue IS '字段（值）的数值型（1【integer】、2【decimal】、3【hybrid】、4【boolean】）容器，以便支持超大值域聚合计算';",
+                                                                                                                     timeout
+                                                                                                                     : 0) !=
+                                                                                                             null)
                                                                                                         {
-                                                                                                            PostgreSqlHelper.NonQuery(
-                                                                                                                    cmd:
-                                                                                                                    "CREATE SEQUENCE branch_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
-                                                                                                                    timeout: 0);
-                                                                                                            if (PostgreSqlHelper.NonQuery(
-                                                                                                                     cmd:
-                                                                                                                     "CREATE INDEX branch_tree ON branch USING BTREE (tree);" +
-                                                                                                                     "CREATE INDEX branch_level_name_parent ON branch USING BTREE (level, name, parent);" +
-                                                                                                                     "CREATE INDEX branch_name ON branch USING BTREE (name);" +
-                                                                                                                     "CREATE INDEX branch_name_FTS ON branch USING PGROONGA (name);" +
-                                                                                                                     "CREATE INDEX branch_property_FTS ON branch USING PGROONGA (property);" +
-                                                                                                                     "CREATE INDEX branch_property ON branch USING GIN (property);",
-                                                                                                                     timeout: 0) != null)
+                                                                                                            if
+                                                                                                                (PostgreSqlHelper
+                                                                                                                     .NonQuery(
+                                                                                                                         cmd
+                                                                                                                         : "CREATE INDEX leaf_description_name ON leaf_description USING BTREE (name);" +
+                                                                                                                         "CREATE INDEX leaf_description_name_FTS ON leaf_description USING PGROONGA (name);" +
+                                                                                                                         "CREATE INDEX leaf_description_flag ON leaf_description USING BTREE (flag);" +
+                                                                                                                         "CREATE INDEX leaf_description_type ON leaf_description USING BTREE (type);" +
+                                                                                                                         "CREATE INDEX leaf_description_content ON leaf_description USING PGROONGA (content);" +
+                                                                                                                         "CREATE INDEX leaf_description_numericvalue ON leaf_description USING BTREE (numericvalue);",
+                                                                                                                         timeout
+                                                                                                                         : 0) !=
+                                                                                                                 null)
                                                                                                             {
-                                                                                                                PostgreSqlHelper.NonQuery(
-                                                                                                                        cmd:
-                                                                                                                        "CREATE TABLE branch_relation " +
-                                                                                                                        "(" +
-                                                                                                                        "branch INTEGER, action JSONB, detail XML" +
-                                                                                                                        ",CONSTRAINT branch_relation_pkey PRIMARY KEY (branch)" +
-                                                                                                                        ",CONSTRAINT branch_relation_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                        ")" +
-                                                                                                                        //" PARTITION BY HASH (branch)"+
-                                                                                                                        ";" +
-                                                                                                                        "COMMENT ON TABLE branch_relation IS '枝干关系描述表';" +
-                                                                                                                        "COMMENT ON COLUMN branch_relation.branch IS '枝干标识码';" +
-                                                                                                                        "COMMENT ON COLUMN branch_relation.action IS '枝干事务活动容器';" +
-                                                                                                                        "COMMENT ON COLUMN branch_relation.detail IS '枝干关系描述容器';",
-                                                                                                                        timeout: 0);
-
-                                                                                                                PostgreSqlHelper.NonQuery(cmd:
-                                                                                                                        "CREATE INDEX branch_relation_action_FTS ON branch_relation USING PGROONGA (action);" +
-                                                                                                                        "CREATE INDEX branch_relation_action ON branch_relation USING GIN (action);",
-                                                                                                                        timeout: 0);
                                                                                                                 Invoke(
-                                                                                                                    method:
+                                                                                                                    method
+                                                                                                                    :
                                                                                                                     () =>
                                                                                                                     {
-                                                                                                                        statusProgress.Value = 52;
-                                                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf）...");
+                                                                                                                        statusProgress
+                                                                                                                                .Value =
+                                                                                                                            64;
+                                                                                                                        DatabaseLogAdd(
+                                                                                                                            input
+                                                                                                                            : statusText
+                                                                                                                                    .Text =
+                                                                                                                                @"Create leaf table（leaf_style）...");
                                                                                                                     }
                                                                                                                 );
-                                                                                                                if (PostgreSqlHelper.NonQuery(
-                                                                                                                             cmd: "CREATE TABLE leaf " +
+                                                                                                                if
+                                                                                                                    (PostgreSqlHelper
+                                                                                                                         .NonQuery(
+                                                                                                                             cmd
+                                                                                                                             : "CREATE TABLE leaf_style " +
                                                                                                                              "(" +
-                                                                                                                             "branch INTEGER, id BigInt, rank SmallInt DEFAULT -1, type INT DEFAULT 0, name TEXT, property INTEGER, timestamp INT[], frequency BigInt DEFAULT 0" +
-                                                                                                                             ",CONSTRAINT leaf_pkey PRIMARY KEY (id)" +
-                                                                                                                             ",CONSTRAINT leaf_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                             "leaf BigInt, style JSONB" +
+                                                                                                                             ",CONSTRAINT leaf_style_pkey PRIMARY KEY (leaf)" +
+                                                                                                                             ",CONSTRAINT leaf_style_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                              ")" +
-                                                                                                                             //" PARTITION BY HASH (id)"+
+                                                                                                                             //" PARTITION BY HASH (leaf)"+
                                                                                                                              ";" +
-                                                                                                                             "COMMENT ON TABLE leaf IS '叶子表，此表是本系统第四表，用于存放某个树梢挂接的若干叶子（实体要素）的摘要信息';" +
-                                                                                                                             "COMMENT ON COLUMN leaf.branch IS '叶子要素隶属树梢（父级枝干）标识码';" +
-                                                                                                                             "COMMENT ON COLUMN leaf.id IS '叶子要素标识码，充当主键（唯一性约束）';" +
-                                                                                                                             "COMMENT ON COLUMN leaf.rank IS '叶子要素访问级别或权限序号，通常用于充当交互访问层的约束条件（比如：-1=不限制；0～n=逐级提升访问权限）';" +
-                                                                                                                             "COMMENT ON COLUMN leaf.type IS '叶子要素类别码（0：非空间数据【默认】、1：Point点、2：Line线、3：Polygon面、4：Image地理贴图、10000：Wmts栅格金字塔瓦片服务类型[epsg:0 - 无投影瓦片]、10001：Wmts瓦片服务类型[epsg:4326 - 地理坐标系瓦片]、10002：Wmts栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]、11000：Tile栅格金字塔瓦片类型[epsg:0 - 无投影瓦片]、11001：Tile栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]、11002：Tile栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片]、12000：Tile栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]、12001：Tile栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]、12002：Tile栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]）';" +
-                                                                                                                             "COMMENT ON COLUMN leaf.name IS '叶子要素名称';" +
-                                                                                                                             "COMMENT ON COLUMN leaf.property IS '叶子要素属性架构哈希值';" +
-                                                                                                                             "COMMENT ON COLUMN leaf.timestamp IS '叶子要素创建时间戳（由[年月日：yyyyMMdd,时分秒：HHmmss]二元整型数组编码构成）';" +
-                                                                                                                             "COMMENT ON COLUMN leaf.frequency IS '叶子要素访问频度';",
-                                                                                                                             timeout: 0) != null)
+                                                                                                                             "COMMENT ON TABLE leaf_style IS '叶子要素表（leaf）的样式子表';" +
+                                                                                                                             "COMMENT ON COLUMN leaf_style.leaf IS '叶子要素的标识码';" +
+                                                                                                                             "COMMENT ON COLUMN leaf_style.style IS '叶子要素可视化样式信息，由若干键值对（KVP）构成';",
+                                                                                                                             timeout
+                                                                                                                             : 0) !=
+                                                                                                                     null)
                                                                                                                 {
-                                                                                                                    PostgreSqlHelper.NonQuery(cmd: "CREATE SEQUENCE leaf_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;", timeout: 0);
-                                                                                                                    if (PostgreSqlHelper.NonQuery(
-                                                                                                                                 cmd:
-                                                                                                                                 "CREATE INDEX leaf_branch ON leaf USING BTREE (branch);" +
-                                                                                                                                 "CREATE INDEX leaf_rank ON leaf USING BTREE (rank);" +
-                                                                                                                                 "CREATE INDEX leaf_type ON leaf USING BTREE (type);" +
-                                                                                                                                 "CREATE INDEX leaf_name ON leaf USING BTREE (name);" +
-                                                                                                                                 "CREATE INDEX leaf_name_FTS ON leaf USING PGROONGA (name);" +
-                                                                                                                                 "CREATE INDEX leaf_property ON leaf USING BTREE (property);" +
-                                                                                                                                 "CREATE INDEX leaf_timestamp_yyyymmdd ON leaf USING BTREE ((timestamp[1]));" +
-                                                                                                                                 "CREATE INDEX leaf_timestamp_hhmmss ON leaf USING BTREE ((timestamp[2]));" +
-                                                                                                                                 "CREATE INDEX leaf_frequency_id ON leaf USING BTREE (frequency ASC NULLS LAST, id ASC NULLS LAST);",
-                                                                                                                                 timeout: 0) != null)
+                                                                                                                    if
+                                                                                                                        (PostgreSqlHelper
+                                                                                                                             .NonQuery(
+                                                                                                                                 cmd
+                                                                                                                                 : "CREATE INDEX leaf_style_style_FTS ON leaf_style USING PGROONGA (style);" +
+                                                                                                                                 "CREATE INDEX leaf_style_style ON leaf_style USING GIN (style);",
+                                                                                                                                 timeout
+                                                                                                                                 : 0) !=
+                                                                                                                         null)
                                                                                                                     {
-                                                                                                                        PostgreSqlHelper.NonQuery(cmd:
-                                                                                                                                "CREATE TABLE leaf_relation " +
-                                                                                                                                "(" +
-                                                                                                                                "leaf BigInt, action JSONB, detail XML" +
-                                                                                                                                ",CONSTRAINT leaf_relation_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                ",CONSTRAINT leaf_relation_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                ")" +
-                                                                                                                                //" PARTITION BY HASH (leaf)"+
-                                                                                                                                ";" +
-                                                                                                                                "COMMENT ON TABLE leaf_relation IS '叶子关系描述表';" +
-                                                                                                                                "COMMENT ON COLUMN leaf_relation.leaf IS '叶子要素标识码';" +
-                                                                                                                                "COMMENT ON COLUMN leaf_relation.action IS '叶子事务活动容器';" +
-                                                                                                                                "COMMENT ON COLUMN leaf_relation.detail IS '叶子关系描述容器';",
-                                                                                                                                timeout: 0);
-           
-                                                                                                                        PostgreSqlHelper.NonQuery(
-                                                                                                                                cmd:
-                                                                                                                                "CREATE INDEX leaf_relation_action_FTS ON leaf_relation USING PGROONGA (action);" +
-                                                                                                                                "CREATE INDEX leaf_relation_action ON leaf_relation USING GIN (action);",
-                                                                                                                                timeout: 0);
                                                                                                                         Invoke(
-                                                                                                                            method:
-                                                                                                                            () =>
+                                                                                                                            method
+                                                                                                                            : () =>
                                                                                                                             {
-                                                                                                                                statusProgress.Value = 58;
-                                                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_description）...");
+                                                                                                                                statusProgress
+                                                                                                                                        .Value =
+                                                                                                                                    70;
+                                                                                                                                DatabaseLogAdd(
+                                                                                                                                    input
+                                                                                                                                    : statusText
+                                                                                                                                            .Text =
+                                                                                                                                        @"Create leaf table（leaf_geometry）...");
                                                                                                                             }
                                                                                                                         );
-                                                                                                                        if (PostgreSqlHelper.NonQuery(
-                                                                                                                                     cmd:
-                                                                                                                                     "CREATE TABLE leaf_description " +
+                                                                                                                        if
+                                                                                                                            (PostgreSqlHelper
+                                                                                                                                 .NonQuery(
+                                                                                                                                     cmd
+                                                                                                                                     : "CREATE TABLE leaf_geometry " +
                                                                                                                                      "(" +
-                                                                                                                                     "leaf bigint, level SmallInt, sequence SmallInt, parent SmallInt, name TEXT, attribute JSONB, flag BOOLEAN DEFAULT false, type SmallInt DEFAULT 0, content Text, numericvalue Numeric" +
-                                                                                                                                     ",CONSTRAINT leaf_description_pkey PRIMARY KEY (leaf, level, sequence, parent)" +
-                                                                                                                                     ",CONSTRAINT leaf_description_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                     "leaf BigInt, coordinate GEOMETRY, boundary GEOMETRY, centroid GEOMETRY" +
+                                                                                                                                     ",CONSTRAINT leaf_geometry_pkey PRIMARY KEY (leaf)" +
+                                                                                                                                     ",CONSTRAINT leaf_geometry_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                      ")" +
-                                                                                                                                     //" PARTITION BY HASH (leaf, level, sequence, parent)"+
+                                                                                                                                     //" PARTITION BY HASH (leaf)"+
                                                                                                                                      ";" +
-                                                                                                                                     "COMMENT ON TABLE leaf_description IS '叶子要素表（leaf）的属性描述子表';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.leaf IS '叶子要素的标识码';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.level IS '字段（键）的嵌套层级';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.sequence IS '字段（键）的同级序号';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.parent IS '字段所属父级层级的排列序号';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.name IS '字段（键）的名称';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.attribute IS '字段（键）的属性，由若干扁平化键值对（KVP）构成';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.flag IS '字段（键）的逻辑标识（false：此键无值；true：此键有值）';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.type IS '字段（值）的数据类型码，目前支持：-1【分类型字段】、0【string（null）】、1【integer】、2【decimal】、3【hybrid】、4【boolean】';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.content IS '字段（值）的全文内容，以便实施全文检索以及自然语言处理';" +
-                                                                                                                                     "COMMENT ON COLUMN leaf_description.numericvalue IS '字段（值）的数值型（1【integer】、2【decimal】、3【hybrid】、4【boolean】）容器，以便支持超大值域聚合计算';",
-                                                                                                                                     timeout: 0) != null)
+                                                                                                                                     "COMMENT ON TABLE leaf_geometry IS '叶子要素表（leaf）的几何坐标子表';" +
+                                                                                                                                     "COMMENT ON COLUMN leaf_geometry.leaf IS '叶子要素的标识码';" +
+                                                                                                                                     "COMMENT ON COLUMN leaf_geometry.coordinate IS '叶子要素几何坐标（【EPSG:4326】）';" +
+                                                                                                                                     "COMMENT ON COLUMN leaf_geometry.boundary IS '叶子要素几何边框（【EPSG:4326】）';" +
+                                                                                                                                     "COMMENT ON COLUMN leaf_geometry.centroid IS '叶子要素几何内点（通常用于几何瘦身、标注锚点等场景）';",
+                                                                                                                                     timeout
+                                                                                                                                     : 0) !=
+                                                                                                                             null)
                                                                                                                         {
-                                                                                                                            if (PostgreSqlHelper.NonQuery(
-                                                                                                                                         cmd: "CREATE INDEX leaf_description_name ON leaf_description USING BTREE (name);" +
-                                                                                                                                         "CREATE INDEX leaf_description_name_FTS ON leaf_description USING PGROONGA (name);" +
-                                                                                                                                         "CREATE INDEX leaf_description_flag ON leaf_description USING BTREE (flag);" +
-                                                                                                                                         "CREATE INDEX leaf_description_type ON leaf_description USING BTREE (type);" +
-                                                                                                                                         "CREATE INDEX leaf_description_content ON leaf_description USING PGROONGA (content);" +
-                                                                                                                                         "CREATE INDEX leaf_description_numericvalue ON leaf_description USING BTREE (numericvalue);",
-                                                                                                                                         timeout: 0) != null)
+                                                                                                                            if
+                                                                                                                                (PostgreSqlHelper
+                                                                                                                                     .NonQuery(
+                                                                                                                                         cmd
+                                                                                                                                         : "CREATE INDEX leaf_geometry_coordinate ON leaf_geometry USING GIST (coordinate);" +
+                                                                                                                                         "CREATE INDEX leaf_geometry_boundary ON leaf_geometry USING GIST (boundary);" +
+                                                                                                                                         "CREATE INDEX leaf_geometry_centroid ON leaf_geometry USING GIST (centroid);",
+                                                                                                                                         timeout
+                                                                                                                                         : 0) !=
+                                                                                                                                 null)
                                                                                                                             {
                                                                                                                                 Invoke(
-                                                                                                                                    method:
-                                                                                                                                    () =>
+                                                                                                                                    method
+                                                                                                                                    : () =>
                                                                                                                                     {
-                                                                                                                                        statusProgress.Value = 64;
-                                                                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_style）...");
+                                                                                                                                        statusProgress
+                                                                                                                                                .Value =
+                                                                                                                                            76;
+                                                                                                                                        DatabaseLogAdd(
+                                                                                                                                            input
+                                                                                                                                            : statusText
+                                                                                                                                                    .Text =
+                                                                                                                                                @"Create leaf table（leaf_tile）...");
                                                                                                                                     }
                                                                                                                                 );
-                                                                                                                                if (PostgreSqlHelper.NonQuery(
-                                                                                                                                             cmd: "CREATE TABLE leaf_style " +
+                                                                                                                                if
+                                                                                                                                    (PostgreSqlHelper
+                                                                                                                                         .NonQuery(
+                                                                                                                                             cmd
+                                                                                                                                             : "CREATE TABLE leaf_tile " +
                                                                                                                                              "(" +
-                                                                                                                                             "leaf BigInt, style JSONB" +
-                                                                                                                                             ",CONSTRAINT leaf_style_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                             ",CONSTRAINT leaf_style_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                             "leaf BigInt, z INTEGER, x INTEGER, y INTEGER, tile RASTER, boundary geometry" +
+                                                                                                                                             ",CONSTRAINT leaf_tile_pkey PRIMARY KEY (leaf, z, x, y)" +
+                                                                                                                                             ",CONSTRAINT leaf_tile_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                              ")" +
-                                                                                                                                             //" PARTITION BY HASH (leaf)"+
+                                                                                                                                             //" PARTITION BY HASH (leaf, z, x, y)"+
                                                                                                                                              ";" +
-                                                                                                                                             "COMMENT ON TABLE leaf_style IS '叶子要素表（leaf）的样式子表';" +
-                                                                                                                                             "COMMENT ON COLUMN leaf_style.leaf IS '叶子要素的标识码';" +
-                                                                                                                                             "COMMENT ON COLUMN leaf_style.style IS '叶子要素可视化样式信息，由若干键值对（KVP）构成';",
-                                                                                                                                             timeout: 0) != null)
+                                                                                                                                             "COMMENT ON TABLE leaf_tile IS '叶子要素表（leaf）的栅格瓦片子表，支持【四叉树金字塔式瓦片】和【平铺式地图瓦片】两种类型，每类瓦片的元数据信息需在叶子属性子表中的type进行表述';" +
+                                                                                                                                             "COMMENT ON COLUMN leaf_tile.leaf IS '叶子要素的标识码';" +
+                                                                                                                                             "COMMENT ON COLUMN leaf_tile.z IS '叶子瓦片缩放级（注：平铺式瓦片类型的z值强制为【-1】，四叉树金字塔式瓦片类型的z值通常介于【0～24】之间）';" +
+                                                                                                                                             "COMMENT ON COLUMN leaf_tile.x IS '叶子瓦片横向坐标编码';" +
+                                                                                                                                             "COMMENT ON COLUMN leaf_tile.y IS '叶子瓦片纵向坐标编码';" +
+                                                                                                                                             "COMMENT ON COLUMN leaf_tile.tile IS '叶子瓦片栅格影像（RASTER类型-WKB格式，目前支持【EPSG:4326】、【EPSG:3857】、【EPSG:0】）';" +
+                                                                                                                                             "COMMENT ON COLUMN leaf_tile.boundary IS '叶子瓦片几何边框（【EPSG:4326】）';",
+                                                                                                                                             timeout
+                                                                                                                                             : 0) !=
+                                                                                                                                     null)
                                                                                                                                 {
-                                                                                                                                    if (PostgreSqlHelper.NonQuery(
-                                                                                                                                                 cmd: "CREATE INDEX leaf_style_style_FTS ON leaf_style USING PGROONGA (style);" +
-                                                                                                                                                 "CREATE INDEX leaf_style_style ON leaf_style USING GIN (style);",
-                                                                                                                                                 timeout: 0) != null)
+                                                                                                                                    if
+                                                                                                                                        (PostgreSqlHelper
+                                                                                                                                             .NonQuery(
+                                                                                                                                                 cmd
+                                                                                                                                                 : "CREATE INDEX leaf_tile_tile ON leaf_tile USING GIST (st_convexhull(tile));"
+                                                                                                                                                 + "CREATE INDEX leaf_tile_boundary ON leaf_tile USING gist(boundary);"
+                                                                                                                                                 + "CREATE INDEX leaf_tile_leaf_z ON leaf_tile USING btree (leaf ASC NULLS LAST, z DESC NULLS LAST);",
+                                                                                                                                                 timeout
+                                                                                                                                                 : 0) !=
+                                                                                                                                         null)
                                                                                                                                     {
                                                                                                                                         Invoke(
                                                                                                                                             method
                                                                                                                                             : () =>
                                                                                                                                             {
-                                                                                                                                                statusProgress.Value = 70;
-                                                                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_geometry）...");
+                                                                                                                                                statusProgress
+                                                                                                                                                        .Value =
+                                                                                                                                                    82;
+                                                                                                                                                DatabaseLogAdd(
+                                                                                                                                                    input
+                                                                                                                                                    : statusText
+                                                                                                                                                            .Text =
+                                                                                                                                                        @"Create leaf table（leaf_wms）...");
                                                                                                                                             }
                                                                                                                                         );
-                                                                                                                                        if (PostgreSqlHelper.NonQuery(
-                                                                                                                                                     cmd: "CREATE TABLE leaf_geometry " +
+                                                                                                                                        if
+                                                                                                                                            (PostgreSqlHelper
+                                                                                                                                                 .NonQuery(
+                                                                                                                                                     cmd
+                                                                                                                                                     : "CREATE TABLE leaf_wms " +
                                                                                                                                                      "(" +
-                                                                                                                                                     "leaf BigInt, coordinate GEOMETRY, boundary GEOMETRY, centroid GEOMETRY" +
-                                                                                                                                                     ",CONSTRAINT leaf_geometry_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                                     ",CONSTRAINT leaf_geometry_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                                     "leaf BigInt, wms TEXT, boundary geometry" +
+                                                                                                                                                     ",CONSTRAINT leaf_wms_pkey PRIMARY KEY (leaf)" +
+                                                                                                                                                     ",CONSTRAINT leaf_wms_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                                      ")" +
                                                                                                                                                      //" PARTITION BY HASH (leaf)"+
                                                                                                                                                      ";" +
-                                                                                                                                                     "COMMENT ON TABLE leaf_geometry IS '叶子要素表（leaf）的几何坐标子表';" +
-                                                                                                                                                     "COMMENT ON COLUMN leaf_geometry.leaf IS '叶子要素的标识码';" +
-                                                                                                                                                     "COMMENT ON COLUMN leaf_geometry.coordinate IS '叶子要素几何坐标（【EPSG:4326】）';" +
-                                                                                                                                                     "COMMENT ON COLUMN leaf_geometry.boundary IS '叶子要素几何边框（【EPSG:4326】）';" +
-                                                                                                                                                     "COMMENT ON COLUMN leaf_geometry.centroid IS '叶子要素几何内点（通常用于几何瘦身、标注锚点等场景）';",
-                                                                                                                                                     timeout: 0) != null)
+                                                                                                                                                     "COMMENT ON TABLE leaf_wms IS '叶子要素表（leaf）的瓦片服务子表，元数据信息需在叶子属性表中的type中进行表述';" +
+                                                                                                                                                     "COMMENT ON COLUMN leaf_wms.leaf IS '叶子要素的标识码';" +
+                                                                                                                                                     "COMMENT ON COLUMN leaf_wms.wms IS '叶子要素服务地址模板，暂支持【OGC】、【BingMap】、【DeepZoom】和【ESRI】瓦片编码类型';" +
+                                                                                                                                                     "COMMENT ON COLUMN leaf_wms.boundary IS '叶子要素几何边框（EPSG:4326）';",
+                                                                                                                                                     timeout
+                                                                                                                                                     : 0) !=
+                                                                                                                                             null)
                                                                                                                                         {
-                                                                                                                                            if (PostgreSqlHelper.NonQuery(
-                                                                                                                                                         cmd: "CREATE INDEX leaf_geometry_coordinate ON leaf_geometry USING GIST (coordinate);" +
-                                                                                                                                                         "CREATE INDEX leaf_geometry_boundary ON leaf_geometry USING GIST (boundary);" +
-                                                                                                                                                         "CREATE INDEX leaf_geometry_centroid ON leaf_geometry USING GIST (centroid);",
-                                                                                                                                                         timeout: 0) != null)
+                                                                                                                                            if
+                                                                                                                                                (PostgreSqlHelper
+                                                                                                                                                     .NonQuery(
+                                                                                                                                                         cmd
+                                                                                                                                                         : "CREATE INDEX leaf_wms_boundary ON leaf_wms USING gist(boundary);",
+                                                                                                                                                         timeout
+                                                                                                                                                         : 0) !=
+                                                                                                                                                 null)
                                                                                                                                             {
                                                                                                                                                 Invoke(
-                                                                                                                                                    method: () =>
+                                                                                                                                                    method
+                                                                                                                                                    : () =>
                                                                                                                                                     {
-                                                                                                                                                        statusProgress.Value = 76;
-                                                                                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_tile）...");
+                                                                                                                                                        statusProgress
+                                                                                                                                                                .Value =
+                                                                                                                                                            88;
+                                                                                                                                                        DatabaseLogAdd(
+                                                                                                                                                            input
+                                                                                                                                                            : statusText
+                                                                                                                                                                    .Text =
+                                                                                                                                                                @"Create leaf table（leaf_hits）...");
                                                                                                                                                     }
                                                                                                                                                 );
-                                                                                                                                                if (PostgreSqlHelper.NonQuery(
-                                                                                                                                                             cmd: "CREATE TABLE leaf_tile " +
+                                                                                                                                                if
+                                                                                                                                                    (PostgreSqlHelper
+                                                                                                                                                         .NonQuery(
+                                                                                                                                                             cmd
+                                                                                                                                                             : "CREATE TABLE leaf_hits " +
                                                                                                                                                              "(" +
-                                                                                                                                                             "leaf BigInt, z INTEGER, x INTEGER, y INTEGER, tile RASTER, boundary geometry" +
-                                                                                                                                                             ",CONSTRAINT leaf_tile_pkey PRIMARY KEY (leaf, z, x, y)" +
-                                                                                                                                                             ",CONSTRAINT leaf_tile_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                                             "leaf BigInt, hits BigInt DEFAULT 0" +
+                                                                                                                                                             ",CONSTRAINT leaf_hits_pkey PRIMARY KEY (leaf)" +
+                                                                                                                                                             ",CONSTRAINT leaf_hits_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                                              ")" +
-                                                                                                                                                             //" PARTITION BY HASH (leaf, z, x, y)"+
+                                                                                                                                                             //" PARTITION BY HASH (leaf)"+
                                                                                                                                                              ";" +
-                                                                                                                                                             "COMMENT ON TABLE leaf_tile IS '叶子要素表（leaf）的栅格瓦片子表，支持【四叉树金字塔式瓦片】和【平铺式地图瓦片】两种类型，每类瓦片的元数据信息需在叶子属性子表中的type进行表述';" +
-                                                                                                                                                             "COMMENT ON COLUMN leaf_tile.leaf IS '叶子要素的标识码';" +
-                                                                                                                                                             "COMMENT ON COLUMN leaf_tile.z IS '叶子瓦片缩放级（注：平铺式瓦片类型的z值强制为【-1】，四叉树金字塔式瓦片类型的z值通常介于【0～24】之间）';" +
-                                                                                                                                                             "COMMENT ON COLUMN leaf_tile.x IS '叶子瓦片横向坐标编码';" +
-                                                                                                                                                             "COMMENT ON COLUMN leaf_tile.y IS '叶子瓦片纵向坐标编码';" +
-                                                                                                                                                             "COMMENT ON COLUMN leaf_tile.tile IS '叶子瓦片栅格影像（RASTER类型-WKB格式，目前支持【EPSG:4326】、【EPSG:3857】、【EPSG:0】）';" +
-                                                                                                                                                             "COMMENT ON COLUMN leaf_tile.boundary IS '叶子瓦片几何边框（【EPSG:4326】）';",
-                                                                                                                                                             timeout: 0) != null)
+                                                                                                                                                             "COMMENT ON TABLE leaf_hits IS '叶子要素表（leaf）的搜索命中率子表';" +
+                                                                                                                                                             "COMMENT ON COLUMN leaf_hits.leaf IS '叶子要素的标识码';" +
+                                                                                                                                                             "COMMENT ON COLUMN leaf_hits.hits IS '叶子要素的命中次数';",
+                                                                                                                                                             timeout
+                                                                                                                                                             : 0) !=
+                                                                                                                                                     null)
                                                                                                                                                 {
-                                                                                                                                                    if (PostgreSqlHelper.NonQuery(
-                                                                                                                                                                 cmd: "CREATE INDEX leaf_tile_tile ON leaf_tile USING GIST (st_convexhull(tile));"
-                                                                                                                                                                 + "CREATE INDEX leaf_tile_boundary ON leaf_tile USING gist(boundary);"
-                                                                                                                                                                 + "CREATE INDEX leaf_tile_leaf_z ON leaf_tile USING btree (leaf ASC NULLS LAST, z DESC NULLS LAST);",
-                                                                                                                                                                 timeout: 0) != null)
-                                                                                                                                                    {
-                                                                                                                                                        Invoke(
-                                                                                                                                                            method: () =>
-                                                                                                                                                            {
-                                                                                                                                                                statusProgress.Value = 82;
-                                                                                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_wms）...");
-                                                                                                                                                            }
-                                                                                                                                                        );
-                                                                                                                                                        if (PostgreSqlHelper.NonQuery(
-                                                                                                                                                                     cmd: "CREATE TABLE leaf_wms " +
-                                                                                                                                                                     "(" +
-                                                                                                                                                                     "leaf BigInt, wms TEXT, boundary geometry" +
-                                                                                                                                                                     ",CONSTRAINT leaf_wms_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                                                     ",CONSTRAINT leaf_wms_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                                                     ")" +
-                                                                                                                                                                     //" PARTITION BY HASH (leaf)"+
-                                                                                                                                                                     ";" +
-                                                                                                                                                                     "COMMENT ON TABLE leaf_wms IS '叶子要素表（leaf）的瓦片服务子表，元数据信息需在叶子属性表中的type中进行表述';" +
-                                                                                                                                                                     "COMMENT ON COLUMN leaf_wms.leaf IS '叶子要素的标识码';" +
-                                                                                                                                                                     "COMMENT ON COLUMN leaf_wms.wms IS '叶子要素服务地址模板，暂支持【OGC】、【BingMap】、【DeepZoom】和【ESRI】瓦片编码类型';" +
-                                                                                                                                                                     "COMMENT ON COLUMN leaf_wms.boundary IS '叶子要素几何边框（EPSG:4326）';",
-                                                                                                                                                                     timeout: 0) != null)
+                                                                                                                                                    Invoke(
+                                                                                                                                                        method
+                                                                                                                                                        : () =>
                                                                                                                                                         {
-                                                                                                                                                            if (PostgreSqlHelper.NonQuery(cmd: "CREATE INDEX leaf_wms_boundary ON leaf_wms USING gist(boundary);", timeout: 0) != null)
-                                                                                                                                                            {
-                                                                                                                                                                Invoke(
-                                                                                                                                                                    method: () =>
-                                                                                                                                                                    {
-                                                                                                                                                                        statusProgress.Value = 88;
-                                                                                                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_hits）...");
-                                                                                                                                                                    }
-                                                                                                                                                                );
-                                                                                                                                                                if (PostgreSqlHelper
-                                                                                                                                                                         .NonQuery(
-                                                                                                                                                                             cmd: "CREATE TABLE leaf_hits " +
-                                                                                                                                                                             "(" +
-                                                                                                                                                                             "leaf BigInt, hits BigInt DEFAULT 0" +
-                                                                                                                                                                             ",CONSTRAINT leaf_hits_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                                                             ",CONSTRAINT leaf_hits_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                                                             ")" +
-                                                                                                                                                                             //" PARTITION BY HASH (leaf)"+
-                                                                                                                                                                             ";" +
-                                                                                                                                                                             "COMMENT ON TABLE leaf_hits IS '叶子要素表（leaf）的搜索命中率子表';" +
-                                                                                                                                                                             "COMMENT ON COLUMN leaf_hits.leaf IS '叶子要素的标识码';" +
-                                                                                                                                                                             "COMMENT ON COLUMN leaf_hits.hits IS '叶子要素的命中次数';",
-                                                                                                                                                                             timeout: 0) != null)
+                                                                                                                                                            statusProgress
+                                                                                                                                                                    .Value =
+                                                                                                                                                                94;
+                                                                                                                                                            DatabaseLogAdd(
+                                                                                                                                                                input
+                                                                                                                                                                : statusText
+                                                                                                                                                                        .Text =
+                                                                                                                                                                    @"Create the temporal sub table of leaf table（leaf_temporal）...");
+                                                                                                                                                        }
+                                                                                                                                                    );
+                                                                                                                                                    if
+                                                                                                                                                        (PostgreSqlHelper
+                                                                                                                                                             .NonQuery(
+                                                                                                                                                                 cmd
+                                                                                                                                                                 : "CREATE TABLE leaf_temporal " +
+                                                                                                                                                                 "(" +
+                                                                                                                                                                 "leaf BigInt, birth BigInt[], death BigInt[]" +
+                                                                                                                                                                 ",CONSTRAINT leaf_temporal_pkey PRIMARY KEY (leaf)" +
+                                                                                                                                                                 ",CONSTRAINT leaf_temporal_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                                                 ")" +
+                                                                                                                                                                 //" PARTITION BY HASH (leaf)"+
+                                                                                                                                                                 ";" +
+                                                                                                                                                                 "COMMENT ON TABLE leaf_temporal IS '叶子要素表（leaf）的现世（生命期）子表';" +
+                                                                                                                                                                 "COMMENT ON COLUMN leaf_temporal.leaf IS '叶子要素的标识码';" +
+                                                                                                                                                                 "COMMENT ON COLUMN leaf_temporal.birth IS '叶子要素生命期的起始时间（由【年月日、时分秒】两个整型数据成员构成）';" +
+                                                                                                                                                                 "COMMENT ON COLUMN leaf_temporal.death IS '叶子要素生命期的结束时间（由【年月日、时分秒】两个整型数据成员构成）';",
+                                                                                                                                                                 timeout
+                                                                                                                                                                 : 0) !=
+                                                                                                                                                         null)
+                                                                                                                                                    {
+                                                                                                                                                        if
+                                                                                                                                                            (PostgreSqlHelper
+                                                                                                                                                                 .NonQuery(
+                                                                                                                                                                     cmd
+                                                                                                                                                                     : "CREATE INDEX leaf_temporal_birth_yearmmdd ON leaf_temporal USING BTREE ((birth[1]));" +
+                                                                                                                                                                     "CREATE INDEX leaf_temporal_birth_hhmmss ON leaf_temporal USING BTREE ((birth[2]));" +
+                                                                                                                                                                     "CREATE INDEX leaf_temporal_death_yearmmdd ON leaf_temporal USING BTREE ((death[1]));" +
+                                                                                                                                                                     "CREATE INDEX leaf_temporal_death_hhmmss ON leaf_temporal USING BTREE ((death[2]));",
+                                                                                                                                                                     timeout
+                                                                                                                                                                     : 0) !=
+                                                                                                                                                             null)
+                                                                                                                                                        {
+                                                                                                                                                            Invoke(
+                                                                                                                                                                method
+                                                                                                                                                                : () =>
                                                                                                                                                                 {
-                                                                                                                                                                    Invoke(
-                                                                                                                                                                        method: () =>
-                                                                                                                                                                        {
-                                                                                                                                                                            statusProgress.Value = 94;
-                                                                                                                                                                            DatabaseLogAdd(input: statusText.Text = @"Create the temporal sub table of leaf table（leaf_temporal）...");
-                                                                                                                                                                        }
-                                                                                                                                                                    );
-                                                                                                                                                                    if (PostgreSqlHelper.NonQuery(
-                                                                                                                                                                                 cmd: "CREATE TABLE leaf_temporal " +
-                                                                                                                                                                                 "(" +
-                                                                                                                                                                                 "leaf BigInt, birth BigInt[], death BigInt[]" +
-                                                                                                                                                                                 ",CONSTRAINT leaf_temporal_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                                                                 ",CONSTRAINT leaf_temporal_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
-                                                                                                                                                                                 ")" +
-                                                                                                                                                                                 //" PARTITION BY HASH (leaf)"+
-                                                                                                                                                                                 ";" +
-                                                                                                                                                                                 "COMMENT ON TABLE leaf_temporal IS '叶子要素表（leaf）的现世（生命期）子表';" +
-                                                                                                                                                                                 "COMMENT ON COLUMN leaf_temporal.leaf IS '叶子要素的标识码';" +
-                                                                                                                                                                                 "COMMENT ON COLUMN leaf_temporal.birth IS '叶子要素生命期的起始时间（由【年月日、时分秒】两个整型数据成员构成）';" +
-                                                                                                                                                                                 "COMMENT ON COLUMN leaf_temporal.death IS '叶子要素生命期的结束时间（由【年月日、时分秒】两个整型数据成员构成）';",
-                                                                                                                                                                                 timeout: 0) != null)
-                                                                                                                                                                    {
-                                                                                                                                                                        if (PostgreSqlHelper.NonQuery(
-                                                                                                                                                                                     cmd: "CREATE INDEX leaf_temporal_birth_yearmmdd ON leaf_temporal USING BTREE ((birth[1]));" +
-                                                                                                                                                                                     "CREATE INDEX leaf_temporal_birth_hhmmss ON leaf_temporal USING BTREE ((birth[2]));" +
-                                                                                                                                                                                     "CREATE INDEX leaf_temporal_death_yearmmdd ON leaf_temporal USING BTREE ((death[1]));" +
-                                                                                                                                                                                     "CREATE INDEX leaf_temporal_death_hhmmss ON leaf_temporal USING BTREE ((death[2]));",
-                                                                                                                                                                                     timeout: 0) != null)
-                                                                                                                                                                        {
-                                                                                                                                                                            Invoke(
-                                                                                                                                                                                method: () =>
-                                                                                                                                                                                {
-                                                                                                                                                                                    statusProgress.Value = 100;
-                                                                                                                                                                                    DatabaseLogAdd(input: statusText.Text = @"Create public functions ...");
-                                                                                                                                                                                }
-                                                                                                                                                                            );
-                                                                                                                                                                            int.TryParse(s: $"{PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_proc WHERE proname = 'first_agg' OR proname = 'first';", timeout: 0)}", result: out var firstAggregateExist);
-                                                                                                                                                                            if (firstAggregateExist != 2)
-                                                                                                                                                                                PostgreSqlHelper.NonQuery(
-                                                                                                                                                                                        cmd: "CREATE OR REPLACE FUNCTION public.first_agg (anyelement, anyelement)" +
-                                                                                                                                                                                        "  RETURNS anyelement" +
-                                                                                                                                                                                        "  LANGUAGE sql IMMUTABLE STRICT PARALLEL SAFE AS" +
-                                                                                                                                                                                        "  'SELECT $1';" +
-                                                                                                                                                                                        "  CREATE OR REPLACE AGGREGATE public.first (anyelement) (" +
-                                                                                                                                                                                        "    SFUNC = public.first_agg" +
-                                                                                                                                                                                        "    , STYPE = anyelement" +
-                                                                                                                                                                                        "    , PARALLEL = safe" +
-                                                                                                                                                                                        "    );",
-                                                                                                                                                                                        timeout: 0);
-                                                                                                                                                                            int.TryParse(s: $"{PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_proc WHERE proname = 'last_agg' OR proname = 'last';", timeout: 0)}", result: out var lastAggregateExist);
-                                                                                                                                                                            if (lastAggregateExist != 2)
-                                                                                                                                                                                PostgreSqlHelper.NonQuery(
-                                                                                                                                                                                        cmd: "CREATE OR REPLACE FUNCTION public.last_agg (anyelement, anyelement)" +
-                                                                                                                                                                                        "  RETURNS anyelement" +
-                                                                                                                                                                                        "  LANGUAGE sql IMMUTABLE STRICT PARALLEL SAFE AS" +
-                                                                                                                                                                                        "  'SELECT $2';" +
-                                                                                                                                                                                        "  CREATE OR REPLACE AGGREGATE public.last (anyelement) (" +
-                                                                                                                                                                                        "    SFUNC = public.last_agg" +
-                                                                                                                                                                                        "    , STYPE = anyelement" +
-                                                                                                                                                                                        "    , PARALLEL = safe" +
-                                                                                                                                                                                        "    );",
-                                                                                                                                                                                        timeout: 0);
-                                                                                                                                                                            const string ogcBranches = "ogc_branches";
-                                                                                                                                                                            int.TryParse(
-                                                                                                                                                                                    s:
-                                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: $"SELECT count(*) FROM pg_proc WHERE proname = '{ogcBranches}';", timeout: 0)}",
-                                                                                                                                                                                    result: out var ogcBranchesExist);
-                                                                                                                                                                            if (ogcBranchesExist == 0)
-                                                                                                                                                                                PostgreSqlHelper.NonQuery
-                                                                                                                                                                                    (
-                                                                                                                                                                                        cmd
-                                                                                                                                                                                        : $"CREATE OR REPLACE FUNCTION public.{ogcBranches}(typename text, path boolean DEFAULT NULL::boolean) RETURNS TABLE(branch integer) LANGUAGE 'plpgsql' AS $$" +
-                                                                                                                                                                                        " DECLARE" +
-                                                                                                                                                                                        "    layerArray text[] := string_to_array(typeName, '.');" +
-                                                                                                                                                                                        "    levelSelectList text[];" +
-                                                                                                                                                                                        "    levelWhereList text[];" +
-                                                                                                                                                                                        "    parameters text[];" +
-                                                                                                                                                                                        "    theTypeName text;" +
-                                                                                                                                                                                        "    size integer;" +
-                                                                                                                                                                                        "    index integer;" +
-                                                                                                                                                                                        "    sql text;" +
-                                                                                                                                                                                        " BEGIN" +
-                                                                                                                                                                                        "    size := array_length(layerArray, 1);" +
-                                                                                                                                                                                        "    IF size IS null THEN" +
-                                                                                                                                                                                        "      size := 1;" +
-                                                                                                                                                                                        "      layerArray[1] := '*';" +
-                                                                                                                                                                                        "    END IF;" +
-                                                                                                                                                                                        "    index := 0;" +
-                                                                                                                                                                                        "    FOR i IN REVERSE size .. 1 LOOP" +
-                                                                                                                                                                                        "      theTypeName := layerArray[i];" +
-                                                                                                                                                                                        "      IF theTypeName <> '' AND theTypeName <> '*' AND theTypeName <> '＊' THEN" +
-                                                                                                                                                                                        "        index := index + 1;" +
-                                                                                                                                                                                        "        sql := ' AND name ILIKE $1[' || index || ']::text';" +
-                                                                                                                                                                                        "        parameters[index] := theTypeName;" +
-                                                                                                                                                                                        "      ELSE" +
-                                                                                                                                                                                        "        sql := '';" +
-                                                                                                                                                                                        "      END IF;" +
-                                                                                                                                                                                        "      levelSelectList := array_append(levelSelectList, '(SELECT * FROM branch WHERE level = ' || i || sql || ') AS level' || i);" +
-                                                                                                                                                                                        "      IF i > 1 THEN" +
-                                                                                                                                                                                        "        levelWhereList := array_append(levelWhereList, 'level' || i || '.parent = level' || (i - 1) || '.id');" +
-                                                                                                                                                                                        "      END IF;" +
-                                                                                                                                                                                        "  END LOOP;" +
-                                                                                                                                                                                        "  IF array_length(levelWhereList, 1) >= 1 THEN" +
-                                                                                                                                                                                        "    sql := ' WHERE ' || array_to_string(levelWhereList, ' AND ');" +
-                                                                                                                                                                                        "  ELSE" +
-                                                                                                                                                                                        "    sql := '';" +
-                                                                                                                                                                                        "  END IF;" +
-                                                                                                                                                                                        "  sql :=" +
-                                                                                                                                                                                        "    'WITH RECURSIVE cte AS' ||" +
-                                                                                                                                                                                        "    '  (' ||" +
-                                                                                                                                                                                        "    '    SELECT branch.* FROM branch,' ||" +
-                                                                                                                                                                                        "    '    (' ||" +
-                                                                                                                                                                                        "    '        SELECT level' || size ||'.* FROM ' || array_to_string(levelSelectList, ',') || sql ||" +
-                                                                                                                                                                                        "    '    ) AS levels' ||" +
-                                                                                                                                                                                        "    '    WHERE branch.id = levels.id' ||" +
-                                                                                                                                                                                        "    '    UNION ALL' ||" +
-                                                                                                                                                                                        "    '    SELECT branch.* FROM branch' ||" +
-                                                                                                                                                                                        "    '    INNER JOIN cte' ||" +
-                                                                                                                                                                                        "    '    ON branch.parent = cte.id' ||" +
-                                                                                                                                                                                        "    '  )' ||" +
-                                                                                                                                                                                        "    '  SELECT DISTINCT id FROM cte';" +
-                                                                                                                                                                                        "  IF path IS NOT true THEN" +
-                                                                                                                                                                                        "    sql := sql ||" +
-                                                                                                                                                                                        "    '  AS cte1 WHERE NOT EXISTS' ||" +
-                                                                                                                                                                                        "    '  (' ||" +
-                                                                                                                                                                                        "    '    SELECT id FROM cte AS cte2' ||" +
-                                                                                                                                                                                        "    '    WHERE cte1.id = cte2.parent' ||" +
-                                                                                                                                                                                        "    '  )';" +
-                                                                                                                                                                                        "  END IF;" +
-                                                                                                                                                                                        "  RETURN QUERY EXECUTE sql USING parameters;" +
-                                                                                                                                                                                        " END;" +
-                                                                                                                                                                                        " $$",
-                                                                                                                                                                                        timeout: 0);
-                                                                                                                                                                            const string ogcBranch = "ogc_branch";
-                                                                                                                                                                            int.TryParse(
-                                                                                                                                                                                    s: $"{PostgreSqlHelper.Scalar(cmd: $"SELECT count(*) FROM pg_proc WHERE proname = '{ogcBranch}';", timeout: 0)}",
-                                                                                                                                                                                    result: out var ogcBranchExist);
-                                                                                                                                                                            if (ogcBranchExist == 0)
-                                                                                                                                                                                PostgreSqlHelper.NonQuery
-                                                                                                                                                                                    (
-                                                                                                                                                                                        cmd: $"CREATE OR REPLACE FUNCTION public.{ogcBranch}(id integer) RETURNS TABLE(tree integer, levels smallint[], layer text[], layerproperty jsonb[], layerdetail xml[]) LANGUAGE 'plpgsql' AS $$" +
-                                                                                                                                                                                        " BEGIN" +
-                                                                                                                                                                                        "    RETURN QUERY" +
-                                                                                                                                                                                        "    WITH RECURSIVE cte AS" +
-                                                                                                                                                                                        "    (" +
-                                                                                                                                                                                        "      SELECT branch.* FROM branch" +
-                                                                                                                                                                                        "      WHERE branch.id = $1" +
-                                                                                                                                                                                        "      UNION ALL" +
-                                                                                                                                                                                        "      SELECT branch.* FROM branch" +
-                                                                                                                                                                                        "      INNER JOIN cte" +
-                                                                                                                                                                                        "      ON branch.id = cte.parent" +
-                                                                                                                                                                                        "    )" +
-                                                                                                                                                                                        "    SELECT * FROM" +
-                                                                                                                                                                                        "    (" +
-                                                                                                                                                                                        "      SELECT FIRST(t.tree) AS tree, ARRAY_AGG(t.level) as levels, ARRAY_AGG(t.name) AS layer, ARRAY_AGG(t.property) AS layerproperty, ARRAY_AGG(tt.detail) AS layerdetail" +
-                                                                                                                                                                                        "      FROM" +
-                                                                                                                                                                                        "      (" +
-                                                                                                                                                                                        "        SELECT * FROM cte ORDER BY level" +
-                                                                                                                                                                                        "      ) AS t" +
-                                                                                                                                                                                        "      LEFT JOIN branch_relation AS tt" +
-                                                                                                                                                                                        "      ON t.id = tt.branch" +
-                                                                                                                                                                                        "    ) AS t" +
-                                                                                                                                                                                        "    WHERE t.tree IS NOT NULL;" +
-                                                                                                                                                                                        " END;" +
-                                                                                                                                                                                        " $$",
-                                                                                                                                                                                        timeout: 0);
-                                                                                                                                                                            _clusterUser.status = true;
-                                                                                                                                                                        }
-                                                                                                                                                                        else
-                                                                                                                                                                            errorMessage = $"Failed to create some indexes of leaf_temporal - {PostgreSqlHelper.Message}";
-                                                                                                                                                                    }
-                                                                                                                                                                    else
-                                                                                                                                                                        errorMessage = $"Failed to create leaf_temporal - {PostgreSqlHelper.Message}";
+                                                                                                                                                                    statusProgress
+                                                                                                                                                                            .Value =
+                                                                                                                                                                        100;
+                                                                                                                                                                    DatabaseLogAdd(
+                                                                                                                                                                        input
+                                                                                                                                                                        : statusText
+                                                                                                                                                                                .Text =
+                                                                                                                                                                            @"Create public functions ...");
                                                                                                                                                                 }
-                                                                                                                                                                else
-                                                                                                                                                                    errorMessage = $"Failed to create leaf_hits - {PostgreSqlHelper.Message}";
-                                                                                                                                                            }
-                                                                                                                                                            else
-                                                                                                                                                                errorMessage = $"Failed to create some indexes of leaf_wms - {PostgreSqlHelper.Message}";
+                                                                                                                                                            );
+                                                                                                                                                            int
+                                                                                                                                                                .TryParse(
+                                                                                                                                                                    s:
+                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_proc WHERE proname = 'first_agg' OR proname = 'first';", timeout: 0)}",
+                                                                                                                                                                    result
+                                                                                                                                                                    : out
+                                                                                                                                                                    var
+                                                                                                                                                                        firstAggregateExist);
+                                                                                                                                                            if
+                                                                                                                                                                (firstAggregateExist !=
+                                                                                                                                                                 2)
+                                                                                                                                                                PostgreSqlHelper
+                                                                                                                                                                    .NonQuery(
+                                                                                                                                                                        cmd
+                                                                                                                                                                        : "CREATE OR REPLACE FUNCTION public.first_agg (anyelement, anyelement)" +
+                                                                                                                                                                        "  RETURNS anyelement" +
+                                                                                                                                                                        "  LANGUAGE sql IMMUTABLE STRICT PARALLEL SAFE AS" +
+                                                                                                                                                                        "  'SELECT $1';" +
+                                                                                                                                                                        "  CREATE OR REPLACE AGGREGATE public.first (anyelement) (" +
+                                                                                                                                                                        "    SFUNC = public.first_agg" +
+                                                                                                                                                                        "    , STYPE = anyelement" +
+                                                                                                                                                                        "    , PARALLEL = safe" +
+                                                                                                                                                                        "    );",
+                                                                                                                                                                        timeout
+                                                                                                                                                                        : 0);
+                                                                                                                                                            int
+                                                                                                                                                                .TryParse(
+                                                                                                                                                                    s:
+                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_proc WHERE proname = 'last_agg' OR proname = 'last';", timeout: 0)}",
+                                                                                                                                                                    result
+                                                                                                                                                                    : out
+                                                                                                                                                                    var
+                                                                                                                                                                        lastAggregateExist);
+                                                                                                                                                            if
+                                                                                                                                                                (lastAggregateExist !=
+                                                                                                                                                                 2)
+                                                                                                                                                                PostgreSqlHelper
+                                                                                                                                                                    .NonQuery(
+                                                                                                                                                                        cmd
+                                                                                                                                                                        : "CREATE OR REPLACE FUNCTION public.last_agg (anyelement, anyelement)" +
+                                                                                                                                                                        "  RETURNS anyelement" +
+                                                                                                                                                                        "  LANGUAGE sql IMMUTABLE STRICT PARALLEL SAFE AS" +
+                                                                                                                                                                        "  'SELECT $2';" +
+                                                                                                                                                                        "  CREATE OR REPLACE AGGREGATE public.last (anyelement) (" +
+                                                                                                                                                                        "    SFUNC = public.last_agg" +
+                                                                                                                                                                        "    , STYPE = anyelement" +
+                                                                                                                                                                        "    , PARALLEL = safe" +
+                                                                                                                                                                        "    );",
+                                                                                                                                                                        timeout
+                                                                                                                                                                        : 0);
+                                                                                                                                                            const
+                                                                                                                                                                string
+                                                                                                                                                                ogcBranches =
+                                                                                                                                                                    "ogc_branches";
+                                                                                                                                                            int
+                                                                                                                                                                .TryParse(
+                                                                                                                                                                    s:
+                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: $"SELECT count(*) FROM pg_proc WHERE proname = '{ogcBranches}';", timeout: 0)}",
+                                                                                                                                                                    result
+                                                                                                                                                                    : out
+                                                                                                                                                                    var
+                                                                                                                                                                        ogcBranchesExist);
+                                                                                                                                                            if
+                                                                                                                                                                (ogcBranchesExist ==
+                                                                                                                                                                 0)
+                                                                                                                                                                PostgreSqlHelper
+                                                                                                                                                                    .NonQuery
+                                                                                                                                                                    (
+                                                                                                                                                                        cmd
+                                                                                                                                                                        : $"CREATE OR REPLACE FUNCTION public.{ogcBranches}(typename text, path boolean DEFAULT NULL::boolean) RETURNS TABLE(branch integer) LANGUAGE 'plpgsql' AS $$" +
+                                                                                                                                                                        " DECLARE" +
+                                                                                                                                                                        "    layerArray text[] := string_to_array(typeName, '.');" +
+                                                                                                                                                                        "    levelSelectList text[];" +
+                                                                                                                                                                        "    levelWhereList text[];" +
+                                                                                                                                                                        "    parameters text[];" +
+                                                                                                                                                                        "    theTypeName text;" +
+                                                                                                                                                                        "    size integer;" +
+                                                                                                                                                                        "    index integer;" +
+                                                                                                                                                                        "    sql text;" +
+                                                                                                                                                                        " BEGIN" +
+                                                                                                                                                                        "    size := array_length(layerArray, 1);" +
+                                                                                                                                                                        "    IF size IS null THEN" +
+                                                                                                                                                                        "      size := 1;" +
+                                                                                                                                                                        "      layerArray[1] := '*';" +
+                                                                                                                                                                        "    END IF;" +
+                                                                                                                                                                        "    index := 0;" +
+                                                                                                                                                                        "    FOR i IN REVERSE size .. 1 LOOP" +
+                                                                                                                                                                        "      theTypeName := layerArray[i];" +
+                                                                                                                                                                        "      IF theTypeName <> '' AND theTypeName <> '*' AND theTypeName <> '＊' THEN" +
+                                                                                                                                                                        "        index := index + 1;" +
+                                                                                                                                                                        "        sql := ' AND name ILIKE $1[' || index || ']::text';" +
+                                                                                                                                                                        "        parameters[index] := theTypeName;" +
+                                                                                                                                                                        "      ELSE" +
+                                                                                                                                                                        "        sql := '';" +
+                                                                                                                                                                        "      END IF;" +
+                                                                                                                                                                        "      levelSelectList := array_append(levelSelectList, '(SELECT * FROM branch WHERE level = ' || i || sql || ') AS level' || i);" +
+                                                                                                                                                                        "      IF i > 1 THEN" +
+                                                                                                                                                                        "        levelWhereList := array_append(levelWhereList, 'level' || i || '.parent = level' || (i - 1) || '.id');" +
+                                                                                                                                                                        "      END IF;" +
+                                                                                                                                                                        "  END LOOP;" +
+                                                                                                                                                                        "  IF array_length(levelWhereList, 1) >= 1 THEN" +
+                                                                                                                                                                        "    sql := ' WHERE ' || array_to_string(levelWhereList, ' AND ');" +
+                                                                                                                                                                        "  ELSE" +
+                                                                                                                                                                        "    sql := '';" +
+                                                                                                                                                                        "  END IF;" +
+                                                                                                                                                                        "  sql :=" +
+                                                                                                                                                                        "    'WITH RECURSIVE cte AS' ||" +
+                                                                                                                                                                        "    '  (' ||" +
+                                                                                                                                                                        "    '    SELECT branch.* FROM branch,' ||" +
+                                                                                                                                                                        "    '    (' ||" +
+                                                                                                                                                                        "    '        SELECT level' || size ||'.* FROM ' || array_to_string(levelSelectList, ',') || sql ||" +
+                                                                                                                                                                        "    '    ) AS levels' ||" +
+                                                                                                                                                                        "    '    WHERE branch.id = levels.id' ||" +
+                                                                                                                                                                        "    '    UNION ALL' ||" +
+                                                                                                                                                                        "    '    SELECT branch.* FROM branch' ||" +
+                                                                                                                                                                        "    '    INNER JOIN cte' ||" +
+                                                                                                                                                                        "    '    ON branch.parent = cte.id' ||" +
+                                                                                                                                                                        "    '  )' ||" +
+                                                                                                                                                                        "    '  SELECT DISTINCT id FROM cte';" +
+                                                                                                                                                                        "  IF path IS NOT true THEN" +
+                                                                                                                                                                        "    sql := sql ||" +
+                                                                                                                                                                        "    '  AS cte1 WHERE NOT EXISTS' ||" +
+                                                                                                                                                                        "    '  (' ||" +
+                                                                                                                                                                        "    '    SELECT id FROM cte AS cte2' ||" +
+                                                                                                                                                                        "    '    WHERE cte1.id = cte2.parent' ||" +
+                                                                                                                                                                        "    '  )';" +
+                                                                                                                                                                        "  END IF;" +
+                                                                                                                                                                        "  RETURN QUERY EXECUTE sql USING parameters;" +
+                                                                                                                                                                        " END;" +
+                                                                                                                                                                        " $$",
+                                                                                                                                                                        timeout
+                                                                                                                                                                        : 0);
+                                                                                                                                                            const
+                                                                                                                                                                string
+                                                                                                                                                                ogcBranch =
+                                                                                                                                                                    "ogc_branch";
+                                                                                                                                                            int
+                                                                                                                                                                .TryParse(
+                                                                                                                                                                    s:
+                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: $"SELECT count(*) FROM pg_proc WHERE proname = '{ogcBranch}';", timeout: 0)}",
+                                                                                                                                                                    result
+                                                                                                                                                                    : out
+                                                                                                                                                                    var
+                                                                                                                                                                        ogcBranchExist);
+                                                                                                                                                            if
+                                                                                                                                                                (ogcBranchExist ==
+                                                                                                                                                                 0)
+                                                                                                                                                                PostgreSqlHelper
+                                                                                                                                                                    .NonQuery
+                                                                                                                                                                    (
+                                                                                                                                                                        cmd
+                                                                                                                                                                        : $"CREATE OR REPLACE FUNCTION public.{ogcBranch}(id integer) RETURNS TABLE(tree integer, levels smallint[], layer text[], layerproperty jsonb[], layerdetail xml[]) LANGUAGE 'plpgsql' AS $$" +
+                                                                                                                                                                        " BEGIN" +
+                                                                                                                                                                        "    RETURN QUERY" +
+                                                                                                                                                                        "    WITH RECURSIVE cte AS" +
+                                                                                                                                                                        "    (" +
+                                                                                                                                                                        "      SELECT branch.* FROM branch" +
+                                                                                                                                                                        "      WHERE branch.id = $1" +
+                                                                                                                                                                        "      UNION ALL" +
+                                                                                                                                                                        "      SELECT branch.* FROM branch" +
+                                                                                                                                                                        "      INNER JOIN cte" +
+                                                                                                                                                                        "      ON branch.id = cte.parent" +
+                                                                                                                                                                        "    )" +
+                                                                                                                                                                        "    SELECT * FROM" +
+                                                                                                                                                                        "    (" +
+                                                                                                                                                                        "      SELECT FIRST(t.tree) AS tree, ARRAY_AGG(t.level) as levels, ARRAY_AGG(t.name) AS layer, ARRAY_AGG(t.property) AS layerproperty, ARRAY_AGG(tt.detail) AS layerdetail" +
+                                                                                                                                                                        "      FROM" +
+                                                                                                                                                                        "      (" +
+                                                                                                                                                                        "        SELECT * FROM cte ORDER BY level" +
+                                                                                                                                                                        "      ) AS t" +
+                                                                                                                                                                        "      LEFT JOIN branch_relation AS tt" +
+                                                                                                                                                                        "      ON t.id = tt.branch" +
+                                                                                                                                                                        "    ) AS t" +
+                                                                                                                                                                        "    WHERE t.tree IS NOT NULL;" +
+                                                                                                                                                                        " END;" +
+                                                                                                                                                                        " $$",
+                                                                                                                                                                        timeout
+                                                                                                                                                                        : 0);
+                                                                                                                                                            _clusterUser
+                                                                                                                                                                    .status =
+                                                                                                                                                                true;
                                                                                                                                                         }
                                                                                                                                                         else
-                                                                                                                                                            errorMessage = $"Failed to create leaf_wms - {PostgreSqlHelper.Message}";
+                                                                                                                                                            errorMessage =
+                                                                                                                                                                $"Failed to create some indexes of leaf_temporal - {PostgreSqlHelper.Message}";
                                                                                                                                                     }
                                                                                                                                                     else
-                                                                                                                                                        errorMessage = $"Failed to create some indexes of leaf_tile - {PostgreSqlHelper.Message}";
+                                                                                                                                                        errorMessage =
+                                                                                                                                                            $"Failed to create leaf_temporal - {PostgreSqlHelper.Message}";
                                                                                                                                                 }
                                                                                                                                                 else
-                                                                                                                                                    errorMessage = $"Failed to create leaf_tile - {PostgreSqlHelper.Message}";
+                                                                                                                                                    errorMessage =
+                                                                                                                                                        $"Failed to create leaf_hits - {PostgreSqlHelper.Message}";
                                                                                                                                             }
                                                                                                                                             else
-                                                                                                                                                errorMessage = $"Failed to create some indexes of leaf_geometry - {PostgreSqlHelper.Message}";
+                                                                                                                                                errorMessage =
+                                                                                                                                                    $"Failed to create some indexes of leaf_wms - {PostgreSqlHelper.Message}";
                                                                                                                                         }
                                                                                                                                         else
-                                                                                                                                            errorMessage = $"Failed to create leaf_geometry - {PostgreSqlHelper.Message}";
+                                                                                                                                            errorMessage =
+                                                                                                                                                $"Failed to create leaf_wms - {PostgreSqlHelper.Message}";
                                                                                                                                     }
                                                                                                                                     else
-                                                                                                                                        errorMessage = $"Failed to create some indexes of leaf_style - {PostgreSqlHelper.Message}";
+                                                                                                                                        errorMessage =
+                                                                                                                                            $"Failed to create some indexes of leaf_tile - {PostgreSqlHelper.Message}";
                                                                                                                                 }
                                                                                                                                 else
-                                                                                                                                    errorMessage = $"Failed to create leaf_style - {PostgreSqlHelper.Message}";
+                                                                                                                                    errorMessage =
+                                                                                                                                        $"Failed to create leaf_tile - {PostgreSqlHelper.Message}";
                                                                                                                             }
                                                                                                                             else
-                                                                                                                                errorMessage = $"Failed to create some indexes of leaf_description - {PostgreSqlHelper.Message}";
+                                                                                                                                errorMessage =
+                                                                                                                                    $"Failed to create some indexes of leaf_geometry - {PostgreSqlHelper.Message}";
                                                                                                                         }
                                                                                                                         else
-                                                                                                                            errorMessage = $"Failed to create leaf_description - {PostgreSqlHelper.Message}";
+                                                                                                                            errorMessage =
+                                                                                                                                $"Failed to create leaf_geometry - {PostgreSqlHelper.Message}";
                                                                                                                     }
                                                                                                                     else
-                                                                                                                        errorMessage = $"Failed to create some indexes of leaf - {PostgreSqlHelper.Message}";
+                                                                                                                        errorMessage =
+                                                                                                                            $"Failed to create some indexes of leaf_style - {PostgreSqlHelper.Message}";
                                                                                                                 }
                                                                                                                 else
-                                                                                                                    errorMessage = $"Failed to create leaf - {PostgreSqlHelper.Message}";
+                                                                                                                    errorMessage =
+                                                                                                                        $"Failed to create leaf_style - {PostgreSqlHelper.Message}";
                                                                                                             }
                                                                                                             else
-                                                                                                                errorMessage = $"Failed to create some indexes of branch - {PostgreSqlHelper.Message}";
+                                                                                                                errorMessage =
+                                                                                                                    $"Failed to create some indexes of leaf_description - {PostgreSqlHelper.Message}";
                                                                                                         }
                                                                                                         else
-                                                                                                            errorMessage = $"Failed to create branch - {PostgreSqlHelper.Message}";
+                                                                                                            errorMessage =
+                                                                                                                $"Failed to create leaf_description - {PostgreSqlHelper.Message}";
                                                                                                     }
                                                                                                     else
-                                                                                                        errorMessage = $"Failed to create some indexes of tree - {PostgreSqlHelper.Message}";
+                                                                                                        errorMessage =
+                                                                                                            $"Failed to create some indexes of leaf - {PostgreSqlHelper.Message}";
                                                                                                 }
                                                                                                 else
-                                                                                                    errorMessage = $"Failed to create tree - {PostgreSqlHelper.Message}";
+                                                                                                    errorMessage =
+                                                                                                        $"Failed to create leaf - {PostgreSqlHelper.Message}";
                                                                                             }
                                                                                             else
-                                                                                                errorMessage = $"Failed to create some indexes of forest - {PostgreSqlHelper.Message}";
+                                                                                                errorMessage =
+                                                                                                    $"Failed to create some indexes of branch - {PostgreSqlHelper.Message}";
                                                                                         }
                                                                                         else
-                                                                                            errorMessage = $"Failed to create forest - {PostgreSqlHelper.Message}";
+                                                                                            errorMessage =
+                                                                                                $"Failed to create branch - {PostgreSqlHelper.Message}";
                                                                                     }
                                                                                     else
-                                                                                        errorMessage = "No multilingual full text retrieval extension module (pgroonga) found.";
+                                                                                        errorMessage =
+                                                                                            $"Failed to create some indexes of tree - {PostgreSqlHelper.Message}";
                                                                                 }
                                                                                 else
-                                                                                    errorMessage = "One dimensional integer array extension module (intarray) not found.";
+                                                                                    errorMessage =
+                                                                                        $"Failed to create tree - {PostgreSqlHelper.Message}";
                                                                             }
                                                                             else
-                                                                                errorMessage = "No raster data expansion module was found (postgis_raster).";
+                                                                                errorMessage =
+                                                                                    $"Failed to create some indexes of forest - {PostgreSqlHelper.Message}";
                                                                         }
                                                                         else
-                                                                            errorMessage = "No vector data expansion module was found (postgis).";
+                                                                            errorMessage =
+                                                                                $"Failed to create forest - {PostgreSqlHelper.Message}";
                                                                     }
                                                                     else
-                                                                        errorMessage = $"Unable to create database [{PostgreSqlHelper.Message}].";
+                                                                        errorMessage =
+                                                                            "No multilingual full text retrieval extension module (pgroonga) found.";
                                                                 }
                                                                 else
-                                                                    errorMessage = "Task canceled.";
-                                                                break;
+                                                                    errorMessage =
+                                                                        "One dimensional integer array extension module (intarray) not found.";
                                                             }
-                                                        default:
-                                                            {
-                                                                //  -3： 连接串未创建
-                                                                //  -2： PG版本太低[小于12.0.0]，不创建数据库；
-                                                                //  -1： PG未安装或者连接参数不正确，无法创建数据库；
-                                                                //  3：  数据库同名且发现某个主表也同名，不宜继续创建子表）
-                                                                _clusterUser.status = false;
-                                                                errorMessage = databaseStatus.Message;
-                                                                break;
-                                                            }
-                                                    }
-                                                    if (string.IsNullOrWhiteSpace(value: errorMessage))
-                                                    {
-                                                        var tasks = new[]
-                                                        {
-                                                        Task.Factory.StartNew(action: () =>
-                                                            {
-                                                                _clusterUser = (true, forest,
-                                                                    GeositeServerUser.Text.Trim());
-                                                                _databaseGridObject = new DatabaseGrid(
-                                                                    dataGridView: DatabaseGridView,
-                                                                    firstPage: firstPage,
-                                                                    previousPage: previousPage,
-                                                                    nextPage: nextPage,
-                                                                    lastPage: lastPage,
-                                                                    pageBox: pagesBox,
-                                                                    deleteTree: deleteTree,
-                                                                    forest: forest
-                                                                );
-                                                            }
-                                                        ),
-                                                        Task.Factory.StartNew(action: () =>
-                                                            {
-                                                                if (_catalogTreeObject == null)
-                                                                    _catalogTreeObject =
-                                                                        new CatalogTree(
-                                                                            catalogTreeView: CatalogTreeView,
-                                                                            forest: forest,
-                                                                            rootName: rootName
-                                                                        );
-                                                                else
-                                                                    _catalogTreeObject.InsertNodes();
-                                                            }
-                                                        )
-                                                    };
-                                                        Task.WaitAll(tasks: tasks);
-                                                        var geositeServerLicense = userX.result.Element(name: "License");
-                                                        if (geositeServerLicense != null)
-                                                        {
-                                                            //<License>
-                                                            //   <Flag>0</Flag>         //0：未授权；1=已授权
-                                                            //   <Days>100</Days>       //可空的整型数：空意味着永久授权；0意味着时间戳已无效；正值是剩余天数；负值是过期天数
-                                                            //</License>
-                                                            if (int.TryParse(geositeServerLicense.Element("Flag")?.Value, out var flag))
-                                                            {
-                                                                DatabaseLogAdd(input: $"GeositeServer {(flag == 0 ? "not" : "is")} licensed.");
-                                                                var daysValue = geositeServerLicense.Element("Days")?.Value;
-                                                                if (!string.IsNullOrWhiteSpace(daysValue) && long.TryParse(daysValue, out var days))
-                                                                    DatabaseLogAdd(input: $"GeositeServer license remaining {days} days.");
-                                                            }
+                                                            else
+                                                                errorMessage =
+                                                                    "No raster data expansion module was found (postgis_raster).";
                                                         }
+                                                        else
+                                                            errorMessage =
+                                                                "No vector data expansion module was found (postgis).";
                                                     }
+                                                    else
+                                                        errorMessage =
+                                                            $"Unable to create database [{PostgreSqlHelper.Message}].";
                                                 }
                                                 else
+                                                    errorMessage = "Task canceled.";
+
+                                                break;
+                                            }
+                                            default:
+                                            {
+                                                //  -3： 连接串未创建
+                                                //  -2： PG版本太低[小于12.0.0]，不创建数据库；
+                                                //  -1： PG未安装或者连接参数不正确，无法创建数据库；
+                                                //  3：  数据库同名且发现某个主表也同名，不宜继续创建子表）
+                                                _clusterUser.status = false;
+                                                errorMessage = databaseStatus.Message;
+                                                break;
+                                            }
+                                        }
+
+                                        if (string.IsNullOrWhiteSpace(value: errorMessage))
+                                        {
+                                            var tasks = new[]
+                                            {
+                                                Task.Factory.StartNew(action: () =>
+                                                    {
+                                                        _clusterUser = (true, forest,
+                                                            GeositeServerUser.Text.Trim());
+                                                        _databaseGridObject = new DatabaseGrid(
+                                                            dataGridView: DatabaseGridView,
+                                                            firstPage: firstPage,
+                                                            previousPage: previousPage,
+                                                            nextPage: nextPage,
+                                                            lastPage: lastPage,
+                                                            pageBox: pagesBox,
+                                                            deleteTree: deleteTree,
+                                                            forest: forest
+                                                        );
+                                                    }
+                                                ),
+                                                Task.Factory.StartNew(action: () =>
+                                                    {
+                                                        if (_catalogTreeObject == null)
+                                                            _catalogTreeObject =
+                                                                new CatalogTree(
+                                                                    catalogTreeView: CatalogTreeView,
+                                                                    forest: forest,
+                                                                    rootName: rootName
+                                                                );
+                                                        else
+                                                            _catalogTreeObject.InsertNodes();
+                                                    }
+                                                )
+                                            };
+                                            Task.WaitAll(tasks: tasks);
+                                            var geositeServerLicense = userX.result.Element(name: "License");
+                                            if (geositeServerLicense != null)
+                                            {
+                                                //<License>
+                                                //   <Flag>0</Flag>         //0：未授权；1=已授权
+                                                //   <Days>100</Days>       //可空的整型数：空意味着永久授权；0意味着时间戳已无效；正值是剩余天数；负值是过期天数
+                                                //</License>
+                                                if (int.TryParse(geositeServerLicense.Element("Flag")?.Value,
+                                                        out var flag))
                                                 {
-                                                    errorMessage = $@"PostgreSQL Host [{postgresqlHost}] not found.";
+                                                    DatabaseLogAdd(
+                                                        input:
+                                                        $"GeositeServer {(flag == 0 ? "not" : "is")} licensed.");
+                                                    var daysValue = geositeServerLicense.Element("Days")?.Value;
+                                                    if (!string.IsNullOrWhiteSpace(daysValue) &&
+                                                        long.TryParse(daysValue, out var days))
+                                                        DatabaseLogAdd(
+                                                            input:
+                                                            $"GeositeServer license remaining {days} days.");
                                                 }
                                             }
-                                            else
-                                                errorMessage = @"GeositeServer version is too low.";
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            errorMessage = ex.Message;
                                         }
                                     }
                                     else
-                                        errorMessage = userX.message;
+                                        errorMessage = @"GeositeServer version is too low.";
                                 }
-                                finally
+                                catch (Exception ex)
                                 {
-                                    Invoke(
-                                        method: () =>
-                                        {
-                                            if (errorMessage == null)
-                                            {
-                                                DatabaseLogAdd(input: statusText.Text = @"GeositeServer Connection OK.");
-                                                GeositeServerLink.BackgroundImage = Properties.Resources.linkok;
-                                                deleteForest.Enabled = true;
-                                                _clusterUser.status = dataGridPanel.Enabled = true;
-                                                PostgresRun.Enabled = true;
-                                                OGCtoolTip.SetToolTip(PostgresRun, "Start");
-                                            }
-                                            else
-                                            {
-                                                _clusterUser.status = false;
-                                                _databaseGridObject?.Clear();
-                                                _catalogTreeObject?.Clear();
-                                                DatabaseLogAdd(input: statusText.Text = errorMessage);
-                                                GeositeServerLink.BackgroundImage = Properties.Resources.linkfail;
-                                                deleteForest.Enabled = false;
-                                            }
-                                            statusProgress.Visible = false;
-                                            statusProgress.Value = 0;
-                                            Reindex.Enabled = ReClean.Enabled = errorMessage == null && _administrator;
-                                            dataGridPanel.Enabled = CatalogTreeView.Enabled = true;
-                                            _loading.Run(onOff: false);
-                                        }
-                                    );
+                                    errorMessage = ex.Message;
                                 }
                             }
-                        ).Start();
-                    }
-                    else
-                        Invoke(method: () =>
-                        {
-                            DatabaseLogAdd(input: statusText.Text = @"GeositeServer connection failed.");
+                            else
+                                errorMessage = userX.message;
                         }
-                        );
-                }
-                catch
-                {
-                    Invoke(method: () =>
-                    {
-                        DatabaseLogAdd(input: statusText.Text = @"GeositeServer database connection failed.");
-                    });
-                }
+                        finally
+                        {
+                            Invoke(
+                                method: () =>
+                                {
+                                    if (errorMessage == null)
+                                    {
+                                        DatabaseLogAdd(input: statusText.Text = @"GeositeServer Connection OK.");
+                                        GeositeServerLink.BackgroundImage = Properties.Resources.linkok;
+                                        deleteForest.Enabled = true;
+                                        _clusterUser.status = dataGridPanel.Enabled = true;
+                                        PostgresRun.Enabled = true;
+                                        OGCtoolTip.SetToolTip(PostgresRun, "Start");
+                                    }
+                                    else
+                                    {
+                                        _clusterUser.status = false;
+                                        _databaseGridObject?.Clear();
+                                        _catalogTreeObject?.Clear();
+                                        DatabaseLogAdd(input: statusText.Text = errorMessage);
+                                        GeositeServerLink.BackgroundImage = Properties.Resources.linkfail;
+                                        deleteForest.Enabled = false;
+                                    }
+
+                                    statusProgress.Visible = false;
+                                    statusProgress.Value = 0;
+                                    Reindex.Enabled = ReClean.Enabled = errorMessage == null && _administrator;
+                                    dataGridPanel.Enabled = CatalogTreeView.Enabled = true;
+                                    _loading.Run(onOff: false);
+                                }
+                            );
+                        }
+                    }
+                ).Start();
             }
             else
                 Invoke(method: () =>
@@ -8990,11 +9260,9 @@ namespace Geosite
 
         private void GeositeServerPanel_Click(object sender, EventArgs e)
         {
-            var serverUrl = GeositeServerUrl.Text.Trim();
             try
             {
-                if (new Ping().Send(hostNameOrAddress: new UriBuilder(uri: serverUrl).Host, timeout: 3000) is { Status: IPStatus.Success })
-                    Process.Start(startInfo: new ProcessStartInfo(fileName: serverUrl) { UseShellExecute = true });
+                Process.Start(startInfo: new ProcessStartInfo(fileName: new UriBuilder(GeositeServerUrl.Text.Trim()).Uri.AbsoluteUri) { UseShellExecute = true });
             }
             catch (Exception error)
             {
