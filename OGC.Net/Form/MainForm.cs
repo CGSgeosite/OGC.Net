@@ -149,6 +149,11 @@ namespace Geosite
         private bool _mapDrag;
 
         /// <summary>
+        /// Full Screen Form Object
+        /// </summary>
+        private Form _fullScreenForm;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public MainForm()
@@ -366,6 +371,8 @@ namespace Geosite
             key = rankList.Name;
             defaultValue = RegEdit.GetKey(key: key);
             rankList.Text = defaultValue ?? "-1";
+
+            MapBoxFullScreenMenuItem.CheckState = CheckState.Unchecked;
 
             var rtfPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "rtf");
             try
@@ -9405,7 +9412,7 @@ namespace Geosite
         }
 
         /// <summary>
-        /// 地图窗口右键菜单处理函数，包括矢量图层充满窗口、移除矢量图层、 清理瓦片缓存和矢量要素存盘功能
+        /// 地图窗口右键菜单处理函数，包括矢量图层充满窗口、移除矢量图层、 清理瓦片缓存和矢量要素存盘等功能 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -9414,6 +9421,31 @@ namespace Geosite
             var theSender = (ToolStripMenuItem)sender;
             switch (theSender.Text)
             {
+                case "Full Screen":
+                {
+                    var fullScreen = MapBoxFullScreenMenuItem.CheckState;
+                    if (fullScreen == CheckState.Unchecked)
+                    {
+                        MapBoxFullScreenMenuItem.CheckState = CheckState.Checked;
+                        _fullScreenForm = new Form
+                        {
+                            WindowState = FormWindowState.Maximized,
+                            FormBorderStyle = FormBorderStyle.None,
+                            TopMost = true
+                        };
+                        _fullScreenForm.Controls.Add(FileMapSplitContainer);
+                        _fullScreenForm.Show();
+                    }
+                    else
+                    {
+                        MapBoxFullScreenMenuItem.CheckState = CheckState.Unchecked;
+                        _fullScreenForm.Controls.Remove(FileMapSplitContainer);
+                        tableLayoutPanel12.Controls.Add(FileMapSplitContainer);
+                        _fullScreenForm.Dispose();
+                        _fullScreenForm = null;
+                    }
+                    break;
+                }
                 case "Zoom to Layer":
                     {
                         var left = double.MaxValue;

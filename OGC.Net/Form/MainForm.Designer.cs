@@ -181,6 +181,7 @@
             MapBoxClearMenuItem = new ToolStripMenuItem();
             MapBoxBreakTaskMenuItem = new ToolStripMenuItem();
             toolStripSeparator21 = new ToolStripSeparator();
+            MapBoxFullScreenMenuItem = new ToolStripMenuItem();
             MapBoxZoomMenuItem = new ToolStripMenuItem();
             MapBearingMenuItem = new ToolStripMenuItem();
             MapBearingItem0 = new ToolStripMenuItem();
@@ -518,7 +519,7 @@
             deleteTree.Margin = new Padding(4);
             deleteTree.Name = "deleteTree";
             deleteTree.Size = new Size(54, 25);
-            deleteTree.TabIndex = 3;
+            deleteTree.TabIndex = 23;
             deleteTree.Text = "×";
             OGCtoolTip.SetToolTip(deleteTree, "Delete selected themes");
             deleteTree.UseVisualStyleBackColor = false;
@@ -535,7 +536,7 @@
             lastPage.Margin = new Padding(4);
             lastPage.Name = "lastPage";
             lastPage.Size = new Size(54, 25);
-            lastPage.TabIndex = 3;
+            lastPage.TabIndex = 22;
             lastPage.Text = ">|";
             OGCtoolTip.SetToolTip(lastPage, "Last Page");
             lastPage.UseVisualStyleBackColor = false;
@@ -552,7 +553,7 @@
             nextPage.Margin = new Padding(4);
             nextPage.Name = "nextPage";
             nextPage.Size = new Size(54, 25);
-            nextPage.TabIndex = 3;
+            nextPage.TabIndex = 21;
             nextPage.Text = ">";
             OGCtoolTip.SetToolTip(nextPage, "Next Page");
             nextPage.UseVisualStyleBackColor = false;
@@ -569,7 +570,7 @@
             previousPage.Margin = new Padding(4);
             previousPage.Name = "previousPage";
             previousPage.Size = new Size(54, 25);
-            previousPage.TabIndex = 3;
+            previousPage.TabIndex = 20;
             previousPage.Text = "<";
             OGCtoolTip.SetToolTip(previousPage, "Previous Page");
             previousPage.UseVisualStyleBackColor = false;
@@ -586,7 +587,7 @@
             firstPage.Margin = new Padding(4);
             firstPage.Name = "firstPage";
             firstPage.Size = new Size(54, 25);
-            firstPage.TabIndex = 3;
+            firstPage.TabIndex = 19;
             firstPage.Text = "|<";
             OGCtoolTip.SetToolTip(firstPage, "First Page");
             firstPage.UseVisualStyleBackColor = false;
@@ -614,7 +615,7 @@
             GeositeServerUrl.Name = "GeositeServerUrl";
             GeositeServerUrl.PlaceholderText = "e.g. http://localhost:5000";
             GeositeServerUrl.Size = new Size(219, 23);
-            GeositeServerUrl.TabIndex = 1;
+            GeositeServerUrl.TabIndex = 9;
             OGCtoolTip.SetToolTip(GeositeServerUrl, "GeositeServer Url");
             GeositeServerUrl.TextChanged += GeositeServer_LinkChanged;
             // 
@@ -625,7 +626,7 @@
             wmtsSouth.Margin = new Padding(4);
             wmtsSouth.Name = "wmtsSouth";
             wmtsSouth.Size = new Size(183, 23);
-            wmtsSouth.TabIndex = 34;
+            wmtsSouth.TabIndex = 47;
             wmtsSouth.Text = "-90";
             wmtsSouth.TextAlign = HorizontalAlignment.Center;
             OGCtoolTip.SetToolTip(wmtsSouth, "South");
@@ -638,7 +639,7 @@
             wmtsWest.Margin = new Padding(4);
             wmtsWest.Name = "wmtsWest";
             wmtsWest.Size = new Size(182, 23);
-            wmtsWest.TabIndex = 32;
+            wmtsWest.TabIndex = 44;
             wmtsWest.Text = "-180";
             wmtsWest.TextAlign = HorizontalAlignment.Center;
             OGCtoolTip.SetToolTip(wmtsWest, "West");
@@ -651,7 +652,7 @@
             wmtsEast.Margin = new Padding(4);
             wmtsEast.Name = "wmtsEast";
             wmtsEast.Size = new Size(182, 23);
-            wmtsEast.TabIndex = 33;
+            wmtsEast.TabIndex = 46;
             wmtsEast.Text = "180";
             wmtsEast.TextAlign = HorizontalAlignment.Center;
             OGCtoolTip.SetToolTip(wmtsEast, "East");
@@ -664,7 +665,7 @@
             wmtsNorth.Margin = new Padding(4);
             wmtsNorth.Name = "wmtsNorth";
             wmtsNorth.Size = new Size(183, 23);
-            wmtsNorth.TabIndex = 31;
+            wmtsNorth.TabIndex = 45;
             wmtsNorth.Text = "90";
             wmtsNorth.TextAlign = HorizontalAlignment.Center;
             OGCtoolTip.SetToolTip(wmtsNorth, "North");
@@ -693,7 +694,7 @@
             wmtsSize.Name = "wmtsSize";
             wmtsSize.ReadOnly = true;
             wmtsSize.Size = new Size(68, 23);
-            wmtsSize.TabIndex = 36;
+            wmtsSize.TabIndex = 41;
             wmtsSize.Text = "256";
             OGCtoolTip.SetToolTip(wmtsSize, "Size");
             // 
@@ -709,7 +710,7 @@
             deleteForest.Margin = new Padding(4);
             deleteForest.Name = "deleteForest";
             deleteForest.Size = new Size(35, 82);
-            deleteForest.TabIndex = 20;
+            deleteForest.TabIndex = 18;
             deleteForest.Text = "×";
             OGCtoolTip.SetToolTip(deleteForest, "Delete user data");
             deleteForest.UseVisualStyleBackColor = false;
@@ -724,7 +725,7 @@
             FormatRaster.Margin = new Padding(4);
             FormatRaster.Name = "FormatRaster";
             FormatRaster.Size = new Size(128, 26);
-            FormatRaster.TabIndex = 11;
+            FormatRaster.TabIndex = 32;
             FormatRaster.Text = "Raster";
             OGCtoolTip.SetToolTip(FormatRaster, "EPSG:0");
             FormatRaster.UseVisualStyleBackColor = true;
@@ -740,7 +741,7 @@
             FormatStandard.Margin = new Padding(4);
             FormatStandard.Name = "FormatStandard";
             FormatStandard.Size = new Size(160, 26);
-            FormatStandard.TabIndex = 6;
+            FormatStandard.TabIndex = 27;
             FormatStandard.TabStop = true;
             FormatStandard.Text = "Standard";
             OGCtoolTip.SetToolTip(FormatStandard, "EPSG:3857/4326");
@@ -756,7 +757,7 @@
             FormatDeepZoom.Margin = new Padding(4);
             FormatDeepZoom.Name = "FormatDeepZoom";
             FormatDeepZoom.Size = new Size(127, 26);
-            FormatDeepZoom.TabIndex = 10;
+            FormatDeepZoom.TabIndex = 31;
             FormatDeepZoom.Text = "DeepZoom";
             OGCtoolTip.SetToolTip(FormatDeepZoom, "EPSG:0");
             FormatDeepZoom.UseVisualStyleBackColor = true;
@@ -771,7 +772,7 @@
             FormatTMS.Margin = new Padding(4);
             FormatTMS.Name = "FormatTMS";
             FormatTMS.Size = new Size(127, 26);
-            FormatTMS.TabIndex = 7;
+            FormatTMS.TabIndex = 28;
             FormatTMS.Text = "TMS";
             OGCtoolTip.SetToolTip(FormatTMS, "EPSG:3857\r\nY from large to small");
             FormatTMS.UseVisualStyleBackColor = true;
@@ -786,7 +787,7 @@
             FormatArcGIS.Margin = new Padding(4);
             FormatArcGIS.Name = "FormatArcGIS";
             FormatArcGIS.Size = new Size(127, 26);
-            FormatArcGIS.TabIndex = 9;
+            FormatArcGIS.TabIndex = 30;
             FormatArcGIS.Text = "ARCGIS";
             OGCtoolTip.SetToolTip(FormatArcGIS, "EPSG:3857");
             FormatArcGIS.UseVisualStyleBackColor = true;
@@ -801,7 +802,7 @@
             FormatMapcruncher.Margin = new Padding(4);
             FormatMapcruncher.Name = "FormatMapcruncher";
             FormatMapcruncher.Size = new Size(127, 26);
-            FormatMapcruncher.TabIndex = 8;
+            FormatMapcruncher.TabIndex = 29;
             FormatMapcruncher.Text = "MapCruncher";
             OGCtoolTip.SetToolTip(FormatMapcruncher, "EPSG:3857");
             FormatMapcruncher.UseVisualStyleBackColor = true;
@@ -837,7 +838,7 @@
             GeositeServerUser.Name = "GeositeServerUser";
             GeositeServerUser.PlaceholderText = "e.g. user1";
             GeositeServerUser.Size = new Size(121, 23);
-            GeositeServerUser.TabIndex = 1;
+            GeositeServerUser.TabIndex = 10;
             OGCtoolTip.SetToolTip(GeositeServerUser, "GeositeServer user name");
             GeositeServerUser.TextChanged += GeositeServer_LinkChanged;
             // 
@@ -849,7 +850,7 @@
             GeositeServerPassword.Name = "GeositeServerPassword";
             GeositeServerPassword.PlaceholderText = "e.g. xxxxxx";
             GeositeServerPassword.Size = new Size(121, 23);
-            GeositeServerPassword.TabIndex = 1;
+            GeositeServerPassword.TabIndex = 11;
             OGCtoolTip.SetToolTip(GeositeServerPassword, "GeositeServer user password");
             GeositeServerPassword.UseSystemPasswordChar = true;
             GeositeServerPassword.TextChanged += GeositeServer_LinkChanged;
@@ -865,7 +866,7 @@
             ModelSave.Margin = new Padding(0);
             ModelSave.Name = "ModelSave";
             ModelSave.Size = new Size(59, 45);
-            ModelSave.TabIndex = 11;
+            ModelSave.TabIndex = 52;
             OGCtoolTip.SetToolTip(ModelSave, "Can be saved as GeoTIFF");
             ModelSave.UseVisualStyleBackColor = false;
             ModelSave.Click += ModelSave_Click;
@@ -880,7 +881,7 @@
             ModelOpen.Margin = new Padding(0);
             ModelOpen.Name = "ModelOpen";
             ModelOpen.Size = new Size(59, 43);
-            ModelOpen.TabIndex = 11;
+            ModelOpen.TabIndex = 50;
             OGCtoolTip.SetToolTip(ModelOpen, "Only geographic coordinate systems are supported");
             ModelOpen.UseVisualStyleBackColor = false;
             ModelOpen.Click += ModelOpen_Click;
@@ -897,7 +898,7 @@
             tileconvert.Margin = new Padding(4);
             tileconvert.Name = "tileconvert";
             tileconvert.Size = new Size(53, 99);
-            tileconvert.TabIndex = 20;
+            tileconvert.TabIndex = 63;
             tileconvert.Text = ">";
             OGCtoolTip.SetToolTip(tileconvert, "Start");
             tileconvert.UseVisualStyleBackColor = true;
@@ -915,7 +916,7 @@
             MIMEBox.Margin = new Padding(4);
             MIMEBox.Name = "MIMEBox";
             MIMEBox.Size = new Size(67, 25);
-            MIMEBox.TabIndex = 38;
+            MIMEBox.TabIndex = 48;
             OGCtoolTip.SetToolTip(MIMEBox, "MIME type");
             MIMEBox.SelectedIndexChanged += FormEventChanged;
             // 
@@ -931,7 +932,7 @@
             rankList.Name = "rankList";
             rankList.RightToLeft = RightToLeft.No;
             rankList.Size = new Size(57, 25);
-            rankList.TabIndex = 22;
+            rankList.TabIndex = 38;
             OGCtoolTip.SetToolTip(rankList, "[-1] for all users, Other escalation");
             rankList.SelectedIndexChanged += RankList_SelectedIndexChanged;
             // 
@@ -963,7 +964,7 @@
             PostgresLight.Name = "PostgresLight";
             PostgresLight.RightToLeft = RightToLeft.Yes;
             PostgresLight.Size = new Size(57, 23);
-            PostgresLight.TabIndex = 18;
+            PostgresLight.TabIndex = 37;
             OGCtoolTip.SetToolTip(PostgresLight, "Open sharing permission?");
             PostgresLight.UseVisualStyleBackColor = false;
             PostgresLight.CheckedChanged += PostgresLight_CheckedChanged;
@@ -981,7 +982,7 @@
             UpdateBox.Margin = new Padding(4);
             UpdateBox.Name = "UpdateBox";
             UpdateBox.Size = new Size(35, 21);
-            UpdateBox.TabIndex = 19;
+            UpdateBox.TabIndex = 35;
             UpdateBox.Text = "  ";
             OGCtoolTip.SetToolTip(UpdateBox, "Update ?");
             UpdateBox.UseVisualStyleBackColor = true;
@@ -999,7 +1000,7 @@
             EPSG4326.Margin = new Padding(4);
             EPSG4326.Name = "EPSG4326";
             EPSG4326.Size = new Size(35, 21);
-            EPSG4326.TabIndex = 14;
+            EPSG4326.TabIndex = 34;
             EPSG4326.Text = "  ";
             EPSG4326.ThreeState = true;
             OGCtoolTip.SetToolTip(EPSG4326, "EPSG:4326 ?\r\nGeographic coordinate system");
@@ -1018,7 +1019,7 @@
             wmtsSpider.Margin = new Padding(4);
             wmtsSpider.Name = "wmtsSpider";
             wmtsSpider.Size = new Size(67, 34);
-            wmtsSpider.TabIndex = 18;
+            wmtsSpider.TabIndex = 49;
             OGCtoolTip.SetToolTip(wmtsSpider, "Spider\r\nPush to database?");
             wmtsSpider.UseVisualStyleBackColor = true;
             wmtsSpider.CheckedChanged += WmtsSpider_CheckedChanged;
@@ -1092,7 +1093,7 @@
             Reindex.Margin = new Padding(0);
             Reindex.Name = "Reindex";
             Reindex.Size = new Size(51, 38);
-            Reindex.TabIndex = 24;
+            Reindex.TabIndex = 17;
             OGCtoolTip.SetToolTip(Reindex, "Reindex");
             Reindex.UseVisualStyleBackColor = false;
             Reindex.Click += ReIndex_Click;
@@ -1109,7 +1110,7 @@
             ReClean.Margin = new Padding(0);
             ReClean.Name = "ReClean";
             ReClean.Size = new Size(51, 38);
-            ReClean.TabIndex = 24;
+            ReClean.TabIndex = 16;
             OGCtoolTip.SetToolTip(ReClean, "ReClean");
             ReClean.UseVisualStyleBackColor = false;
             ReClean.Click += ReClean_Click;
@@ -1125,7 +1126,7 @@
             GeositeServerLink.Margin = new Padding(4);
             GeositeServerLink.Name = "GeositeServerLink";
             GeositeServerLink.Size = new Size(55, 112);
-            GeositeServerLink.TabIndex = 2;
+            GeositeServerLink.TabIndex = 12;
             OGCtoolTip.SetToolTip(GeositeServerLink, "Connect to GeositeServer");
             GeositeServerLink.UseVisualStyleBackColor = false;
             GeositeServerLink.Click += GeositeServerLink_Click;
@@ -1190,7 +1191,7 @@
             localTileOpen.Margin = new Padding(4);
             localTileOpen.Name = "localTileOpen";
             localTileOpen.Size = new Size(57, 51);
-            localTileOpen.TabIndex = 5;
+            localTileOpen.TabIndex = 26;
             OGCtoolTip.SetToolTip(localTileOpen, "Open a folder");
             localTileOpen.UseVisualStyleBackColor = false;
             localTileOpen.Click += LocalTileOpen_Click;
@@ -1207,7 +1208,7 @@
             TileFormatSave.Margin = new Padding(4);
             TileFormatSave.Name = "TileFormatSave";
             TileFormatSave.Size = new Size(52, 48);
-            TileFormatSave.TabIndex = 28;
+            TileFormatSave.TabIndex = 57;
             OGCtoolTip.SetToolTip(TileFormatSave, "Save to");
             TileFormatSave.UseVisualStyleBackColor = false;
             TileFormatSave.Click += TileFormatSave_Click;
@@ -1224,7 +1225,7 @@
             TileFormatOpen.Margin = new Padding(4);
             TileFormatOpen.Name = "TileFormatOpen";
             TileFormatOpen.Size = new Size(52, 48);
-            TileFormatOpen.TabIndex = 27;
+            TileFormatOpen.TabIndex = 55;
             OGCtoolTip.SetToolTip(TileFormatOpen, "Open a folder");
             TileFormatOpen.UseVisualStyleBackColor = false;
             TileFormatOpen.Click += TileFormatOpen_Click;
@@ -1380,7 +1381,7 @@
             GeositeServerPanel.Location = new Point(3, 19);
             GeositeServerPanel.Name = "GeositeServerPanel";
             GeositeServerPanel.Size = new Size(63, 103);
-            GeositeServerPanel.TabIndex = 0;
+            GeositeServerPanel.TabIndex = 100;
             OGCtoolTip.SetToolTip(GeositeServerPanel, "Explore GeositeServer");
             GeositeServerPanel.Click += GeositeServerPanel_Click;
             // 
@@ -1393,7 +1394,7 @@
             groupBox3.Name = "groupBox3";
             groupBox3.Padding = new Padding(4);
             groupBox3.Size = new Size(332, 45);
-            groupBox3.TabIndex = 26;
+            groupBox3.TabIndex = 53;
             groupBox3.TabStop = false;
             groupBox3.Text = "Tile size";
             OGCtoolTip.SetToolTip(groupBox3, "Between 10～4096");
@@ -1429,7 +1430,7 @@
             PostgresRun.Margin = new Padding(4);
             PostgresRun.Name = "PostgresRun";
             PostgresRun.Size = new Size(68, 71);
-            PostgresRun.TabIndex = 14;
+            PostgresRun.TabIndex = 0;
             PostgresRun.UseVisualStyleBackColor = false;
             PostgresRun.Click += PostgresRun_Click;
             // 
@@ -1442,7 +1443,7 @@
             tilewebapi.Name = "tilewebapi";
             tilewebapi.PlaceholderText = "e.g. https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
             tilewebapi.Size = new Size(726, 23);
-            tilewebapi.TabIndex = 30;
+            tilewebapi.TabIndex = 39;
             tilewebapi.TextChanged += TileWebApi_TextChanged;
             // 
             // FileSaveGroupBox
@@ -1456,7 +1457,7 @@
             FileSaveGroupBox.Name = "FileSaveGroupBox";
             FileSaveGroupBox.Padding = new Padding(4);
             FileSaveGroupBox.Size = new Size(974, 70);
-            FileSaveGroupBox.TabIndex = 15;
+            FileSaveGroupBox.TabIndex = 5;
             FileSaveGroupBox.TabStop = false;
             FileSaveGroupBox.Text = "Save";
             // 
@@ -1538,7 +1539,7 @@
             groupBox4.Margin = new Padding(4);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(974, 455);
-            groupBox4.TabIndex = 14;
+            groupBox4.TabIndex = 1;
             groupBox4.TabStop = false;
             groupBox4.Text = "Open";
             // 
@@ -1674,7 +1675,7 @@
             FileGridView.ReadOnly = true;
             FileGridView.RowHeadersWidth = 36;
             FileGridView.Size = new Size(271, 336);
-            FileGridView.TabIndex = 17;
+            FileGridView.TabIndex = 2;
             FileGridView.CellContentClick += FileGridView_CellContentClick;
             FileGridView.RowsAdded += FileGridView_RowsAdded;
             FileGridView.RowsRemoved += FileGridView_RowsRemoved;
@@ -1838,7 +1839,7 @@
             FileMapSplitContainer.Size = new Size(677, 341);
             FileMapSplitContainer.SplitterDistance = 225;
             FileMapSplitContainer.SplitterWidth = 6;
-            FileMapSplitContainer.TabIndex = 0;
+            FileMapSplitContainer.TabIndex = 3;
             // 
             // panel12
             // 
@@ -1929,7 +1930,7 @@
             MapGridNone.CheckOnClick = true;
             MapGridNone.CheckState = CheckState.Checked;
             MapGridNone.Name = "MapGridNone";
-            MapGridNone.Size = new Size(180, 22);
+            MapGridNone.Size = new Size(135, 22);
             MapGridNone.Tag = "None";
             MapGridNone.Text = "None";
             MapGridNone.Click += MapGridMenuItem_Click;
@@ -1937,13 +1938,13 @@
             // toolStripSeparator15
             // 
             toolStripSeparator15.Name = "toolStripSeparator15";
-            toolStripSeparator15.Size = new Size(177, 6);
+            toolStripSeparator15.Size = new Size(132, 6);
             // 
             // MapGridAuto
             // 
             MapGridAuto.CheckOnClick = true;
             MapGridAuto.Name = "MapGridAuto";
-            MapGridAuto.Size = new Size(180, 22);
+            MapGridAuto.Size = new Size(135, 22);
             MapGridAuto.Tag = "Auto";
             MapGridAuto.Text = "Auto";
             MapGridAuto.Click += MapGridMenuItem_Click;
@@ -1951,13 +1952,13 @@
             // toolStripSeparator16
             // 
             toolStripSeparator16.Name = "toolStripSeparator16";
-            toolStripSeparator16.Size = new Size(177, 6);
+            toolStripSeparator16.Size = new Size(132, 6);
             // 
             // MapGrid1000000
             // 
             MapGrid1000000.CheckOnClick = true;
             MapGrid1000000.Name = "MapGrid1000000";
-            MapGrid1000000.Size = new Size(180, 22);
+            MapGrid1000000.Size = new Size(135, 22);
             MapGrid1000000.Tag = "1000000";
             MapGrid1000000.Text = "1:1000000";
             MapGrid1000000.Click += MapGridMenuItem_Click;
@@ -1966,7 +1967,7 @@
             // 
             MapGrid500000.CheckOnClick = true;
             MapGrid500000.Name = "MapGrid500000";
-            MapGrid500000.Size = new Size(180, 22);
+            MapGrid500000.Size = new Size(135, 22);
             MapGrid500000.Tag = "500000";
             MapGrid500000.Text = "1:500000";
             MapGrid500000.Click += MapGridMenuItem_Click;
@@ -1975,7 +1976,7 @@
             // 
             MapGrid250000.CheckOnClick = true;
             MapGrid250000.Name = "MapGrid250000";
-            MapGrid250000.Size = new Size(180, 22);
+            MapGrid250000.Size = new Size(135, 22);
             MapGrid250000.Tag = "250000";
             MapGrid250000.Text = "1:250000";
             MapGrid250000.Click += MapGridMenuItem_Click;
@@ -1984,7 +1985,7 @@
             // 
             MapGrid200000.CheckOnClick = true;
             MapGrid200000.Name = "MapGrid200000";
-            MapGrid200000.Size = new Size(180, 22);
+            MapGrid200000.Size = new Size(135, 22);
             MapGrid200000.Tag = "200000";
             MapGrid200000.Text = "1:200000";
             MapGrid200000.Click += MapGridMenuItem_Click;
@@ -1993,7 +1994,7 @@
             // 
             MapGrid100000.CheckOnClick = true;
             MapGrid100000.Name = "MapGrid100000";
-            MapGrid100000.Size = new Size(180, 22);
+            MapGrid100000.Size = new Size(135, 22);
             MapGrid100000.Tag = "100000";
             MapGrid100000.Text = "1:100000";
             MapGrid100000.Click += MapGridMenuItem_Click;
@@ -2002,7 +2003,7 @@
             // 
             MapGrid50000.CheckOnClick = true;
             MapGrid50000.Name = "MapGrid50000";
-            MapGrid50000.Size = new Size(180, 22);
+            MapGrid50000.Size = new Size(135, 22);
             MapGrid50000.Tag = "50000";
             MapGrid50000.Text = "1:50000";
             MapGrid50000.Click += MapGridMenuItem_Click;
@@ -2011,7 +2012,7 @@
             // 
             MapGrid25000.CheckOnClick = true;
             MapGrid25000.Name = "MapGrid25000";
-            MapGrid25000.Size = new Size(180, 22);
+            MapGrid25000.Size = new Size(135, 22);
             MapGrid25000.Tag = "25000";
             MapGrid25000.Text = "1:25000";
             MapGrid25000.Click += MapGridMenuItem_Click;
@@ -2019,13 +2020,13 @@
             // toolStripSeparator17
             // 
             toolStripSeparator17.Name = "toolStripSeparator17";
-            toolStripSeparator17.Size = new Size(177, 6);
+            toolStripSeparator17.Size = new Size(132, 6);
             // 
             // MapGrid10000
             // 
             MapGrid10000.CheckOnClick = true;
             MapGrid10000.Name = "MapGrid10000";
-            MapGrid10000.Size = new Size(180, 22);
+            MapGrid10000.Size = new Size(135, 22);
             MapGrid10000.Tag = "10000";
             MapGrid10000.Text = "1:10000";
             MapGrid10000.Click += MapGridMenuItem_Click;
@@ -2034,7 +2035,7 @@
             // 
             MapGrid5000.CheckOnClick = true;
             MapGrid5000.Name = "MapGrid5000";
-            MapGrid5000.Size = new Size(180, 22);
+            MapGrid5000.Size = new Size(135, 22);
             MapGrid5000.Tag = "5000";
             MapGrid5000.Text = "1:5000";
             MapGrid5000.Click += MapGridMenuItem_Click;
@@ -2213,7 +2214,7 @@
             MapBox.Location = new Point(0, 0);
             MapBox.Margin = new Padding(0);
             MapBox.MarkersEnabled = true;
-            MapBox.MaxZoom = 18;
+            MapBox.MaxZoom = 24;
             MapBox.MinZoom = 0;
             MapBox.MouseWheelZoomEnabled = true;
             MapBox.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionWithoutCenter;
@@ -2226,7 +2227,7 @@
             MapBox.SelectedAreaFillColor = Color.FromArgb(33, 65, 105, 225);
             MapBox.ShowTileGridLines = false;
             MapBox.Size = new Size(677, 188);
-            MapBox.TabIndex = 0;
+            MapBox.TabIndex = 6;
             MapBox.Zoom = 5D;
             MapBox.Load += MapBox_Load;
             MapBox.KeyUp += MapBox_KeyUp;
@@ -2234,9 +2235,9 @@
             // MapBoxMenuStrip
             // 
             MapBoxMenuStrip.ImageScalingSize = new Size(24, 24);
-            MapBoxMenuStrip.Items.AddRange(new ToolStripItem[] { MapBoxClearMenuItem, MapBoxBreakTaskMenuItem, toolStripSeparator21, MapBoxZoomMenuItem, MapBearingMenuItem, toolStripSeparator6, MapBoxClearCacheMenuItem, toolStripSeparator22, MapBoxSaveAS });
+            MapBoxMenuStrip.Items.AddRange(new ToolStripItem[] { MapBoxClearMenuItem, MapBoxBreakTaskMenuItem, toolStripSeparator21, MapBoxFullScreenMenuItem, MapBoxZoomMenuItem, MapBearingMenuItem, toolStripSeparator6, MapBoxClearCacheMenuItem, toolStripSeparator22, MapBoxSaveAS });
             MapBoxMenuStrip.Name = "MapBoxMenuStrip";
-            MapBoxMenuStrip.Size = new Size(202, 166);
+            MapBoxMenuStrip.Size = new Size(202, 212);
             // 
             // MapBoxClearMenuItem
             // 
@@ -2260,6 +2261,15 @@
             // 
             toolStripSeparator21.Name = "toolStripSeparator21";
             toolStripSeparator21.Size = new Size(198, 6);
+            // 
+            // MapBoxFullScreenMenuItem
+            // 
+            MapBoxFullScreenMenuItem.Image = (Image)resources.GetObject("MapBoxFullScreenMenuItem.Image");
+            MapBoxFullScreenMenuItem.ImageScaling = ToolStripItemImageScaling.None;
+            MapBoxFullScreenMenuItem.Name = "MapBoxFullScreenMenuItem";
+            MapBoxFullScreenMenuItem.Size = new Size(201, 24);
+            MapBoxFullScreenMenuItem.Text = "Full Screen";
+            MapBoxFullScreenMenuItem.Click += MapBoxMenuItem_Click;
             // 
             // MapBoxZoomMenuItem
             // 
@@ -2364,7 +2374,7 @@
             tabControl3.Name = "tabControl3";
             tabControl3.SelectedIndex = 0;
             tabControl3.Size = new Size(677, 110);
-            tabControl3.TabIndex = 0;
+            tabControl3.TabIndex = 4;
             // 
             // FeatureContent
             // 
@@ -2388,7 +2398,7 @@
             MapBoxProperty.Name = "MapBoxProperty";
             MapBoxProperty.ReadOnly = true;
             MapBoxProperty.Size = new Size(663, 74);
-            MapBoxProperty.TabIndex = 20;
+            MapBoxProperty.TabIndex = 7;
             MapBoxProperty.Text = "";
             // 
             // FeatureStyle
@@ -2413,7 +2423,7 @@
             MapBoxStyle.Name = "MapBoxStyle";
             MapBoxStyle.ReadOnly = true;
             MapBoxStyle.Size = new Size(663, 74);
-            MapBoxStyle.TabIndex = 0;
+            MapBoxStyle.TabIndex = 8;
             MapBoxStyle.Text = "";
             // 
             // TileLoadProgressBar
@@ -2751,7 +2761,7 @@
             DatabaseTabControl.Name = "DatabaseTabControl";
             DatabaseTabControl.SelectedIndex = 0;
             DatabaseTabControl.Size = new Size(642, 221);
-            DatabaseTabControl.TabIndex = 0;
+            DatabaseTabControl.TabIndex = 13;
             DatabaseTabControl.SelectedIndexChanged += DatabaseTabControl_SelectedIndexChanged;
             // 
             // LayerPage
@@ -2900,7 +2910,7 @@
             DatabaseGridView.RowTemplate.Resizable = DataGridViewTriState.False;
             DatabaseGridView.ShowCellToolTips = false;
             DatabaseGridView.Size = new Size(619, 144);
-            DatabaseGridView.TabIndex = 20;
+            DatabaseGridView.TabIndex = 14;
             DatabaseGridView.CellBeginEdit += DataPool_CellBeginEdit;
             DatabaseGridView.CellClick += DataPool_CellClick;
             DatabaseGridView.CellEndEdit += DataPool_CellEndEdit;
@@ -3170,7 +3180,7 @@
             CatalogTreeView.Name = "CatalogTreeView";
             CatalogTreeView.ShowNodeToolTips = true;
             CatalogTreeView.Size = new Size(628, 185);
-            CatalogTreeView.TabIndex = 0;
+            CatalogTreeView.TabIndex = 15;
             CatalogTreeView.AfterLabelEdit += CatalogTreeView_AfterLabelEdit;
             CatalogTreeView.BeforeExpand += CatalogTreeView_BeforeExpand;
             CatalogTreeView.KeyUp += CatalogTreeView_KeyUp;
@@ -3313,7 +3323,7 @@
             dataCards.Name = "dataCards";
             dataCards.SelectedIndex = 0;
             dataCards.Size = new Size(899, 340);
-            dataCards.TabIndex = 20;
+            dataCards.TabIndex = 24;
             // 
             // RasterPage
             // 
@@ -3350,7 +3360,7 @@
             groupBox1.Size = new Size(618, 61);
             groupBox1.TabIndex = 18;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Layer Name";
+            groupBox1.Text = "Theme name of the layer";
             // 
             // themeNameBox
             // 
@@ -3360,7 +3370,7 @@
             themeNameBox.Margin = new Padding(4);
             themeNameBox.Name = "themeNameBox";
             themeNameBox.Size = new Size(602, 23);
-            themeNameBox.TabIndex = 30;
+            themeNameBox.TabIndex = 36;
             themeNameBox.TextChanged += ThemeNameBox_TextChanged;
             // 
             // method
@@ -3401,7 +3411,7 @@
             tileLevels.Margin = new Padding(4);
             tileLevels.Name = "tileLevels";
             tileLevels.Size = new Size(85, 25);
-            tileLevels.TabIndex = 13;
+            tileLevels.TabIndex = 33;
             tileLevels.SelectedIndexChanged += FormEventChanged;
             // 
             // tilesource
@@ -3417,7 +3427,7 @@
             tilesource.Name = "tilesource";
             tilesource.SelectedIndex = 0;
             tilesource.Size = new Size(883, 224);
-            tilesource.TabIndex = 18;
+            tilesource.TabIndex = 25;
             tilesource.SelectedIndexChanged += TileSource_SelectedIndexChanged;
             // 
             // LocalTilePage
@@ -3760,7 +3770,7 @@
             subdomainsBox.Name = "subdomainsBox";
             subdomainsBox.PlaceholderText = "e.g. abc";
             subdomainsBox.Size = new Size(68, 23);
-            subdomainsBox.TabIndex = 37;
+            subdomainsBox.TabIndex = 40;
             subdomainsBox.TextChanged += FormEventChanged;
             // 
             // label5
@@ -3786,7 +3796,7 @@
             wmtsMaxZoom.Margin = new Padding(4);
             wmtsMaxZoom.Name = "wmtsMaxZoom";
             wmtsMaxZoom.Size = new Size(55, 25);
-            wmtsMaxZoom.TabIndex = 13;
+            wmtsMaxZoom.TabIndex = 43;
             wmtsMaxZoom.Tag = "18";
             wmtsMaxZoom.SelectedIndexChanged += WmtsMaxZoom_SelectedIndexChanged;
             // 
@@ -3802,7 +3812,7 @@
             wmtsMinZoom.Margin = new Padding(4);
             wmtsMinZoom.Name = "wmtsMinZoom";
             wmtsMinZoom.Size = new Size(55, 25);
-            wmtsMinZoom.TabIndex = 13;
+            wmtsMinZoom.TabIndex = 42;
             wmtsMinZoom.Tag = "0";
             wmtsMinZoom.SelectedIndexChanged += WmtsMinZoom_SelectedIndexChanged;
             // 
@@ -3899,7 +3909,7 @@
             nodatabox.Margin = new Padding(4);
             nodatabox.Name = "nodatabox";
             nodatabox.Size = new Size(316, 16);
-            nodatabox.TabIndex = 2;
+            nodatabox.TabIndex = 54;
             nodatabox.Text = "-32768";
             nodatabox.MouseLeave += nodatabox_MouseLeave;
             // 
@@ -3926,7 +3936,7 @@
             ModelOpenTextBox.ReadOnly = true;
             ModelOpenTextBox.ScrollBars = ScrollBars.Vertical;
             ModelOpenTextBox.Size = new Size(684, 43);
-            ModelOpenTextBox.TabIndex = 12;
+            ModelOpenTextBox.TabIndex = 51;
             ModelOpenTextBox.TextChanged += ModelOpenTextBox_TextChanged;
             ModelOpenTextBox.DoubleClick += ModelOpen_Click;
             // 
@@ -4027,7 +4037,7 @@
             maptilertoogc.Margin = new Padding(4);
             maptilertoogc.Name = "maptilertoogc";
             maptilertoogc.Size = new Size(179, 21);
-            maptilertoogc.TabIndex = 2;
+            maptilertoogc.TabIndex = 59;
             maptilertoogc.TabStop = true;
             maptilertoogc.Text = "Maptiler ----> Standard";
             maptilertoogc.TextAlign = ContentAlignment.MiddleRight;
@@ -4042,7 +4052,7 @@
             mapcrunchertoogc.Margin = new Padding(4);
             mapcrunchertoogc.Name = "mapcrunchertoogc";
             mapcrunchertoogc.Size = new Size(179, 21);
-            mapcrunchertoogc.TabIndex = 3;
+            mapcrunchertoogc.TabIndex = 60;
             mapcrunchertoogc.Text = "Mapcruncher -> Standard";
             mapcrunchertoogc.TextAlign = ContentAlignment.MiddleRight;
             mapcrunchertoogc.UseVisualStyleBackColor = true;
@@ -4056,7 +4066,7 @@
             ogctomapcruncher.Margin = new Padding(4);
             ogctomapcruncher.Name = "ogctomapcruncher";
             ogctomapcruncher.Size = new Size(179, 21);
-            ogctomapcruncher.TabIndex = 4;
+            ogctomapcruncher.TabIndex = 61;
             ogctomapcruncher.Text = "Standard -> Mapcruncher";
             ogctomapcruncher.TextAlign = ContentAlignment.MiddleRight;
             ogctomapcruncher.UseVisualStyleBackColor = true;
@@ -4070,7 +4080,7 @@
             ogctomaptiler.Margin = new Padding(4);
             ogctomaptiler.Name = "ogctomaptiler";
             ogctomaptiler.Size = new Size(179, 21);
-            ogctomaptiler.TabIndex = 5;
+            ogctomaptiler.TabIndex = 62;
             ogctomaptiler.Text = "Standard ----> Maptiler";
             ogctomaptiler.TextAlign = ContentAlignment.MiddleRight;
             ogctomaptiler.UseVisualStyleBackColor = true;
@@ -4085,7 +4095,7 @@
             TileFormatSaveBox.Name = "TileFormatSaveBox";
             TileFormatSaveBox.ReadOnly = true;
             TileFormatSaveBox.Size = new Size(440, 23);
-            TileFormatSaveBox.TabIndex = 0;
+            TileFormatSaveBox.TabIndex = 58;
             TileFormatSaveBox.TextChanged += TileFormatChanged;
             TileFormatSaveBox.DoubleClick += TileFormatSave_Click;
             // 
@@ -4099,7 +4109,7 @@
             TileFormatOpenBox.Name = "TileFormatOpenBox";
             TileFormatOpenBox.ReadOnly = true;
             TileFormatOpenBox.Size = new Size(440, 23);
-            TileFormatOpenBox.TabIndex = 0;
+            TileFormatOpenBox.TabIndex = 56;
             TileFormatOpenBox.TextChanged += TileFormatChanged;
             TileFormatOpenBox.DoubleClick += TileFormatOpen_Click;
             // 
@@ -4480,6 +4490,7 @@
             // 
             // MainForm
             // 
+            AcceptButton = PostgresRun;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
@@ -4989,6 +5000,7 @@
         private DataGridViewImageColumn ThemeStatus;
         private DataGridViewImageColumn ThemeType;
         private DataGridViewImageColumn ThemeView;
+        private ToolStripMenuItem MapBoxFullScreenMenuItem;
     }
 }
 
