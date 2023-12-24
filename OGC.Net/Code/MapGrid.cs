@@ -126,7 +126,7 @@ namespace Geosite
                     e.Cancel = true;
                     return;
                 }
-                Application.DoEvents();
+                //Application.DoEvents();
                 lock (Features.Routes)
                 {
                     Features.Routes.Add(
@@ -154,7 +154,7 @@ namespace Geosite
                     e.Cancel = true;
                     return;
                 }
-                Application.DoEvents();
+                //Application.DoEvents();
                 lock (Features.Routes)
                 {
                     Features.Routes.Add(

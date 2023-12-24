@@ -694,11 +694,9 @@ namespace Geosite
                         {
                             var progress = thisEvent.Progress;
                             if (progress == null)
-                                _backgroundWorker.ReportProgress(percentProgress: -1,
-                                    userState: thisEvent.Message ?? string.Empty);
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: thisEvent.Message ?? string.Empty);
                         };
-                        var count = GeositeXmlView(
-                            features: xml.GeositeXmlToGeositeXml(geositeXml: xml.GetTree(input: _path)).Root);
+                        var count = GeositeXmlView(features: xml.GeositeXmlToGeositeXml(geositeXml: xml.GetTree(input: _path)).Root);
                         _backgroundWorker.ReportProgress(percentProgress: -1,
                             userState: $@"{count} valid feature" + (count > 1 ? "s" : "") +
                                        $" in {Path.GetFileName(path: _path)}");
@@ -724,13 +722,14 @@ namespace Geosite
                         {
                             var progress = thisEvent.Progress;
                             if (progress == null)
-                                _backgroundWorker.ReportProgress(percentProgress: -1,
-                                    userState: thisEvent.Message ?? string.Empty);
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: thisEvent.Message ?? string.Empty);
                         };
                         var count = GeositeXmlView(features: kml.KmlToGeositeXml(kml: kml.GetTree(input: _path)).Root);
-                        _backgroundWorker.ReportProgress(percentProgress: -1,
+                        _backgroundWorker.ReportProgress(
+                            percentProgress: -1,
                             userState:
-                            $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}");
+                            $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}"
+                        );
                     }
                     catch (Exception error)
                     {
@@ -752,17 +751,18 @@ namespace Geosite
                         {
                             var progress = thisEvent.Progress;
                             if (progress == null)
-                                _backgroundWorker.ReportProgress(percentProgress: -1,
-                                    userState: thisEvent.Message ?? string.Empty);
+                                _backgroundWorker.ReportProgress(percentProgress: -1, userState: thisEvent.Message ?? string.Empty);
                         };
                         var getGeositeXml = new StringBuilder();
                         geoJsonObject.GeoJsonToGeositeXml(input: _path, output: getGeositeXml);
                         if (getGeositeXml.Length > 0)
                         {
                             var count = GeositeXmlView(features: XElement.Parse(text: getGeositeXml.ToString()));
-                            _backgroundWorker.ReportProgress(percentProgress: -1,
+                            _backgroundWorker.ReportProgress(
+                                percentProgress: -1,
                                 userState:
-                                $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}");
+                                $@"{count} valid feature{(count > 1 ? "s" : "")} in {Path.GetFileName(path: _path)}"
+                            );
                         }
                     }
                     catch (Exception error)
@@ -778,7 +778,7 @@ namespace Geosite
                 }
                 default:
                 {
-                    //文档树要素类型码构成的数组（类型码约定：
+                    //文档树要素类型码构成的数组类型码约定：
                     //0：非空间数据【默认】 ✔
                     //1：Point点 ✔
                     //2：Line线 ✔
@@ -813,31 +813,42 @@ namespace Geosite
                     var webApi = geositeServerArray[0];
                     var layer = geositeServerArray[1];
                     var leaf = geositeServerArray[2];
-                    if (typeArray.Contains(value: "0") || typeArray.Contains(value: "1") || typeArray.Contains(value: "2") ||
+                    if (typeArray.Contains(value: "0") || typeArray.Contains(value: "1") ||
+                        typeArray.Contains(value: "2") ||
                         typeArray.Contains(value: "3") || typeArray.Contains(value: "4"))
                     {
                         //WFS服务模板示例：http://localhost:5000/getFeature?service=wfs&resultType=hits&typeNames=a.b&outputFormat=2&count=100
+                        //按 OGC-WFS 2.0 版调用getFeature接口，每页按100个要素传输
                         var callPath = $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}&token={token}";
                         _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
-                        var getResponse = new WebProxy().Call(
-                            path: callPath,
-                            timeout: 36000
-                        );
+                        var getResponse = new WebProxy().Call(path: callPath, timeout: 36000);
                         if (getResponse.IsSuccessful)
                         {
                             var content = getResponse.Content;
-                            if (content != null)
+                            if (!string.IsNullOrWhiteSpace(content))
                             {
+                                /*  针对 resultType=hits 而言，numberOfFeatures === numberMatched
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <FeatureCollection version="2.0.0" timeStamp="2023-12-21T12:16:13" numberOfFeatures="1350" numberMatched="1350" numberReturned="0" estimate="false" next="http://localhost:8088?Service=wfs&amp;Request=getFeature&amp;StartIndex=0&amp;ResultType=results&amp;outputFormat=2&amp;typeNames=test.shapefile.grid&amp;token=AwEDN3Izs0czM2QTt0MO4wSOMkQAMz1yQDMkLTLO1yK" />                                 
+                                */
                                 var geositeXml = XElement.Parse(text: content);
-                                if (int.TryParse(s: geositeXml.Attribute(name: "numberMatched")?.Value, result: out var numberMatched) &&
-                                    numberMatched > 0)
+                                if (long.TryParse(s: geositeXml.Attribute(name: "numberMatched")?.Value, result: out var numberMatched) && numberMatched != 0)
                                 {
                                     if (!bool.TryParse(value: geositeXml.Attribute(name: "estimate")?.Value, result: out var estimate))
                                         estimate = false;
                                     _backgroundWorker.ReportProgress(
                                         percentProgress: -1,
                                         userState:
-                                        $@"{(estimate ? "About " : "")}[{numberMatched}] feature{(numberMatched > 1 ? "s" : "")} found, loading ...");
+                                        $@"{(estimate ? "About " : "")}[{numberMatched}] feature{(numberMatched > 1 ? "s" : "")} found, loading ..."
+                                    );
+
+                                    var north = double.MinValue;
+                                    var south = double.MaxValue;
+                                    var west = double.MaxValue;
+                                    var east = double.MinValue;
+
+                                    var currentBounds = _mainForm.MapBox.BoundsOfMap;
+
                                     var next = geositeXml.Attribute(name: "next")?.Value;
                                     while (!string.IsNullOrWhiteSpace(value: next))
                                     {
@@ -847,21 +858,14 @@ namespace Geosite
                                             return;
                                         }
                                         _backgroundWorker.ReportProgress(percentProgress: -1, userState: next);
-                                        var theCount = count;
-                                        var tip = $"{theCount} / {numberMatched} features loading ...";
-                                        //_backgroundWorker.ReportProgress(
-                                        //    percentProgress: -1,
-                                        //    userState:
-                                        //    tip);
-                                        _mainForm.MapBox.BeginInvoke(method: () =>
-                                        {
-                                            _mainForm.SetStatusText(text: tip);
-                                        });
-                                        Application.DoEvents();
-                                        getResponse = new WebProxy().Call(
-                                            path: next,
-                                            timeout: 0
+                                        var tip = $"{count} / {numberMatched} feature{(count > 1 ? "s" : "")} loading ...";
+                                        _mainForm.MapBox.BeginInvoke(
+                                            method: () =>
+                                            {
+                                                _mainForm.SetStatusText(text: tip);
+                                            }
                                         );
+                                        getResponse = new WebProxy().Call(path: next, timeout: 0);
                                         if (getResponse.IsSuccessful)
                                         {
                                             content = getResponse.Content;
@@ -869,59 +873,62 @@ namespace Geosite
                                             {
                                                 geositeXml = XElement.Parse(text: content);
                                                 next = geositeXml.Attribute(name: "next")?.Value;
-                                                if (!int.TryParse(s: geositeXml.Attribute(name: "numberReturned")?.Value,
-                                                        result: out var numberReturned))
+                                                if (!int.TryParse(s: geositeXml.Attribute(name: "numberReturned")?.Value, result: out var numberReturned))
                                                     numberReturned = 0;
                                                 if (numberReturned > 0)
                                                 {
-                                                    if (count == 0L)
+                                                    /*
+                                                        <boundary srsName="EPSG:4326" xmlns="">
+                                                        <north>-89.999722</north>
+                                                        <south>-90.000278</south>
+                                                        <west>-180</west>
+                                                        <east>-80</east>
+                                                        </boundary>                                                         
+                                                    */
+                                                    var bbox = geositeXml.Element(name: "boundary");
+                                                    if (bbox != null)
                                                     {
-                                                        var bbox = geositeXml.Element(name: "boundary");
-                                                        if (bbox != null)
+                                                        if (double.TryParse(s: bbox.Element(name: "north")?.Value, result: out var theNorth))
                                                         {
-                                                            if (double.TryParse(s: bbox.Element(name: "north")?.Value,
-                                                                    result: out var north))
+                                                            if (double.TryParse(s: bbox.Element(name: "south")?.Value, result: out var theSouth))
                                                             {
-                                                                if (double.TryParse(
-                                                                        s: bbox.Element(name: "south")?.Value,
-                                                                        result: out var south))
+                                                                if (double.TryParse(s: bbox.Element(name: "west")?.Value, result: out var theWest))
                                                                 {
-                                                                    if (double.TryParse(
-                                                                            s: bbox.Element(name: "west")?.Value,
-                                                                            result: out var west))
+                                                                    if (double.TryParse(s: bbox.Element(name: "east")?.Value, result: out var theEast))
                                                                     {
-                                                                        if (double.TryParse(
-                                                                                s: bbox.Element(name: "east")?.Value,
-                                                                                result: out var east))
-                                                                        {
-                                                                            if (west is > 180 or < -180 || west > east)
-                                                                                west = -180;
-                                                                            if (east is > 180 or < -180 || west > east)
-                                                                                east = 180;
-                                                                            if (south is > 90 or < -90 || south > north)
-                                                                                south = -90;
-                                                                            if (north is > 90 or < -90 || south > north)
-                                                                                north = 90;
-                                                                            _mainForm.MapBox.BeginInvoke(
-                                                                                method: () =>
-                                                                                {
-                                                                                    _mainForm.MapBox.SetZoomToFitRect(
-                                                                                        rect: RectLatLng.FromLTRB(
-                                                                                            leftLng: west,
-                                                                                            topLat: north,
-                                                                                            rightLng: east,
-                                                                                            bottomLat: south
-                                                                                        )
-                                                                                    );
-                                                                                }
-                                                                            );
-                                                                        }
+                                                                        if (theWest is > 180 or < -180 || theWest > theEast)
+                                                                            theWest = -180;
+                                                                        if (theWest < west)
+                                                                            west = theWest;
+
+                                                                        if (theEast is > 180 or < -180 || theWest > theEast)
+                                                                            theEast = 180;
+                                                                        if (theEast > east)
+                                                                            east = theEast;
+
+                                                                        if (theSouth is > 90 or < -90 || theSouth > theNorth)
+                                                                            theSouth = -90;
+                                                                        if (theSouth < south)
+                                                                            south = theSouth;
+
+                                                                        if (theNorth is > 90 or < -90 || theSouth > theNorth)
+                                                                            theNorth = 90;
+                                                                        if (theNorth > north)
+                                                                            north = theNorth;
                                                                     }
                                                                 }
                                                             }
                                                         }
                                                     }
-                                                    count += GeositeXmlView(features: geositeXml, realZoom: false);
+
+                                                    count += numberReturned;
+                                                    var xml = geositeXml;
+                                                    _mainForm.MapBox.BeginInvoke(
+                                                        method: () =>
+                                                        {
+                                                            GeositeXmlView(features: xml, realZoom: false);
+                                                        }
+                                                    );
                                                 }
                                                 else
                                                     next = null;
@@ -931,6 +938,25 @@ namespace Geosite
                                         }
                                         else
                                             next = null;
+                                    }
+
+                                    if (count > 0)
+                                    {
+                                        var nowBounds = _mainForm.MapBox.BoundsOfMap;
+                                        if (nowBounds == currentBounds)
+                                            _mainForm.MapBox.BeginInvoke(
+                                                method: () =>
+                                                {
+                                                    _mainForm.MapBox.SetZoomToFitRect(
+                                                        rect: RectLatLng.FromLTRB(
+                                                            leftLng: west,
+                                                            topLat: north,
+                                                            rightLng: east,
+                                                            bottomLat: south
+                                                        )
+                                                    );
+                                                }
+                                            );
                                     }
                                 }
                                 else
@@ -957,10 +983,7 @@ namespace Geosite
                             //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]
                             var callPath = $"{webApi}getTile?service=wms&layer={layer}&token={token}";
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
-                            var getResponse = new WebProxy().Call(
-                                path: callPath,
-                                timeout: 5000
-                            );
+                            var getResponse = new WebProxy().Call(path: callPath, timeout: 5000);
                             if (getResponse.IsSuccessful)
                             {
                                 var content = getResponse.Content;
@@ -1006,11 +1029,7 @@ namespace Geosite
                                         {
                                             new XAttribute(name: "type", value: "Tile"),
                                             //注：GeositeServer提供的getTile指令支持采用括号封闭的(叶子id)充当图层路由，这比常规方式更加高效
-                                            new XElement(
-                                                name: "wms",
-                                                content:
-                                                url
-                                            ),
+                                            new XElement(name: "wms", content: url),
                                             _property
                                         }),
                                     realZoom: false);
@@ -1025,14 +1044,18 @@ namespace Geosite
                         percentProgress: -1,
                         userState: resultMessage
                     );
-                    _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.SetStatusText(text: resultMessage); });
+                    _mainForm.MapBox.BeginInvoke(
+                        method: () =>
+                        {
+                            _mainForm.SetStatusText(text: resultMessage);
+                        });
                     break;
                 }
             }
 
             long FeaturesView(IEnumerable<JObject> features)
             {
-                var count = 0;
+                var featuresViewCount = 0;
                 features?.AsParallel().ForAll(
                     action: feature =>
                     {
@@ -1041,8 +1064,6 @@ namespace Geosite
                             e.Cancel = true;
                             return;
                         }
-
-                        Application.DoEvents();
                         /* feature 对象样例：
                         {
                             "type": "Feature",
@@ -1095,7 +1116,8 @@ namespace Geosite
                         */
                         if (feature != null)
                         {
-                            count++;
+                            //以原子操作的形式递增featuresViewCount变量的值并存储结果
+                            Interlocked.Increment(ref featuresViewCount);
                             _mainForm.MapBox.BeginInvoke(
                                 method: () =>
                                 {
@@ -1114,22 +1136,19 @@ namespace Geosite
                                                     case "Point":
                                                     case "MultiPoint":
                                                     {
-                                                        Point(type: type, coordinate: coordinate, property: property,
-                                                            style: style);
+                                                        Point(type: type, coordinate: coordinate, property: property, style: style);
                                                         break;
                                                     }
                                                     case "LineString":
                                                     case "MultiLineString":
                                                     {
-                                                        Line(type: type, coordinate: coordinate, property: property,
-                                                            style: style);
+                                                        Line(type: type, coordinate: coordinate, property: property, style: style);
                                                         break;
                                                     }
                                                     case "Polygon":
                                                     case "MultiPolygon":
                                                     {
-                                                        Polygon(type: type, coordinate: coordinate, property: property,
-                                                            style: style);
+                                                        Polygon(type: type, coordinate: coordinate, property: property, style: style);
                                                         break;
                                                     }
                                                 }
@@ -1145,12 +1164,12 @@ namespace Geosite
                         }
                     }
                 );
-                return count;
+                return featuresViewCount;
             }
 
             long GeositeXmlView(XElement features, bool realZoom = true)
             {
-                var count = 0;
+                var geositeXmlViewCount = 0;
                 if (features != null)
                 {
                     if (realZoom)
@@ -1202,9 +1221,8 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-
-                            Application.DoEvents();
-                            count++;
+                            //以原子操作的形式递增geositeXmlViewCount变量的值并存储结果
+                            Interlocked.Increment(ref geositeXmlViewCount);
                             _mainForm.MapBox.BeginInvoke(
                                 method: () =>
                                 {
@@ -1402,8 +1420,7 @@ namespace Geosite
                         }
                     );
                 }
-
-                return count;
+                return geositeXmlViewCount;
             }
         }
 

@@ -151,7 +151,7 @@ namespace Geosite
                             var status = row.Element("status")?.Value;
                             if (string.IsNullOrWhiteSpace(status))
                                 status = "4";  //如果仅存在【森林、树和枝干】，未发现叶子的话，强行取【-1】级别
-                            //var branch = row.Element("branch")?.Value;
+                            var branch = row.Element("branch")?.Value;
                             var layer = row.Element("layer")?.Value;
                             var rank = row.Element("rank")?.Value;
                             var leaf = row.Element("leaf")?.Value;
@@ -205,7 +205,6 @@ namespace Geosite
                             );
 
                             var propertyX = row.Element("property");
-                            //新增于2023年11月23日 西安
                             propertyX?.Add(
                                 new XElement(
                                     "type",
@@ -243,8 +242,8 @@ namespace Geosite
                                 {
                                     var index = _databaseGridView.Rows.Add(name, rank, statusBitmap, typeBitmap);
                                     _databaseGridView.Rows[index].Cells[0].ToolTipText = uri;
-                                    _databaseGridView.Rows[index].Cells[1].ToolTipText = $"{tree}\b{type}\b{layer}\b{leaf}\b{status}\b{timestamp}"; //修改于2023年4月24日 西安
-                                    _databaseGridView.Rows[index].Cells[1].Tag = propertyX; //新增于2023年4月17日 西安
+                                    _databaseGridView.Rows[index].Cells[1].ToolTipText = $"{tree}\b{type}\b{layer}\b{branch}\b{leaf}\b{status}\b{timestamp}"; 
+                                    _databaseGridView.Rows[index].Cells[1].Tag = propertyX; 
                                 }
                             );
                         }
