@@ -116,15 +116,13 @@ namespace Geosite
         {
             if (sender != null)
             {
-                var zoom = int.Parse(s: ((ToolStripMenuItem)sender).Text);
+                var zoom = int.Parse(s: ((ToolStripMenuItem)sender).Text!);
                 foreach (var item in SnapshotZoom.DropDownItems)
-                {
                     if (item.GetType().Name == "ToolStripMenuItem")
                     {
                         var theItem = (ToolStripMenuItem)item;
-                        theItem.Checked = int.Parse(s: theItem.Text) == zoom;
+                        theItem.Checked = int.Parse(s: theItem.Text!) == zoom;
                     }
-                }
                 SnapshotZoom.Text = $@"{zoom:00}";
             }
         }
@@ -222,7 +220,7 @@ namespace Geosite
                         _tileArea.AddRange(
                             collection: mapBox.MapProvider.Projection.GetAreaTileList(
                                 rect: _area,
-                                zoom: int.Parse(s: SnapshotZoom.Text),
+                                zoom: int.Parse(s: SnapshotZoom.Text!),
                                 padding: 0
                             )
                         );

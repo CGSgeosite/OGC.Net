@@ -41,6 +41,7 @@
             DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
             OGCtoolTip = new ToolTip(components);
             deleteTree = new Button();
             lastPage = new Button();
@@ -241,6 +242,7 @@
             ThemeStatus = new DataGridViewImageColumn();
             ThemeType = new DataGridViewImageColumn();
             ThemeView = new DataGridViewImageColumn();
+            ThemeExport = new DataGridViewImageColumn();
             DatabaseViewMenu = new ContextMenuStrip(components);
             DatabaseViewRename = new ToolStripMenuItem();
             toolStripSeparator12 = new ToolStripSeparator();
@@ -2237,7 +2239,7 @@
             MapBoxMenuStrip.ImageScalingSize = new Size(24, 24);
             MapBoxMenuStrip.Items.AddRange(new ToolStripItem[] { MapBoxClearMenuItem, MapBoxBreakTaskMenuItem, toolStripSeparator21, MapBoxFullScreenMenuItem, MapBoxZoomMenuItem, MapBearingMenuItem, toolStripSeparator6, MapBoxClearCacheMenuItem, toolStripSeparator22, MapBoxSaveAS });
             MapBoxMenuStrip.Name = "MapBoxMenuStrip";
-            MapBoxMenuStrip.Size = new Size(202, 212);
+            MapBoxMenuStrip.Size = new Size(202, 190);
             // 
             // MapBoxClearMenuItem
             // 
@@ -2900,7 +2902,7 @@
             DatabaseGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             DatabaseGridView.ColumnHeadersHeight = 36;
             DatabaseGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            DatabaseGridView.Columns.AddRange(new DataGridViewColumn[] { LayerName, ThemeRank, ThemeStatus, ThemeType, ThemeView });
+            DatabaseGridView.Columns.AddRange(new DataGridViewColumn[] { LayerName, ThemeRank, ThemeStatus, ThemeType, ThemeView, ThemeExport });
             DatabaseGridView.ContextMenuStrip = DatabaseViewMenu;
             DatabaseGridView.Location = new Point(-1, -1);
             DatabaseGridView.Margin = new Padding(4);
@@ -2969,13 +2971,28 @@
             dataGridViewCellStyle9.SelectionBackColor = Color.Transparent;
             dataGridViewCellStyle9.SelectionForeColor = Color.Transparent;
             ThemeView.DefaultCellStyle = dataGridViewCellStyle9;
-            ThemeView.HeaderText = "View";
+            ThemeView.HeaderText = "Preview";
             ThemeView.Image = (Image)resources.GetObject("ThemeView.Image");
             ThemeView.MinimumWidth = 16;
             ThemeView.Name = "ThemeView";
             ThemeView.ReadOnly = true;
             ThemeView.Resizable = DataGridViewTriState.False;
-            ThemeView.Width = 48;
+            ThemeView.Width = 60;
+            // 
+            // ThemeExport
+            // 
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.NullValue = resources.GetObject("dataGridViewCellStyle10.NullValue");
+            dataGridViewCellStyle10.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle10.SelectionForeColor = Color.Transparent;
+            ThemeExport.DefaultCellStyle = dataGridViewCellStyle10;
+            ThemeExport.HeaderText = "Export";
+            ThemeExport.Image = (Image)resources.GetObject("ThemeExport.Image");
+            ThemeExport.MinimumWidth = 16;
+            ThemeExport.Name = "ThemeExport";
+            ThemeExport.ReadOnly = true;
+            ThemeExport.Resizable = DataGridViewTriState.False;
+            ThemeExport.Width = 60;
             // 
             // DatabaseViewMenu
             // 
@@ -4178,11 +4195,11 @@
             // 
             // VectorProjection
             // 
-            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.Padding = new Padding(3);
-            dataGridViewCellStyle10.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle10.SelectionForeColor = Color.Transparent;
-            VectorProjection.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.Padding = new Padding(3);
+            dataGridViewCellStyle11.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle11.SelectionForeColor = Color.Transparent;
+            VectorProjection.DefaultCellStyle = dataGridViewCellStyle11;
             VectorProjection.HeaderText = "Projection";
             VectorProjection.MinimumWidth = 8;
             VectorProjection.Name = "VectorProjection";
@@ -4192,10 +4209,10 @@
             // 
             // VectorStatus
             // 
-            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle11.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle11.SelectionForeColor = Color.Transparent;
-            VectorStatus.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle12.SelectionForeColor = Color.Transparent;
+            VectorStatus.DefaultCellStyle = dataGridViewCellStyle12;
             VectorStatus.HeaderText = "※";
             VectorStatus.MinimumWidth = 8;
             VectorStatus.Name = "VectorStatus";
@@ -4477,7 +4494,7 @@
             // 
             statusText.DoubleClickEnabled = true;
             statusText.Name = "statusText";
-            statusText.Size = new Size(984, 17);
+            statusText.Size = new Size(834, 17);
             statusText.Spring = true;
             // 
             // dataGridViewImageColumn1
@@ -4995,12 +5012,13 @@
         private DataGridViewTextBoxColumn VectorURI;
         private DataGridViewButtonColumn VectorProjection;
         private DataGridViewTextBoxColumn VectorStatus;
+        private ToolStripMenuItem MapBoxFullScreenMenuItem;
         private DataGridViewTextBoxColumn LayerName;
         private DataGridViewTextBoxColumn ThemeRank;
         private DataGridViewImageColumn ThemeStatus;
         private DataGridViewImageColumn ThemeType;
         private DataGridViewImageColumn ThemeView;
-        private ToolStripMenuItem MapBoxFullScreenMenuItem;
+        private DataGridViewImageColumn ThemeExport;
     }
 }
 

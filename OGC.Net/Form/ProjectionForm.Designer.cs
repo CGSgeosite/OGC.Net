@@ -453,7 +453,7 @@
             GaussKrugerPageScaleFrom.Location = new Point(6, 46);
             GaussKrugerPageScaleFrom.Name = "GaussKrugerPageScaleFrom";
             GaussKrugerPageScaleFrom.Size = new Size(88, 16);
-            GaussKrugerPageScaleFrom.TabIndex = 2;
+            GaussKrugerPageScaleFrom.TabIndex = 13;
             GaussKrugerPageScaleFrom.Text = "1";
             GaussKrugerPageScaleFrom.TextAlign = HorizontalAlignment.Center;
             GaussKrugerPageScaleFrom.MouseLeave += ScaleTextBox_MouseLeave;
@@ -521,7 +521,7 @@
             GaussKrugerPage1954From.Location = new Point(3, 3);
             GaussKrugerPage1954From.Name = "GaussKrugerPage1954From";
             GaussKrugerPage1954From.Size = new Size(98, 26);
-            GaussKrugerPage1954From.TabIndex = 0;
+            GaussKrugerPage1954From.TabIndex = 9;
             GaussKrugerPage1954From.Text = "1954 Beijing";
             GaussKrugerPage1954From.UseVisualStyleBackColor = true;
             GaussKrugerPage1954From.CheckedChanged += GaussKrugerPageCRSFrom_CheckedChanged;
@@ -533,7 +533,7 @@
             GaussKrugerPage1980From.Location = new Point(107, 3);
             GaussKrugerPage1980From.Name = "GaussKrugerPage1980From";
             GaussKrugerPage1980From.Size = new Size(98, 26);
-            GaussKrugerPage1980From.TabIndex = 1;
+            GaussKrugerPage1980From.TabIndex = 10;
             GaussKrugerPage1980From.Text = "1980 Xi'an";
             GaussKrugerPage1980From.UseVisualStyleBackColor = true;
             GaussKrugerPage1980From.CheckedChanged += GaussKrugerPageCRSFrom_CheckedChanged;
@@ -545,7 +545,7 @@
             GaussKrugerPage1984From.Location = new Point(211, 3);
             GaussKrugerPage1984From.Name = "GaussKrugerPage1984From";
             GaussKrugerPage1984From.Size = new Size(98, 26);
-            GaussKrugerPage1984From.TabIndex = 2;
+            GaussKrugerPage1984From.TabIndex = 11;
             GaussKrugerPage1984From.Text = "1984 UTM";
             GaussKrugerPage1984From.UseVisualStyleBackColor = true;
             GaussKrugerPage1984From.CheckedChanged += GaussKrugerPageCRSFrom_CheckedChanged;
@@ -558,7 +558,7 @@
             GaussKrugerPage2000From.Location = new Point(315, 3);
             GaussKrugerPage2000From.Name = "GaussKrugerPage2000From";
             GaussKrugerPage2000From.Size = new Size(101, 26);
-            GaussKrugerPage2000From.TabIndex = 3;
+            GaussKrugerPage2000From.TabIndex = 12;
             GaussKrugerPage2000From.TabStop = true;
             GaussKrugerPage2000From.Text = "2000 CGCS";
             GaussKrugerPage2000From.UseVisualStyleBackColor = true;
@@ -598,7 +598,7 @@
             GaussKrugerPageCentralMeridianFrom.Name = "GaussKrugerPageCentralMeridianFrom";
             GaussKrugerPageCentralMeridianFrom.PlaceholderText = "e.g. 99";
             GaussKrugerPageCentralMeridianFrom.Size = new Size(238, 23);
-            GaussKrugerPageCentralMeridianFrom.TabIndex = 0;
+            GaussKrugerPageCentralMeridianFrom.TabIndex = 4;
             ProjectionToolTip.SetToolTip(GaussKrugerPageCentralMeridianFrom, "Central Meridian (degree) ");
             GaussKrugerPageCentralMeridianFrom.MouseLeave += GaussKrugerPageCentralMeridianFrom_MouseLeave;
             // 
@@ -610,7 +610,7 @@
             GaussKrugerPageCentralMeridianZoneFrom.PlaceholderText = "e.g. 17";
             GaussKrugerPageCentralMeridianZoneFrom.ReadOnly = true;
             GaussKrugerPageCentralMeridianZoneFrom.Size = new Size(158, 23);
-            GaussKrugerPageCentralMeridianZoneFrom.TabIndex = 1;
+            GaussKrugerPageCentralMeridianZoneFrom.TabIndex = 5;
             ProjectionToolTip.SetToolTip(GaussKrugerPageCentralMeridianZoneFrom, "Zone");
             // 
             // panel7
@@ -647,7 +647,7 @@
             GaussKrugerPageUnknownFrom.Location = new Point(274, 3);
             GaussKrugerPageUnknownFrom.Name = "GaussKrugerPageUnknownFrom";
             GaussKrugerPageUnknownFrom.Size = new Size(129, 25);
-            GaussKrugerPageUnknownFrom.TabIndex = 1;
+            GaussKrugerPageUnknownFrom.TabIndex = 8;
             GaussKrugerPageUnknownFrom.Text = "Unknown";
             GaussKrugerPageUnknownFrom.UseVisualStyleBackColor = true;
             GaussKrugerPageUnknownFrom.CheckedChanged += GaussKrugerPageZoneFrom_CheckedChanged;
@@ -660,7 +660,7 @@
             GaussKrugerPage6DegreeFrom.Location = new Point(3, 3);
             GaussKrugerPage6DegreeFrom.Name = "GaussKrugerPage6DegreeFrom";
             GaussKrugerPage6DegreeFrom.Size = new Size(132, 25);
-            GaussKrugerPage6DegreeFrom.TabIndex = 1;
+            GaussKrugerPage6DegreeFrom.TabIndex = 6;
             GaussKrugerPage6DegreeFrom.TabStop = true;
             GaussKrugerPage6DegreeFrom.Text = "6 Degree";
             GaussKrugerPage6DegreeFrom.UseVisualStyleBackColor = true;
@@ -673,7 +673,7 @@
             GaussKrugerPage3DegreeFrom.Location = new Point(141, 3);
             GaussKrugerPage3DegreeFrom.Name = "GaussKrugerPage3DegreeFrom";
             GaussKrugerPage3DegreeFrom.Size = new Size(127, 25);
-            GaussKrugerPage3DegreeFrom.TabIndex = 1;
+            GaussKrugerPage3DegreeFrom.TabIndex = 7;
             GaussKrugerPage3DegreeFrom.Text = "3 Degree";
             GaussKrugerPage3DegreeFrom.UseVisualStyleBackColor = true;
             GaussKrugerPage3DegreeFrom.CheckedChanged += GaussKrugerPageZoneFrom_CheckedChanged;
@@ -735,7 +735,7 @@
             LambertPageScaleFrom.Location = new Point(6, 46);
             LambertPageScaleFrom.Name = "LambertPageScaleFrom";
             LambertPageScaleFrom.Size = new Size(88, 16);
-            LambertPageScaleFrom.TabIndex = 2;
+            LambertPageScaleFrom.TabIndex = 22;
             LambertPageScaleFrom.Text = "1";
             LambertPageScaleFrom.TextAlign = HorizontalAlignment.Center;
             LambertPageScaleFrom.MouseLeave += ScaleTextBox_MouseLeave;
@@ -803,7 +803,7 @@
             LambertPage1954From.Location = new Point(3, 3);
             LambertPage1954From.Name = "LambertPage1954From";
             LambertPage1954From.Size = new Size(100, 27);
-            LambertPage1954From.TabIndex = 0;
+            LambertPage1954From.TabIndex = 18;
             LambertPage1954From.Text = "1954 Beijing";
             LambertPage1954From.UseVisualStyleBackColor = true;
             LambertPage1954From.CheckedChanged += LambertPageCRSFrom_CheckedChanged;
@@ -815,7 +815,7 @@
             LambertPage1980From.Location = new Point(109, 3);
             LambertPage1980From.Name = "LambertPage1980From";
             LambertPage1980From.Size = new Size(100, 27);
-            LambertPage1980From.TabIndex = 1;
+            LambertPage1980From.TabIndex = 19;
             LambertPage1980From.Text = "1980 Xi'an";
             LambertPage1980From.UseVisualStyleBackColor = true;
             LambertPage1980From.CheckedChanged += LambertPageCRSFrom_CheckedChanged;
@@ -827,7 +827,7 @@
             LambertPage1984From.Location = new Point(215, 3);
             LambertPage1984From.Name = "LambertPage1984From";
             LambertPage1984From.Size = new Size(100, 27);
-            LambertPage1984From.TabIndex = 2;
+            LambertPage1984From.TabIndex = 20;
             LambertPage1984From.Text = "1984 UTM";
             LambertPage1984From.UseVisualStyleBackColor = true;
             LambertPage1984From.CheckedChanged += LambertPageCRSFrom_CheckedChanged;
@@ -840,7 +840,7 @@
             LambertPage2000From.Location = new Point(321, 3);
             LambertPage2000From.Name = "LambertPage2000From";
             LambertPage2000From.Size = new Size(100, 27);
-            LambertPage2000From.TabIndex = 3;
+            LambertPage2000From.TabIndex = 21;
             LambertPage2000From.TabStop = true;
             LambertPage2000From.Text = "2000 CGCS";
             LambertPage2000From.UseVisualStyleBackColor = true;
@@ -882,7 +882,7 @@
             LambertPageCentralMeridianFrom.Name = "LambertPageCentralMeridianFrom";
             LambertPageCentralMeridianFrom.PlaceholderText = "e.g. 105";
             LambertPageCentralMeridianFrom.Size = new Size(197, 23);
-            LambertPageCentralMeridianFrom.TabIndex = 1;
+            LambertPageCentralMeridianFrom.TabIndex = 14;
             LambertPageCentralMeridianFrom.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox5
@@ -903,7 +903,7 @@
             LambertPageOriginLatitudeFrom.Name = "LambertPageOriginLatitudeFrom";
             LambertPageOriginLatitudeFrom.PlaceholderText = "e.g. 0";
             LambertPageOriginLatitudeFrom.Size = new Size(197, 23);
-            LambertPageOriginLatitudeFrom.TabIndex = 1;
+            LambertPageOriginLatitudeFrom.TabIndex = 15;
             LambertPageOriginLatitudeFrom.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox6
@@ -924,7 +924,7 @@
             LambertPageParallel1From.Name = "LambertPageParallel1From";
             LambertPageParallel1From.PlaceholderText = "e.g. 25";
             LambertPageParallel1From.Size = new Size(197, 23);
-            LambertPageParallel1From.TabIndex = 1;
+            LambertPageParallel1From.TabIndex = 16;
             LambertPageParallel1From.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox7
@@ -945,7 +945,7 @@
             LambertPageParallel2From.Name = "LambertPageParallel2From";
             LambertPageParallel2From.PlaceholderText = "e.g. 47";
             LambertPageParallel2From.Size = new Size(197, 23);
-            LambertPageParallel2From.TabIndex = 1;
+            LambertPageParallel2From.TabIndex = 17;
             LambertPageParallel2From.MouseLeave += Degree_MouseLeave;
             // 
             // panel3
@@ -1005,7 +1005,7 @@
             AlbersPageScaleFrom.Location = new Point(6, 46);
             AlbersPageScaleFrom.Name = "AlbersPageScaleFrom";
             AlbersPageScaleFrom.Size = new Size(88, 16);
-            AlbersPageScaleFrom.TabIndex = 2;
+            AlbersPageScaleFrom.TabIndex = 31;
             AlbersPageScaleFrom.Text = "1";
             AlbersPageScaleFrom.TextAlign = HorizontalAlignment.Center;
             AlbersPageScaleFrom.MouseLeave += ScaleTextBox_MouseLeave;
@@ -1073,7 +1073,7 @@
             AlbersPage1954From.Location = new Point(3, 3);
             AlbersPage1954From.Name = "AlbersPage1954From";
             AlbersPage1954From.Size = new Size(100, 27);
-            AlbersPage1954From.TabIndex = 0;
+            AlbersPage1954From.TabIndex = 27;
             AlbersPage1954From.Text = "1954 Beijing";
             AlbersPage1954From.UseVisualStyleBackColor = true;
             AlbersPage1954From.CheckedChanged += AlbersPageCRSFrom_CheckedChanged;
@@ -1085,7 +1085,7 @@
             AlbersPage1980From.Location = new Point(109, 3);
             AlbersPage1980From.Name = "AlbersPage1980From";
             AlbersPage1980From.Size = new Size(100, 27);
-            AlbersPage1980From.TabIndex = 1;
+            AlbersPage1980From.TabIndex = 28;
             AlbersPage1980From.Text = "1980 Xi'an";
             AlbersPage1980From.UseVisualStyleBackColor = true;
             AlbersPage1980From.CheckedChanged += AlbersPageCRSFrom_CheckedChanged;
@@ -1097,7 +1097,7 @@
             AlbersPage1984From.Location = new Point(215, 3);
             AlbersPage1984From.Name = "AlbersPage1984From";
             AlbersPage1984From.Size = new Size(100, 27);
-            AlbersPage1984From.TabIndex = 2;
+            AlbersPage1984From.TabIndex = 29;
             AlbersPage1984From.Text = "1984 UTM";
             AlbersPage1984From.UseVisualStyleBackColor = true;
             AlbersPage1984From.CheckedChanged += AlbersPageCRSFrom_CheckedChanged;
@@ -1110,7 +1110,7 @@
             AlbersPage2000From.Location = new Point(321, 3);
             AlbersPage2000From.Name = "AlbersPage2000From";
             AlbersPage2000From.Size = new Size(100, 27);
-            AlbersPage2000From.TabIndex = 3;
+            AlbersPage2000From.TabIndex = 30;
             AlbersPage2000From.TabStop = true;
             AlbersPage2000From.Text = "2000 CGCS";
             AlbersPage2000From.UseVisualStyleBackColor = true;
@@ -1152,7 +1152,7 @@
             AlbersPageCentralMeridianFrom.Name = "AlbersPageCentralMeridianFrom";
             AlbersPageCentralMeridianFrom.PlaceholderText = "e.g. 105";
             AlbersPageCentralMeridianFrom.Size = new Size(197, 23);
-            AlbersPageCentralMeridianFrom.TabIndex = 1;
+            AlbersPageCentralMeridianFrom.TabIndex = 23;
             AlbersPageCentralMeridianFrom.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox10
@@ -1173,7 +1173,7 @@
             AlbersPageOriginLatitudeFrom.Name = "AlbersPageOriginLatitudeFrom";
             AlbersPageOriginLatitudeFrom.PlaceholderText = "e.g. 0";
             AlbersPageOriginLatitudeFrom.Size = new Size(197, 23);
-            AlbersPageOriginLatitudeFrom.TabIndex = 1;
+            AlbersPageOriginLatitudeFrom.TabIndex = 24;
             AlbersPageOriginLatitudeFrom.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox11
@@ -1194,7 +1194,7 @@
             AlbersPageParallel1From.Name = "AlbersPageParallel1From";
             AlbersPageParallel1From.PlaceholderText = "e.g. 25";
             AlbersPageParallel1From.Size = new Size(197, 23);
-            AlbersPageParallel1From.TabIndex = 1;
+            AlbersPageParallel1From.TabIndex = 25;
             AlbersPageParallel1From.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox12
@@ -1215,7 +1215,7 @@
             AlbersPageParallel2From.Name = "AlbersPageParallel2From";
             AlbersPageParallel2From.PlaceholderText = "e.g. 47";
             AlbersPageParallel2From.Size = new Size(197, 23);
-            AlbersPageParallel2From.TabIndex = 1;
+            AlbersPageParallel2From.TabIndex = 26;
             AlbersPageParallel2From.MouseLeave += Degree_MouseLeave;
             // 
             // panel4
@@ -1297,7 +1297,7 @@
             YesButton.Location = new Point(416, 314);
             YesButton.Name = "YesButton";
             YesButton.Size = new Size(75, 27);
-            YesButton.TabIndex = 2;
+            YesButton.TabIndex = 0;
             YesButton.Text = "Yes";
             YesButton.UseVisualStyleBackColor = true;
             YesButton.Click += YesButton_Click;
@@ -1308,7 +1308,7 @@
             CancelButton.Location = new Point(501, 314);
             CancelButton.Name = "CancelButton";
             CancelButton.Size = new Size(75, 27);
-            CancelButton.TabIndex = 2;
+            CancelButton.TabIndex = 1;
             CancelButton.Text = "Cancel";
             CancelButton.UseVisualStyleBackColor = true;
             CancelButton.Click += CancelButton_Click;
@@ -1333,7 +1333,7 @@
             ProjectionSame.Margin = new Padding(4);
             ProjectionSame.Name = "ProjectionSame";
             ProjectionSame.Size = new Size(254, 21);
-            ProjectionSame.TabIndex = 26;
+            ProjectionSame.TabIndex = 2;
             ProjectionSame.Text = "Apply this setting to all items in the list.";
             ProjectionSame.UseVisualStyleBackColor = true;
             // 
@@ -1388,7 +1388,7 @@
             ProjectionPurposeTabControl.Name = "ProjectionPurposeTabControl";
             ProjectionPurposeTabControl.SelectedIndex = 0;
             ProjectionPurposeTabControl.Size = new Size(570, 242);
-            ProjectionPurposeTabControl.TabIndex = 41;
+            ProjectionPurposeTabControl.TabIndex = 3;
             ProjectionPurposeTabControl.Selecting += ProjectionPurposeTabControl_Selecting;
             // 
             // ProjectionPurposeFromPage
@@ -1523,7 +1523,7 @@
             GaussKrugerPageScaleTo.Location = new Point(6, 46);
             GaussKrugerPageScaleTo.Name = "GaussKrugerPageScaleTo";
             GaussKrugerPageScaleTo.Size = new Size(88, 16);
-            GaussKrugerPageScaleTo.TabIndex = 2;
+            GaussKrugerPageScaleTo.TabIndex = 41;
             GaussKrugerPageScaleTo.Text = "1";
             GaussKrugerPageScaleTo.TextAlign = HorizontalAlignment.Center;
             GaussKrugerPageScaleTo.MouseLeave += ScaleTextBox_MouseLeave;
@@ -1591,7 +1591,7 @@
             GaussKrugerPage1954To.Location = new Point(3, 3);
             GaussKrugerPage1954To.Name = "GaussKrugerPage1954To";
             GaussKrugerPage1954To.Size = new Size(98, 26);
-            GaussKrugerPage1954To.TabIndex = 0;
+            GaussKrugerPage1954To.TabIndex = 37;
             GaussKrugerPage1954To.Text = "1954 Beijing";
             GaussKrugerPage1954To.UseVisualStyleBackColor = true;
             GaussKrugerPage1954To.CheckedChanged += GaussKrugerPageCRSTo_CheckedChanged;
@@ -1603,7 +1603,7 @@
             GaussKrugerPage1980To.Location = new Point(107, 3);
             GaussKrugerPage1980To.Name = "GaussKrugerPage1980To";
             GaussKrugerPage1980To.Size = new Size(98, 26);
-            GaussKrugerPage1980To.TabIndex = 1;
+            GaussKrugerPage1980To.TabIndex = 38;
             GaussKrugerPage1980To.Text = "1980 Xi'an";
             GaussKrugerPage1980To.UseVisualStyleBackColor = true;
             GaussKrugerPage1980To.CheckedChanged += GaussKrugerPageCRSTo_CheckedChanged;
@@ -1615,7 +1615,7 @@
             GaussKrugerPage1984To.Location = new Point(211, 3);
             GaussKrugerPage1984To.Name = "GaussKrugerPage1984To";
             GaussKrugerPage1984To.Size = new Size(98, 26);
-            GaussKrugerPage1984To.TabIndex = 2;
+            GaussKrugerPage1984To.TabIndex = 39;
             GaussKrugerPage1984To.Text = "1984 UTM";
             GaussKrugerPage1984To.UseVisualStyleBackColor = true;
             GaussKrugerPage1984To.CheckedChanged += GaussKrugerPageCRSTo_CheckedChanged;
@@ -1628,7 +1628,7 @@
             GaussKrugerPage2000To.Location = new Point(315, 3);
             GaussKrugerPage2000To.Name = "GaussKrugerPage2000To";
             GaussKrugerPage2000To.Size = new Size(101, 26);
-            GaussKrugerPage2000To.TabIndex = 3;
+            GaussKrugerPage2000To.TabIndex = 40;
             GaussKrugerPage2000To.TabStop = true;
             GaussKrugerPage2000To.Text = "2000 CGCS";
             GaussKrugerPage2000To.UseVisualStyleBackColor = true;
@@ -1668,7 +1668,7 @@
             GaussKrugerPageCentralMeridianTo.Name = "GaussKrugerPageCentralMeridianTo";
             GaussKrugerPageCentralMeridianTo.PlaceholderText = "e.g. 99";
             GaussKrugerPageCentralMeridianTo.Size = new Size(238, 23);
-            GaussKrugerPageCentralMeridianTo.TabIndex = 0;
+            GaussKrugerPageCentralMeridianTo.TabIndex = 32;
             GaussKrugerPageCentralMeridianTo.MouseLeave += GaussKrugerPageCentralMeridianTo_MouseLeave;
             // 
             // GaussKrugerPageCentralMeridianZoneTo
@@ -1679,7 +1679,7 @@
             GaussKrugerPageCentralMeridianZoneTo.PlaceholderText = "e.g. 17";
             GaussKrugerPageCentralMeridianZoneTo.ReadOnly = true;
             GaussKrugerPageCentralMeridianZoneTo.Size = new Size(158, 23);
-            GaussKrugerPageCentralMeridianZoneTo.TabIndex = 1;
+            GaussKrugerPageCentralMeridianZoneTo.TabIndex = 33;
             // 
             // panel13
             // 
@@ -1715,7 +1715,7 @@
             GaussKrugerPageUnknownTo.Location = new Point(274, 3);
             GaussKrugerPageUnknownTo.Name = "GaussKrugerPageUnknownTo";
             GaussKrugerPageUnknownTo.Size = new Size(129, 25);
-            GaussKrugerPageUnknownTo.TabIndex = 1;
+            GaussKrugerPageUnknownTo.TabIndex = 36;
             GaussKrugerPageUnknownTo.Text = "Unknown";
             GaussKrugerPageUnknownTo.UseVisualStyleBackColor = true;
             GaussKrugerPageUnknownTo.CheckedChanged += GaussKrugerPageZoneTo_CheckedChanged;
@@ -1728,7 +1728,7 @@
             GaussKrugerPage6DegreeTo.Location = new Point(3, 3);
             GaussKrugerPage6DegreeTo.Name = "GaussKrugerPage6DegreeTo";
             GaussKrugerPage6DegreeTo.Size = new Size(132, 25);
-            GaussKrugerPage6DegreeTo.TabIndex = 1;
+            GaussKrugerPage6DegreeTo.TabIndex = 34;
             GaussKrugerPage6DegreeTo.TabStop = true;
             GaussKrugerPage6DegreeTo.Text = "6 Degree";
             GaussKrugerPage6DegreeTo.UseVisualStyleBackColor = true;
@@ -1741,7 +1741,7 @@
             GaussKrugerPage3DegreeTo.Location = new Point(141, 3);
             GaussKrugerPage3DegreeTo.Name = "GaussKrugerPage3DegreeTo";
             GaussKrugerPage3DegreeTo.Size = new Size(127, 25);
-            GaussKrugerPage3DegreeTo.TabIndex = 1;
+            GaussKrugerPage3DegreeTo.TabIndex = 35;
             GaussKrugerPage3DegreeTo.Text = "3 Degree";
             GaussKrugerPage3DegreeTo.UseVisualStyleBackColor = true;
             GaussKrugerPage3DegreeTo.CheckedChanged += GaussKrugerPageZoneTo_CheckedChanged;
@@ -1802,7 +1802,7 @@
             LambertPageScaleTo.Location = new Point(6, 46);
             LambertPageScaleTo.Name = "LambertPageScaleTo";
             LambertPageScaleTo.Size = new Size(88, 16);
-            LambertPageScaleTo.TabIndex = 2;
+            LambertPageScaleTo.TabIndex = 50;
             LambertPageScaleTo.Text = "1";
             LambertPageScaleTo.TextAlign = HorizontalAlignment.Center;
             LambertPageScaleTo.MouseLeave += ScaleTextBox_MouseLeave;
@@ -1870,7 +1870,7 @@
             LambertPage1954To.Location = new Point(3, 3);
             LambertPage1954To.Name = "LambertPage1954To";
             LambertPage1954To.Size = new Size(100, 27);
-            LambertPage1954To.TabIndex = 0;
+            LambertPage1954To.TabIndex = 46;
             LambertPage1954To.Text = "1954 Beijing";
             LambertPage1954To.UseVisualStyleBackColor = true;
             LambertPage1954To.CheckedChanged += LambertPageCRSTo_CheckedChanged;
@@ -1882,7 +1882,7 @@
             LambertPage1980To.Location = new Point(109, 3);
             LambertPage1980To.Name = "LambertPage1980To";
             LambertPage1980To.Size = new Size(100, 27);
-            LambertPage1980To.TabIndex = 1;
+            LambertPage1980To.TabIndex = 47;
             LambertPage1980To.Text = "1980 Xi'an";
             LambertPage1980To.UseVisualStyleBackColor = true;
             LambertPage1980To.CheckedChanged += LambertPageCRSTo_CheckedChanged;
@@ -1894,7 +1894,7 @@
             LambertPage1984To.Location = new Point(215, 3);
             LambertPage1984To.Name = "LambertPage1984To";
             LambertPage1984To.Size = new Size(100, 27);
-            LambertPage1984To.TabIndex = 2;
+            LambertPage1984To.TabIndex = 48;
             LambertPage1984To.Text = "1984 UTM";
             LambertPage1984To.UseVisualStyleBackColor = true;
             LambertPage1984To.CheckedChanged += LambertPageCRSTo_CheckedChanged;
@@ -1907,7 +1907,7 @@
             LambertPage2000To.Location = new Point(321, 3);
             LambertPage2000To.Name = "LambertPage2000To";
             LambertPage2000To.Size = new Size(100, 27);
-            LambertPage2000To.TabIndex = 3;
+            LambertPage2000To.TabIndex = 49;
             LambertPage2000To.TabStop = true;
             LambertPage2000To.Text = "2000 CGCS";
             LambertPage2000To.UseVisualStyleBackColor = true;
@@ -1949,7 +1949,7 @@
             LambertPageCentralMeridianTo.Name = "LambertPageCentralMeridianTo";
             LambertPageCentralMeridianTo.PlaceholderText = "e.g. 105";
             LambertPageCentralMeridianTo.Size = new Size(197, 23);
-            LambertPageCentralMeridianTo.TabIndex = 1;
+            LambertPageCentralMeridianTo.TabIndex = 42;
             LambertPageCentralMeridianTo.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox27
@@ -1970,7 +1970,7 @@
             LambertPageOriginLatitudeTo.Name = "LambertPageOriginLatitudeTo";
             LambertPageOriginLatitudeTo.PlaceholderText = "e.g. 0";
             LambertPageOriginLatitudeTo.Size = new Size(198, 23);
-            LambertPageOriginLatitudeTo.TabIndex = 1;
+            LambertPageOriginLatitudeTo.TabIndex = 43;
             LambertPageOriginLatitudeTo.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox28
@@ -1991,7 +1991,7 @@
             LambertPageParallel1To.Name = "LambertPageParallel1To";
             LambertPageParallel1To.PlaceholderText = "e.g. 25";
             LambertPageParallel1To.Size = new Size(197, 23);
-            LambertPageParallel1To.TabIndex = 1;
+            LambertPageParallel1To.TabIndex = 44;
             LambertPageParallel1To.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox29
@@ -2012,7 +2012,7 @@
             LambertPageParallel2To.Name = "LambertPageParallel2To";
             LambertPageParallel2To.PlaceholderText = "e.g. 47";
             LambertPageParallel2To.Size = new Size(198, 23);
-            LambertPageParallel2To.TabIndex = 1;
+            LambertPageParallel2To.TabIndex = 45;
             LambertPageParallel2To.MouseLeave += Degree_MouseLeave;
             // 
             // panel15
@@ -2071,7 +2071,7 @@
             AlbersPageScaleTo.Location = new Point(6, 46);
             AlbersPageScaleTo.Name = "AlbersPageScaleTo";
             AlbersPageScaleTo.Size = new Size(88, 16);
-            AlbersPageScaleTo.TabIndex = 2;
+            AlbersPageScaleTo.TabIndex = 59;
             AlbersPageScaleTo.Text = "1";
             AlbersPageScaleTo.TextAlign = HorizontalAlignment.Center;
             AlbersPageScaleTo.MouseLeave += ScaleTextBox_MouseLeave;
@@ -2139,7 +2139,7 @@
             AlbersPage1954To.Location = new Point(3, 3);
             AlbersPage1954To.Name = "AlbersPage1954To";
             AlbersPage1954To.Size = new Size(100, 27);
-            AlbersPage1954To.TabIndex = 0;
+            AlbersPage1954To.TabIndex = 55;
             AlbersPage1954To.Text = "1954 Beijing";
             AlbersPage1954To.UseVisualStyleBackColor = true;
             AlbersPage1954To.CheckedChanged += AlbersPageCRSTo_CheckedChanged;
@@ -2151,7 +2151,7 @@
             AlbersPage1980To.Location = new Point(109, 3);
             AlbersPage1980To.Name = "AlbersPage1980To";
             AlbersPage1980To.Size = new Size(100, 27);
-            AlbersPage1980To.TabIndex = 1;
+            AlbersPage1980To.TabIndex = 56;
             AlbersPage1980To.Text = "1980 Xi'an";
             AlbersPage1980To.UseVisualStyleBackColor = true;
             AlbersPage1980To.CheckedChanged += AlbersPageCRSTo_CheckedChanged;
@@ -2163,7 +2163,7 @@
             AlbersPage1984To.Location = new Point(215, 3);
             AlbersPage1984To.Name = "AlbersPage1984To";
             AlbersPage1984To.Size = new Size(100, 27);
-            AlbersPage1984To.TabIndex = 2;
+            AlbersPage1984To.TabIndex = 57;
             AlbersPage1984To.Text = "1984 UTM";
             AlbersPage1984To.UseVisualStyleBackColor = true;
             AlbersPage1984To.CheckedChanged += AlbersPageCRSTo_CheckedChanged;
@@ -2176,7 +2176,7 @@
             AlbersPage2000To.Location = new Point(321, 3);
             AlbersPage2000To.Name = "AlbersPage2000To";
             AlbersPage2000To.Size = new Size(100, 27);
-            AlbersPage2000To.TabIndex = 3;
+            AlbersPage2000To.TabIndex = 58;
             AlbersPage2000To.TabStop = true;
             AlbersPage2000To.Text = "2000 CGCS";
             AlbersPage2000To.UseVisualStyleBackColor = true;
@@ -2218,7 +2218,7 @@
             AlbersPageCentralMeridianTo.Name = "AlbersPageCentralMeridianTo";
             AlbersPageCentralMeridianTo.PlaceholderText = "e.g. 105";
             AlbersPageCentralMeridianTo.Size = new Size(197, 23);
-            AlbersPageCentralMeridianTo.TabIndex = 1;
+            AlbersPageCentralMeridianTo.TabIndex = 51;
             AlbersPageCentralMeridianTo.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox32
@@ -2228,7 +2228,7 @@
             groupBox32.Location = new Point(218, 3);
             groupBox32.Name = "groupBox32";
             groupBox32.Size = new Size(209, 47);
-            groupBox32.TabIndex = 5;
+            groupBox32.TabIndex = 52;
             groupBox32.TabStop = false;
             groupBox32.Text = "Origin Latitude (degree)";
             // 
@@ -2260,7 +2260,7 @@
             AlbersPageParallel1To.Name = "AlbersPageParallel1To";
             AlbersPageParallel1To.PlaceholderText = "e.g. 25";
             AlbersPageParallel1To.Size = new Size(197, 23);
-            AlbersPageParallel1To.TabIndex = 1;
+            AlbersPageParallel1To.TabIndex = 53;
             AlbersPageParallel1To.MouseLeave += Degree_MouseLeave;
             // 
             // groupBox34
@@ -2281,7 +2281,7 @@
             AlbersPageParallel2To.Name = "AlbersPageParallel2To";
             AlbersPageParallel2To.PlaceholderText = "e.g. 47";
             AlbersPageParallel2To.Size = new Size(197, 23);
-            AlbersPageParallel2To.TabIndex = 1;
+            AlbersPageParallel2To.TabIndex = 54;
             AlbersPageParallel2To.MouseLeave += Degree_MouseLeave;
             // 
             // panel17
@@ -2775,7 +2775,7 @@
             // 
             // ProjectionForm
             // 
-            AcceptButton = CancelButton;
+            AcceptButton = YesButton;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(584, 346);

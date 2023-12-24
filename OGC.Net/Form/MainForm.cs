@@ -1966,8 +1966,7 @@ namespace Geosite
                             if (userX.result != null)
                             {
                                 var server = userX.result.Element(name: "Servers")?.Element(name: "Server");
-                                var geositeServerVersion =
-                                    server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
+                                var geositeServerVersion = server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
                                 DatabaseLogAdd(input: $"GeositeServer Version - {geositeServerVersion}");
                                 /*  样例如下：
                                     <User>
@@ -2002,21 +2001,18 @@ namespace Geosite
                                     var versionDay = long.Parse(s: versionArray[3]);
                                     if (versionMain + versionYear + versionMonth + versionDay >= 820231201) // 8.2023.12.1
                                     {
-                                        if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(),
-                                                result: out var port))
+                                        if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(), result: out var port))
                                             port = 5432;
                                         var databaseX = server?.Element(name: "Database");
                                         var database = databaseX?.Value.Trim();
-                                        var postgresqlVersion = databaseX?.Attribute(name: "Postgresql_Version")
-                                            ?.Value;
+                                        var postgresqlVersion = databaseX?.Attribute(name: "Postgresql_Version")?.Value;
                                         if (!string.IsNullOrWhiteSpace(value: postgresqlVersion))
                                             DatabaseLogAdd(input: $"PostgreSQL Version - {postgresqlVersion}");
                                         var postgisVersion =
                                             databaseX?.Attribute(name: "Postgis_Version")?.Value;
                                         if (!string.IsNullOrWhiteSpace(value: postgisVersion))
                                             DatabaseLogAdd(input: $"PostGIS Version - {postgisVersion}");
-                                        var pgroongaVersion = databaseX?.Attribute(name: "Pgroonga_Version")
-                                            ?.Value;
+                                        var pgroongaVersion = databaseX?.Attribute(name: "Pgroonga_Version")?.Value;
                                         if (!string.IsNullOrWhiteSpace(value: pgroongaVersion))
                                             DatabaseLogAdd(input: $"PGroonga Version - {pgroongaVersion}");
                                         var databaseSize = databaseX?.Attribute(name: "Size")?.Value;
@@ -2027,9 +2023,7 @@ namespace Geosite
                                         var forestX = userX.result.Element(name: "Forest");
                                         if (!int.TryParse(s: forestX?.Value.Trim(), result: out var forest))
                                             forest = -1;
-                                        if (!bool.TryParse(
-                                                value: forestX?.Attribute(name: "Administrator")?.Value.Trim() ??
-                                                       "false", result: out _administrator))
+                                        if (!bool.TryParse(value: forestX?.Attribute(name: "Administrator")?.Value.Trim() ?? "false", result: out _administrator))
                                             _administrator = false;
                                         var rootName = forestX?.Attribute(name: "Root")?.Value ?? "Root";
 
@@ -2037,8 +2031,7 @@ namespace Geosite
                                             forestX?.Attribute(name: "ClusterIp")?.Value ??
                                             Dns.GetHostEntry(Dns.GetHostName())
                                                 .AddressList
-                                                .FirstOrDefault(
-                                                    ip => ip.AddressFamily == AddressFamily.InterNetwork)
+                                                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)
                                                 .MapToIPv4()
                                                 .ToString();
 
@@ -2067,8 +2060,7 @@ namespace Geosite
                                                 );
 
                                                 if (MessageBox.Show(
-                                                        text:
-                                                        databaseStatus.flag == 1
+                                                        text: databaseStatus.flag == 1
                                                             ? $@"The database [{database}] does not yet exist, do you want to create it?"
                                                             : $"Create many tables in the database [{database}]?",
                                                         caption: @"Tip",
@@ -2079,58 +2071,44 @@ namespace Geosite
                                                     //---- 如果采用多分区，管理员可在GeositeServer站点提供的[Refresh]指令实施
                                                     if (databaseStatus.flag != 1 ||
                                                         PostgreSqlHelper.NonQuery(
-                                                            cmd:
-                                                            $"CREATE DATABASE {database} WITH OWNER = {username};",
+                                                            cmd: $"CREATE DATABASE {database} WITH OWNER = {username};",
                                                             postgres: true,
                                                             timeout: 0
                                                         ) != null
                                                        )
                                                     {
-                                                        if ((long)PostgreSqlHelper.Scalar(
-                                                                cmd:
-                                                                "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis';",
-                                                                timeout: 0) > 0)
+                                                        if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis';", timeout: 0) > 0)
                                                         {
                                                             Invoke(
                                                                 method: () =>
                                                                 {
                                                                     statusProgress.Value = 10;
-                                                                    DatabaseLogAdd(input: statusText.Text =
-                                                                        @"Create or find PostGIS extension ...");
+                                                                    DatabaseLogAdd(input: statusText.Text = @"Create or find PostGIS extension ...");
                                                                 }
                                                             );
                                                             PostgreSqlHelper.NonQuery(
                                                                 cmd: "CREATE EXTENSION IF NOT EXISTS postgis;",
                                                                 timeout: 0);
-                                                            if ((long)PostgreSqlHelper.Scalar(
-                                                                    cmd:
-                                                                    "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis_raster';") >
-                                                                0)
+                                                            if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis_raster';") > 0)
                                                             {
                                                                 Invoke(
                                                                     method: () =>
                                                                     {
                                                                         statusProgress.Value = 16;
-                                                                        DatabaseLogAdd(input: statusText.Text =
-                                                                            @"Create or find postgis_raster extension ...");
+                                                                        DatabaseLogAdd(input: statusText.Text = @"Create or find postgis_raster extension ...");
                                                                     }
                                                                 );
                                                                 PostgreSqlHelper.NonQuery(
                                                                     cmd:
                                                                     "CREATE EXTENSION IF NOT EXISTS postgis_raster;",
                                                                     timeout: 0);
-                                                                if ((long)PostgreSqlHelper.Scalar(
-                                                                        cmd:
-                                                                        "SELECT count(*) FROM pg_available_extensions WHERE name = 'intarray';",
-                                                                        timeout: 0) > 0)
+                                                                if ((long)PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'intarray';", timeout: 0) > 0)
                                                                 {
                                                                     Invoke(
                                                                         method: () =>
                                                                         {
                                                                             statusProgress.Value = 22;
-                                                                            DatabaseLogAdd(
-                                                                                input: statusText.Text =
-                                                                                    @"Create or find intarray extension ...");
+                                                                            DatabaseLogAdd(input: statusText.Text = @"Create or find intarray extension ...");
                                                                         }
                                                                     );
                                                                     PostgreSqlHelper.NonQuery(
@@ -2146,9 +2124,7 @@ namespace Geosite
                                                                             method: () =>
                                                                             {
                                                                                 statusProgress.Value = 28;
-                                                                                DatabaseLogAdd(
-                                                                                    input: statusText.Text =
-                                                                                        @"Create or find pgroonga extension ...");
+                                                                                DatabaseLogAdd(input: statusText.Text = @"Create or find pgroonga extension ...");
                                                                             }
                                                                         );
                                                                         PostgreSqlHelper.NonQuery(
@@ -2159,9 +2135,7 @@ namespace Geosite
                                                                             method: () =>
                                                                             {
                                                                                 statusProgress.Value = 34;
-                                                                                DatabaseLogAdd(
-                                                                                    input: statusText.Text =
-                                                                                        @"Create forest table（forest）...");
+                                                                                DatabaseLogAdd(input: statusText.Text = @"Create forest table（forest）...");
                                                                             }
                                                                         );
                                                                         if (PostgreSqlHelper.NonQuery(
@@ -2228,12 +2202,8 @@ namespace Geosite
                                                                                 Invoke(
                                                                                     method: () =>
                                                                                     {
-                                                                                        statusProgress.Value =
-                                                                                            40;
-                                                                                        DatabaseLogAdd(
-                                                                                            input: statusText
-                                                                                                    .Text =
-                                                                                                @"Create tree table（tree）...");
+                                                                                        statusProgress.Value = 40;
+                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create tree table（tree）...");
                                                                                     }
                                                                                 );
                                                                                 if (PostgreSqlHelper.NonQuery(
@@ -2259,8 +2229,7 @@ namespace Geosite
                                                                                      timeout: 0) != null)
                                                                                 {
                                                                                     PostgreSqlHelper.NonQuery(
-                                                                                        cmd:
-                                                                                        "CREATE SEQUENCE tree_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
+                                                                                        cmd: "CREATE SEQUENCE tree_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
                                                                                         timeout: 0);
                                                                                     if (PostgreSqlHelper
                                                                                          .NonQuery(
@@ -2276,8 +2245,7 @@ namespace Geosite
                                                                                              "CREATE INDEX tree_timestamp_hhmmss ON tree USING BTREE ((timestamp[4]));" +
                                                                                              "CREATE INDEX tree_type ON tree USING GIST (type gist__int_ops);" +
                                                                                              "CREATE INDEX tree_status ON tree USING BTREE (status);",
-                                                                                             timeout: 0) !=
-                                                                                     null)
+                                                                                             timeout: 0) != null)
                                                                                     {
                                                                                         PostgreSqlHelper
                                                                                             .NonQuery(
@@ -2296,22 +2264,15 @@ namespace Geosite
                                                                                                 "COMMENT ON COLUMN tree_relation.detail IS '文档树关系描述容器';",
                                                                                                 timeout: 0);
 
-                                                                                        PostgreSqlHelper
-                                                                                            .NonQuery(
-                                                                                                cmd:
-                                                                                                "CREATE INDEX tree_relation_action_FTS ON tree_relation USING PGROONGA (action);" +
+                                                                                        PostgreSqlHelper.NonQuery(
+                                                                                                cmd: "CREATE INDEX tree_relation_action_FTS ON tree_relation USING PGROONGA (action);" +
                                                                                                 "CREATE INDEX tree_relation_action ON tree_relation USING GIN (action);",
                                                                                                 timeout: 0);
                                                                                         Invoke(
                                                                                             method: () =>
                                                                                             {
-                                                                                                statusProgress
-                                                                                                    .Value = 46;
-                                                                                                DatabaseLogAdd(
-                                                                                                    input:
-                                                                                                    statusText
-                                                                                                            .Text =
-                                                                                                        @"Create branch table（branch）...");
+                                                                                                statusProgress.Value = 46;
+                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create branch table（branch）...");
                                                                                             }
                                                                                         );
                                                                                         if (PostgreSqlHelper
@@ -2335,11 +2296,7 @@ namespace Geosite
                                                                                                  timeout:
                                                                                                  0) != null)
                                                                                         {
-                                                                                            PostgreSqlHelper
-                                                                                                .NonQuery(
-                                                                                                    cmd:
-                                                                                                    "CREATE SEQUENCE branch_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
-                                                                                                    timeout: 0);
+                                                                                            PostgreSqlHelper.NonQuery(cmd: "CREATE SEQUENCE branch_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;", timeout: 0);
                                                                                             if (PostgreSqlHelper
                                                                                                  .NonQuery(
                                                                                                      cmd:
@@ -2349,9 +2306,7 @@ namespace Geosite
                                                                                                      "CREATE INDEX branch_name_FTS ON branch USING PGROONGA (name);" +
                                                                                                      "CREATE INDEX branch_property_FTS ON branch USING PGROONGA (property);" +
                                                                                                      "CREATE INDEX branch_property ON branch USING GIN (property);",
-                                                                                                     timeout
-                                                                                                     : 0) !=
-                                                                                             null)
+                                                                                                     timeout: 0) != null)
                                                                                             {
                                                                                                 PostgreSqlHelper
                                                                                                     .NonQuery(
@@ -2368,35 +2323,25 @@ namespace Geosite
                                                                                                         "COMMENT ON COLUMN branch_relation.branch IS '枝干标识码';" +
                                                                                                         "COMMENT ON COLUMN branch_relation.action IS '枝干事务活动容器';" +
                                                                                                         "COMMENT ON COLUMN branch_relation.detail IS '枝干关系描述容器';",
-                                                                                                        timeout:
-                                                                                                        0);
+                                                                                                        timeout: 0);
 
                                                                                                 PostgreSqlHelper
                                                                                                     .NonQuery(
                                                                                                         cmd:
                                                                                                         "CREATE INDEX branch_relation_action_FTS ON branch_relation USING PGROONGA (action);" +
                                                                                                         "CREATE INDEX branch_relation_action ON branch_relation USING GIN (action);",
-                                                                                                        timeout:
-                                                                                                        0);
+                                                                                                        timeout: 0);
                                                                                                 Invoke(
                                                                                                     method:
                                                                                                     () =>
                                                                                                     {
-                                                                                                        statusProgress
-                                                                                                                .Value =
-                                                                                                            52;
-                                                                                                        DatabaseLogAdd(
-                                                                                                            input
-                                                                                                            : statusText
-                                                                                                                    .Text =
-                                                                                                                @"Create leaf table（leaf）...");
+                                                                                                        statusProgress.Value = 52;
+                                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf）...");
                                                                                                     }
                                                                                                 );
-                                                                                                if
-                                                                                                    (PostgreSqlHelper
+                                                                                                if (PostgreSqlHelper
                                                                                                          .NonQuery(
-                                                                                                             cmd
-                                                                                                             : "CREATE TABLE leaf " +
+                                                                                                             cmd: "CREATE TABLE leaf " +
                                                                                                              "(" +
                                                                                                              "branch INTEGER, id BigInt, rank SmallInt DEFAULT -1, type INT DEFAULT 0, name TEXT, property INTEGER, timestamp INT[], frequency BigInt DEFAULT 0" +
                                                                                                              ",CONSTRAINT leaf_pkey PRIMARY KEY (id)" +
@@ -2413,18 +2358,10 @@ namespace Geosite
                                                                                                              "COMMENT ON COLUMN leaf.property IS '叶子要素属性架构哈希值';" +
                                                                                                              "COMMENT ON COLUMN leaf.timestamp IS '叶子要素创建时间戳（由[年月日：yyyyMMdd,时分秒：HHmmss]二元整型数组编码构成）';" +
                                                                                                              "COMMENT ON COLUMN leaf.frequency IS '叶子要素访问频度';",
-                                                                                                             timeout
-                                                                                                             : 0) !=
-                                                                                                     null)
+                                                                                                             timeout: 0) != null)
                                                                                                 {
-                                                                                                    PostgreSqlHelper
-                                                                                                        .NonQuery(
-                                                                                                            cmd:
-                                                                                                            "CREATE SEQUENCE leaf_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;",
-                                                                                                            timeout
-                                                                                                            : 0);
-                                                                                                    if
-                                                                                                        (PostgreSqlHelper
+                                                                                                    PostgreSqlHelper.NonQuery(cmd: "CREATE SEQUENCE leaf_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;", timeout: 0);
+                                                                                                    if (PostgreSqlHelper
                                                                                                              .NonQuery(
                                                                                                                  cmd
                                                                                                                  :
@@ -2437,9 +2374,7 @@ namespace Geosite
                                                                                                                  "CREATE INDEX leaf_timestamp_yyyymmdd ON leaf USING BTREE ((timestamp[1]));" +
                                                                                                                  "CREATE INDEX leaf_timestamp_hhmmss ON leaf USING BTREE ((timestamp[2]));" +
                                                                                                                  "CREATE INDEX leaf_frequency_id ON leaf USING BTREE (frequency ASC NULLS LAST, id ASC NULLS LAST);",
-                                                                                                                 timeout
-                                                                                                                 : 0) !=
-                                                                                                         null)
+                                                                                                                 timeout: 0) != null)
                                                                                                     {
                                                                                                         PostgreSqlHelper
                                                                                                             .NonQuery(
@@ -2457,37 +2392,23 @@ namespace Geosite
                                                                                                                 "COMMENT ON COLUMN leaf_relation.leaf IS '叶子要素标识码';" +
                                                                                                                 "COMMENT ON COLUMN leaf_relation.action IS '叶子事务活动容器';" +
                                                                                                                 "COMMENT ON COLUMN leaf_relation.detail IS '叶子关系描述容器';",
-                                                                                                                timeout
-                                                                                                                : 0);
+                                                                                                                timeout: 0);
 
                                                                                                         PostgreSqlHelper
                                                                                                             .NonQuery(
-                                                                                                                cmd
-                                                                                                                :
-                                                                                                                "CREATE INDEX leaf_relation_action_FTS ON leaf_relation USING PGROONGA (action);" +
+                                                                                                                cmd: "CREATE INDEX leaf_relation_action_FTS ON leaf_relation USING PGROONGA (action);" +
                                                                                                                 "CREATE INDEX leaf_relation_action ON leaf_relation USING GIN (action);",
-                                                                                                                timeout
-                                                                                                                : 0);
+                                                                                                                timeout: 0);
                                                                                                         Invoke(
-                                                                                                            method
-                                                                                                            :
+                                                                                                            method:
                                                                                                             () =>
                                                                                                             {
-                                                                                                                statusProgress
-                                                                                                                        .Value =
-                                                                                                                    58;
-                                                                                                                DatabaseLogAdd(
-                                                                                                                    input
-                                                                                                                    : statusText
-                                                                                                                            .Text =
-                                                                                                                        @"Create leaf table（leaf_description）...");
+                                                                                                                statusProgress.Value = 58;
+                                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_description）...");
                                                                                                             }
                                                                                                         );
-                                                                                                        if
-                                                                                                            (PostgreSqlHelper
-                                                                                                                 .NonQuery(
-                                                                                                                     cmd
-                                                                                                                     :
+                                                                                                        if (PostgreSqlHelper.NonQuery(
+                                                                                                                     cmd:
                                                                                                                      "CREATE TABLE leaf_description " +
                                                                                                                      "(" +
                                                                                                                      "leaf bigint, level SmallInt, sequence SmallInt, parent SmallInt, name TEXT, attribute JSONB, flag BOOLEAN DEFAULT false, type SmallInt DEFAULT 0, content Text, numericvalue Numeric" +
@@ -2507,44 +2428,28 @@ namespace Geosite
                                                                                                                      "COMMENT ON COLUMN leaf_description.type IS '字段（值）的数据类型码，目前支持：-1【分类型字段】、0【string（null）】、1【integer】、2【decimal】、3【hybrid】、4【boolean】';" +
                                                                                                                      "COMMENT ON COLUMN leaf_description.content IS '字段（值）的全文内容，以便实施全文检索以及自然语言处理';" +
                                                                                                                      "COMMENT ON COLUMN leaf_description.numericvalue IS '字段（值）的数值型（1【integer】、2【decimal】、3【hybrid】、4【boolean】）容器，以便支持超大值域聚合计算';",
-                                                                                                                     timeout
-                                                                                                                     : 0) !=
-                                                                                                             null)
+                                                                                                                     timeout: 0) != null)
                                                                                                         {
-                                                                                                            if
-                                                                                                                (PostgreSqlHelper
+                                                                                                            if (PostgreSqlHelper
                                                                                                                      .NonQuery(
-                                                                                                                         cmd
-                                                                                                                         : "CREATE INDEX leaf_description_name ON leaf_description USING BTREE (name);" +
+                                                                                                                         cmd: "CREATE INDEX leaf_description_name ON leaf_description USING BTREE (name);" +
                                                                                                                          "CREATE INDEX leaf_description_name_FTS ON leaf_description USING PGROONGA (name);" +
                                                                                                                          "CREATE INDEX leaf_description_flag ON leaf_description USING BTREE (flag);" +
                                                                                                                          "CREATE INDEX leaf_description_type ON leaf_description USING BTREE (type);" +
                                                                                                                          "CREATE INDEX leaf_description_content ON leaf_description USING PGROONGA (content);" +
                                                                                                                          "CREATE INDEX leaf_description_numericvalue ON leaf_description USING BTREE (numericvalue);",
-                                                                                                                         timeout
-                                                                                                                         : 0) !=
-                                                                                                                 null)
+                                                                                                                         timeout: 0) != null)
                                                                                                             {
                                                                                                                 Invoke(
-                                                                                                                    method
-                                                                                                                    :
+                                                                                                                    method:
                                                                                                                     () =>
                                                                                                                     {
-                                                                                                                        statusProgress
-                                                                                                                                .Value =
-                                                                                                                            64;
-                                                                                                                        DatabaseLogAdd(
-                                                                                                                            input
-                                                                                                                            : statusText
-                                                                                                                                    .Text =
-                                                                                                                                @"Create leaf table（leaf_style）...");
+                                                                                                                        statusProgress.Value = 64;
+                                                                                                                        DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_style）...");
                                                                                                                     }
                                                                                                                 );
-                                                                                                                if
-                                                                                                                    (PostgreSqlHelper
-                                                                                                                         .NonQuery(
-                                                                                                                             cmd
-                                                                                                                             : "CREATE TABLE leaf_style " +
+                                                                                                                if (PostgreSqlHelper.NonQuery(
+                                                                                                                             cmd: "CREATE TABLE leaf_style " +
                                                                                                                              "(" +
                                                                                                                              "leaf BigInt, style JSONB" +
                                                                                                                              ",CONSTRAINT leaf_style_pkey PRIMARY KEY (leaf)" +
@@ -2555,19 +2460,13 @@ namespace Geosite
                                                                                                                              "COMMENT ON TABLE leaf_style IS '叶子要素表（leaf）的样式子表';" +
                                                                                                                              "COMMENT ON COLUMN leaf_style.leaf IS '叶子要素的标识码';" +
                                                                                                                              "COMMENT ON COLUMN leaf_style.style IS '叶子要素可视化样式信息，由若干键值对（KVP）构成';",
-                                                                                                                             timeout
-                                                                                                                             : 0) !=
-                                                                                                                     null)
+                                                                                                                             timeout: 0) != null)
                                                                                                                 {
-                                                                                                                    if
-                                                                                                                        (PostgreSqlHelper
-                                                                                                                             .NonQuery(
+                                                                                                                    if (PostgreSqlHelper.NonQuery(
                                                                                                                                  cmd
                                                                                                                                  : "CREATE INDEX leaf_style_style_FTS ON leaf_style USING PGROONGA (style);" +
                                                                                                                                  "CREATE INDEX leaf_style_style ON leaf_style USING GIN (style);",
-                                                                                                                                 timeout
-                                                                                                                                 : 0) !=
-                                                                                                                         null)
+                                                                                                                                 timeout: 0) != null)
                                                                                                                     {
                                                                                                                         Invoke(
                                                                                                                             method
@@ -2583,9 +2482,7 @@ namespace Geosite
                                                                                                                                         @"Create leaf table（leaf_geometry）...");
                                                                                                                             }
                                                                                                                         );
-                                                                                                                        if
-                                                                                                                            (PostgreSqlHelper
-                                                                                                                                 .NonQuery(
+                                                                                                                        if (PostgreSqlHelper.NonQuery(
                                                                                                                                      cmd
                                                                                                                                      : "CREATE TABLE leaf_geometry " +
                                                                                                                                      "(" +
@@ -2600,37 +2497,26 @@ namespace Geosite
                                                                                                                                      "COMMENT ON COLUMN leaf_geometry.coordinate IS '叶子要素几何坐标（【EPSG:4326】）';" +
                                                                                                                                      "COMMENT ON COLUMN leaf_geometry.boundary IS '叶子要素几何边框（【EPSG:4326】）';" +
                                                                                                                                      "COMMENT ON COLUMN leaf_geometry.centroid IS '叶子要素几何内点（通常用于几何瘦身、标注锚点等场景）';",
-                                                                                                                                     timeout
-                                                                                                                                     : 0) !=
-                                                                                                                             null)
+                                                                                                                                     timeout: 0) != null)
                                                                                                                         {
-                                                                                                                            if
-                                                                                                                                (PostgreSqlHelper
+                                                                                                                            if (PostgreSqlHelper
                                                                                                                                      .NonQuery(
                                                                                                                                          cmd
                                                                                                                                          : "CREATE INDEX leaf_geometry_coordinate ON leaf_geometry USING GIST (coordinate);" +
                                                                                                                                          "CREATE INDEX leaf_geometry_boundary ON leaf_geometry USING GIST (boundary);" +
                                                                                                                                          "CREATE INDEX leaf_geometry_centroid ON leaf_geometry USING GIST (centroid);",
-                                                                                                                                         timeout
-                                                                                                                                         : 0) !=
-                                                                                                                                 null)
+                                                                                                                                         timeout: 0) != null)
                                                                                                                             {
                                                                                                                                 Invoke(
                                                                                                                                     method
                                                                                                                                     : () =>
                                                                                                                                     {
-                                                                                                                                        statusProgress
-                                                                                                                                                .Value =
-                                                                                                                                            76;
+                                                                                                                                        statusProgress.Value = 76;
                                                                                                                                         DatabaseLogAdd(
-                                                                                                                                            input
-                                                                                                                                            : statusText
-                                                                                                                                                    .Text =
-                                                                                                                                                @"Create leaf table（leaf_tile）...");
+                                                                                                                                            input: statusText.Text = @"Create leaf table（leaf_tile）...");
                                                                                                                                     }
                                                                                                                                 );
-                                                                                                                                if
-                                                                                                                                    (PostgreSqlHelper
+                                                                                                                                if (PostgreSqlHelper
                                                                                                                                          .NonQuery(
                                                                                                                                              cmd
                                                                                                                                              : "CREATE TABLE leaf_tile " +
@@ -2648,12 +2534,9 @@ namespace Geosite
                                                                                                                                              "COMMENT ON COLUMN leaf_tile.y IS '叶子瓦片纵向坐标编码';" +
                                                                                                                                              "COMMENT ON COLUMN leaf_tile.tile IS '叶子瓦片栅格影像（RASTER类型-WKB格式，目前支持【EPSG:4326】、【EPSG:3857】、【EPSG:0】）';" +
                                                                                                                                              "COMMENT ON COLUMN leaf_tile.boundary IS '叶子瓦片几何边框（【EPSG:4326】）';",
-                                                                                                                                             timeout
-                                                                                                                                             : 0) !=
-                                                                                                                                     null)
+                                                                                                                                             timeout: 0) != null)
                                                                                                                                 {
-                                                                                                                                    if
-                                                                                                                                        (PostgreSqlHelper
+                                                                                                                                    if (PostgreSqlHelper
                                                                                                                                              .NonQuery(
                                                                                                                                                  cmd
                                                                                                                                                  : "CREATE INDEX leaf_tile_tile ON leaf_tile USING GIST (st_convexhull(tile));"
@@ -2667,18 +2550,11 @@ namespace Geosite
                                                                                                                                             method
                                                                                                                                             : () =>
                                                                                                                                             {
-                                                                                                                                                statusProgress
-                                                                                                                                                        .Value =
-                                                                                                                                                    82;
-                                                                                                                                                DatabaseLogAdd(
-                                                                                                                                                    input
-                                                                                                                                                    : statusText
-                                                                                                                                                            .Text =
-                                                                                                                                                        @"Create leaf table（leaf_wms）...");
+                                                                                                                                                statusProgress.Value = 82;
+                                                                                                                                                DatabaseLogAdd(input: statusText.Text = @"Create leaf table（leaf_wms）...");
                                                                                                                                             }
                                                                                                                                         );
-                                                                                                                                        if
-                                                                                                                                            (PostgreSqlHelper
+                                                                                                                                        if (PostgreSqlHelper
                                                                                                                                                  .NonQuery(
                                                                                                                                                      cmd
                                                                                                                                                      : "CREATE TABLE leaf_wms " +
@@ -2693,38 +2569,24 @@ namespace Geosite
                                                                                                                                                      "COMMENT ON COLUMN leaf_wms.leaf IS '叶子要素的标识码';" +
                                                                                                                                                      "COMMENT ON COLUMN leaf_wms.wms IS '叶子要素服务地址模板，暂支持【OGC】、【BingMap】、【DeepZoom】和【ESRI】瓦片编码类型';" +
                                                                                                                                                      "COMMENT ON COLUMN leaf_wms.boundary IS '叶子要素几何边框（EPSG:4326）';",
-                                                                                                                                                     timeout
-                                                                                                                                                     : 0) !=
-                                                                                                                                             null)
+                                                                                                                                                     timeout: 0) != null)
                                                                                                                                         {
-                                                                                                                                            if
-                                                                                                                                                (PostgreSqlHelper
-                                                                                                                                                     .NonQuery(
-                                                                                                                                                         cmd
-                                                                                                                                                         : "CREATE INDEX leaf_wms_boundary ON leaf_wms USING gist(boundary);",
-                                                                                                                                                         timeout
-                                                                                                                                                         : 0) !=
-                                                                                                                                                 null)
+                                                                                                                                            if (PostgreSqlHelper.NonQuery(
+                                                                                                                                                         cmd: "CREATE INDEX leaf_wms_boundary ON leaf_wms USING gist(boundary);",
+                                                                                                                                                         timeout: 0) != null)
                                                                                                                                             {
                                                                                                                                                 Invoke(
                                                                                                                                                     method
                                                                                                                                                     : () =>
                                                                                                                                                     {
-                                                                                                                                                        statusProgress
-                                                                                                                                                                .Value =
-                                                                                                                                                            88;
+                                                                                                                                                        statusProgress.Value = 88;
                                                                                                                                                         DatabaseLogAdd(
-                                                                                                                                                            input
-                                                                                                                                                            : statusText
-                                                                                                                                                                    .Text =
-                                                                                                                                                                @"Create leaf table（leaf_hits）...");
+                                                                                                                                                            input: statusText.Text = @"Create leaf table（leaf_hits）...");
                                                                                                                                                     }
                                                                                                                                                 );
-                                                                                                                                                if
-                                                                                                                                                    (PostgreSqlHelper
+                                                                                                                                                if (PostgreSqlHelper
                                                                                                                                                          .NonQuery(
-                                                                                                                                                             cmd
-                                                                                                                                                             : "CREATE TABLE leaf_hits " +
+                                                                                                                                                             cmd: "CREATE TABLE leaf_hits " +
                                                                                                                                                              "(" +
                                                                                                                                                              "leaf BigInt, hits BigInt DEFAULT 0" +
                                                                                                                                                              ",CONSTRAINT leaf_hits_pkey PRIMARY KEY (leaf)" +
@@ -2735,26 +2597,16 @@ namespace Geosite
                                                                                                                                                              "COMMENT ON TABLE leaf_hits IS '叶子要素表（leaf）的搜索命中率子表';" +
                                                                                                                                                              "COMMENT ON COLUMN leaf_hits.leaf IS '叶子要素的标识码';" +
                                                                                                                                                              "COMMENT ON COLUMN leaf_hits.hits IS '叶子要素的命中次数';",
-                                                                                                                                                             timeout
-                                                                                                                                                             : 0) !=
-                                                                                                                                                     null)
+                                                                                                                                                             timeout: 0) != null)
                                                                                                                                                 {
                                                                                                                                                     Invoke(
-                                                                                                                                                        method
-                                                                                                                                                        : () =>
+                                                                                                                                                        method: () =>
                                                                                                                                                         {
-                                                                                                                                                            statusProgress
-                                                                                                                                                                    .Value =
-                                                                                                                                                                94;
-                                                                                                                                                            DatabaseLogAdd(
-                                                                                                                                                                input
-                                                                                                                                                                : statusText
-                                                                                                                                                                        .Text =
-                                                                                                                                                                    @"Create the temporal sub table of leaf table（leaf_temporal）...");
+                                                                                                                                                            statusProgress.Value = 94;
+                                                                                                                                                            DatabaseLogAdd(input: statusText.Text = @"Create the temporal sub table of leaf table（leaf_temporal）...");
                                                                                                                                                         }
                                                                                                                                                     );
-                                                                                                                                                    if
-                                                                                                                                                        (PostgreSqlHelper
+                                                                                                                                                    if (PostgreSqlHelper
                                                                                                                                                              .NonQuery(
                                                                                                                                                                  cmd
                                                                                                                                                                  : "CREATE TABLE leaf_temporal " +
@@ -2769,9 +2621,7 @@ namespace Geosite
                                                                                                                                                                  "COMMENT ON COLUMN leaf_temporal.leaf IS '叶子要素的标识码';" +
                                                                                                                                                                  "COMMENT ON COLUMN leaf_temporal.birth IS '叶子要素生命期的起始时间（由【年月日、时分秒】两个整型数据成员构成）';" +
                                                                                                                                                                  "COMMENT ON COLUMN leaf_temporal.death IS '叶子要素生命期的结束时间（由【年月日、时分秒】两个整型数据成员构成）';",
-                                                                                                                                                                 timeout
-                                                                                                                                                                 : 0) !=
-                                                                                                                                                         null)
+                                                                                                                                                                 timeout: 0) != null)
                                                                                                                                                     {
                                                                                                                                                         if
                                                                                                                                                             (PostgreSqlHelper
@@ -2786,30 +2636,16 @@ namespace Geosite
                                                                                                                                                              null)
                                                                                                                                                         {
                                                                                                                                                             Invoke(
-                                                                                                                                                                method
-                                                                                                                                                                : () =>
+                                                                                                                                                                method: () =>
                                                                                                                                                                 {
-                                                                                                                                                                    statusProgress
-                                                                                                                                                                            .Value =
-                                                                                                                                                                        100;
-                                                                                                                                                                    DatabaseLogAdd(
-                                                                                                                                                                        input
-                                                                                                                                                                        : statusText
-                                                                                                                                                                                .Text =
-                                                                                                                                                                            @"Create public functions ...");
+                                                                                                                                                                    statusProgress.Value = 100;
+                                                                                                                                                                    DatabaseLogAdd(input: statusText.Text = @"Create public functions ...");
                                                                                                                                                                 }
                                                                                                                                                             );
-                                                                                                                                                            int
-                                                                                                                                                                .TryParse(
-                                                                                                                                                                    s:
-                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_proc WHERE proname = 'first_agg' OR proname = 'first';", timeout: 0)}",
-                                                                                                                                                                    result
-                                                                                                                                                                    : out
-                                                                                                                                                                    var
-                                                                                                                                                                        firstAggregateExist);
-                                                                                                                                                            if
-                                                                                                                                                                (firstAggregateExist !=
-                                                                                                                                                                 2)
+                                                                                                                                                            int.TryParse(
+                                                                                                                                                                    s: $"{PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_proc WHERE proname = 'first_agg' OR proname = 'first';", timeout: 0)}",
+                                                                                                                                                                    result: out var firstAggregateExist);
+                                                                                                                                                            if (firstAggregateExist != 2)
                                                                                                                                                                 PostgreSqlHelper
                                                                                                                                                                     .NonQuery(
                                                                                                                                                                         cmd
@@ -2824,21 +2660,13 @@ namespace Geosite
                                                                                                                                                                         "    );",
                                                                                                                                                                         timeout
                                                                                                                                                                         : 0);
-                                                                                                                                                            int
-                                                                                                                                                                .TryParse(
-                                                                                                                                                                    s:
-                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_proc WHERE proname = 'last_agg' OR proname = 'last';", timeout: 0)}",
-                                                                                                                                                                    result
-                                                                                                                                                                    : out
-                                                                                                                                                                    var
-                                                                                                                                                                        lastAggregateExist);
-                                                                                                                                                            if
-                                                                                                                                                                (lastAggregateExist !=
-                                                                                                                                                                 2)
+                                                                                                                                                            int.TryParse(
+                                                                                                                                                                    s: $"{PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_proc WHERE proname = 'last_agg' OR proname = 'last';", timeout: 0)}",
+                                                                                                                                                                    result: out var lastAggregateExist);
+                                                                                                                                                            if (lastAggregateExist != 2)
                                                                                                                                                                 PostgreSqlHelper
                                                                                                                                                                     .NonQuery(
-                                                                                                                                                                        cmd
-                                                                                                                                                                        : "CREATE OR REPLACE FUNCTION public.last_agg (anyelement, anyelement)" +
+                                                                                                                                                                        cmd: "CREATE OR REPLACE FUNCTION public.last_agg (anyelement, anyelement)" +
                                                                                                                                                                         "  RETURNS anyelement" +
                                                                                                                                                                         "  LANGUAGE sql IMMUTABLE STRICT PARALLEL SAFE AS" +
                                                                                                                                                                         "  'SELECT $2';" +
@@ -2847,25 +2675,13 @@ namespace Geosite
                                                                                                                                                                         "    , STYPE = anyelement" +
                                                                                                                                                                         "    , PARALLEL = safe" +
                                                                                                                                                                         "    );",
-                                                                                                                                                                        timeout
-                                                                                                                                                                        : 0);
-                                                                                                                                                            const
-                                                                                                                                                                string
-                                                                                                                                                                ogcBranches =
-                                                                                                                                                                    "ogc_branches";
-                                                                                                                                                            int
-                                                                                                                                                                .TryParse(
-                                                                                                                                                                    s:
-                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: $"SELECT count(*) FROM pg_proc WHERE proname = '{ogcBranches}';", timeout: 0)}",
-                                                                                                                                                                    result
-                                                                                                                                                                    : out
-                                                                                                                                                                    var
-                                                                                                                                                                        ogcBranchesExist);
-                                                                                                                                                            if
-                                                                                                                                                                (ogcBranchesExist ==
-                                                                                                                                                                 0)
-                                                                                                                                                                PostgreSqlHelper
-                                                                                                                                                                    .NonQuery
+                                                                                                                                                                        timeout: 0);
+                                                                                                                                                            const string ogcBranches = "ogc_branches";
+                                                                                                                                                            int.TryParse(
+                                                                                                                                                                    s: $"{PostgreSqlHelper.Scalar(cmd: $"SELECT count(*) FROM pg_proc WHERE proname = '{ogcBranches}';", timeout: 0)}",
+                                                                                                                                                                    result: out var ogcBranchesExist);
+                                                                                                                                                            if (ogcBranchesExist == 0)
+                                                                                                                                                                PostgreSqlHelper.NonQuery
                                                                                                                                                                     (
                                                                                                                                                                         cmd
                                                                                                                                                                         : $"CREATE OR REPLACE FUNCTION public.{ogcBranches}(typename text, path boolean DEFAULT NULL::boolean) RETURNS TABLE(branch integer) LANGUAGE 'plpgsql' AS $$" +
@@ -2929,25 +2745,13 @@ namespace Geosite
                                                                                                                                                                         "  RETURN QUERY EXECUTE sql USING parameters;" +
                                                                                                                                                                         " END;" +
                                                                                                                                                                         " $$",
-                                                                                                                                                                        timeout
-                                                                                                                                                                        : 0);
-                                                                                                                                                            const
-                                                                                                                                                                string
-                                                                                                                                                                ogcBranch =
-                                                                                                                                                                    "ogc_branch";
-                                                                                                                                                            int
-                                                                                                                                                                .TryParse(
-                                                                                                                                                                    s:
-                                                                                                                                                                    $"{PostgreSqlHelper.Scalar(cmd: $"SELECT count(*) FROM pg_proc WHERE proname = '{ogcBranch}';", timeout: 0)}",
-                                                                                                                                                                    result
-                                                                                                                                                                    : out
-                                                                                                                                                                    var
-                                                                                                                                                                        ogcBranchExist);
-                                                                                                                                                            if
-                                                                                                                                                                (ogcBranchExist ==
-                                                                                                                                                                 0)
-                                                                                                                                                                PostgreSqlHelper
-                                                                                                                                                                    .NonQuery
+                                                                                                                                                                        timeout: 0);
+                                                                                                                                                            const string ogcBranch = "ogc_branch";
+                                                                                                                                                            int.TryParse(
+                                                                                                                                                                    s: $"{PostgreSqlHelper.Scalar(cmd: $"SELECT count(*) FROM pg_proc WHERE proname = '{ogcBranch}';", timeout: 0)}",
+                                                                                                                                                                    result: out var ogcBranchExist);
+                                                                                                                                                            if (ogcBranchExist == 0)
+                                                                                                                                                                PostgreSqlHelper.NonQuery
                                                                                                                                                                     (
                                                                                                                                                                         cmd
                                                                                                                                                                         : $"CREATE OR REPLACE FUNCTION public.{ogcBranch}(id integer) RETURNS TABLE(tree integer, levels smallint[], layer text[], layerproperty jsonb[], layerdetail xml[]) LANGUAGE 'plpgsql' AS $$" +
@@ -2975,115 +2779,86 @@ namespace Geosite
                                                                                                                                                                         "    WHERE t.tree IS NOT NULL;" +
                                                                                                                                                                         " END;" +
                                                                                                                                                                         " $$",
-                                                                                                                                                                        timeout
-                                                                                                                                                                        : 0);
-                                                                                                                                                            _clusterUser
-                                                                                                                                                                    .status =
-                                                                                                                                                                true;
+                                                                                                                                                                        timeout: 0);
+                                                                                                                                                            _clusterUser.status = true;
                                                                                                                                                         }
                                                                                                                                                         else
-                                                                                                                                                            errorMessage =
-                                                                                                                                                                $"Failed to create some indexes of leaf_temporal - {PostgreSqlHelper.Message}";
+                                                                                                                                                            errorMessage = $"Failed to create some indexes of leaf_temporal - {PostgreSqlHelper.Message}";
                                                                                                                                                     }
                                                                                                                                                     else
-                                                                                                                                                        errorMessage =
-                                                                                                                                                            $"Failed to create leaf_temporal - {PostgreSqlHelper.Message}";
+                                                                                                                                                        errorMessage = $"Failed to create leaf_temporal - {PostgreSqlHelper.Message}";
                                                                                                                                                 }
                                                                                                                                                 else
-                                                                                                                                                    errorMessage =
-                                                                                                                                                        $"Failed to create leaf_hits - {PostgreSqlHelper.Message}";
+                                                                                                                                                    errorMessage = $"Failed to create leaf_hits - {PostgreSqlHelper.Message}";
                                                                                                                                             }
                                                                                                                                             else
-                                                                                                                                                errorMessage =
-                                                                                                                                                    $"Failed to create some indexes of leaf_wms - {PostgreSqlHelper.Message}";
+                                                                                                                                                errorMessage = $"Failed to create some indexes of leaf_wms - {PostgreSqlHelper.Message}";
                                                                                                                                         }
                                                                                                                                         else
-                                                                                                                                            errorMessage =
-                                                                                                                                                $"Failed to create leaf_wms - {PostgreSqlHelper.Message}";
+                                                                                                                                            errorMessage = $"Failed to create leaf_wms - {PostgreSqlHelper.Message}";
                                                                                                                                     }
                                                                                                                                     else
-                                                                                                                                        errorMessage =
-                                                                                                                                            $"Failed to create some indexes of leaf_tile - {PostgreSqlHelper.Message}";
+                                                                                                                                        errorMessage = $"Failed to create some indexes of leaf_tile - {PostgreSqlHelper.Message}";
                                                                                                                                 }
                                                                                                                                 else
-                                                                                                                                    errorMessage =
-                                                                                                                                        $"Failed to create leaf_tile - {PostgreSqlHelper.Message}";
+                                                                                                                                    errorMessage = $"Failed to create leaf_tile - {PostgreSqlHelper.Message}";
                                                                                                                             }
                                                                                                                             else
-                                                                                                                                errorMessage =
-                                                                                                                                    $"Failed to create some indexes of leaf_geometry - {PostgreSqlHelper.Message}";
+                                                                                                                                errorMessage = $"Failed to create some indexes of leaf_geometry - {PostgreSqlHelper.Message}";
                                                                                                                         }
                                                                                                                         else
-                                                                                                                            errorMessage =
-                                                                                                                                $"Failed to create leaf_geometry - {PostgreSqlHelper.Message}";
+                                                                                                                            errorMessage = $"Failed to create leaf_geometry - {PostgreSqlHelper.Message}";
                                                                                                                     }
                                                                                                                     else
-                                                                                                                        errorMessage =
-                                                                                                                            $"Failed to create some indexes of leaf_style - {PostgreSqlHelper.Message}";
+                                                                                                                        errorMessage = $"Failed to create some indexes of leaf_style - {PostgreSqlHelper.Message}";
                                                                                                                 }
                                                                                                                 else
-                                                                                                                    errorMessage =
-                                                                                                                        $"Failed to create leaf_style - {PostgreSqlHelper.Message}";
+                                                                                                                    errorMessage = $"Failed to create leaf_style - {PostgreSqlHelper.Message}";
                                                                                                             }
                                                                                                             else
-                                                                                                                errorMessage =
-                                                                                                                    $"Failed to create some indexes of leaf_description - {PostgreSqlHelper.Message}";
+                                                                                                                errorMessage = $"Failed to create some indexes of leaf_description - {PostgreSqlHelper.Message}";
                                                                                                         }
                                                                                                         else
-                                                                                                            errorMessage =
-                                                                                                                $"Failed to create leaf_description - {PostgreSqlHelper.Message}";
+                                                                                                            errorMessage = $"Failed to create leaf_description - {PostgreSqlHelper.Message}";
                                                                                                     }
                                                                                                     else
-                                                                                                        errorMessage =
-                                                                                                            $"Failed to create some indexes of leaf - {PostgreSqlHelper.Message}";
+                                                                                                        errorMessage = $"Failed to create some indexes of leaf - {PostgreSqlHelper.Message}";
                                                                                                 }
                                                                                                 else
-                                                                                                    errorMessage =
-                                                                                                        $"Failed to create leaf - {PostgreSqlHelper.Message}";
+                                                                                                    errorMessage = $"Failed to create leaf - {PostgreSqlHelper.Message}";
                                                                                             }
                                                                                             else
-                                                                                                errorMessage =
-                                                                                                    $"Failed to create some indexes of branch - {PostgreSqlHelper.Message}";
+                                                                                                errorMessage = $"Failed to create some indexes of branch - {PostgreSqlHelper.Message}";
                                                                                         }
                                                                                         else
-                                                                                            errorMessage =
-                                                                                                $"Failed to create branch - {PostgreSqlHelper.Message}";
+                                                                                            errorMessage = $"Failed to create branch - {PostgreSqlHelper.Message}";
                                                                                     }
                                                                                     else
-                                                                                        errorMessage =
-                                                                                            $"Failed to create some indexes of tree - {PostgreSqlHelper.Message}";
+                                                                                        errorMessage = $"Failed to create some indexes of tree - {PostgreSqlHelper.Message}";
                                                                                 }
                                                                                 else
-                                                                                    errorMessage =
-                                                                                        $"Failed to create tree - {PostgreSqlHelper.Message}";
+                                                                                    errorMessage = $"Failed to create tree - {PostgreSqlHelper.Message}";
                                                                             }
                                                                             else
-                                                                                errorMessage =
-                                                                                    $"Failed to create some indexes of forest - {PostgreSqlHelper.Message}";
+                                                                                errorMessage = $"Failed to create some indexes of forest - {PostgreSqlHelper.Message}";
                                                                         }
                                                                         else
-                                                                            errorMessage =
-                                                                                $"Failed to create forest - {PostgreSqlHelper.Message}";
+                                                                            errorMessage = $"Failed to create forest - {PostgreSqlHelper.Message}";
                                                                     }
                                                                     else
-                                                                        errorMessage =
-                                                                            "No multilingual full text retrieval extension module (pgroonga) found.";
+                                                                        errorMessage = "No multilingual full text retrieval extension module (pgroonga) found.";
                                                                 }
                                                                 else
-                                                                    errorMessage =
-                                                                        "One dimensional integer array extension module (intarray) not found.";
+                                                                    errorMessage = "One dimensional integer array extension module (intarray) not found.";
                                                             }
                                                             else
-                                                                errorMessage =
-                                                                    "No raster data expansion module was found (postgis_raster).";
+                                                                errorMessage = "No raster data expansion module was found (postgis_raster).";
                                                         }
                                                         else
-                                                            errorMessage =
-                                                                "No vector data expansion module was found (postgis).";
+                                                            errorMessage = "No vector data expansion module was found (postgis).";
                                                     }
                                                     else
-                                                        errorMessage =
-                                                            $"Unable to create database [{PostgreSqlHelper.Message}].";
+                                                        errorMessage = $"Unable to create database [{PostgreSqlHelper.Message}].";
                                                 }
                                                 else
                                                     errorMessage = "Task canceled.";
@@ -3108,8 +2883,7 @@ namespace Geosite
                                             {
                                                 Task.Factory.StartNew(action: () =>
                                                     {
-                                                        _clusterUser = (true, forest,
-                                                            GeositeServerUser.Text.Trim());
+                                                        _clusterUser = (true, forest, GeositeServerUser.Text.Trim());
                                                         _databaseGridObject = new DatabaseGrid(
                                                             dataGridView: DatabaseGridView,
                                                             firstPage: firstPage,
@@ -3144,18 +2918,13 @@ namespace Geosite
                                                 //   <Flag>0</Flag>         //0：未授权；1=已授权
                                                 //   <Days>100</Days>       //可空的整型数：空意味着永久授权；0意味着时间戳已无效；正值是剩余天数；负值是过期天数
                                                 //</License>
-                                                if (int.TryParse(geositeServerLicense.Element("Flag")?.Value,
-                                                        out var flag))
+                                                if (int.TryParse(geositeServerLicense.Element("Flag")?.Value, out var flag))
                                                 {
-                                                    DatabaseLogAdd(
-                                                        input:
-                                                        $"GeositeServer {(flag == 0 ? "not" : "is")} licensed.");
+                                                    DatabaseLogAdd(input: $"GeositeServer {(flag == 0 ? "not" : "is")} licensed.");
                                                     var daysValue = geositeServerLicense.Element("Days")?.Value;
                                                     if (!string.IsNullOrWhiteSpace(daysValue) &&
                                                         long.TryParse(daysValue, out var days))
-                                                        DatabaseLogAdd(
-                                                            input:
-                                                            $"GeositeServer license remaining {days} days.");
+                                                        DatabaseLogAdd(input: $"GeositeServer license remaining {days} days.");
                                                 }
                                             }
                                         }
@@ -3899,44 +3668,97 @@ namespace Geosite
                 {
                     var themeCell = ((DataGridView)sender).Rows[index: rowIndex].Cells[index: 1];
                     var themeInfo = Regex.Split(input: themeCell.ToolTipText, pattern: @"[\b]");
+                    //$"{tree}\b{type}\b{layer}\b{branch}\b{leaf}\b{status}\b{timestamp}"
                     var tree = int.Parse(themeInfo[0]);
-                    if (colIndex == -1)
+                    var type = themeInfo[1]; //逗号分隔的类型码序列
+                    var typeArray = Regex.Split(
+                        input: type,
+                        pattern: @"[\s,\s]+"
+                    );
+                    var layer = themeInfo[2];
+                    var branch = themeInfo[3];
+                    var leaf = themeInfo[4]; //首片叶子id
+                    switch (colIndex)
                     {
-                        _loading.Run();
-                        Invoke(method: () =>
+                        case -1: //首列 - 空白栏
                         {
+                            //显示图层路由信息
                             DatabaseLogAdd(
-                                input: statusText.Text =
-                                    (string)PostgreSqlHelper.Scalar
-                                    (
-                                        cmd:
-                                        "SELECT array_to_string(array_agg(name), '.') FROM (SELECT distinct on(level) name FROM branch WHERE tree = @tree ORDER BY level,id) AS route;",
-                                        parameters: new Dictionary<string, object>
-                                        {
-                                                { "tree", tree }
-                                        }
-                                    )
+                                input: statusText.Text = layer
                             );
-                            _loading.Run(onOff: false);
+                            break;
                         }
-                        );
-                    }
-                    else
-                    {
-                        if (colIndex == 4)
+                        //case 0:
+                        //case 1:
+                        //case 2:
+                        //case 3:
+                        //{
+                        //    break;
+                        //}
+                        case 4: //预览回显 - 矢量 + 瓦片
                         {
-                            ogcCard.SelectedIndex = 0;
-                            new MapView(
-                                mainForm: this,
-                                path: $"{new UriBuilder(GeositeServerUrl.Text.Trim()).Uri}\b{themeInfo[2]}\b{themeInfo[3]}",
-                                type: themeInfo[1],
-                                property: (XElement) themeCell.Tag,
-                                style: PreviewStyleForm.Style,
-                                projection: null,
-                                geositeServerUser: GeositeServerUser.Text,
-                                geositeServerPassword:
-                                $"{GeositeConfuser.Cryptography.HashEncoder(arg: GeositeServerPassword.Text.Trim())}"
-                            ).View();
+                            //文档树要素类型码构成的数组类型码约定：
+                            //0：非空间数据【默认】 ✔
+                            //1：Point点 ✔
+                            //2：Line线 ✔
+                            //3：Polygon面 ✔
+                            //4：Image地理贴图 ✔
+                            ////////10000：Wms栅格金字塔瓦片服务类型[epsg:0 - 无投影瓦片]
+                            //10001：Wms瓦片服务类型[epsg:4326 - 地理坐标系瓦片] ✔
+                            //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片] ✔
+                            ////////11000：Wmts栅格金字塔瓦片类型[epsg:0 - 无投影瓦片]
+                            //11001：Wmts栅格金字塔瓦片类型[epsg:4326 - 地理坐标系瓦片]✔
+                            //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片] ✔
+                            ////////12000：WPS栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]
+                            ////////12001：WPS栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]
+                            ////////12002：WPS栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]
+                            if (typeArray.Contains(value: "0") ||
+                                typeArray.Contains(value: "1") ||
+                                typeArray.Contains(value: "2") ||
+                                typeArray.Contains(value: "3") ||
+                                typeArray.Contains(value: "4") ||
+                                typeArray.Contains(value: "10001") ||
+                                typeArray.Contains(value: "10002") ||
+                                typeArray.Contains(value: "11001") ||
+                                typeArray.Contains(value: "11002")
+                               )
+                            {
+                                ogcCard.SelectedIndex = 0;
+                                new MapView(
+                                    mainForm: this,
+                                    path: $"{new UriBuilder(GeositeServerUrl.Text.Trim()).Uri}\b{layer}\b{leaf}",
+                                    type: type,
+                                    property: (XElement) themeCell.Tag,
+                                    style: PreviewStyleForm.Style,
+                                    projection: null,
+                                    geositeServerUser: GeositeServerUser.Text,
+                                    geositeServerPassword: $"{GeositeConfuser.Cryptography.HashEncoder(arg: GeositeServerPassword.Text.Trim())}"
+                                ).View();
+                            }
+                            else
+                                DatabaseLogAdd(input: statusText.Text = @"This type of layer does not support previews.");
+
+                            break;
+                        }
+                        case 5: //导出 - 矢量
+                        {
+                            //1：Point点、2：Line线、3：Polygon面、4：Image贴图
+                            if (typeArray.Contains(value: "1") ||
+                                typeArray.Contains(value: "2") ||
+                                typeArray.Contains(value: "3") ||
+                                typeArray.Contains(value: "4")
+                                )
+                                new ExportForm(
+                                    mainForm: this,
+                                    treeId: tree,
+                                    types: typeArray,
+                                    layerName: ((DataGridView) sender).Rows[index: rowIndex].Cells[index: 0].FormattedValue?.ToString(),
+                                    layerRoute: layer,
+                                    layerId: int.Parse(branch)
+                                ).ShowDialog();
+                            else
+                                DatabaseLogAdd(input: statusText.Text = @"No vector features found within the layer.");
+                            break;
                         }
                     }
                 }
@@ -9412,7 +9234,7 @@ namespace Geosite
         }
 
         /// <summary>
-        /// 地图窗口右键菜单处理函数，包括矢量图层充满窗口、移除矢量图层、 清理瓦片缓存和矢量要素存盘等功能 
+        /// 地图窗口右键菜单处理函数，包括矢量图层充满窗口、移除矢量图层、 清理瓦片缓存和矢量要素存盘等功能       
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
