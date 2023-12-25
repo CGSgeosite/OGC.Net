@@ -1,14 +1,43 @@
-﻿using Geosite.GeositeServer.PostgreSQL;
+﻿/******************************************************************************
+ *
+ * Name: OGC.net - ExportForm
+ * Purpose: A free tool for reading ShapeFile, MapGIS, Excel/TXT/CSV, converting
+ *          into GML, GeoJSON, ShapeFile, KML and GeositeXML, and pushing vector
+ *          or raster to PostgreSQL database.
+ *
+ ******************************************************************************
+ * (C) 2019-2023 Geosite Development Team of CGS (R)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *****************************************************************************/
+
+using Geosite.GeositeServer.PostgreSQL;
+using Geosite.GeositeServer.Vector;
+using Geosite.GeositeXML;
+using Geosite.Messager;
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Data;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using Geosite.GeositeServer.Vector;
-using Geosite.GeositeXML;
-using Newtonsoft.Json;
-using System.Text;
-using Geosite.Messager;
 
 namespace Geosite
 {
@@ -205,15 +234,32 @@ namespace Geosite
             }
         }
 
+        /// <summary>
+        /// Progress Changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             var progressPercentage = e.ProgressPercentage;
             if (progressPercentage >= 0)
+            {
                 ExportProgressBar.Value = e.ProgressPercentage;
-            if (e.UserState != null)
-                ExportLogAdd(ExportStatusLabel.Text = $@"{e.UserState}");
+                if (e.UserState != null)
+                    ExportStatusLabel.Text = $@"{e.UserState}";
+            }
+            else
+            {
+                if (e.UserState != null)
+                    ExportLogAdd(ExportStatusLabel.Text = $@"{e.UserState}");
+            }
         }
 
+        /// <summary>
+        /// Run Worker Completed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ExportLogAdd(ExportStatusLabel.Text = e.Cancelled ? @"Cancelled." : e.Error == null ? @"Done." : $@"Error:{e.Error}");
@@ -223,6 +269,11 @@ namespace Geosite
             ExportStartButton.ToolTipText = @"Start";
         }
 
+        /// <summary>
+        /// DoWork
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             (XElement xml, string minId, string maxId, int numberMatched, int numberReturned)? GeositeXmlBuilder(
@@ -867,36 +918,47 @@ namespace Geosite
 
             if (e.Argument == null)
                 return;
-
+           
+            var pageCount = 100;
+            var startIndex = -1L;
+            var pages = (int)Math.Ceiling(1.0 * _featureCount / pageCount);
+            DataTable leavesTable = null;
             _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"Acquiring vector features ...");
-
-            var sqlCmd =
-                " SELECT * FROM (" +
-                "     SELECT * FROM (" +
-                "         SELECT * FROM (" +
-                "             SELECT * FROM (" +
-                $"                SELECT * FROM leaf WHERE branch = {_layerId} AND type BETWEEN 1 AND 4" +
-                "             ) AS leaves LEFT JOIN LATERAL (SELECT * FROM ogc_branch(branch)) AS linktable ON TRUE" +
-                "         ) AS leaves LEFT JOIN LATERAL (" +
-                "             SELECT ARRAY_AGG((name,attribute,level,sequence,parent,flag,type,content)) AS description FROM leaf_description WHERE leaf = id GROUP BY leaf" +
-                "         ) AS linktable ON TRUE" +
-                "     ) AS leaves LEFT JOIN LATERAL (" +
-                "         SELECT style FROM leaf_style WHERE leaf = id" +
-                "     ) AS linktable ON TRUE" +
-                " ) AS leaves LEFT JOIN LATERAL (" +
-                "     SELECT ST_AsGML(3,coordinate,8) AS coordinate, ST_AsGML(3,boundary,8) AS boundary, ST_AsGML(3,centroid,8) AS centroid FROM leaf_geometry WHERE leaf = id " +
-                " ) AS linktable ON TRUE";
-
-            var leavesTable = PostgreSqlHelper.DataTableReader(
-                cmd: sqlCmd,
-                timeout: 0
-            );
-            if (leavesTable == null || leavesTable.Rows.Count == 0)
+            for (var i = 0; i < pages; i++)
             {
-                _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No vector features found.");
-                return;
+                if (_backgroundWorker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                var pageTable = PostgreSqlHelper.DataTableReader(
+                    cmd: " SELECT * FROM (" +
+                         "     SELECT * FROM (" +
+                         "         SELECT * FROM (" +
+                         "             SELECT * FROM (" +
+                         $"                SELECT * FROM leaf WHERE (id > {startIndex}) AND branch = {_layerId} AND (type BETWEEN 1 AND 4) ORDER BY id ASC LIMIT {pageCount}" +
+                         "             ) AS leaves LEFT JOIN LATERAL (SELECT * FROM ogc_branch(branch)) AS linktable ON TRUE" +
+                         "         ) AS leaves LEFT JOIN LATERAL (" +
+                         "             SELECT ARRAY_AGG((name,attribute,level,sequence,parent,flag,type,content)) AS description FROM leaf_description WHERE leaf = id GROUP BY leaf" +
+                         "         ) AS linktable ON TRUE" +
+                         "     ) AS leaves LEFT JOIN LATERAL (" +
+                         "         SELECT style FROM leaf_style WHERE leaf = id" +
+                         "     ) AS linktable ON TRUE" +
+                         " ) AS leaves LEFT JOIN LATERAL (" +
+                         "     SELECT ST_AsGML(3,coordinate,8) AS coordinate, ST_AsGML(3,boundary,8) AS boundary, ST_AsGML(3,centroid,8) AS centroid FROM leaf_geometry WHERE leaf = id " +
+                         " ) AS linktable ON TRUE",
+                    timeout: 0
+                );
+                if (pageTable == null || pageTable.Rows.Count == 0)
+                    break;
+                startIndex = (long)pageTable.Rows[^1][columnName: "id"];
+                if (leavesTable == null)
+                    leavesTable = pageTable;
+                else
+                    leavesTable.Merge(pageTable, false, MissingSchemaAction.Add);
+                _backgroundWorker.ReportProgress(percentProgress: 100 * (i + 1) / pages, userState: @"Acquiring vector features ...");
             }
-
+            _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"Converting ...");
             var getResultXml = GeositeXmlBuilder(leaves: leavesTable);
             var xml = getResultXml?.xml;
             if (xml == null)
@@ -904,6 +966,7 @@ namespace Geosite
                 _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"No vector features found.");
                 return;
             }
+            _backgroundWorker.ReportProgress(percentProgress: -1, userState: @"Saving ...");
             using var geositeXml =
                 new GeositeXml.GeositeXml(
                     new XElement(
