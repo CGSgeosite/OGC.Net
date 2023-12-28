@@ -303,7 +303,7 @@
             CheckBoxDangle.Location = new Point(4, 41);
             CheckBoxDangle.Name = "CheckBoxDangle";
             CheckBoxDangle.Size = new Size(26, 23);
-            CheckBoxDangle.TabIndex = 31;
+            CheckBoxDangle.TabIndex = 1;
             CheckBoxDangle.TextAlign = ContentAlignment.MiddleCenter;
             CheckBoxDangle.UseVisualStyleBackColor = true;
             CheckBoxDangle.CheckedChanged += TopologyCheck_Click;
@@ -397,7 +397,7 @@
             CheckBoxPseudo.Location = new Point(4, 71);
             CheckBoxPseudo.Name = "CheckBoxPseudo";
             CheckBoxPseudo.Size = new Size(26, 23);
-            CheckBoxPseudo.TabIndex = 35;
+            CheckBoxPseudo.TabIndex = 2;
             CheckBoxPseudo.TextAlign = ContentAlignment.MiddleCenter;
             CheckBoxPseudo.UseVisualStyleBackColor = true;
             CheckBoxPseudo.CheckedChanged += TopologyCheck_Click;
@@ -410,7 +410,7 @@
             CheckBoxCoincide.Location = new Point(4, 101);
             CheckBoxCoincide.Name = "CheckBoxCoincide";
             CheckBoxCoincide.Size = new Size(26, 23);
-            CheckBoxCoincide.TabIndex = 36;
+            CheckBoxCoincide.TabIndex = 3;
             CheckBoxCoincide.TextAlign = ContentAlignment.MiddleCenter;
             CheckBoxCoincide.UseVisualStyleBackColor = true;
             CheckBoxCoincide.CheckedChanged += TopologyCheck_Click;
@@ -423,7 +423,7 @@
             CheckBoxOverlay.Location = new Point(4, 131);
             CheckBoxOverlay.Name = "CheckBoxOverlay";
             CheckBoxOverlay.Size = new Size(26, 23);
-            CheckBoxOverlay.TabIndex = 37;
+            CheckBoxOverlay.TabIndex = 4;
             CheckBoxOverlay.TextAlign = ContentAlignment.MiddleCenter;
             CheckBoxOverlay.UseVisualStyleBackColor = true;
             CheckBoxOverlay.CheckedChanged += TopologyCheck_Click;
@@ -436,7 +436,7 @@
             CheckBoxIntersection.Location = new Point(4, 161);
             CheckBoxIntersection.Name = "CheckBoxIntersection";
             CheckBoxIntersection.Size = new Size(26, 24);
-            CheckBoxIntersection.TabIndex = 38;
+            CheckBoxIntersection.TabIndex = 5;
             CheckBoxIntersection.TextAlign = ContentAlignment.MiddleCenter;
             CheckBoxIntersection.UseVisualStyleBackColor = true;
             CheckBoxIntersection.CheckedChanged += TopologyCheck_Click;
@@ -569,6 +569,7 @@
             // 
             // TopologyCheckerForm
             // 
+            AcceptButton = TopologyRun;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;

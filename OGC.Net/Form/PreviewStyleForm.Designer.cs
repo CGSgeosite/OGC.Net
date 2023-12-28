@@ -131,7 +131,7 @@
             PinRadioButton.Location = new Point(269, 6);
             PinRadioButton.Name = "PinRadioButton";
             PinRadioButton.Size = new Size(43, 21);
-            PinRadioButton.TabIndex = 0;
+            PinRadioButton.TabIndex = 3;
             PinRadioButton.Text = "Pin";
             PinRadioButton.UseVisualStyleBackColor = true;
             // 
@@ -142,7 +142,7 @@
             CircleRadioButton.Location = new Point(11, 6);
             CircleRadioButton.Name = "CircleRadioButton";
             CircleRadioButton.Size = new Size(77, 21);
-            CircleRadioButton.TabIndex = 0;
+            CircleRadioButton.TabIndex = 2;
             CircleRadioButton.TabStop = true;
             CircleRadioButton.Text = "Circle (○)";
             CircleRadioButton.UseVisualStyleBackColor = true;
@@ -188,7 +188,7 @@
             LineColorPanel.Location = new Point(8, 17);
             LineColorPanel.Name = "LineColorPanel";
             LineColorPanel.Size = new Size(351, 16);
-            LineColorPanel.TabIndex = 0;
+            LineColorPanel.TabIndex = 4;
             LineColorPanel.Click += ColorPanel_Click;
             // 
             // groupBox3
@@ -211,7 +211,7 @@
             PolygonColorPanel.Location = new Point(8, 17);
             PolygonColorPanel.Name = "PolygonColorPanel";
             PolygonColorPanel.Size = new Size(351, 16);
-            PolygonColorPanel.TabIndex = 0;
+            PolygonColorPanel.TabIndex = 5;
             PolygonColorPanel.Click += ColorPanel_Click;
             // 
             // OKbutton
@@ -233,7 +233,7 @@
             Cancelbutton.Margin = new Padding(4);
             Cancelbutton.Name = "Cancelbutton";
             Cancelbutton.Size = new Size(131, 33);
-            Cancelbutton.TabIndex = 4;
+            Cancelbutton.TabIndex = 1;
             Cancelbutton.Text = "Cancel";
             Cancelbutton.UseVisualStyleBackColor = true;
             Cancelbutton.Click += Cancelbutton_Click;
@@ -267,11 +267,12 @@
             MapGridColorPanel.Location = new Point(8, 17);
             MapGridColorPanel.Name = "MapGridColorPanel";
             MapGridColorPanel.Size = new Size(351, 16);
-            MapGridColorPanel.TabIndex = 0;
+            MapGridColorPanel.TabIndex = 6;
             MapGridColorPanel.Click += ColorPanel_Click;
             // 
             // PreviewStyleForm
             // 
+            AcceptButton = OKbutton;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(375, 320);

@@ -67,7 +67,7 @@
             // 
             ExportStatusLabel.BackColor = Color.WhiteSmoke;
             ExportStatusLabel.Name = "ExportStatusLabel";
-            ExportStatusLabel.Size = new Size(284, 17);
+            ExportStatusLabel.Size = new Size(417, 17);
             ExportStatusLabel.Spring = true;
             // 
             // pictureBox1
@@ -188,7 +188,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ExportForm";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Vector Feature Export";
             TopMost = true;
             FormClosing += ExportForm_FormClosing;

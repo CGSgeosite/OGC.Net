@@ -102,7 +102,7 @@
             treePathBox.Margin = new Padding(4);
             treePathBox.Name = "treePathBox";
             treePathBox.Size = new Size(442, 23);
-            treePathBox.TabIndex = 1;
+            treePathBox.TabIndex = 3;
             treePathBox.WordWrap = false;
             treePathBox.TextChanged += TreePathBox_TextChanged;
             // 
@@ -113,7 +113,7 @@
             OKbutton.Margin = new Padding(4);
             OKbutton.Name = "OKbutton";
             OKbutton.Size = new Size(131, 33);
-            OKbutton.TabIndex = 2;
+            OKbutton.TabIndex = 0;
             OKbutton.Text = "OK";
             OKbutton.UseVisualStyleBackColor = true;
             OKbutton.Click += OKbutton_Click;
@@ -138,7 +138,7 @@
             treePathTab.Name = "treePathTab";
             treePathTab.SelectedIndex = 0;
             treePathTab.Size = new Size(465, 264);
-            treePathTab.TabIndex = 3;
+            treePathTab.TabIndex = 2;
             // 
             // tabPage1
             // 
@@ -175,7 +175,7 @@
             // tipsBox
             // 
             tipsBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tipsBox.BackColor = SystemColors.ButtonFace;
+            tipsBox.BackColor = SystemColors.ControlLight;
             tipsBox.BorderStyle = BorderStyle.None;
             tipsBox.ForeColor = Color.Red;
             tipsBox.Location = new Point(9, 165);
@@ -230,7 +230,7 @@
             remarksBox.Margin = new Padding(4);
             remarksBox.Name = "remarksBox";
             remarksBox.Size = new Size(110, 23);
-            remarksBox.TabIndex = 10;
+            remarksBox.TabIndex = 11;
             // 
             // abstractBox
             // 
@@ -247,7 +247,7 @@
             keywordBox.Margin = new Padding(4);
             keywordBox.Name = "keywordBox";
             keywordBox.Size = new Size(110, 23);
-            keywordBox.TabIndex = 8;
+            keywordBox.TabIndex = 10;
             // 
             // contactBox
             // 
@@ -256,7 +256,7 @@
             contactBox.Margin = new Padding(4);
             contactBox.Name = "contactBox";
             contactBox.Size = new Size(110, 23);
-            contactBox.TabIndex = 7;
+            contactBox.TabIndex = 8;
             // 
             // authorBox
             // 
@@ -264,7 +264,7 @@
             authorBox.Margin = new Padding(4);
             authorBox.Name = "authorBox";
             authorBox.Size = new Size(110, 23);
-            authorBox.TabIndex = 6;
+            authorBox.TabIndex = 7;
             // 
             // thumbnailBox
             // 
@@ -273,7 +273,7 @@
             thumbnailBox.Margin = new Padding(4);
             thumbnailBox.Name = "thumbnailBox";
             thumbnailBox.Size = new Size(306, 23);
-            thumbnailBox.TabIndex = 5;
+            thumbnailBox.TabIndex = 6;
             // 
             // legendBox
             // 
@@ -282,7 +282,7 @@
             legendBox.Margin = new Padding(4);
             legendBox.Name = "legendBox";
             legendBox.Size = new Size(306, 23);
-            legendBox.TabIndex = 4;
+            legendBox.TabIndex = 5;
             // 
             // downloadBox
             // 
@@ -291,7 +291,7 @@
             downloadBox.Margin = new Padding(4);
             downloadBox.Name = "downloadBox";
             downloadBox.Size = new Size(306, 23);
-            downloadBox.TabIndex = 3;
+            downloadBox.TabIndex = 4;
             // 
             // label11
             // 
@@ -381,13 +381,14 @@
             donotPrompt.Margin = new Padding(4);
             donotPrompt.Name = "donotPrompt";
             donotPrompt.Size = new Size(145, 21);
-            donotPrompt.TabIndex = 25;
+            donotPrompt.TabIndex = 1;
             donotPrompt.Text = "Don't prompt again.";
             donotPrompt.UseVisualStyleBackColor = true;
             donotPrompt.CheckedChanged += DoNotPrompt_CheckedChanged;
             // 
             // LayersBuilderForm
             // 
+            AcceptButton = OKbutton;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;

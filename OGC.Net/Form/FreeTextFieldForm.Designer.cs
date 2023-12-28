@@ -29,124 +29,118 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FreeTextFieldForm));
-            this.CoordinateComboBox = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.no = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.yes = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.SuspendLayout();
+            CoordinateComboBox = new ComboBox();
+            label1 = new Label();
+            no = new Button();
+            panel1 = new Panel();
+            yes = new Button();
+            pictureBox1 = new PictureBox();
+            panel2 = new Panel();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            SuspendLayout();
             // 
             // CoordinateComboBox
             // 
-            this.CoordinateComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.CoordinateComboBox.FormattingEnabled = true;
-            this.CoordinateComboBox.Location = new System.Drawing.Point(12, 117);
-            this.CoordinateComboBox.Margin = new System.Windows.Forms.Padding(4);
-            this.CoordinateComboBox.Name = "CoordinateComboBox";
-            this.CoordinateComboBox.Size = new System.Drawing.Size(458, 25);
-            this.CoordinateComboBox.TabIndex = 0;
+            CoordinateComboBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            CoordinateComboBox.FormattingEnabled = true;
+            CoordinateComboBox.Location = new Point(12, 117);
+            CoordinateComboBox.Margin = new Padding(4);
+            CoordinateComboBox.Name = "CoordinateComboBox";
+            CoordinateComboBox.Size = new Size(458, 25);
+            CoordinateComboBox.TabIndex = 2;
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label1.Location = new System.Drawing.Point(113, 13);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(357, 72);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Please select the geometric coordinate column.\r\n\r\n[No] can be selected for genera" +
-    "l data";
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label1.BorderStyle = BorderStyle.Fixed3D;
+            label1.Location = new Point(113, 13);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(357, 72);
+            label1.TabIndex = 1;
+            label1.Text = "Please select the geometric coordinate column.\r\n\r\n[No] can be selected for general data";
             // 
             // no
             // 
-            this.no.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.no.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.no.Location = new System.Drawing.Point(339, 172);
-            this.no.Margin = new System.Windows.Forms.Padding(4);
-            this.no.Name = "no";
-            this.no.Size = new System.Drawing.Size(131, 33);
-            this.no.TabIndex = 1;
-            this.no.Text = "No";
-            this.no.UseVisualStyleBackColor = true;
-            this.no.Click += new System.EventHandler(this.No_Click);
+            no.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            no.DialogResult = DialogResult.Cancel;
+            no.Location = new Point(339, 172);
+            no.Margin = new Padding(4);
+            no.Name = "no";
+            no.Size = new Size(131, 33);
+            no.TabIndex = 1;
+            no.Text = "No";
+            no.UseVisualStyleBackColor = true;
+            no.Click += No_Click;
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.Color.Gray;
-            this.panel1.Location = new System.Drawing.Point(14, 156);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(459, 1);
-            this.panel1.TabIndex = 2;
+            panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.BackColor = Color.Gray;
+            panel1.Location = new Point(14, 156);
+            panel1.Margin = new Padding(4);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(459, 1);
+            panel1.TabIndex = 2;
             // 
             // yes
             // 
-            this.yes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.yes.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.yes.Location = new System.Drawing.Point(187, 172);
-            this.yes.Margin = new System.Windows.Forms.Padding(4);
-            this.yes.Name = "yes";
-            this.yes.Size = new System.Drawing.Size(131, 33);
-            this.yes.TabIndex = 1;
-            this.yes.Text = "Yes";
-            this.yes.UseVisualStyleBackColor = true;
-            this.yes.Click += new System.EventHandler(this.Yes_Click);
+            yes.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            yes.DialogResult = DialogResult.Cancel;
+            yes.Location = new Point(187, 172);
+            yes.Margin = new Padding(4);
+            yes.Name = "yes";
+            yes.Size = new Size(131, 33);
+            yes.TabIndex = 0;
+            yes.Text = "Yes";
+            yes.UseVisualStyleBackColor = true;
+            yes.Click += Yes_Click;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(14, 13);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(81, 72);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
+            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Location = new Point(14, 13);
+            pictureBox1.Margin = new Padding(4);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(81, 72);
+            pictureBox1.TabIndex = 3;
+            pictureBox1.TabStop = false;
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.BackColor = System.Drawing.Color.Gray;
-            this.panel2.Location = new System.Drawing.Point(12, 102);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(459, 1);
-            this.panel2.TabIndex = 4;
+            panel2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.BackColor = Color.Gray;
+            panel2.Location = new Point(12, 102);
+            panel2.Margin = new Padding(4);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(459, 1);
+            panel2.TabIndex = 4;
             // 
-            // FreeTextField
+            // FreeTextFieldForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 220);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.yes);
-            this.Controls.Add(this.no);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.CoordinateComboBox);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "FreeTextField";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Coordinate column";
-            this.TopMost = true;
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
-
+            AcceptButton = yes;
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(483, 220);
+            Controls.Add(panel2);
+            Controls.Add(pictureBox1);
+            Controls.Add(panel1);
+            Controls.Add(yes);
+            Controls.Add(no);
+            Controls.Add(label1);
+            Controls.Add(CoordinateComboBox);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(4);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "FreeTextFieldForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Coordinate column";
+            TopMost = true;
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

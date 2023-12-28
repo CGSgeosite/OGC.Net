@@ -68,7 +68,7 @@ namespace Geosite
             themeMetadata.Name = "themeMetadata";
             themeMetadata.ScrollBars = ScrollBars.Both;
             themeMetadata.Size = new Size(453, 119);
-            themeMetadata.TabIndex = 12;
+            themeMetadata.TabIndex = 2;
             themeMetadata.WordWrap = false;
             themeMetadata.KeyPress += ThemeMetadata_KeyPress;
             // 
@@ -79,7 +79,7 @@ namespace Geosite
             OKbutton.Margin = new Padding(4);
             OKbutton.Name = "OKbutton";
             OKbutton.Size = new Size(131, 33);
-            OKbutton.TabIndex = 20;
+            OKbutton.TabIndex = 0;
             OKbutton.Text = "OK";
             OKbutton.UseVisualStyleBackColor = true;
             OKbutton.Click += OKbutton_Click;
@@ -125,13 +125,14 @@ namespace Geosite
             donotPrompt.Margin = new Padding(4);
             donotPrompt.Name = "donotPrompt";
             donotPrompt.Size = new Size(145, 21);
-            donotPrompt.TabIndex = 24;
+            donotPrompt.TabIndex = 1;
             donotPrompt.Text = "Don't prompt again.";
             donotPrompt.UseVisualStyleBackColor = true;
             donotPrompt.CheckedChanged += DoNotPrompt_CheckedChanged;
             // 
             // MetaDataForm
             // 
+            AcceptButton = OKbutton;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(483, 320);

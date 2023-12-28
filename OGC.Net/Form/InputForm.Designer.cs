@@ -42,7 +42,7 @@
             inputTextBox.Location = new Point(12, 134);
             inputTextBox.Name = "inputTextBox";
             inputTextBox.Size = new Size(459, 23);
-            inputTextBox.TabIndex = 1;
+            inputTextBox.TabIndex = 3;
             // 
             // panel1
             // 
@@ -59,7 +59,7 @@
             yes.Location = new Point(189, 197);
             yes.Name = "yes";
             yes.Size = new Size(131, 33);
-            yes.TabIndex = 3;
+            yes.TabIndex = 0;
             yes.Text = "Yes";
             yes.UseVisualStyleBackColor = true;
             yes.Click += Yes_Click;
@@ -70,7 +70,7 @@
             no.Location = new Point(340, 197);
             no.Name = "no";
             no.Size = new Size(131, 33);
-            no.TabIndex = 3;
+            no.TabIndex = 1;
             no.Text = "No";
             no.UseVisualStyleBackColor = true;
             no.Click += No_Click;
@@ -85,10 +85,11 @@
             tipTextBox.ReadOnly = true;
             tipTextBox.ScrollBars = ScrollBars.Vertical;
             tipTextBox.Size = new Size(459, 103);
-            tipTextBox.TabIndex = 4;
+            tipTextBox.TabIndex = 2;
             // 
             // InputForm
             // 
+            AcceptButton = yes;
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(483, 246);

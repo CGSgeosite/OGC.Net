@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -124,7 +124,7 @@ namespace Geosite
                 method: () =>
                 {
                     var featureCount = PostgreSqlHelper.Scalar(
-                        //1：Point点、2：Line线、3：Polygon面、4：Image贴图
+                        //1：Point、2：Line、3：Polygon、4：Image
                         cmd: $"SELECT count(*) FROM leaf WHERE branch = {_layerId} AND type BETWEEN 1 AND 4;",
                         timeout: 0
                     );
@@ -242,16 +242,17 @@ namespace Geosite
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             var progressPercentage = e.ProgressPercentage;
+            var userState = e.UserState;
             if (progressPercentage >= 0)
             {
-                ExportProgressBar.Value = e.ProgressPercentage;
-                if (e.UserState != null)
-                    ExportStatusLabel.Text = $@"{e.UserState}";
+                ExportProgressBar.Value = progressPercentage;
+                if (userState != null)
+                    ExportStatusLabel.Text = $@"{userState}";
             }
             else
             {
-                if (e.UserState != null)
-                    ExportLogAdd(ExportStatusLabel.Text = $@"{e.UserState}");
+                if (userState != null)
+                    ExportLogAdd(ExportStatusLabel.Text = $@"{userState}");
             }
         }
 
@@ -557,7 +558,7 @@ namespace Geosite
                                             "Polygon",
                                         4 =>
                                             "Image",
-                                        _ => "" //视为非空间类型
+                                        _ => "" 
                                     }
                             ),
                             new XAttribute(name: "id", value: id),
@@ -983,12 +984,12 @@ namespace Geosite
                 );
             geositeXml.OnMessagerEvent += delegate (object _, MessagerEventArgs thisEvent)
             {
+                var message = thisEvent.Message;
+                // 状态码（0/null=预处理阶段；1=正在处理阶段；200=收尾阶段；400=异常信息）
+                var code = thisEvent.Code;
+                // 进度值（介于0~100之间，仅当code=1时有效）
                 var progress = thisEvent.Progress;
-                if (progress == null)
-                {
-                    var progressPercentage = thisEvent.Progress;
-                    _backgroundWorker.ReportProgress(percentProgress: progressPercentage is >= 0 ? progressPercentage.Value : -1, userState: thisEvent.Message ?? string.Empty);
-                }
+                _backgroundWorker.ReportProgress(percentProgress: code == 1 && progress!=null ? progress.Value : -1, userState: message);
             };
             try
             {

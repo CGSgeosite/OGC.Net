@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,8 +27,8 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-using System.Xml.Linq;
 using Newtonsoft.Json;
+using System.Xml.Linq;
 
 namespace Geosite
 {

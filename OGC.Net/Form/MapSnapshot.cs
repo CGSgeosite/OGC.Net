@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,16 +27,16 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
+using Geosite.GeositeServer.Raster;
+using Geosite.GeositeServer.Vector;
+using GMap.NET;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsForms;
 using System.ComponentModel;
 using System.Diagnostics;
-using GMap.NET;
-using GMap.NET.WindowsForms;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using GMap.NET.MapProviders;
-using Geosite.GeositeServer.Vector;
 using System.Text.RegularExpressions;
-using Geosite.GeositeServer.Raster;
 
 namespace Geosite
 {
@@ -441,7 +441,7 @@ namespace Geosite
                                         routeRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-                                if (routeRender.PointCount > 0) 
+                                if (routeRender.PointCount > 0)
                                     gfx.DrawPath(pen: route.Stroke, path: routeRender);
                             }
                         }
@@ -567,7 +567,7 @@ namespace Geosite
                                         routeRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-                                if (routeRender.PointCount > 0) 
+                                if (routeRender.PointCount > 0)
                                     gfx.DrawPath(pen: route.Stroke, path: routeRender);
                             }
                         }
@@ -693,7 +693,7 @@ namespace Geosite
                                         routeRender.AddLine(x1: p.X, y1: p.Y, x2: p2.X, y2: p2.Y);
                                     }
                                 }
-                                if (routeRender.PointCount > 0) 
+                                if (routeRender.PointCount > 0)
                                     gfx.DrawPath(pen: route.Stroke, path: routeRender);
                             }
                         }

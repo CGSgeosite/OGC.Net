@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,11 +27,11 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-using System.ComponentModel;
 using Geosite.Properties;
-using GMap.NET.Extend;
 using GMap.NET;
+using GMap.NET.Extend;
 using GMap.NET.WindowsForms;
+using System.ComponentModel;
 
 /*
  * 鸣谢：chatGPT 在相交算法中提供的并行思路
@@ -198,15 +198,15 @@ namespace Geosite
                     )
                     {
                         case DialogResult.Cancel:
-                        {
-                            return;
-                        }
+                            {
+                                return;
+                            }
                         case DialogResult.No:
-                        {
-                            CheckBoxIntersection.Checked = false;
-                            topologyMask ^= 0b10000;
-                            break;
-                        }
+                            {
+                                CheckBoxIntersection.Checked = false;
+                                topologyMask ^= 0b10000;
+                                break;
+                            }
                     }
 
                 TopologyRun.Image = Resources.stop;
@@ -371,7 +371,7 @@ namespace Geosite
             var overlay = (topologyMask & 0b1000) > 0;
             var intersection = (topologyMask & 0b10000) > 0;
             var count = polylines.Count;
-            if ((dangle || pseudo || coincide|| overlay || intersection) && count > 0)
+            if ((dangle || pseudo || coincide || overlay || intersection) && count > 0)
             {
                 worker.ReportProgress(
                     percentProgress: -1,
@@ -476,7 +476,7 @@ namespace Geosite
                                 continue;
                             }
                             var outerBox = outerLine.Boundary();
-                            if (coincide|| overlay|| intersection)
+                            if (coincide || overlay || intersection)
                             {
                                 // j 从 i 开始，意味着可检查自相交
                                 for (var j = i; j < count; j++)
@@ -557,20 +557,20 @@ namespace Geosite
                                                                 switch (type)
                                                                 {
                                                                     case 0b100:
-                                                                    {
-                                                                        Interlocked.Increment(ref _coincideCount);
-                                                                        break;
-                                                                    }
+                                                                        {
+                                                                            Interlocked.Increment(ref _coincideCount);
+                                                                            break;
+                                                                        }
                                                                     case 0b1000:
-                                                                    {
-                                                                        Interlocked.Increment(ref _overlayCount);
-                                                                        break;
-                                                                    }
+                                                                        {
+                                                                            Interlocked.Increment(ref _overlayCount);
+                                                                            break;
+                                                                        }
                                                                     case 0b10000:
-                                                                    {
-                                                                        Interlocked.Increment(ref _intersectionCount);
-                                                                        break;
-                                                                    }
+                                                                        {
+                                                                            Interlocked.Increment(ref _intersectionCount);
+                                                                            break;
+                                                                        }
                                                                 }
                                                                 ShowNode((intersectionPoint.Value.point, intersectionPoint.Value.type));
                                                             }

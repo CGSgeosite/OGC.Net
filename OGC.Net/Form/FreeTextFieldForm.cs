@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37,14 +37,14 @@ namespace Geosite
         public FreeTextFieldForm(IEnumerable<string> fieldNames)
         {
             InitializeComponent();
-            foreach (var name in fieldNames) 
+            foreach (var name in fieldNames)
                 CoordinateComboBox.Items.Add(name);
             CoordinateFieldName =
                 CoordinateComboBox.Text =
                     CoordinateComboBox.SelectedText =
                         $"{CoordinateComboBox.Items[0]}";
         }
-        
+
         private void Yes_Click(object sender, EventArgs e)
         {
             CoordinateFieldName = CoordinateComboBox.Text;
