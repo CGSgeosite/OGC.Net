@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,8 @@
 
 namespace Geosite
 {
-    public class LoadingBar {
+    public class LoadingBar
+    {
         public int Count;
 
         private readonly ProgressBar _bar;
@@ -38,7 +39,8 @@ namespace Geosite
         /// 构造函数
         /// </summary>
         /// <param name="bar">ProgressBar 类型对象</param>
-        public LoadingBar(ProgressBar bar) {
+        public LoadingBar(ProgressBar bar)
+        {
             _bar = bar;
             _bar.BeginInvoke(() =>
                 {
@@ -52,8 +54,10 @@ namespace Geosite
         /// 开启或关闭等待效果
         /// </summary>
         /// <param name="onOff">true（默认）=开启；false=仅关闭前次开启；null=彻底关闭</param>
-        public void Run(bool? onOff = true) {
-            if (onOff == true) {
+        public void Run(bool? onOff = true)
+        {
+            if (onOff == true)
+            {
                 Count++;
                 if (Count == 1)
                     try
@@ -70,8 +74,10 @@ namespace Geosite
                         //
                     }
             }
-            else {
-                if (onOff == false) {
+            else
+            {
+                if (onOff == false)
+                {
                     Count--;
                     if (Count < 0)
                         Count = 0;

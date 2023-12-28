@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,9 +27,9 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
+using Geosite.GeositeServer.PostgreSQL;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Geosite.GeositeServer.PostgreSQL;
 
 namespace Geosite
 {
@@ -93,7 +93,7 @@ namespace Geosite
                 () =>
                 {
                     Clear();
-                    var pages = (int) Math.Ceiling(1.0 * _totel / _limit);
+                    var pages = (int)Math.Ceiling(1.0 * _totel / _limit);
                     if (pages == 0)
                         pages = 1;
                     if (_page >= pages)
@@ -123,7 +123,7 @@ namespace Geosite
                         "    ) AS layer1" +
                         "), leafTable AS (" +
                         "    SELECT leaf1.*, branchTable.tree FROM branchTable, LATERAL (" +
-                        "        SELECT rank,id AS leaf FROM leaf WHERE branch = branchTable.branch LIMIT 1" +  
+                        "        SELECT rank,id AS leaf FROM leaf WHERE branch = branchTable.branch LIMIT 1" +
                         "    ) AS leaf1" +
                         ")" +
                         "SELECT treeTable.*, branchTable.branch, branchTable.property, layerTable.layer, leafTable.rank, leafTable.leaf " +
@@ -155,7 +155,7 @@ namespace Geosite
                             var layer = row.Element("layer")?.Value;
                             var rank = row.Element("rank")?.Value;
                             var leaf = row.Element("leaf")?.Value;
-                            if (string.IsNullOrWhiteSpace(rank)) 
+                            if (string.IsNullOrWhiteSpace(rank))
                                 rank = "-1";  //如果仅存在【森林、树和枝干】，未发现叶子的话，强行取【-1】级别
                             // tree：
                             // name：文档树根节点简要名称，通常是入库文件基本名
@@ -197,7 +197,7 @@ namespace Geosite
                                 "7" => Properties.Resources.lock111,
                                 _ => Properties.Resources.lock000
                             };
-                            
+
                             var typeArray = Regex.Split(
                                 type,
                                 @"[\s,]+",
@@ -242,8 +242,8 @@ namespace Geosite
                                 {
                                     var index = _databaseGridView.Rows.Add(name, rank, statusBitmap, typeBitmap);
                                     _databaseGridView.Rows[index].Cells[0].ToolTipText = uri;
-                                    _databaseGridView.Rows[index].Cells[1].ToolTipText = $"{tree}\b{type}\b{layer}\b{branch}\b{leaf}\b{status}\b{timestamp}"; 
-                                    _databaseGridView.Rows[index].Cells[1].Tag = propertyX; 
+                                    _databaseGridView.Rows[index].Cells[1].ToolTipText = $"{tree}\b{type}\b{layer}\b{branch}\b{leaf}\b{status}\b{timestamp}";
+                                    _databaseGridView.Rows[index].Cells[1].Tag = propertyX;
                                 }
                             );
                         }

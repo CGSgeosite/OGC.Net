@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,10 +28,10 @@
  *****************************************************************************/
 
 using Geosite.Models;
-using GMap.NET.WindowsForms;
-using System.ComponentModel;
 using GMap.NET;
 using GMap.NET.Extend;
+using GMap.NET.WindowsForms;
+using System.ComponentModel;
 
 namespace Geosite
 {
@@ -96,7 +96,7 @@ namespace Geosite
         private static void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var argument = ((string option, int zoom, ((double Latitude, double Longitude) TopLeft, (double Latitude, double Longitude) BottomRight) boundary, Pen gridPen)?)e.Argument;
-            if (argument == null) 
+            if (argument == null)
                 return;
             var (option, zoom, boundary, gridPen) = argument.Value;
             var (longitudeLine, latitudeLine, scale) = MapGrids.GetMapGridInfo(
@@ -104,7 +104,7 @@ namespace Geosite
                 {
                     "1000000" => 0,
                     "500000" => 6,
-                    "250000" => 7,  
+                    "250000" => 7,
                     "200000" => 8,
                     "100000" => 9,
                     "50000" => 10,
@@ -137,7 +137,7 @@ namespace Geosite
                                 new(lat: second.lat, lng: second.lng)
                             },
                             name: "LineString",
-                            strokeNormal: Math.Abs(value: first.lng) < 1e-15 ? 
+                            strokeNormal: Math.Abs(value: first.lng) < 1e-15 ?
                                 redPen : //本初子午线
                                 gridPen
                         )
@@ -166,7 +166,7 @@ namespace Geosite
                             },
                             name: "LineString",
                             strokeNormal:
-                            Math.Abs(value: first.lat) < 1e-15 ? 
+                            Math.Abs(value: first.lat) < 1e-15 ?
                                 redPen : //赤道线
                                 gridPen
                         )

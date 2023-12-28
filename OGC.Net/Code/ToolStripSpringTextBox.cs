@@ -1,12 +1,12 @@
 ﻿/******************************************************************************
  *
- * Name: OGC.net
+ * Name: OGC.net - ToolStripSpringTextBox
  * Purpose: A free tool for reading ShapeFile, MapGIS, Excel/TXT/CSV, converting
  *          into GML, GeoJSON, ShapeFile, KML and GeositeXML, and pushing vector
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +33,7 @@ namespace Geosite
     {
         public override Size GetPreferredSize(Size constrainingSize)
         {
-            if (IsOnOverflow || Owner.Orientation == Orientation.Vertical)
+            if (IsOnOverflow || Owner!.Orientation == Orientation.Vertical)
                 return DefaultSize;
 
             var width = Owner.DisplayRectangle.Width;
@@ -45,7 +45,7 @@ namespace Geosite
 
             foreach (ToolStripItem item in Owner.Items)
             {
-                if (item.IsOnOverflow) 
+                if (item.IsOnOverflow)
                     continue;
                 if (item is ToolStripSpringTextBox)
                 {
@@ -56,10 +56,10 @@ namespace Geosite
                     width = width - item.Width - item.Margin.Horizontal;
             }
 
-            if (springBoxCount > 1) 
+            if (springBoxCount > 1)
                 width /= springBoxCount;
 
-            if (width < DefaultSize.Width) 
+            if (width < DefaultSize.Width)
                 width = DefaultSize.Width;
 
             var size = base.GetPreferredSize(constrainingSize);
