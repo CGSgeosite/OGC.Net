@@ -8506,7 +8506,7 @@ namespace Geosite
                 mapProviderDropDownItem = EmptyMapProviderKey;
             MapProviderDropDown.Text = mapProviderDropDownItem;
             MapBox.MapProvider = GMapProviderDictionary[key: mapProviderDropDownItem];
-            MapProviderDropDown.ToolTipText = MapBox.MapProvider.Tip;
+            MapProviderDropDown.ToolTipText = MapBox.MapProvider.Tip ?? "Map Provider";
             MapBox.MinZoom = MapBox.MapProvider.MinZoom;
             MapBox.MaxZoom = MapBox.MapProvider.MaxZoom ?? 18;
             //MapBox.GrayScaleMode = true; //瓦片底图灰度模式
@@ -8638,9 +8638,62 @@ namespace Geosite
                     if (MapGrids.Tag?.ToString() != "None")
                         try
                         {
-                            var scaleX = Models.MapGrids.Run(lamuda: lng, fai: lat, scale: MapGrid.AutoScale);
-                            MapGrids.Text = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
-                            MapGrids.ToolTipText = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
+                            var scaleX = Models.MapGrids.Run(
+                                lamuda: lng,
+                                fai: lat,
+                                scale: MapGrid.AutoScale,
+                                // 坐标系代号：1954、1980、1984、2000、其他值；默认值：2000
+                                crs: positionBoxTag.srid switch
+                                {
+                                    "DEG" => 1984,
+                                    "DMS" => 1984,
+                                    "Beijing 1954" => 1954,
+                                    "Xian 1980" => 1980,
+                                    "CGCS 2000" => 2000,
+                                    "Web Mercator" => 1984,
+                                    _ => 2000
+                                }
+                            );
+                            var newCode = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
+                            MapGrids.Text = newCode;
+var oldCode = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
+MapGrids.ToolTipText = $@"Code: {oldCode}";
+var scale = scaleX.Element("scale")?.Value;
+if (scale != null)
+{
+                                MapGrids.ToolTipText += $"""   
+                                                         
+                                                         Scale: 1/{scale}                         
+                                                         """;
+                            }
+                            var topologyX = scaleX.Element("topology");
+                            if (topologyX != null)
+                            {
+                                var crs = topologyX.Element("crs")?.Value;
+                                var perimeter =$"{double.Parse(topologyX.Element("perimeter")?.Value!):0.000}m" ;
+                                var area =$"{double.Parse(topologyX.Element("area")?.Value!):0.000}m2" ;
+                                MapGrids.ToolTipText += $"""   
+                                                         
+                                                         CRS: {crs}                         
+                                                         Perimeter: {perimeter}
+                                                         Area: {area}
+                                                         """;
+                                var boundaryX = topologyX.Element("boundary");
+                                if (boundaryX != null)
+                                {    
+                                                                        var north = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("north")?.Value, Digit: "0");
+                                    var south = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("south")?.Value, Digit: "0");
+                                    var west = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("west")?.Value, Digit: "0");
+                                    var east = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("east")?.Value, Digit: "0");
+                                    MapGrids.ToolTipText += $"""
+                                                                                
+                                                             North: {north}
+                                                             South: {south}
+                                                             West: {west}
+                                                             East: {east}
+                                                             """;
+                                }     
+                            }   
                         }
                         catch
                         {
@@ -9089,7 +9142,7 @@ namespace Geosite
                         theItem.Checked = theItem.Text == baseMap.Text;
                     }
                     MapBox.MapProvider = GMapProviderDictionary[key: baseMap.Text];
-                    MapProviderDropDown.ToolTipText = MapBox.MapProvider.Tip;
+                    MapProviderDropDown.ToolTipText = MapBox.MapProvider.Tip ?? "Map Provider";
                     RegEdit.SetKey(key: MapProviderDropDown.Name, defaultValue: baseMap.Text);
                 }
             );
