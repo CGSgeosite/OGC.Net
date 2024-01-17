@@ -8174,9 +8174,8 @@ namespace Geosite
                             var fromX = tagX?.Element("From")?.Elements().FirstOrDefault();
                             var fromXName = fromX?.Name.LocalName;
                             var toX = tagX?.Element("To")?.Elements().FirstOrDefault();
-                            var toXName = toX?.Name.LocalName;
-
-                            var projectionFrom = new XElement("From");
+                            var toXName = toX?.Name.LocalName;      
+                        var projectionFrom = new XElement("From");
                             switch (Path.GetExtension(path: path)?.ToLower())
                             {
                                 case ".mpj":
