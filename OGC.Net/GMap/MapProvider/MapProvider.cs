@@ -71,18 +71,20 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         {
             try
             {
-                return GetTileImageUsingHttp(MakeTileImageUrl(pos, zoom));
+                var file = new Uri(MakeTileImageUrl(pos, zoom));
+                return file.IsFile ? GetTileImageFromArray(File.ReadAllBytes(file.AbsolutePath)) : GetTileImageUsingHttp(file.AbsoluteUri);
             }
             catch
             {
-                return null;
+                //
             }
+            return null;
         }
 
         /// <summary>
         /// 投影方式
         /// </summary>
-        public override PureProjection Projection => Srid == 3857 ? MercatorProjection.Instance : PlateCarreeProjection.Instance; 
+        public override PureProjection Projection => Srid == 3857 ? MercatorProjection.Instance : PlateCarreeProjection.Instance;
 
         /// <summary>
         /// 访问地址
@@ -104,7 +106,8 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
         /// <returns></returns>
         private string MakeTileImageUrl(GPoint pos, int zoom)
         {
-            var x = pos.X; var y = pos.Y;
+            var x = pos.X;
+            var y = pos.Y;
             var index = GetServerNum(pos, Math.Max(ServerLetters?.Length ?? 0, 1));
             var letter = (ServerLetters?.Length > index ? ServerLetters?[index].ToString() : "") ?? "";
             return string.Format(
@@ -152,7 +155,7 @@ namespace GMap.NET.MapProviders.GeositeMapProvider
             {
                 var digit = '0';
                 var mask = 1 << (i - 1);
-                if ((tileX & mask) != 0) 
+                if ((tileX & mask) != 0)
                     digit++;
                 if ((tileY & mask) != 0)
                 {
