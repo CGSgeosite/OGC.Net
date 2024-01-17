@@ -18,9 +18,9 @@
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "System.CodeDom": "8.0.0",
-          "System.ComponentModel.Annotations": "5.0.0",
+          "System.ComponentModel.Annotations": "4.7.0",
           "System.Configuration.ConfigurationManager": "8.0.0",
-          "System.Data.SqlClient": "4.8.5"
+          "System.Data.SqlClient": "4.8.6"
         },
         "runtime": {
           "lib/netstandard2.1/EntityFramework.SqlServer.dll": {
@@ -35,9 +35,9 @@
       },
       "Microsoft.CSharp/4.7.0": {},
       "Microsoft.NETCore.Platforms/7.0.4": {},
-      "Microsoft.Win32.Registry/5.0.0": {
+      "Microsoft.Win32.Registry/4.7.0": {
         "dependencies": {
-          "System.Security.AccessControl": "5.0.0",
+          "System.Security.AccessControl": "4.7.0",
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
@@ -113,38 +113,51 @@
           }
         }
       },
-      "System.CodeDom/8.0.0": {},
-      "System.ComponentModel.Annotations/5.0.0": {},
+      "System.CodeDom/8.0.0": {
+        "runtime": {
+          "lib/net8.0/System.CodeDom.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "System.ComponentModel.Annotations/4.7.0": {},
       "System.Configuration.ConfigurationManager/8.0.0": {
         "dependencies": {
           "System.Diagnostics.EventLog": "8.0.0",
           "System.Security.Cryptography.ProtectedData": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/System.Configuration.ConfigurationManager.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
         }
       },
-      "System.Data.SqlClient/4.8.5": {
+      "System.Data.SqlClient/4.8.6": {
         "dependencies": {
-          "Microsoft.Win32.Registry": "5.0.0",
+          "Microsoft.Win32.Registry": "4.7.0",
           "System.Security.Principal.Windows": "5.0.0",
           "runtime.native.System.Data.SqlClient.sni": "4.7.0"
         },
         "runtime": {
           "lib/netcoreapp2.1/System.Data.SqlClient.dll": {
-            "assemblyVersion": "4.6.1.5",
-            "fileVersion": "4.700.22.51706"
+            "assemblyVersion": "4.6.1.6",
+            "fileVersion": "4.700.23.52603"
           }
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netcoreapp2.1/System.Data.SqlClient.dll": {
             "rid": "unix",
             "assetType": "runtime",
-            "assemblyVersion": "4.6.1.5",
-            "fileVersion": "4.700.22.51706"
+            "assemblyVersion": "4.6.1.6",
+            "fileVersion": "4.700.23.52603"
           },
           "runtimes/win/lib/netcoreapp2.1/System.Data.SqlClient.dll": {
             "rid": "win",
             "assetType": "runtime",
-            "assemblyVersion": "4.6.1.5",
-            "fileVersion": "4.700.22.51706"
+            "assemblyVersion": "4.6.1.6",
+            "fileVersion": "4.700.23.52603"
           }
         }
       },
@@ -170,32 +183,72 @@
           }
         }
       },
-      "System.Diagnostics.EventLog/8.0.0": {},
-      "System.Security.AccessControl/5.0.0": {
+      "System.Diagnostics.EventLog/8.0.0": {
+        "runtime": {
+          "lib/net8.0/System.Diagnostics.EventLog.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.Diagnostics.EventLog.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "System.Security.AccessControl/4.7.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "7.0.4",
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
-      "System.Security.Cryptography.ProtectedData/8.0.0": {},
+      "System.Security.Cryptography.ProtectedData/8.0.0": {
+        "runtime": {
+          "lib/net8.0/System.Security.Cryptography.ProtectedData.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
       "System.Security.Permissions/8.0.0": {
         "dependencies": {
           "System.Windows.Extensions": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/System.Security.Permissions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
         }
       },
       "System.Security.Principal.Windows/5.0.0": {},
-      "System.Windows.Extensions/8.0.0": {},
+      "System.Windows.Extensions/8.0.0": {
+        "runtime": {
+          "lib/net8.0/System.Windows.Extensions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/System.Windows.Extensions.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
       "GMap.NET.Core/2.1.7": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "7.0.4",
-          "Microsoft.Win32.Registry": "5.0.0",
           "Newtonsoft.Json": "13.0.3",
           "System.CodeDom": "8.0.0",
-          "System.ComponentModel.Annotations": "5.0.0",
           "System.Configuration.ConfigurationManager": "8.0.0",
           "System.Data.SQLite": "1.0.118",
-          "System.Data.SqlClient": "4.8.5",
-          "System.Security.Cryptography.ProtectedData": "8.0.0",
+          "System.Data.SqlClient": "4.8.6",
           "System.Security.Permissions": "8.0.0",
           "System.Security.Principal.Windows": "5.0.0",
           "System.Windows.Extensions": "8.0.0"
@@ -233,12 +286,12 @@
       "path": "microsoft.netcore.platforms/7.0.4",
       "hashPath": "microsoft.netcore.platforms.7.0.4.nupkg.sha512"
     },
-    "Microsoft.Win32.Registry/5.0.0": {
+    "Microsoft.Win32.Registry/4.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg==",
-      "path": "microsoft.win32.registry/5.0.0",
-      "hashPath": "microsoft.win32.registry.5.0.0.nupkg.sha512"
+      "sha512": "sha512-KSrRMb5vNi0CWSGG1++id2ZOs/1QhRqROt+qgbEAdQuGjGrFcl4AOl4/exGPUYz2wUnU42nvJqon1T3U0kPXLA==",
+      "path": "microsoft.win32.registry/4.7.0",
+      "hashPath": "microsoft.win32.registry.4.7.0.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.3": {
       "type": "package",
@@ -289,12 +342,12 @@
       "path": "system.codedom/8.0.0",
       "hashPath": "system.codedom.8.0.0.nupkg.sha512"
     },
-    "System.ComponentModel.Annotations/5.0.0": {
+    "System.ComponentModel.Annotations/4.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dMkqfy2el8A8/I76n2Hi1oBFEbG1SfxD2l5nhwXV3XjlnOmwxJlQbYpJH4W51odnU9sARCSAgv7S3CyAFMkpYg==",
-      "path": "system.componentmodel.annotations/5.0.0",
-      "hashPath": "system.componentmodel.annotations.5.0.0.nupkg.sha512"
+      "sha512": "sha512-0YFqjhp/mYkDGpU0Ye1GjE53HMp9UVfGN7seGpAMttAC0C40v5gw598jCgpbBLMmCo0E5YRLBv5Z2doypO49ZQ==",
+      "path": "system.componentmodel.annotations/4.7.0",
+      "hashPath": "system.componentmodel.annotations.4.7.0.nupkg.sha512"
     },
     "System.Configuration.ConfigurationManager/8.0.0": {
       "type": "package",
@@ -303,12 +356,12 @@
       "path": "system.configuration.configurationmanager/8.0.0",
       "hashPath": "system.configuration.configurationmanager.8.0.0.nupkg.sha512"
     },
-    "System.Data.SqlClient/4.8.5": {
+    "System.Data.SqlClient/4.8.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-fRqxut4lrndPHrXD+ht1XRmCL3obuKldm4XjCRYS9p5f7FSR7shBxAwTkDrpFMsHC9BhNgjjmUtiIjvehn5zkg==",
-      "path": "system.data.sqlclient/4.8.5",
-      "hashPath": "system.data.sqlclient.4.8.5.nupkg.sha512"
+      "sha512": "sha512-2Ij/LCaTQRyAi5lAv7UUTV9R2FobC8xN9mE0fXBZohum/xLl8IZVmE98Rq5ugQHjCgTBRKqpXRb4ORulRdA6Ig==",
+      "path": "system.data.sqlclient/4.8.6",
+      "hashPath": "system.data.sqlclient.4.8.6.nupkg.sha512"
     },
     "System.Data.SQLite/1.0.118": {
       "type": "package",
@@ -338,12 +391,12 @@
       "path": "system.diagnostics.eventlog/8.0.0",
       "hashPath": "system.diagnostics.eventlog.8.0.0.nupkg.sha512"
     },
-    "System.Security.AccessControl/5.0.0": {
+    "System.Security.AccessControl/4.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dagJ1mHZO3Ani8GH0PHpPEe/oYO+rVdbQjvjJkBRNQkX4t0r1iaeGn8+/ybkSLEan3/slM0t59SVdHzuHf2jmw==",
-      "path": "system.security.accesscontrol/5.0.0",
-      "hashPath": "system.security.accesscontrol.5.0.0.nupkg.sha512"
+      "sha512": "sha512-JECvTt5aFF3WT3gHpfofL2MNNP6v84sxtXxpqhLBCcDRzqsPBmHhQ6shv4DwwN2tRlzsUxtb3G9M3763rbXKDg==",
+      "path": "system.security.accesscontrol/4.7.0",
+      "hashPath": "system.security.accesscontrol.4.7.0.nupkg.sha512"
     },
     "System.Security.Cryptography.ProtectedData/8.0.0": {
       "type": "package",
