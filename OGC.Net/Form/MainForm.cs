@@ -578,15 +578,15 @@ namespace Geosite
             var openFileDialog = new OpenFileDialog
             {
                 Filter =
-                    @"MapGIS|*.wt;*.wl;*.wp|" +
-                    @"MapGIS|*.mpj|" +
-                    @"ShapeFile|*.shp|" +
-                    @"Excel Tab Delimited|*.txt|" +
-                    @"Excel Comma Delimited|*.csv|" +
-                    @"Excel|*.xls;*.xlsx;*.xlsb|" +
+                    @"MapGIS(*.wt;*.wl;*.wp)|*.wt;*.wl;*.wp|" +
+                    @"MapGIS(*.mpj)|*.mpj|" +
+                    @"ShapeFile(*.shp)|*.shp|" +
+                    @"Excel Tab Delimited(*.txt)|*.txt|" +
+                    @"Excel Comma Delimited(*.csv)|*.csv|" +
+                    @"Excel(*.xls;*.xlsx;*.xlsb)|*.xls;*.xlsx;*.xlsb|" +
                     @"GoogleEarth(*.kml)|*.kml|" +
-                    @"GeositeXML|*.xml|" +
-                    @"GeoJson|*.geojson",
+                    @"GeositeXML(*.xml)|*.xml|" +
+                    @"GeoJson(*.geojson)|*.geojson",
                 FilterIndex = filterIndex,
                 Multiselect = true
             };
@@ -728,7 +728,7 @@ namespace Geosite
                 filterIndex = 0;
             var openFileDialog = new OpenFileDialog
             {
-                Filter = @"MapGIS|*.wt;*.wl;*.wp|MapGIS|*.mpj",
+                Filter = @"MapGIS(*.wt;*.wl;*.wp)|*.wt;*.wl;*.wp|MapGIS(*.mpj)|*.mpj",
                 FilterIndex = filterIndex,
                 Multiselect = true
             };
@@ -845,7 +845,7 @@ namespace Geosite
             var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
-                Filter = @"ShapeFile|*.shp",
+                Filter = @"ShapeFile(*.shp)|*.shp",
                 FilterIndex = 0,
                 Multiselect = true
             };
@@ -912,7 +912,7 @@ namespace Geosite
             var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
-                Filter = @"Excel|*.xls;*.xlsx;*.xlsb|Textual format|*.txt;*.csv",
+                Filter = @"Excel(*.xls;*.xlsx;*.xlsb)|*.xls;*.xlsx;*.xlsb|Textual format(*.txt;*.csv)|*.txt;*.csv",
                 FilterIndex = 0,
                 Multiselect = true
             };
@@ -979,7 +979,7 @@ namespace Geosite
             var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
-                Filter = @"GeoJSON|*.geojson",
+                Filter = @"GeoJSON(*.geojson)|*.geojson",
                 FilterIndex = 0,
                 Multiselect = true
 
@@ -1043,7 +1043,7 @@ namespace Geosite
             var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
             {
-                Filter = @"GeositeXML|*.xml",
+                Filter = @"GeositeXML(*.xml)|*.xml",
                 FilterIndex = 0,
                 Multiselect = true
             };
@@ -4154,7 +4154,7 @@ namespace Geosite
             var oldPath = RegEdit.GetKey(key: pathKey);
             var openFileDialog = new OpenFileDialog
             {
-                Filter = @"MapGIS|*.wt;*.wl;*.wp|MapGIS|*.mpj|ShapeFile|*.shp|Excel Tab Delimited|*.txt|Excel Comma Delimited|*.csv|Excel|*.xls;*.xlsx;*.xlsb|GoogleEarth(*.kml)|*.kml|GeositeXML|*.xml|GeoJson|*.geojson",
+                Filter = @"MapGIS(*.wt;*.wl;*.wp)|*.wt;*.wl;*.wp|MapGIS(*.mpj)|*.mpj|ShapeFile(*.shp)|*.shp|Excel Tab Delimited(*.txt)|*.txt|Excel Comma Delimited(*.csv)|*.csv|Excel(*.xls;*.xlsx;*.xlsb)|*.xls;*.xlsx;*.xlsb|GoogleEarth(*.kml)|*.kml|GeositeXML(*.xml)|*.xml|GeoJson(*.geojson)|*.geojson",
                 FilterIndex = filterIndex,
                 Multiselect = true
             };
@@ -6666,7 +6666,7 @@ namespace Geosite
             var openFileDialog = new OpenFileDialog()
             {
                 Title = @"Please select raster file[s]",
-                Filter = @"Raster|*.tif;*.tiff;*.hgt;*.img;*.jp2;*.j2k;*.vrt;*.sid;*.ecw",
+                Filter = @"Raster(*.tif;*.tiff;*.hgt;*.img;*.jp2;*.j2k;*.vrt;*.sid;*.ecw)|*.tif;*.tiff;*.hgt;*.img;*.jp2;*.j2k;*.vrt;*.sid;*.ecw",
                 FilterIndex = filterIndex,
                 Multiselect = true
             };
