@@ -1968,26 +1968,26 @@ namespace Geosite
                                 DatabaseLogAdd(input: $"GeositeServer Version - {geositeServerVersion}");
                                 /*  样例如下：
                                     <User>
-                                      <Servers>
-                                        <Server>
-                                          <Host>10.66.4.10:5432,10.66.4.12:5432</Host>
-                                          <Version>7.2023.12.1</Version>
-                                          <Copyright>(C) 2019-2024 Geosite Development Team of CGS (R)</Copyright>
-                                          <Error></Error>
-                                          <Username>postgres</Username>
-                                          <Password>数据库连接密码</Password>
-                                          <Database Size="4347 MB" Postgresql_Version="15.1 (Debian 15.1-1.pgdg110+1)" Postgis_Version="3.3.2" Pgroonga_Version="2.4.5">geositeserver</Database>
-                                          <Other></Other>
-                                          <CommandTimeout>30</CommandTimeout>
-                                          <Port>5432</Port>
-                                          <Pooling>true</Pooling>
-                                          <LoadBalanceHosts>false</LoadBalanceHosts>
-                                          <TargetSessionAttributes>any</TargetSessionAttributes>
-                                        </Server>
-                                      </Servers>
-                                      <Forest Root="Data" ClusterIp="" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
-                                      <License></License>
-                                    </User>
+                                     <Servers>
+                                       <Server>
+                                         <Host>10.66.4.10:5432,10.66.4.12:5432</Host>
+                                         <Version>8.2024.1.29</Version>
+                                         <Copyright>(C) 2019-2024 Geosite Development Team of CGS (R)</Copyright>
+                                         <Error></Error>
+                                         <Username>postgres</Username>
+                                         <Password>数据库连接密码</Password>
+                                         <Database Size="4347 MB" Postgresql_Version="16.1 (Debian 15.1-1.pgdg110+1)" Postgis_Version="3.4.1" Pgroonga_Version/Pg_trgm_Version="3.1.6/1.6">geositeserver</Database>
+                                         <Other></Other>
+                                         <CommandTimeout>30</CommandTimeout>
+                                         <Port>5432</Port>
+                                         <Pooling>true</Pooling>
+                                         <LoadBalanceHosts>false</LoadBalanceHosts>
+                                         <TargetSessionAttributes>any</TargetSessionAttributes>
+                                       </Server>
+                                     </Servers>
+                                     <Forest Root="Data" ClusterIp="" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
+                                     <License></License>
+                                   </User>   
                                  */
                                 var host = server?.Element(name: "Host")?.Value.Trim(); //暂不支持多台主机（逗号分隔，每台均可携带端口号）
                                 try
@@ -1998,7 +1998,7 @@ namespace Geosite
                                     var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
                                     var versionDay = long.Parse(s: versionArray[3]);
                                     if (versionMain + versionYear + versionMonth + versionDay >=
-                                        820231201) // 8.2023.12.1
+                                        820240101) // 8.2024.1.1
                                     {
                                         if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(),
                                                 result: out var port))
@@ -2008,20 +2008,21 @@ namespace Geosite
                                         var database = databaseX?.Value.Trim();
 
                                         var postgresqlVersion = databaseX?.Attribute(name: "Postgresql_Version")?.Value;
-                                        if (!string.IsNullOrWhiteSpace(value: postgresqlVersion))
-                                        {
+                                        if (!string.IsNullOrWhiteSpace(value: postgresqlVersion)) 
                                             DatabaseLogAdd(input: $"PostgreSQL Version - {postgresqlVersion}");
-                                        }
                                         var postgisVersion = databaseX?.Attribute(name: "Postgis_Version")?.Value;
                                         if (!string.IsNullOrWhiteSpace(value: postgisVersion))
-                                        {
                                             DatabaseLogAdd(input: $"PostGIS Version - {postgisVersion}");
-                                        }
                                         var pgroongaVersion = databaseX?.Attribute(name: "Pgroonga_Version")?.Value;
                                         if (!string.IsNullOrWhiteSpace(value: pgroongaVersion))
-                                        {
                                             DatabaseLogAdd(input: $"PGroonga Version - {pgroongaVersion}");
+                                        else
+                                        {
+                                            var pgTrgmVersion = databaseX?.Attribute(name: "Pg_trgm_Version")?.Value;
+                                            if (!string.IsNullOrWhiteSpace(value: pgTrgmVersion))
+                                                DatabaseLogAdd(input: $"Pg_trgm Version - {pgTrgmVersion}");
                                         }
+
                                         var databaseSize = databaseX?.Attribute(name: "Size")?.Value;
                                         if (!string.IsNullOrWhiteSpace(value: databaseSize))
                                             DatabaseLogAdd(input: $"Database Size - {databaseSize}");
@@ -2082,84 +2083,112 @@ namespace Geosite
                                                     //---- 如果采用多分区，管理员可在GeositeServer站点提供的[Refresh]指令实施
                                                     if (databaseStatus.flag != 1 ||
                                                         PostgreSqlHelper.NonQuery(
-                                                            cmd:
-                                                            $"CREATE DATABASE {database} WITH OWNER = {username};",
+                                                            cmd: $"CREATE DATABASE {database} WITH OWNER = {username};",
                                                             postgres: true,
                                                             timeout: 0
                                                         ) != null
                                                        )
                                                     {
                                                         if ((long) PostgreSqlHelper.Scalar(
-                                                                cmd:
-                                                                "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis';",
+                                                                cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis';",
                                                                 timeout: 0) > 0)
                                                         {
                                                             Invoke(
                                                                 method: () =>
                                                                 {
                                                                     statusProgress.Value = 10;
-                                                                    DatabaseLogAdd(input: statusText.Text =
-                                                                        @"Create or find PostGIS extension ...");
+                                                                    DatabaseLogAdd(input: statusText.Text = @"Create or find PostGIS extension ...");
                                                                 }
                                                             );
                                                             PostgreSqlHelper.NonQuery(
-                                                                cmd:
-                                                                "CREATE EXTENSION IF NOT EXISTS postgis;",
+                                                                cmd: "CREATE EXTENSION IF NOT EXISTS postgis;",
                                                                 timeout: 0);
-                                                            if ((long) PostgreSqlHelper.Scalar(
-                                                                    cmd:
-                                                                    "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis_raster';") >
-                                                                0)
+                                                            if ((long) PostgreSqlHelper.Scalar(cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'postgis_raster';") > 0)
                                                             {
                                                                 Invoke(
                                                                     method: () =>
                                                                     {
                                                                         statusProgress.Value = 16;
-                                                                        DatabaseLogAdd(
-                                                                            input: statusText.Text =
-                                                                                @"Create or find postgis_raster extension ...");
+                                                                        DatabaseLogAdd(input: statusText.Text = @"Create or find postgis_raster extension ...");
                                                                     }
                                                                 );
                                                                 PostgreSqlHelper.NonQuery(
-                                                                    cmd:
-                                                                    "CREATE EXTENSION IF NOT EXISTS postgis_raster;",
+                                                                    cmd: "CREATE EXTENSION IF NOT EXISTS postgis_raster;",
                                                                     timeout: 0);
                                                                 if ((long) PostgreSqlHelper.Scalar(
-                                                                        cmd:
-                                                                        "SELECT count(*) FROM pg_available_extensions WHERE name = 'intarray';",
+                                                                        cmd: "SELECT count(*) FROM pg_available_extensions WHERE name = 'intarray';",
                                                                         timeout: 0) > 0)
                                                                 {
                                                                     Invoke(
                                                                         method: () =>
                                                                         {
                                                                             statusProgress.Value = 22;
-                                                                            DatabaseLogAdd(
-                                                                                input: statusText.Text =
-                                                                                    @"Create or find intarray extension ...");
+                                                                            DatabaseLogAdd(input: statusText.Text = @"Create or find intarray extension ...");
                                                                         }
                                                                     );
-                                                                    PostgreSqlHelper.NonQuery(
-                                                                        cmd:
-                                                                        "CREATE EXTENSION IF NOT EXISTS intarray;",
-                                                                        timeout: 0);
-                                                                    if ((long) PostgreSqlHelper.Scalar(
-                                                                            cmd:
-                                                                            "SELECT count(*) FROM pg_available_extensions WHERE name = 'pgroonga';",
-                                                                            timeout: 0) > 0)
-                                                                    {
-                                                                        Invoke(
-                                                                            method: () =>
+                                                                    PostgreSqlHelper.NonQuery(cmd: "CREATE EXTENSION IF NOT EXISTS intarray;", timeout: 0);
+                                                                    var ftsFlag = 0;
+                                                                        // 0 = btree text_pattern_ops
+                                                                        // 1 = pgroonga pgroonga_text_regexp_ops_v2
+                                                                        // 2 = gin gin_trgm_ops
+                                                                        try
+                                                                        {
+                                                                            if ((long)PostgreSqlHelper.Scalar(
+                                                                                    "SELECT count(*) FROM pg_available_extensions WHERE name = 'pgroonga';",
+                                                                                    timeout: 0) > 0)
                                                                             {
-                                                                                statusProgress.Value = 28;
-                                                                                DatabaseLogAdd(
-                                                                                    input: statusText.Text =
-                                                                                        @"Create or find pgroonga extension ...");
+                                                                                Invoke(
+                                                                                    method: () =>
+                                                                                    {
+                                                                                        statusProgress.Value = 28;
+                                                                                        DatabaseLogAdd(
+                                                                                            input: statusText.Text =
+                                                                                                @"Create or find pgroonga extension ...");
+                                                                                    }
+                                                                                );
+                                                                                PostgreSqlHelper.NonQuery(
+                                                                                    "CREATE EXTENSION IF NOT EXISTS pgroonga;",
+                                                                                    timeout: 0);
+                                                                                ftsFlag = 1;
                                                                             }
-                                                                        );
-                                                                        PostgreSqlHelper.NonQuery(
-                                                                            cmd:
-                                                                            "CREATE EXTENSION IF NOT EXISTS pgroonga;",
-                                                                            timeout: 0);
+                                                                            else
+                                                                            {
+                                                                                if ((long)PostgreSqlHelper.Scalar(
+                                                                                    "SELECT count(*) FROM pg_available_extensions WHERE name = 'pg_trgm';",
+                                                                                    timeout: 0) > 0)
+                                                                                {
+                                                                                    Invoke(
+                                                                                        method: () =>
+                                                                                        {
+                                                                                            statusProgress.Value = 28;
+                                                                                            DatabaseLogAdd(
+                                                                                                input: statusText.Text =
+                                                                                                    @"Create or find pg_trgm extension ...");
+                                                                                        }
+                                                                                    );
+                                                                                    PostgreSqlHelper.NonQuery(
+                                                                                        "CREATE EXTENSION IF NOT EXISTS pg_trgm;",
+                                                                                        timeout: 0);
+                                                                                    ftsFlag = 2;
+                                                                                }
+                                                                                else
+                                                                                    throw new Exception();
+                                                                            }
+                                                                        }
+                                                                        catch
+                                                                        {
+                                                                            Invoke(
+                                                                                method: () =>
+                                                                                {
+                                                                                    statusProgress.Value = 28;
+                                                                                    DatabaseLogAdd(
+                                                                                        input: statusText.Text =
+                                                                                            @"No multilingual full text retrieval extension module (pgroonga/pg_trgm) found");
+                                                                                }
+                                                                            );
+                                                                        }
+                                                                        finally    
+                                                                    {
                                                                         Invoke(
                                                                             method: () =>
                                                                             {
@@ -2173,9 +2202,9 @@ namespace Geosite
                                                                                 cmd:
                                                                                 "CREATE TABLE forest " +
                                                                                 "(" +
-                                                                                "id INTEGER, name TEXT, property JSONB, timestamp INTEGER[], status SmallInt DEFAULT 0" +
-                                                                                ",CONSTRAINT forest_pkey PRIMARY KEY (id)" +
-                                                                                ",CONSTRAINT forest_status_constraint CHECK (status >= 0 AND status <= 7)" +
+                                                                                "    id INTEGER, name TEXT, property JSONB, timestamp INTEGER[], status SmallInt DEFAULT 0" +
+                                                                                "    ,CONSTRAINT forest_pkey PRIMARY KEY (id)" +
+                                                                                "    ,CONSTRAINT forest_status_constraint CHECK (status >= 0 AND status <= 7)" +
                                                                                 ")" +
                                                                                 //" PARTITION BY HASH (id)"+
                                                                                 ";" +
@@ -2201,10 +2230,19 @@ namespace Geosite
 
                                                                             if (PostgreSqlHelper.NonQuery(
                                                                                     cmd:
-                                                                                    "CREATE INDEX forest_name ON forest USING BTREE (name);" +
-                                                                                    "CREATE INDEX forest_name_FTS ON forest USING PGROONGA (name);" +
+                                                                                    "CREATE INDEX forest_name ON forest USING BTREE (name text_pattern_ops);"+
+                                                                                    ftsFlag switch
+                                                                                    {
+                                                                                        1 => "CREATE INDEX forest_name_FTS ON forest USING PGROONGA (name pgroonga_text_regexp_ops_v2);",
+                                                                                        2 => "CREATE INDEX forest_name_FTS ON forest USING GIN (name gin_trgm_ops);",
+                                                                                        _ => ""
+                                                                                    } +
                                                                                     "CREATE INDEX forest_property ON forest USING GIN (property);" +
-                                                                                    "CREATE INDEX forest_property_FTS ON forest USING PGROONGA (property);" +
+                                                                                    ftsFlag switch
+                                                                                    {
+                                                                                        1 => "CREATE INDEX forest_property_FTS ON forest USING PGROONGA (property);",
+                                                                                        _ => ""
+                                                                                    } +
                                                                                     "CREATE INDEX forest_timestamp_yyyymmdd ON forest USING BTREE ((timestamp[1]));" +
                                                                                     "CREATE INDEX forest_timestamp_hhmmss ON forest USING BTREE ((timestamp[2]));" +
                                                                                     "CREATE INDEX forest_status ON forest USING BTREE (status);",
@@ -2214,9 +2252,9 @@ namespace Geosite
                                                                                     cmd:
                                                                                     "CREATE TABLE forest_relation " +
                                                                                     "(" +
-                                                                                    "forest INTEGER, action JSONB, detail XML" +
-                                                                                    ",CONSTRAINT forest_relation_pkey PRIMARY KEY (forest)" +
-                                                                                    ",CONSTRAINT forest_relation_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                    "    forest INTEGER, action JSONB, detail XML" +
+                                                                                    "    ,CONSTRAINT forest_relation_pkey PRIMARY KEY (forest)" +
+                                                                                    "    ,CONSTRAINT forest_relation_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                     ")" +
                                                                                     //" PARTITION BY HASH (forest)"+
                                                                                     ";" +
@@ -2228,8 +2266,12 @@ namespace Geosite
 
                                                                                 PostgreSqlHelper.NonQuery(
                                                                                     cmd:
-                                                                                    "CREATE INDEX forest_relation_action_FTS ON forest_relation USING PGROONGA (action);" +
-                                                                                    "CREATE INDEX forest_relation_action ON forest_relation USING GIN (action);",
+                                                                                    "CREATE INDEX forest_relation_action ON forest_relation USING GIN (action);" +
+                                                                                    ftsFlag switch
+                                                                                    {
+                                                                                        1 => "CREATE INDEX forest_relation_action_FTS ON forest_relation USING PGROONGA (action);",
+                                                                                        _ => ""
+                                                                                    },
                                                                                     timeout: 0);
                                                                                 Invoke(
                                                                                     method: () =>
@@ -2248,9 +2290,9 @@ namespace Geosite
                                                                                          cmd:
                                                                                          "CREATE TABLE tree " +
                                                                                          "(" +
-                                                                                         "forest INTEGER, sequence INTEGER, id INTEGER, name TEXT, property JSONB, uri TEXT, timestamp INTEGER[], type INTEGER[], status SmallInt DEFAULT 0" +
-                                                                                         ",CONSTRAINT tree_pkey PRIMARY KEY (id)" +
-                                                                                         ",CONSTRAINT tree_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                         "    forest INTEGER, sequence INTEGER, id INTEGER, name TEXT, property JSONB, uri TEXT, timestamp INTEGER[], type INTEGER[], status SmallInt DEFAULT 0" +
+                                                                                         "    ,CONSTRAINT tree_pkey PRIMARY KEY (id)" +
+                                                                                         "    ,CONSTRAINT tree_cascade FOREIGN KEY (forest) REFERENCES forest (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                          ")" +
                                                                                          //" PARTITION BY HASH (id)"+
                                                                                          ";" +
@@ -2276,10 +2318,19 @@ namespace Geosite
                                                                                          .NonQuery(
                                                                                              cmd:
                                                                                              "CREATE INDEX tree_forest_sequence ON tree USING BTREE (forest, sequence);" +
-                                                                                             "CREATE INDEX tree_name ON tree USING BTREE (name);" +
-                                                                                             "CREATE INDEX tree_name_FTS ON tree USING PGROONGA (name);" +
+                                                                                             "CREATE INDEX tree_name ON tree USING BTREE (name text_pattern_ops);" +
+                                                                                             ftsFlag switch
+                                                                                             {
+                                                                                                 1 => "CREATE INDEX tree_name_FTS ON tree USING PGROONGA (name pgroonga_text_regexp_ops_v2);",
+                                                                                                 2 => "CREATE INDEX tree_name_FTS ON tree USING GIN (name gin_trgm_ops);",
+                                                                                                 _ => ""
+                                                                                             } +
                                                                                              "CREATE INDEX tree_property ON tree USING GIN (property);" +
-                                                                                             "CREATE INDEX tree_property_FTS ON tree USING PGROONGA (property);" +
+                                                                                             ftsFlag switch
+                                                                                             {
+                                                                                                 1 => "CREATE INDEX tree_property_FTS ON tree USING PGROONGA (property);",
+                                                                                                 _ => ""
+                                                                                             } +
                                                                                              "CREATE INDEX tree_timestamp_forest ON tree USING BTREE ((timestamp[1]));" +
                                                                                              "CREATE INDEX tree_timestamp_tree ON tree USING BTREE ((timestamp[2]));" +
                                                                                              "CREATE INDEX tree_timestamp_yyyymmdd ON tree USING BTREE ((timestamp[3]));" +
@@ -2294,9 +2345,9 @@ namespace Geosite
                                                                                                 cmd:
                                                                                                 "CREATE TABLE tree_relation " +
                                                                                                 "(" +
-                                                                                                "tree INTEGER, action JSONB, detail XML" +
-                                                                                                ",CONSTRAINT tree_relation_pkey PRIMARY KEY (tree)" +
-                                                                                                ",CONSTRAINT tree_relation_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                "    tree INTEGER, action JSONB, detail XML" +
+                                                                                                "    ,CONSTRAINT tree_relation_pkey PRIMARY KEY (tree)" +
+                                                                                                "    ,CONSTRAINT tree_relation_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                 ")" +
                                                                                                 //" PARTITION BY HASH (tree)"+
                                                                                                 ";" +
@@ -2309,8 +2360,12 @@ namespace Geosite
                                                                                         PostgreSqlHelper
                                                                                             .NonQuery(
                                                                                                 cmd:
-                                                                                                "CREATE INDEX tree_relation_action_FTS ON tree_relation USING PGROONGA (action);" +
-                                                                                                "CREATE INDEX tree_relation_action ON tree_relation USING GIN (action);",
+                                                                                                "CREATE INDEX tree_relation_action ON tree_relation USING GIN (action);" +
+                                                                                                ftsFlag switch
+                                                                                                {
+                                                                                                    1 => "CREATE INDEX tree_relation_action_FTS ON tree_relation USING PGROONGA (action);",
+                                                                                                    _ => ""
+                                                                                                },
                                                                                                 timeout: 0);
                                                                                         Invoke(
                                                                                             method: () =>
@@ -2330,9 +2385,9 @@ namespace Geosite
                                                                                                  cmd:
                                                                                                  "CREATE TABLE branch " +
                                                                                                  "(" +
-                                                                                                 "tree INTEGER, level SmallInt, name TEXT, property JSONB, id INTEGER, parent INTEGER DEFAULT 0" +
-                                                                                                 ",CONSTRAINT branch_pkey PRIMARY KEY (id)" +
-                                                                                                 ",CONSTRAINT branch_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                 "    tree INTEGER, level SmallInt, name TEXT, property JSONB, id INTEGER, parent INTEGER DEFAULT 0" +
+                                                                                                 "    ,CONSTRAINT branch_pkey PRIMARY KEY (id)" +
+                                                                                                 "    ,CONSTRAINT branch_cascade FOREIGN KEY (tree) REFERENCES tree (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                  ")" +
                                                                                                  //" PARTITION BY HASH (id)"+
                                                                                                  ";" +
@@ -2354,29 +2409,35 @@ namespace Geosite
                                                                                                     "CREATE SEQUENCE branch_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1;",
                                                                                                     timeout:
                                                                                                     0);
-                                                                                            if
-                                                                                                (PostgreSqlHelper
+                                                                                            if (PostgreSqlHelper
                                                                                                      .NonQuery(
-                                                                                                         cmd
-                                                                                                         :
+                                                                                                         cmd:
                                                                                                          "CREATE INDEX branch_tree ON branch USING BTREE (tree);" +
                                                                                                          "CREATE INDEX branch_level_name_parent ON branch USING BTREE (level, name, parent);" +
-                                                                                                         "CREATE INDEX branch_name ON branch USING BTREE (name);" +
-                                                                                                         "CREATE INDEX branch_name_FTS ON branch USING PGROONGA (name);" +
-                                                                                                         "CREATE INDEX branch_property_FTS ON branch USING PGROONGA (property);" +
-                                                                                                         "CREATE INDEX branch_property ON branch USING GIN (property);",
-                                                                                                         timeout
-                                                                                                         : 0) !=
-                                                                                                 null)
+                                                                                                         //"CREATE INDEX branch_parent ON branch USING BTREE (parent);" + //?
+                                                                                                         "CREATE INDEX branch_name ON branch USING BTREE (name text_pattern_ops);" +
+                                                                                                         ftsFlag switch
+                                                                                                         {
+                                                                                                             1 => "CREATE INDEX branch_name_FTS ON branch USING PGROONGA (name pgroonga_text_regexp_ops_v2);",
+                                                                                                             2 => "CREATE INDEX branch_name_FTS ON branch USING GIN (name gin_trgm_ops);",
+                                                                                                             _ => ""
+                                                                                                         } +
+                                                                                                         "CREATE INDEX branch_property ON branch USING GIN (property);" +
+                                                                                                         ftsFlag switch
+                                                                                                         {
+                                                                                                             1 => "CREATE INDEX branch_property_FTS ON branch USING PGROONGA (property);",
+                                                                                                             _ => ""
+                                                                                                         },
+                                                                                                         timeout: 0) != null)
                                                                                             {
                                                                                                 PostgreSqlHelper
                                                                                                     .NonQuery(
                                                                                                         cmd:
                                                                                                         "CREATE TABLE branch_relation " +
                                                                                                         "(" +
-                                                                                                        "branch INTEGER, action JSONB, detail XML" +
-                                                                                                        ",CONSTRAINT branch_relation_pkey PRIMARY KEY (branch)" +
-                                                                                                        ",CONSTRAINT branch_relation_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                        "    branch INTEGER, action JSONB, detail XML" +
+                                                                                                        "    ,CONSTRAINT branch_relation_pkey PRIMARY KEY (branch)" +
+                                                                                                        "    ,CONSTRAINT branch_relation_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                         ")" +
                                                                                                         //" PARTITION BY HASH (branch)"+
                                                                                                         ";" +
@@ -2390,10 +2451,13 @@ namespace Geosite
                                                                                                 PostgreSqlHelper
                                                                                                     .NonQuery(
                                                                                                         cmd:
-                                                                                                        "CREATE INDEX branch_relation_action_FTS ON branch_relation USING PGROONGA (action);" +
-                                                                                                        "CREATE INDEX branch_relation_action ON branch_relation USING GIN (action);",
-                                                                                                        timeout
-                                                                                                        : 0);
+                                                                                                        "CREATE INDEX branch_relation_action ON branch_relation USING GIN (action);" +
+                                                                                                        ftsFlag switch
+                                                                                                        {
+                                                                                                            1 => "CREATE INDEX branch_relation_action_FTS ON branch_relation USING PGROONGA (action);",
+                                                                                                            _ => ""
+                                                                                                        },
+                                                                                                        timeout: 0);
                                                                                                 Invoke(
                                                                                                     method:
                                                                                                     () =>
@@ -2414,9 +2478,9 @@ namespace Geosite
                                                                                                              cmd
                                                                                                              : "CREATE TABLE leaf " +
                                                                                                              "(" +
-                                                                                                             "branch INTEGER, id BigInt, rank SmallInt DEFAULT -1, type INT DEFAULT 0, name TEXT, property INTEGER, timestamp INT[], frequency BigInt DEFAULT 0" +
-                                                                                                             ",CONSTRAINT leaf_pkey PRIMARY KEY (id)" +
-                                                                                                             ",CONSTRAINT leaf_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                             "    branch INTEGER, id BigInt, rank SmallInt DEFAULT -1, type INT DEFAULT 0, name TEXT, property INTEGER, timestamp INT[], frequency BigInt DEFAULT 0" +
+                                                                                                             "    ,CONSTRAINT leaf_pkey PRIMARY KEY (id)" +
+                                                                                                             "    ,CONSTRAINT leaf_cascade FOREIGN KEY (branch) REFERENCES branch (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                              ")" +
                                                                                                              //" PARTITION BY HASH (id)"+
                                                                                                              ";" +
@@ -2447,8 +2511,13 @@ namespace Geosite
                                                                                                                  "CREATE INDEX leaf_branch ON leaf USING BTREE (branch);" +
                                                                                                                  "CREATE INDEX leaf_rank ON leaf USING BTREE (rank);" +
                                                                                                                  "CREATE INDEX leaf_type ON leaf USING BTREE (type);" +
-                                                                                                                 "CREATE INDEX leaf_name ON leaf USING BTREE (name);" +
-                                                                                                                 "CREATE INDEX leaf_name_FTS ON leaf USING PGROONGA (name);" +
+                                                                                                                 "CREATE INDEX leaf_name ON leaf USING BTREE (name text_pattern_ops);" +
+                                                                                                                 ftsFlag switch
+                                                                                                                 {
+                                                                                                                     1 => "CREATE INDEX leaf_name_FTS ON leaf USING PGROONGA (name pgroonga_text_regexp_ops_v2);",
+                                                                                                                     2 => "CREATE INDEX leaf_name_FTS ON leaf USING GIN (name gin_trgm_ops);",
+                                                                                                                     _ => ""
+                                                                                                                 } +
                                                                                                                  "CREATE INDEX leaf_property ON leaf USING BTREE (property);" +
                                                                                                                  "CREATE INDEX leaf_timestamp_yyyymmdd ON leaf USING BTREE ((timestamp[1]));" +
                                                                                                                  "CREATE INDEX leaf_timestamp_hhmmss ON leaf USING BTREE ((timestamp[2]));" +
@@ -2463,9 +2532,9 @@ namespace Geosite
                                                                                                                 :
                                                                                                                 "CREATE TABLE leaf_relation " +
                                                                                                                 "(" +
-                                                                                                                "leaf BigInt, action JSONB, detail XML" +
-                                                                                                                ",CONSTRAINT leaf_relation_pkey PRIMARY KEY (leaf)" +
-                                                                                                                ",CONSTRAINT leaf_relation_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                "    leaf BigInt, action JSONB, detail XML" +
+                                                                                                                "    ,CONSTRAINT leaf_relation_pkey PRIMARY KEY (leaf)" +
+                                                                                                                "    ,CONSTRAINT leaf_relation_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                 ")" +
                                                                                                                 //" PARTITION BY HASH (leaf)"+
                                                                                                                 ";" +
@@ -2479,8 +2548,12 @@ namespace Geosite
                                                                                                         PostgreSqlHelper
                                                                                                             .NonQuery(
                                                                                                                 cmd
-                                                                                                                : "CREATE INDEX leaf_relation_action_FTS ON leaf_relation USING PGROONGA (action);" +
-                                                                                                                "CREATE INDEX leaf_relation_action ON leaf_relation USING GIN (action);",
+                                                                                                                : "CREATE INDEX leaf_relation_action ON leaf_relation USING GIN (action);" +
+                                                                                                                ftsFlag switch
+                                                                                                                {
+                                                                                                                    1 => "CREATE INDEX leaf_relation_action_FTS ON leaf_relation USING PGROONGA (action);",
+                                                                                                                    _ => ""
+                                                                                                                },
                                                                                                                 timeout
                                                                                                                 : 0);
                                                                                                         Invoke(
@@ -2505,9 +2578,9 @@ namespace Geosite
                                                                                                                      :
                                                                                                                      "CREATE TABLE leaf_description " +
                                                                                                                      "(" +
-                                                                                                                     "leaf bigint, level SmallInt, sequence SmallInt, parent SmallInt, name TEXT, attribute JSONB, flag BOOLEAN DEFAULT false, type SmallInt DEFAULT 0, content Text, numericvalue Numeric" +
-                                                                                                                     ",CONSTRAINT leaf_description_pkey PRIMARY KEY (leaf, level, sequence, parent)" +
-                                                                                                                     ",CONSTRAINT leaf_description_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                     "    leaf bigint, level SmallInt, sequence SmallInt, parent SmallInt, name TEXT, attribute JSONB, flag BOOLEAN DEFAULT false, type SmallInt DEFAULT 0, content Text, numericvalue Numeric" +
+                                                                                                                     "    ,CONSTRAINT leaf_description_pkey PRIMARY KEY (leaf, level, sequence, parent)" +
+                                                                                                                     "    ,CONSTRAINT leaf_description_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                      ")" +
                                                                                                                      //" PARTITION BY HASH (leaf, level, sequence, parent)"+
                                                                                                                      ";" +
@@ -2530,11 +2603,21 @@ namespace Geosite
                                                                                                                 (PostgreSqlHelper
                                                                                                                      .NonQuery(
                                                                                                                          cmd
-                                                                                                                         : "CREATE INDEX leaf_description_name ON leaf_description USING BTREE (name);" +
-                                                                                                                         "CREATE INDEX leaf_description_name_FTS ON leaf_description USING PGROONGA (name);" +
+                                                                                                                         : "CREATE INDEX leaf_description_name ON leaf_description USING BTREE (name text_pattern_ops);" +
+                                                                                                                         ftsFlag switch
+                                                                                                                         {
+                                                                                                                             1 => "CREATE INDEX leaf_description_name_FTS ON leaf_description USING PGROONGA (name pgroonga_text_regexp_ops_v2);",
+                                                                                                                             2 => "CREATE INDEX leaf_description_name_FTS ON leaf_description USING GIN (name gin_trgm_ops);",
+                                                                                                                             _ => ""
+                                                                                                                         } +
                                                                                                                          "CREATE INDEX leaf_description_flag ON leaf_description USING BTREE (flag);" +
                                                                                                                          "CREATE INDEX leaf_description_type ON leaf_description USING BTREE (type);" +
-                                                                                                                         "CREATE INDEX leaf_description_content ON leaf_description USING PGROONGA (content);" +
+                                                                                                                         ftsFlag switch
+                                                                                                                         {
+                                                                                                                             1 => "CREATE INDEX leaf_description_content_FTS ON leaf_description USING PGROONGA (content pgroonga_text_regexp_ops_v2);",
+                                                                                                                             2 => "CREATE INDEX leaf_description_content_FTS ON leaf_description USING GIN (content gin_trgm_ops);",
+                                                                                                                             _ => "CREATE INDEX leaf_description_content_FTS ON leaf_description USING BTREE (content text_pattern_ops);"
+                                                                                                                         } +
                                                                                                                          "CREATE INDEX leaf_description_numericvalue ON leaf_description USING BTREE (numericvalue);",
                                                                                                                          timeout
                                                                                                                          : 0) !=
@@ -2561,9 +2644,9 @@ namespace Geosite
                                                                                                                              cmd
                                                                                                                              : "CREATE TABLE leaf_style " +
                                                                                                                              "(" +
-                                                                                                                             "leaf BigInt, style JSONB" +
-                                                                                                                             ",CONSTRAINT leaf_style_pkey PRIMARY KEY (leaf)" +
-                                                                                                                             ",CONSTRAINT leaf_style_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                             "    leaf BigInt, style JSONB" +
+                                                                                                                             "    ,CONSTRAINT leaf_style_pkey PRIMARY KEY (leaf)" +
+                                                                                                                             "    ,CONSTRAINT leaf_style_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                              ")" +
                                                                                                                              //" PARTITION BY HASH (leaf)"+
                                                                                                                              ";" +
@@ -2578,7 +2661,11 @@ namespace Geosite
                                                                                                                         (PostgreSqlHelper
                                                                                                                              .NonQuery(
                                                                                                                                  cmd
-                                                                                                                                 : "CREATE INDEX leaf_style_style_FTS ON leaf_style USING PGROONGA (style);" +
+                                                                                                                                 : ftsFlag switch
+                                                                                                                                 {
+                                                                                                                                     1 => "CREATE INDEX leaf_style_style_FTS ON leaf_style USING PGROONGA (style);",
+                                                                                                                                     _ => ""
+                                                                                                                                 } +
                                                                                                                                  "CREATE INDEX leaf_style_style ON leaf_style USING GIN (style);",
                                                                                                                                  timeout
                                                                                                                                  : 0) !=
@@ -2604,9 +2691,9 @@ namespace Geosite
                                                                                                                                      cmd
                                                                                                                                      : "CREATE TABLE leaf_geometry " +
                                                                                                                                      "(" +
-                                                                                                                                     "leaf BigInt, coordinate GEOMETRY, boundary GEOMETRY, centroid GEOMETRY" +
-                                                                                                                                     ",CONSTRAINT leaf_geometry_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                     ",CONSTRAINT leaf_geometry_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                     "    leaf BigInt, coordinate GEOMETRY, boundary GEOMETRY, centroid GEOMETRY" +
+                                                                                                                                     "    ,CONSTRAINT leaf_geometry_pkey PRIMARY KEY (leaf)" +
+                                                                                                                                     "    ,CONSTRAINT leaf_geometry_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                      ")" +
                                                                                                                                      //" PARTITION BY HASH (leaf)"+
                                                                                                                                      ";" +
@@ -2650,9 +2737,9 @@ namespace Geosite
                                                                                                                                              cmd
                                                                                                                                              : "CREATE TABLE leaf_tile " +
                                                                                                                                              "(" +
-                                                                                                                                             "leaf BigInt, z INTEGER, x INTEGER, y INTEGER, tile RASTER, boundary geometry" +
-                                                                                                                                             ",CONSTRAINT leaf_tile_pkey PRIMARY KEY (leaf, z, x, y)" +
-                                                                                                                                             ",CONSTRAINT leaf_tile_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                             "    leaf BigInt, z INTEGER, x INTEGER, y INTEGER, tile RASTER, boundary geometry" +
+                                                                                                                                             "    ,CONSTRAINT leaf_tile_pkey PRIMARY KEY (leaf, z, x, y)" +
+                                                                                                                                             "    ,CONSTRAINT leaf_tile_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                              ")" +
                                                                                                                                              //" PARTITION BY HASH (leaf, z, x, y)"+
                                                                                                                                              ";" +
@@ -2698,9 +2785,9 @@ namespace Geosite
                                                                                                                                                      cmd
                                                                                                                                                      : "CREATE TABLE leaf_wms " +
                                                                                                                                                      "(" +
-                                                                                                                                                     "leaf BigInt, wms TEXT, boundary geometry" +
-                                                                                                                                                     ",CONSTRAINT leaf_wms_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                                     ",CONSTRAINT leaf_wms_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                                     "    leaf BigInt, wms TEXT, boundary geometry" +
+                                                                                                                                                     "    ,CONSTRAINT leaf_wms_pkey PRIMARY KEY (leaf)" +
+                                                                                                                                                     "    ,CONSTRAINT leaf_wms_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                                      ")" +
                                                                                                                                                      //" PARTITION BY HASH (leaf)"+
                                                                                                                                                      ";" +
@@ -2741,9 +2828,9 @@ namespace Geosite
                                                                                                                                                              cmd
                                                                                                                                                              : "CREATE TABLE leaf_hits " +
                                                                                                                                                              "(" +
-                                                                                                                                                             "leaf BigInt, hits BigInt DEFAULT 0" +
-                                                                                                                                                             ",CONSTRAINT leaf_hits_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                                             ",CONSTRAINT leaf_hits_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                                             "    leaf BigInt, hits BigInt DEFAULT 0" +
+                                                                                                                                                             "    ,CONSTRAINT leaf_hits_pkey PRIMARY KEY (leaf)" +
+                                                                                                                                                             "    ,CONSTRAINT leaf_hits_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                                              ")" +
                                                                                                                                                              //" PARTITION BY HASH (leaf)"+
                                                                                                                                                              ";" +
@@ -2774,9 +2861,9 @@ namespace Geosite
                                                                                                                                                                  cmd
                                                                                                                                                                  : "CREATE TABLE leaf_temporal " +
                                                                                                                                                                  "(" +
-                                                                                                                                                                 "leaf BigInt, birth BigInt[], death BigInt[]" +
-                                                                                                                                                                 ",CONSTRAINT leaf_temporal_pkey PRIMARY KEY (leaf)" +
-                                                                                                                                                                 ",CONSTRAINT leaf_temporal_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
+                                                                                                                                                                 "    leaf BigInt, birth BigInt[], death BigInt[]" +
+                                                                                                                                                                 "    ,CONSTRAINT leaf_temporal_pkey PRIMARY KEY (leaf)" +
+                                                                                                                                                                 "    ,CONSTRAINT leaf_temporal_cascade FOREIGN KEY (leaf) REFERENCES leaf (id) MATCH SIMPLE ON DELETE CASCADE NOT VALID" +
                                                                                                                                                                  ")" +
                                                                                                                                                                  //" PARTITION BY HASH (leaf)"+
                                                                                                                                                                  ";" +
@@ -3080,9 +3167,6 @@ namespace Geosite
                                                                             errorMessage =
                                                                                 $"Failed to create forest - {PostgreSqlHelper.Message}";
                                                                     }
-                                                                    else
-                                                                        errorMessage =
-                                                                            "No multilingual full text retrieval extension module (pgroonga) found.";
                                                                 }
                                                                 else
                                                                     errorMessage =
