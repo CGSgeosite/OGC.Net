@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_LastSelectedProfileId>D:\Geosite\Geosite.Net\OGC.net\OGC.Net.Desktop\OGC.Net\Properties\PublishProfiles\OGC.net.windows.arm64.pubxml</_LastSelectedProfileId>
+    <_LastSelectedProfileId>C:\Geosite\Geosite.Net\OGC.net\OGC.Net.Desktop\OGC.Net\Properties\PublishProfiles\OGC.net.windows.arm64.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="Code\ToolStripSpringTextBox.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Form\ExportForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="Form\FreeTextFieldForm.cs">
       <SubType>Form</SubType>
@@ -36,7 +39,34 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Form\FreeTextFieldForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Form\InputForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Form\LayersBuilderForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Form\MainForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Form\MapSnapshot.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Form\MetaDataForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Form\PreviewStyleForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Form\ProjectionForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Form\TopologyCheckerForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
