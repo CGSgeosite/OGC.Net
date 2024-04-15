@@ -1,6 +1,6 @@
 ﻿/******************************************************************************
  *
- * Name: OGC.net
+ * Name: OGC.net - DatabaseGrid
  * Purpose: A free tool for reading ShapeFile, MapGIS, Excel/TXT/CSV, converting
  *          into GML, GeoJSON, ShapeFile, KML and GeositeXML, and pushing vector
  *          or raster to PostgreSQL database.
@@ -8,23 +8,21 @@
  ******************************************************************************
  * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to use, copy,
+ * modify, and distribute the Software for any purpose, without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE GEOSITE DEVELOPMENT TEAM OF CGS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+ * USE OR OTHER DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
 using Geosite.GeositeServer.PostgreSQL;
@@ -123,7 +121,8 @@ namespace Geosite
                         "    ) AS layer1" +
                         "), leafTable AS (" +
                         "    SELECT leaf1.*, branchTable.tree FROM branchTable, LATERAL (" +
-                        "        SELECT rank,id AS leaf FROM leaf WHERE branch = branchTable.branch LIMIT 1" +
+                        // ----------------------------------------------------------------------------------- 如果未发现实体要素，特采用【UNION ALL】取默认值，以便正常返回完整的图层结构
+                        "        (SELECT rank, id AS leaf FROM leaf WHERE branch = branchTable.branch limit 1) UNION ALL SELECT -1 AS rank, -1 AS leaf WHERE NOT EXISTS (SELECT 1 FROM leaf WHERE branch = branchTable.branch limit 1)" +
                         "    ) AS leaf1" +
                         ")" +
                         "SELECT treeTable.*, branchTable.branch, branchTable.property, layerTable.layer, leafTable.rank, leafTable.leaf " +
