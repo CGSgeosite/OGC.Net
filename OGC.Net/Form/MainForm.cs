@@ -1959,7 +1959,7 @@ namespace Geosite
                                 serverUser: serverUser,
                                 serverPassword: serverPassword,
                                 clientVersion: Copyright.VersionAttribute,
-                                timeout: 0
+                                timeout: 30000
                             );
                             if (userX.result != null)
                             {
@@ -3317,7 +3317,7 @@ namespace Geosite
             string serverUser,
             string serverPassword,
             string clientVersion,
-            int timeout = 10000)
+            int timeout = 30000)
         {
             try
             {
@@ -3338,7 +3338,7 @@ namespace Geosite
             string serverUrl,
             string serverUser,
             string serverPassword,
-            int timeout = 10000)
+            int timeout = 30000)
         {
             var userX = GetClusterUserX(
                 serverUrl: serverUrl,
