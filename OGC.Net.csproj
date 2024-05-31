@@ -8,7 +8,7 @@
 		<RootNamespace>Geosite</RootNamespace>
 		<ApplicationIcon>OGC.net.ico</ApplicationIcon>
 		<Title>OGC.net</Title>
-		<Version>8.2024.5.10</Version>
+		<Version>8.2024.6.1</Version>
 		<Authors>ZhanchangWang</Authors>
 		<Company>CGS</Company>
 		<Copyright>(C) 2019-2024 Geosite Development Team of CGS (R)</Copyright>
@@ -35,20 +35,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.7.0" />
+	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.9.0" />
 	  <PackageReference Include="MaxRev.Gdal.Core" Version="3.8.3.286" />
 	  <PackageReference Include="MaxRev.Gdal.WindowsRuntime.Minimal" Version="3.8.3.259" />
 	  <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
 	  <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="Npgsql" Version="8.0.3" />
-	  <PackageReference Include="RestSharp" Version="110.2.0" />
+	  <PackageReference Include="RestSharp" Version="111.2.0" />
 	  <PackageReference Include="System.CodeDom" Version="8.0.0" />
 	  <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	  <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
 	  <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
 	  <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
-	  <PackageReference Include="System.Drawing.Common" Version="8.0.4" />
+	  <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
 	  <PackageReference Include="System.Security.AccessControl" Version="6.0.1" />
 	  <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
 	  <PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" />
