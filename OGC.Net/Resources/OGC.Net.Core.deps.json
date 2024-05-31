@@ -6,14 +6,14 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "OGC.Net.Core/8.2024.5.10": {
+      "OGC.Net.Core/8.2024.6.1": {
         "dependencies": {
-          "Magick.NET-Q16-AnyCPU": "13.7.0",
+          "Magick.NET-Q16-AnyCPU": "13.9.0",
           "MaxRev.Gdal.Core": "3.8.3.286",
           "MaxRev.Gdal.WindowsRuntime.Minimal": "3.8.3.259",
           "Newtonsoft.Json": "13.0.3",
           "Npgsql": "8.0.3",
-          "RestSharp": "110.2.0",
+          "RestSharp": "111.2.0",
           "System.Text.Encoding.CodePages": "8.0.0",
           "System.Text.Encodings.Web": "8.0.0",
           "System.Text.Json": "8.0.3"
@@ -22,14 +22,14 @@
           "OGC.Net.Core.dll": {}
         }
       },
-      "Magick.NET-Q16-AnyCPU/13.7.0": {
+      "Magick.NET-Q16-AnyCPU/13.9.0": {
         "dependencies": {
-          "Magick.NET.Core": "13.7.0"
+          "Magick.NET.Core": "13.9.0"
         },
         "runtime": {
           "lib/netstandard21/Magick.NET-Q16-AnyCPU.dll": {
-            "assemblyVersion": "13.7.0.0",
-            "fileVersion": "13.7.0.0"
+            "assemblyVersion": "13.9.0.0",
+            "fileVersion": "13.9.0.0"
           }
         },
         "runtimeTargets": {
@@ -61,25 +61,25 @@
           "runtimes/win-arm64/native/Magick.Native-Q16-arm64.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "7.1.1.32"
+            "fileVersion": "7.1.1.33"
           },
           "runtimes/win-x64/native/Magick.Native-Q16-x64.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "7.1.1.32"
+            "fileVersion": "7.1.1.33"
           },
           "runtimes/win-x86/native/Magick.Native-Q16-x86.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "7.1.1.32"
+            "fileVersion": "7.1.1.33"
           }
         }
       },
-      "Magick.NET.Core/13.7.0": {
+      "Magick.NET.Core/13.9.0": {
         "runtime": {
           "lib/netstandard21/Magick.NET.Core.dll": {
-            "assemblyVersion": "13.7.0.0",
-            "fileVersion": "13.7.0.0"
+            "assemblyVersion": "13.9.0.0",
+            "fileVersion": "13.9.0.0"
           }
         }
       },
@@ -1331,14 +1331,11 @@
           }
         }
       },
-      "RestSharp/110.2.0": {
-        "dependencies": {
-          "System.Text.Json": "8.0.3"
-        },
+      "RestSharp/111.2.0": {
         "runtime": {
-          "lib/net7.0/RestSharp.dll": {
-            "assemblyVersion": "110.2.0.0",
-            "fileVersion": "110.2.0.0"
+          "lib/net8.0/RestSharp.dll": {
+            "assemblyVersion": "111.2.0.0",
+            "fileVersion": "111.2.0.0"
           }
         }
       },
@@ -1352,24 +1349,24 @@
     }
   },
   "libraries": {
-    "OGC.Net.Core/8.2024.5.10": {
+    "OGC.Net.Core/8.2024.6.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Magick.NET-Q16-AnyCPU/13.7.0": {
+    "Magick.NET-Q16-AnyCPU/13.9.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-qSnjW4MAE0jE0RJRhUyZnm0HZWIMXVWg0MrAMdsbQNZh7+4ymtkBwj93eK8zEkMH5AF/xbXGh6qvZ+apO+9W/w==",
-      "path": "magick.net-q16-anycpu/13.7.0",
-      "hashPath": "magick.net-q16-anycpu.13.7.0.nupkg.sha512"
+      "sha512": "sha512-VyQ/xrybewPngITmC+dO2jlXxiurU0nEdokgpFsAJ2AT4ijZGnfMi1C9JsFj/VcyMV52OzkdFNCE58sUWf9wlg==",
+      "path": "magick.net-q16-anycpu/13.9.0",
+      "hashPath": "magick.net-q16-anycpu.13.9.0.nupkg.sha512"
     },
-    "Magick.NET.Core/13.7.0": {
+    "Magick.NET.Core/13.9.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-TzuzYWJpc+dkOrJeFE6KwYfPAyV6dGWA3SHHrCCHgUSIGyoAS3+HMOPyJy0r7lrMM/B1yqQpheWiy1SufmntQA==",
-      "path": "magick.net.core/13.7.0",
-      "hashPath": "magick.net.core.13.7.0.nupkg.sha512"
+      "sha512": "sha512-7NF8Ntd/68WQucvU46vCrbBdZDOkEWjCtCiqKj3bijrj/oaKeKxILgD7iTsaUVQm8E3EgotyQw9b12xuvA6fWA==",
+      "path": "magick.net.core/13.9.0",
+      "hashPath": "magick.net.core.13.9.0.nupkg.sha512"
     },
     "MaxRev.Gdal.Core/3.8.3.286": {
       "type": "package",
@@ -1413,12 +1410,12 @@
       "path": "npgsql/8.0.3",
       "hashPath": "npgsql.8.0.3.nupkg.sha512"
     },
-    "RestSharp/110.2.0": {
+    "RestSharp/111.2.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-FXGw0IMcqY7yO/hzS9QrD3iNswNgb9UxJnxWmfOxmGs4kRlZWqdtBoGPLuhlbgsDzX1RFo4WKui8TGGKXWKalw==",
-      "path": "restsharp/110.2.0",
-      "hashPath": "restsharp.110.2.0.nupkg.sha512"
+      "sha512": "sha512-OkWr6AGM0zirdkRpxVOxXMWx9OHEIWrDzrpx1XIx5KyvTcmtjJVsKBscVkYTcFerhj5w5Bny7boRIV4a0ENGaQ==",
+      "path": "restsharp/111.2.0",
+      "hashPath": "restsharp.111.2.0.nupkg.sha512"
     },
     "System.Text.Encoding.CodePages/8.0.0": {
       "type": "package",
