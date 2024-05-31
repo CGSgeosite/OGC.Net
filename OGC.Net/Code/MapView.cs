@@ -8,23 +8,21 @@
  ******************************************************************************
  * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to use, copy,
+ * modify, and distribute the Software for any purpose, without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * The above copyright notice and this permission notice shall be included
- * in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
- * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE GEOSITE DEVELOPMENT TEAM OF CGS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+ * USE OR OTHER DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
 using Geosite.FreeText.CSV;
@@ -370,8 +368,7 @@ namespace Geosite
                                         var west = (double)bbox[index: 0];
                                         var south = (double)bbox[index: 1];
                                         var east = (double)bbox[index: 2];
-                                        var north = (double)bbox[index: 3];
-
+                                        var north = (double)bbox[index: 3];        
                                         if (_projectionHelper != null)
                                         {
                                             try
@@ -385,8 +382,7 @@ namespace Geosite
                                                 //如果投影失败，强制西南角
                                                 west = -180;
                                                 south = -90;
-                                            }
-
+                                            }                
                                             try
                                             {
                                                 var eastNorth = _projectionHelper.Project(geometry: new JArray { east, north });
@@ -399,8 +395,7 @@ namespace Geosite
                                                 east = 180;
                                                 north = 90;
                                             }
-                                        }
-
+                                        }             
                                         if (west is > 180 or < -180 || east is > 180 or < -180 || south is > 90 or < -90 || north is > 90 or < -90)
                                             throw new Exception(message: @"The boundary has exceeded [±180, ±90].");
                                         if (west > east)
@@ -419,8 +414,7 @@ namespace Geosite
                                                 );
                                             }
                                         );
-                                    }
-
+                                    }                
                                     var count = FeaturesView(features: mapgis.GetFeature());
                                     _backgroundWorker.ReportProgress(
                                         percentProgress: -1,
@@ -436,8 +430,7 @@ namespace Geosite
                         finally
                         {
                             _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
-                        }
-
+                        }                 
                         break;
                     }
                 case "shapefile":
@@ -708,8 +701,7 @@ namespace Geosite
                         finally
                         {
                             _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(onOff: false); });
-                        }
-
+                        }                                
                         break;
                     }
                 case "kml":
@@ -822,7 +814,7 @@ namespace Geosite
                             var callPath = $"{webApi}getFeature?service=wfs&resultType=hits&outputFormat=2&count=100&typeNames={layer}&token={token}";
                             _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
                             Application.DoEvents();
-                            var getResponse = new WebProxy().Call(path: callPath, timeout: 36000);
+                            var getResponse = new WebProxy().Call(path: callPath, timeout: 0);
                             if (getResponse.IsSuccessful)
                             {
                                 var content = getResponse.Content;
@@ -985,7 +977,7 @@ namespace Geosite
                                 //10002：Wms栅格金字塔瓦片服务类型[epsg:3857 - 球体墨卡托瓦片]
                                 var callPath = $"{webApi}getTile?service=wms&layer={layer}&token={token}";
                                 _backgroundWorker.ReportProgress(percentProgress: -1, userState: callPath);
-                                var getResponse = new WebProxy().Call(path: callPath, timeout: 5000);
+                                var getResponse = new WebProxy().Call(path: callPath, timeout: 0);
                                 if (getResponse.IsSuccessful)
                                 {
                                     var content = getResponse.Content;
@@ -1223,7 +1215,7 @@ namespace Geosite
                                 e.Cancel = true;
                                 return;
                             }
-                            //以原子操作的形式递增geositeXmlViewCount变量的值并存储结果
+                            //并行环境以原子操作的形式递增geositeXmlViewCount变量的值并存储结果
                             Interlocked.Increment(ref geositeXmlViewCount);
                             _mainForm.MapBox.BeginInvoke(
                                 method: () =>
@@ -1393,8 +1385,7 @@ namespace Geosite
                                                     {
                                                         Tile(urlFormat: wms, property: property);
                                                     }
-                                                }
-
+                                                }                         
                                                 break;
                                             }
                                         default:
@@ -1792,7 +1783,7 @@ namespace Geosite
             } while (true);
         }
 
-        private void Image(string href, JArray coordinate, JObject property, JObject style = null, int timeout = 5000)
+        private void Image(string href, JArray coordinate, JObject property, JObject style = null, int timeout = 0)
         {
             try
             {
@@ -1839,7 +1830,7 @@ namespace Geosite
             var propertyJson = property?["property"];
             var propertyHasValues = (propertyJson ?? false).HasValues;
             /*
-             <property>
+              <property>
                    <maxZoom>3</maxZoom>
                    <minZoom>0</minZoom>
                    <boundary>
@@ -1860,8 +1851,7 @@ namespace Geosite
             //11002：Wmts栅格金字塔瓦片类型[epsg:3857 - 球体墨卡托瓦片] ✔
             //12000：WPS栅格平铺式瓦片类型[epsg:0 - 无投影瓦片]
             //12001：WPS栅格平铺式瓦片类型[epsg:4326 - 地理坐标系瓦片]
-            //12002：WPS栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]
-
+            //12002：WPS栅格平铺式瓦片类型[epsg:3857 - 球体墨卡托瓦片]     
             var srid =
                 int.Parse(
                         propertyHasValues
