@@ -8721,7 +8721,7 @@ namespace Geosite
                     if (MapGrids.Tag?.ToString() != "None")
                         try
                         {
-                            var scaleX = Models.MapGrids.Run(
+                            var scaleX = Models.MapGrids.Topology(
                                 lamuda: lng,
                                 fai: lat,
                                 scale: MapGrid.AutoScale,
@@ -8739,11 +8739,11 @@ namespace Geosite
                             );
                             var newCode = scaleX.DescendantsAndSelf(name: "new").FirstOrDefault()?.Value;
                             MapGrids.Text = newCode;
-var oldCode = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
-MapGrids.ToolTipText = $@"Code: {oldCode}";
-var scale = scaleX.Element("scale")?.Value;
-if (scale != null)
-{
+                            var oldCode = scaleX.DescendantsAndSelf(name: "old").FirstOrDefault()?.Value;
+                            MapGrids.ToolTipText = $@"Code: {oldCode}";
+                            var scale = scaleX.Element("scale")?.Value;
+                            if (scale != null)
+                            {
                                 MapGrids.ToolTipText += $"""   
                                                          
                                                          Scale: 1/{scale}                         
@@ -8764,7 +8764,7 @@ if (scale != null)
                                 var boundaryX = topologyX.Element("boundary");
                                 if (boundaryX != null)
                                 {    
-                                                                        var north = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("north")?.Value, Digit: "0");
+                                    var north = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("north")?.Value, Digit: "0");
                                     var south = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("south")?.Value, Digit: "0");
                                     var west = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("west")?.Value, Digit: "0");
                                     var east = Ellipsoid.Degree2Dms(Degree: boundaryX.Element("east")?.Value, Digit: "0");

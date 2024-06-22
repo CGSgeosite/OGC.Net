@@ -161,6 +161,10 @@
             toolStripSeparator17 = new ToolStripSeparator();
             MapGrid10000 = new ToolStripMenuItem();
             MapGrid5000 = new ToolStripMenuItem();
+            toolStripSeparator23 = new ToolStripSeparator();
+            MapGrid2000 = new ToolStripMenuItem();
+            MapGrid1000 = new ToolStripMenuItem();
+            MapGrid500 = new ToolStripMenuItem();
             ImageMaker = new ToolStripButton();
             toolStripSeparator7 = new ToolStripSeparator();
             TopologyCheckerButton = new ToolStripButton();
@@ -1918,7 +1922,7 @@
             // MapGrids
             // 
             MapGrids.AutoToolTip = false;
-            MapGrids.DropDownItems.AddRange(new ToolStripItem[] { MapGridNone, toolStripSeparator15, MapGridAuto, toolStripSeparator16, MapGrid1000000, MapGrid500000, MapGrid250000, MapGrid200000, MapGrid100000, MapGrid50000, MapGrid25000, toolStripSeparator17, MapGrid10000, MapGrid5000 });
+            MapGrids.DropDownItems.AddRange(new ToolStripItem[] { MapGridNone, toolStripSeparator15, MapGridAuto, toolStripSeparator16, MapGrid1000000, MapGrid500000, MapGrid250000, MapGrid200000, MapGrid100000, MapGrid50000, MapGrid25000, toolStripSeparator17, MapGrid10000, MapGrid5000, toolStripSeparator23, MapGrid2000, MapGrid1000, MapGrid500 });
             MapGrids.Image = (Image)resources.GetObject("MapGrids.Image");
             MapGrids.ImageScaling = ToolStripItemImageScaling.None;
             MapGrids.ImageTransparentColor = Color.Magenta;
@@ -2041,6 +2045,38 @@
             MapGrid5000.Tag = "5000";
             MapGrid5000.Text = "1:5000";
             MapGrid5000.Click += MapGridMenuItem_Click;
+            // 
+            // toolStripSeparator23
+            // 
+            toolStripSeparator23.Name = "toolStripSeparator23";
+            toolStripSeparator23.Size = new Size(132, 6);
+            // 
+            // MapGrid2000
+            // 
+            MapGrid2000.CheckOnClick = true;
+            MapGrid2000.Name = "MapGrid2000";
+            MapGrid2000.Size = new Size(135, 22);
+            MapGrid2000.Tag = "2000";
+            MapGrid2000.Text = "1:2000";
+            MapGrid2000.Click += MapGridMenuItem_Click;
+            // 
+            // MapGrid1000
+            // 
+            MapGrid1000.CheckOnClick = true;
+            MapGrid1000.Name = "MapGrid1000";
+            MapGrid1000.Size = new Size(135, 22);
+            MapGrid1000.Tag = "1000";
+            MapGrid1000.Text = "1:1000";
+            MapGrid1000.Click += MapGridMenuItem_Click;
+            // 
+            // MapGrid500
+            // 
+            MapGrid500.CheckOnClick = true;
+            MapGrid500.Name = "MapGrid500";
+            MapGrid500.Size = new Size(135, 22);
+            MapGrid500.Tag = "500";
+            MapGrid500.Text = "1:500";
+            MapGrid500.Click += MapGridMenuItem_Click;
             // 
             // ImageMaker
             // 
@@ -2519,6 +2555,7 @@
             // kmlIconButton
             // 
             kmlIconButton.AutoSize = false;
+            kmlIconButton.Enabled = false;
             kmlIconButton.Image = Properties.Resources.KML_logo;
             kmlIconButton.ImageTransparentColor = Color.Magenta;
             kmlIconButton.Name = "kmlIconButton";
@@ -4494,7 +4531,7 @@
             // 
             statusText.DoubleClickEnabled = true;
             statusText.Name = "statusText";
-            statusText.Size = new Size(834, 17);
+            statusText.Size = new Size(984, 17);
             statusText.Spring = true;
             // 
             // dataGridViewImageColumn1
@@ -5019,6 +5056,10 @@
         private DataGridViewImageColumn ThemeType;
         private DataGridViewImageColumn ThemeView;
         private DataGridViewImageColumn ThemeExport;
+        private ToolStripSeparator toolStripSeparator23;
+        private ToolStripMenuItem MapGrid2000;
+        private ToolStripMenuItem MapGrid1000;
+        private ToolStripMenuItem MapGrid500;
     }
 }
 
