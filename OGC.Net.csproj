@@ -8,7 +8,7 @@
 		<RootNamespace>Geosite</RootNamespace>
 		<ApplicationIcon>OGC.net.ico</ApplicationIcon>
 		<Title>OGC.net</Title>
-		<Version>8.2024.6.22</Version>
+		<Version>8.2024.6.29</Version>
 		<Authors>ZhanchangWang</Authors>
 		<Company>CGS</Company>
 		<Copyright>(C) 2019-2024 Geosite Development Team of CGS (R)</Copyright>
