@@ -546,7 +546,7 @@ namespace Geosite
                         try
                         {
                             _mainForm.MapBox.BeginInvoke(method: () => { _mainForm.FilePreviewLoading.Run(); });
-                            var freeTextFields = _type switch
+                            var freeTextFields = _type?.ToLower() switch
                             {
                                 "txt" => TXT.GetFieldNames(file: _path),
                                 "csv" => CSV.GetFieldNames(file: _path),
@@ -567,7 +567,7 @@ namespace Geosite
                                 coordinateFieldName = choice.Value ? txtForm.CoordinateFieldName : null;
                             }
 
-                            FreeText.FreeText freeText = _type switch
+                            FreeText.FreeText freeText = _type?.ToLower() switch
                             {
                                 "txt" => new TXT(coordinateFieldName: coordinateFieldName),
                                 "csv" => new CSV(coordinateFieldName: coordinateFieldName),
@@ -770,7 +770,7 @@ namespace Geosite
                     }
                 default:
                     {
-                        //文档树要素类型码构成的数组类型码约定：
+                        //文档树要素类型码构成的数组类型码约定：         
                         //0：非空间数据【默认】 ✔
                         //1：Point点 ✔
                         //2：Line线 ✔
