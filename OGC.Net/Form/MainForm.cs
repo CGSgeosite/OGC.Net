@@ -617,7 +617,7 @@ namespace Geosite
                             7 => "KML",
                             8 => "GeositeXML",
                             9 => "GeoJson",
-                            _ => null
+                            _ => null         
                         };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
@@ -873,7 +873,7 @@ namespace Geosite
                             };
                         if (theFileFormat != null)
                             foreach (var theFile in vectorSourceFiles)
-                            {
+                            {   
                                 var row = FileGridView.Rows[index: FileGridView.Rows.Add(values: theFile)];
                                 row.Height = 28;
                                 var projectionButton = row.Cells[index: 1];
@@ -907,7 +907,7 @@ namespace Geosite
 
         private void TabTextIcon_Click(object sender, EventArgs e)
         {
-            var key = tableIconButton.Name;
+            var key = tableIconButton.Name;        
             var path = key + "_path";
             var oldPath = RegEdit.GetKey(key: path);
             var openFileDialog = new OpenFileDialog
@@ -946,7 +946,12 @@ namespace Geosite
                                 projectionButton.ToolTipText = "Unknown";
                                 projectionButton.Value = "?";
                                 var previewButton = row.Cells[index: 2];
-                                previewButton.ToolTipText = theFileFormat;
+                                previewButton.ToolTipText = Path.GetExtension(path: theFile).ToUpper() switch
+                                {
+                                    ".TXT" => "TXT",
+                                    ".CSV" => "CSV",
+                                    _ => "Excel"
+                                };
                             }
                         switch (openFileDialog.FilterIndex)
                         {
@@ -8361,7 +8366,7 @@ namespace Geosite
                             }
                             break;
                         }
-                    case 2: //预览按钮
+                    case 2: //预览按钮    
                         {
                             var property = (XElement)col.Tag;
                             var type = col.ToolTipText;
@@ -8722,8 +8727,8 @@ namespace Geosite
                         try
                         {
                             var scaleX = Models.MapGrids.Topology(
-                                lamuda: lng,
-                                fai: lat,
+                                lng,
+                                lat,
                                 scale: MapGrid.AutoScale,
                                 // 坐标系代号：1954、1980、1984、2000、其他值；默认值：2000
                                 crs: positionBoxTag.srid switch
