@@ -198,7 +198,10 @@
           "System.Windows.Extensions": "8.0.0"
         },
         "runtime": {
-          "GMap.NET.Core.dll": {}
+          "GMap.NET.Core.dll": {
+            "assemblyVersion": "2.1.7",
+            "fileVersion": "2.1.7.0"
+          }
         }
       }
     }

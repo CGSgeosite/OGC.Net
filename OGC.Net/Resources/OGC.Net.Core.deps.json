@@ -6,14 +6,14 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "OGC.Net.Core/8.2024.7.16": {
+      "OGC.Net.Core/8.2024.8.16": {
         "dependencies": {
-          "Magick.NET-Q16-AnyCPU": "13.9.1",
-          "MaxRev.Gdal.Core": "3.9.0.218",
-          "MaxRev.Gdal.WindowsRuntime.Minimal": "3.9.0.218",
+          "Magick.NET-Q16-AnyCPU": "13.10.0",
+          "MaxRev.Gdal.Core": "3.9.1.244",
+          "MaxRev.Gdal.WindowsRuntime.Minimal": "3.9.1.244",
           "Newtonsoft.Json": "13.0.3",
           "Npgsql": "8.0.3",
-          "RestSharp": "111.4.0",
+          "RestSharp": "111.4.1",
           "System.Text.Encoding.CodePages": "8.0.0",
           "System.Text.Encodings.Web": "8.0.0",
           "System.Text.Json": "8.0.4"
@@ -22,14 +22,14 @@
           "OGC.Net.Core.dll": {}
         }
       },
-      "Magick.NET-Q16-AnyCPU/13.9.1": {
+      "Magick.NET-Q16-AnyCPU/13.10.0": {
         "dependencies": {
-          "Magick.NET.Core": "13.9.1"
+          "Magick.NET.Core": "13.10.0"
         },
         "runtime": {
           "lib/netstandard21/Magick.NET-Q16-AnyCPU.dll": {
-            "assemblyVersion": "13.9.0.0",
-            "fileVersion": "13.9.1.0"
+            "assemblyVersion": "13.10.0.0",
+            "fileVersion": "13.10.0.0"
           }
         },
         "runtimeTargets": {
@@ -61,33 +61,33 @@
           "runtimes/win-arm64/native/Magick.Native-Q16-arm64.dll": {
             "rid": "win-arm64",
             "assetType": "native",
-            "fileVersion": "7.1.1.33"
+            "fileVersion": "7.1.1.35"
           },
           "runtimes/win-x64/native/Magick.Native-Q16-x64.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "7.1.1.33"
+            "fileVersion": "7.1.1.35"
           },
           "runtimes/win-x86/native/Magick.Native-Q16-x86.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "7.1.1.33"
+            "fileVersion": "7.1.1.35"
           }
         }
       },
-      "Magick.NET.Core/13.9.1": {
+      "Magick.NET.Core/13.10.0": {
         "runtime": {
           "lib/netstandard21/Magick.NET.Core.dll": {
-            "assemblyVersion": "13.9.0.0",
-            "fileVersion": "13.9.1.0"
+            "assemblyVersion": "13.10.0.0",
+            "fileVersion": "13.10.0.0"
           }
         }
       },
-      "MaxRev.Gdal.Core/3.9.0.218": {
+      "MaxRev.Gdal.Core/3.9.1.244": {
         "runtime": {
           "lib/net8.0/MaxRev.Gdal.Core.dll": {
-            "assemblyVersion": "3.9.0.218",
-            "fileVersion": "3.9.0.218"
+            "assemblyVersion": "3.9.1.244",
+            "fileVersion": "3.9.1.244"
           }
         },
         "runtimeTargets": {
@@ -858,38 +858,18 @@
           }
         }
       },
-      "MaxRev.Gdal.WindowsRuntime.Minimal/3.9.0.218": {
+      "MaxRev.Gdal.WindowsRuntime.Minimal/3.9.1.244": {
         "runtime": {
           "lib/net8.0/MaxRev.Gdal.WindowsRuntime.Minimal.dll": {
-            "assemblyVersion": "3.9.0.218",
-            "fileVersion": "3.9.0.218"
+            "assemblyVersion": "3.9.1.244",
+            "fileVersion": "3.9.1.244"
           }
         },
         "runtimeTargets": {
-          "runtimes/win-x64/native/FileGDBAPI.dll": {
+          "runtimes/win-x64/native/LIBPQ.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "1.5.1.253"
-          },
-          "runtimes/win-x64/native/NCSEcw.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "5.5.0.2034"
-          },
-          "runtimes/win-x64/native/adrg.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/apr_dbd_odbc-1.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "1.6.1.0"
-          },
-          "runtimes/win-x64/native/apr_ldap-1.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "1.6.1.0"
+            "fileVersion": "14.0.0.24119"
           },
           "runtimes/win-x64/native/blosc.dll": {
             "rid": "win-x64",
@@ -911,17 +891,7 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/cairo.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
           "runtimes/win-x64/native/cfitsio.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/charset-1.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
@@ -936,20 +906,10 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/fribidi-0.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/fts5.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
           "runtimes/win-x64/native/gdal.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "3.9.0.0"
+            "fileVersion": "3.9.1.0"
           },
           "runtimes/win-x64/native/gdal_wrap.dll": {
             "rid": "win-x64",
@@ -986,17 +946,7 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/hdf5_cpp.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
           "runtimes/win-x64/native/hdf5_hl.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/hdf5_hl_cpp.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
@@ -1036,16 +986,6 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/libapr-1.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "1.7.0.0"
-          },
-          "runtimes/win-x64/native/libaprutil-1.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "1.6.1.0"
-          },
           "runtimes/win-x64/native/libcrypto-3-x64.dll": {
             "rid": "win-x64",
             "assetType": "native",
@@ -1054,24 +994,9 @@
           "runtimes/win-x64/native/libcurl.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "8.7.0.0"
+            "fileVersion": "8.8.0.0"
           },
           "runtimes/win-x64/native/libexpat.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/libfcgi.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/libhttpd.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "2.4.59.0"
-          },
-          "runtimes/win-x64/native/libkea.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
@@ -1079,7 +1004,7 @@
           "runtimes/win-x64/native/liblzma.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "5.4.4.0"
+            "fileVersion": "5.6.2.0"
           },
           "runtimes/win-x64/native/libmysql.dll": {
             "rid": "win-x64",
@@ -1087,16 +1012,6 @@
             "fileVersion": "8.1.0.0"
           },
           "runtimes/win-x64/native/libpng16.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/libpq.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "14.0.0.24119"
-          },
-          "runtimes/win-x64/native/librttopo.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
@@ -1116,21 +1031,6 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/libwebpdecoder.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/libwebpdemux.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/libwebpmux.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
           "runtimes/win-x64/native/libxml2.dll": {
             "rid": "win-x64",
             "assetType": "native",
@@ -1141,37 +1041,12 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/mapcache.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/mapserver.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "8.0.2.0"
-          },
           "runtimes/win-x64/native/maxrev.gdal.core.libshared/proj.db": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/mfhdf.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/mod_mapcache.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/msplugin_mssql2008.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/msplugin_oracle.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
@@ -1206,11 +1081,6 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/ogdi.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
           "runtimes/win-x64/native/ogr_wrap.dll": {
             "rid": "win-x64",
             "assetType": "native",
@@ -1231,57 +1101,12 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
-          "runtimes/win-x64/native/pcrecpp.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/pcreposix.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/proj_4_9.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/proj_7_2.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/proj_9_1.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
           "runtimes/win-x64/native/proj_9_3.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/proj_9_4.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/remote.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/rpf.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/skeleton.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/snappy.dll": {
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
@@ -1294,7 +1119,7 @@
           "runtimes/win-x64/native/sqlite3.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "3.45.3.0"
+            "fileVersion": "3.46.0.0"
           },
           "runtimes/win-x64/native/szip.dll": {
             "rid": "win-x64",
@@ -1305,16 +1130,6 @@
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "4.6.0.0"
-          },
-          "runtimes/win-x64/native/tiffxx.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
-          },
-          "runtimes/win-x64/native/turbojpeg.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.3.0.0"
           },
           "runtimes/win-x64/native/vccorlib140.dll": {
             "rid": "win-x64",
@@ -1335,11 +1150,6 @@
             "rid": "win-x64",
             "assetType": "native",
             "fileVersion": "14.40.33810.0"
-          },
-          "runtimes/win-x64/native/vrf.dll": {
-            "rid": "win-x64",
-            "assetType": "native",
-            "fileVersion": "0.0.0.0"
           },
           "runtimes/win-x64/native/xdr.dll": {
             "rid": "win-x64",
@@ -1406,11 +1216,11 @@
           }
         }
       },
-      "RestSharp/111.4.0": {
+      "RestSharp/111.4.1": {
         "runtime": {
           "lib/net8.0/RestSharp.dll": {
-            "assemblyVersion": "111.4.0.0",
-            "fileVersion": "111.4.0.0"
+            "assemblyVersion": "111.4.1.0",
+            "fileVersion": "111.4.1.0"
           }
         }
       },
@@ -1424,38 +1234,38 @@
     }
   },
   "libraries": {
-    "OGC.Net.Core/8.2024.7.16": {
+    "OGC.Net.Core/8.2024.8.16": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "Magick.NET-Q16-AnyCPU/13.9.1": {
+    "Magick.NET-Q16-AnyCPU/13.10.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-F4EBW7xQfQkNf4+m5VQzgqbjlkUAEMNeCtcFq/PyY5LWDjzwusezWLMrJCDeYdGP7HXOBRMoDViJLcSq3UUzlg==",
-      "path": "magick.net-q16-anycpu/13.9.1",
-      "hashPath": "magick.net-q16-anycpu.13.9.1.nupkg.sha512"
+      "sha512": "sha512-9BkP6lGTGliyuDVpIh0SWstLpGloF+Ib96MFQSvEaYEp9qaOcS6Rv1MF3FoXzQ+YSQtgqw3D0xrvczklhdN6aA==",
+      "path": "magick.net-q16-anycpu/13.10.0",
+      "hashPath": "magick.net-q16-anycpu.13.10.0.nupkg.sha512"
     },
-    "Magick.NET.Core/13.9.1": {
+    "Magick.NET.Core/13.10.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zZUl649l0AtS8VqR2NAe4Jmxd8ibY3QyYpe1RSNW33qPdmpI5RWkyUrheJ2HgMviNbUBG5IbhU3m/Oj+yPfimA==",
-      "path": "magick.net.core/13.9.1",
-      "hashPath": "magick.net.core.13.9.1.nupkg.sha512"
+      "sha512": "sha512-qss+Y4/K6SiGwbyCThqTl9ykevnSzFuT4AMIaymq8jN+6kimKjMHf4rvtagLWQ+vPH9xU1+pX6MmBOZe+D+fyA==",
+      "path": "magick.net.core/13.10.0",
+      "hashPath": "magick.net.core.13.10.0.nupkg.sha512"
     },
-    "MaxRev.Gdal.Core/3.9.0.218": {
+    "MaxRev.Gdal.Core/3.9.1.244": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Oi0XapmYF8Q9e72reZRKXLObXsqPOMU69LQNevxVdNL+aeHVGQvDPUxtlkqVA7Ren98z3MXTQoqpgmSaBCpYHQ==",
-      "path": "maxrev.gdal.core/3.9.0.218",
-      "hashPath": "maxrev.gdal.core.3.9.0.218.nupkg.sha512"
+      "sha512": "sha512-g4zkI/7He18FXtFfl+J42r/Sp8HOGEI0RiAQo2P0x149Q4TWh4MFS0dR/0LyF1ik27gEzIdn8TP9AE3cMlXp4w==",
+      "path": "maxrev.gdal.core/3.9.1.244",
+      "hashPath": "maxrev.gdal.core.3.9.1.244.nupkg.sha512"
     },
-    "MaxRev.Gdal.WindowsRuntime.Minimal/3.9.0.218": {
+    "MaxRev.Gdal.WindowsRuntime.Minimal/3.9.1.244": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-8PzXDyTbBHGrulMAUQKP7AltVF1hKSOy0VR3GVDJHTv5UTQWAvZXXQ8wRLbu89+XmlpF3FguwyHLKyXAG+b9mQ==",
-      "path": "maxrev.gdal.windowsruntime.minimal/3.9.0.218",
-      "hashPath": "maxrev.gdal.windowsruntime.minimal.3.9.0.218.nupkg.sha512"
+      "sha512": "sha512-/wW0V4MSLhRCq7wcQ4v/eaCMYIYWwal5YCYMLD99ScfQ6kT5ok3S9SrdepiS9LtQ6vPWLSuWGTWUBHcuLzb2DQ==",
+      "path": "maxrev.gdal.windowsruntime.minimal/3.9.1.244",
+      "hashPath": "maxrev.gdal.windowsruntime.minimal.3.9.1.244.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
       "type": "package",
@@ -1485,12 +1295,12 @@
       "path": "npgsql/8.0.3",
       "hashPath": "npgsql.8.0.3.nupkg.sha512"
     },
-    "RestSharp/111.4.0": {
+    "RestSharp/111.4.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GcOIOyYYFm3oCFHbGBwGtDawC9yqvv6m7Ixyt+qeI+/UrPNyCJK31VOPRfEgj5M+3AfigSP6a8jZyFtBZxouTA==",
-      "path": "restsharp/111.4.0",
-      "hashPath": "restsharp.111.4.0.nupkg.sha512"
+      "sha512": "sha512-MhrBdwqYd+ezd3xD+c6eaAVcLJoWI+2TBH7rqX149nbYRkPJJfK/UbrgJVfKN9ZMehOFzo2PmKIZjS1ATnxEAQ==",
+      "path": "restsharp/111.4.1",
+      "hashPath": "restsharp.111.4.1.nupkg.sha512"
     },
     "System.Text.Encoding.CodePages/8.0.0": {
       "type": "package",
