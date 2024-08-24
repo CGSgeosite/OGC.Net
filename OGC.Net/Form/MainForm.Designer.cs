@@ -2555,7 +2555,6 @@
             // kmlIconButton
             // 
             kmlIconButton.AutoSize = false;
-            kmlIconButton.Enabled = false;
             kmlIconButton.Image = Properties.Resources.KML_logo;
             kmlIconButton.ImageTransparentColor = Color.Magenta;
             kmlIconButton.Name = "kmlIconButton";

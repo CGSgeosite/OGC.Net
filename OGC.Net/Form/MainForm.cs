@@ -1959,41 +1959,41 @@ namespace Geosite
                                                     PostgresRun.Enabled = false;
                                 }
                             );
-                            var userX = GetClusterUserX(
-                                serverUrl: serverUrl,
-                                serverUser: serverUser,
-                                serverPassword: serverPassword,
-                                clientVersion: Copyright.VersionAttribute,
+                            var userX = GeositeServerUsers.GetClusterUser(
+                                url: serverUrl,
+                                userName: serverUser,
+                                password: string.IsNullOrWhiteSpace(value: serverPassword) ? "" : $"{GeositeConfuser.Cryptography.HashEncoder(arg: serverPassword)}",
+                                version: Copyright.VersionAttribute,
                                 timeout: 30000
                             );
                             if (userX.result != null)
                             {
-                                var server = userX.result.Element(name: "Servers")?.Element(name: "Server");
-                                var geositeServerVersion = server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
-                                DatabaseLogAdd(input: $"GeositeServer Version - {geositeServerVersion}");
                                 /*  样例如下：
                                     <User>
-                                     <Servers>
-                                       <Server>
-                                         <Host>10.66.4.10:5432,10.66.4.12:5432</Host>
-                                         <Version>8.2024.1.29</Version>
-                                         <Copyright>(C) 2019-2024 Geosite Development Team of CGS (R)</Copyright>
-                                         <Error></Error>
-                                         <Username>postgres</Username>
-                                         <Password>数据库连接密码</Password>
-                                         <Database Size="4347 MB" Postgresql_Version="16.1 (Debian 15.1-1.pgdg110+1)" Postgis_Version="3.4.1" Pgroonga_Version/Pg_trgm_Version="3.1.6/1.6">geositeserver</Database>
-                                         <Other></Other>
-                                         <CommandTimeout>30</CommandTimeout>
-                                         <Port>5432</Port>
-                                         <Pooling>true</Pooling>
-                                         <LoadBalanceHosts>false</LoadBalanceHosts>
-                                         <TargetSessionAttributes>any</TargetSessionAttributes>
-                                       </Server>
-                                     </Servers>
-                                     <Forest Root="Data" ClusterIp="" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
-                                     <License></License>
-                                   </User>   
+                                      <Servers>
+                                        <Server>
+                                          <Host>10.66.4.10:5432,10.66.4.12:5432</Host>
+                                          <Version>8.2024.1.29</Version>
+                                          <Copyright>(C) 2019-2024 Geosite Development Team of CGS (R)</Copyright>
+                                          <Error></Error>
+                                          <Username>postgres</Username>
+                                          <Password>数据库连接密码</Password>
+                                          <Database Size="4347 MB" Postgresql_Version="16.1 (Debian 15.1-1.pgdg110+1)" Postgis_Version="3.4.1" Pgroonga_Version/Pg_trgm_Version="3.1.6/1.6">geositeserver</Database>
+                                          <Other></Other>
+                                          <CommandTimeout>30</CommandTimeout>
+                                          <Port>5432</Port>
+                                          <Pooling>true</Pooling>
+                                          <LoadBalanceHosts>false</LoadBalanceHosts>
+                                          <TargetSessionAttributes>any</TargetSessionAttributes>
+                                        </Server>
+                                      </Servers>
+                                      <Forest Root="Data" ClusterIp="" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
+                                      <License></License>
+                                    </User>
                                  */
+                                var server = userX.result.Element(name: "Servers")?.Element(name: "Server");
+                                var geositeServerVersion = server?.Element(name: "Version")?.Value.Trim() ?? "0.0.0.0";
+                                DatabaseLogAdd(input: $"GeositeServer Version - {geositeServerVersion}");  
                                 var host = server?.Element(name: "Host")?.Value.Trim(); //暂不支持多台主机（逗号分隔，每台均可携带端口号）
                                 try
                                 {
@@ -2002,8 +2002,8 @@ namespace Geosite
                                     var versionYear = long.Parse(s: versionArray[1]) * 1e4;
                                     var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
                                     var versionDay = long.Parse(s: versionArray[3]);
-                                    if (versionMain + versionYear + versionMonth + versionDay >=
-                                        820240101) // 8.2024.1.1
+                                    //要求【GeositeServer.net】版本号大于等于【8.2024.1.1】
+                                    if (versionMain + versionYear + versionMonth + versionDay >= 820240101) // 8.2024.1.1
                                     {
                                         if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(),
                                                 result: out var port))
@@ -2034,8 +2034,15 @@ namespace Geosite
                                         var username = server?.Element(name: "Username")?.Value.Trim();
                                         var password = server?.Element(name: "Password")?.Value.Trim();
                                         var forestX = userX.result.Element(name: "Forest");
-                                        if (!int.TryParse(s: forestX?.Value.Trim(), result: out var forest))
-                                            forest = -1;
+
+                                        // 注：目前，一个集群账户仅可操作一片森林，待后续改进
+                                        // 下列算法仅取首个森林编号且强制为负整数，如果未发现符合要求的编号，便取【-1】
+                                        var forest = (
+                                            from forestId in Regex.Split(forestX?.Value.Trim() ?? "-1", @"[,\s]+", RegexOptions.Singleline | RegexOptions.Multiline)
+                                            where !string.IsNullOrWhiteSpace(forestId) && int.TryParse(forestId, out _)
+                                            select -1 * Math.Abs(int.Parse(forestId))
+                                        ).FirstOrDefault(-1);
+
                                         if (!bool.TryParse(
                                                 value: forestX?.Attribute(name: "Administrator")?.Value.Trim() ??
                                                        "false", result: out _administrator))
@@ -3317,41 +3324,42 @@ namespace Geosite
                 );
         }
 
-        private (XElement result, string message) GetClusterUserX(
-            string serverUrl,
-            string serverUser,
-            string serverPassword,
-            string clientVersion,
-            int timeout = 30000)
-        {
-            try
-            {
-                return GeositeServerUsers.GetClusterUser(
-                    url: serverUrl,
-                    userName: serverUser, password: string.IsNullOrWhiteSpace(value: serverPassword) ? "" : $"{GeositeConfuser.Cryptography.HashEncoder(arg: serverPassword)}",
-                    version: clientVersion,
-                    timeout: timeout
-                );
-            }
-            catch (Exception e)
-            {
-                return (null, e.Message);
-            }
-        }
-
         private void UpdateDatabaseSize(
             string serverUrl,
             string serverUser,
             string serverPassword,
             int timeout = 30000)
         {
-            var userX = GetClusterUserX(
-                serverUrl: serverUrl,
-                serverUser: serverUser,
-                serverPassword: serverPassword,
-                clientVersion: Copyright.VersionAttribute,
+            var userX = GeositeServerUsers.GetClusterUser(
+                url: serverUrl,
+                userName: serverUser,
+                password: string.IsNullOrWhiteSpace(value: serverPassword) ? "" : $"{GeositeConfuser.Cryptography.HashEncoder(arg: serverPassword)}",
+                version: Copyright.VersionAttribute,
                 timeout: timeout
             );
+            /*  样例如下：
+                <User>
+                  <Servers>
+                    <Server>
+                      <Host>10.66.4.10:5432,10.66.4.12:5432</Host>
+                      <Version>8.2024.1.29</Version>
+                      <Copyright>(C) 2019-2024 Geosite Development Team of CGS (R)</Copyright>
+                      <Error></Error>
+                      <Username>postgres</Username>
+                      <Password>数据库连接密码</Password>
+                      <Database Size="4347 MB" Postgresql_Version="16.1 (Debian 15.1-1.pgdg110+1)" Postgis_Version="3.4.1" Pgroonga_Version/Pg_trgm_Version="3.1.6/1.6">geositeserver</Database>
+                      <Other></Other>
+                      <CommandTimeout>30</CommandTimeout>
+                      <Port>5432</Port>
+                      <Pooling>true</Pooling>
+                      <LoadBalanceHosts>false</LoadBalanceHosts>
+                      <TargetSessionAttributes>any</TargetSessionAttributes>
+                    </Server>                             
+                  </Servers>
+                  <Forest Root="Data" ClusterIp="" Administrator="True" MachineName="GEOSITESERVER" OSVersion="Microsoft Windows NT 10.0.17763.0" ProcessorCount="8">-1</Forest>
+                  <License></License>
+                </User>
+             */
             if (userX.result != null)
             {
                 var size = userX.result.Element(name: "Servers")
@@ -7468,7 +7476,7 @@ namespace Geosite
                                     var jsonFile = Path.Combine(path1: localTileFolder.Text, path2: "metadata.json");
                                     if (File.Exists(path: jsonFile))
                                     {
-                                        using var sr = FreeText.FreeTextEncoding.OpenFreeTextFile(path: jsonFile);
+                                        using var sr = new StreamReader(jsonFile, detectEncodingFromByteOrderMarks: true);
                                         var metaDataX = JsonConvert.DeserializeXNode(value: sr.ReadToEnd(),
                                             deserializeRootElementName: "MapTiler")?.Root;
                                         if (metaDataX != null)
@@ -8437,7 +8445,7 @@ namespace Geosite
                 {
                     try
                     {
-                        using var sr = FreeText.FreeTextEncoding.OpenFreeTextFile(customMapProviderFile);
+                        using var sr = new StreamReader(customMapProviderFile, detectEncodingFromByteOrderMarks: true);         
                         var baseMaps = JArray.Parse(sr.ReadToEnd());
                         var i = 0;
                         if (baseMaps.Count > 0)
