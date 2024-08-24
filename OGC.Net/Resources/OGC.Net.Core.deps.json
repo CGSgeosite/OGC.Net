@@ -6,11 +6,11 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "OGC.Net.Core/8.2024.8.16": {
+      "OGC.Net.Core/8.2024.8.22": {
         "dependencies": {
           "Magick.NET-Q16-AnyCPU": "13.10.0",
-          "MaxRev.Gdal.Core": "3.9.1.244",
-          "MaxRev.Gdal.WindowsRuntime.Minimal": "3.9.1.244",
+          "MaxRev.Gdal.Core": "3.9.1.247",
+          "MaxRev.Gdal.WindowsRuntime.Minimal": "3.9.1.247",
           "Newtonsoft.Json": "13.0.3",
           "Npgsql": "8.0.3",
           "RestSharp": "111.4.1",
@@ -83,11 +83,11 @@
           }
         }
       },
-      "MaxRev.Gdal.Core/3.9.1.244": {
+      "MaxRev.Gdal.Core/3.9.1.247": {
         "runtime": {
           "lib/net8.0/MaxRev.Gdal.Core.dll": {
-            "assemblyVersion": "3.9.1.244",
-            "fileVersion": "3.9.1.244"
+            "assemblyVersion": "3.9.1.247",
+            "fileVersion": "3.9.1.247"
           }
         },
         "runtimeTargets": {
@@ -858,11 +858,11 @@
           }
         }
       },
-      "MaxRev.Gdal.WindowsRuntime.Minimal/3.9.1.244": {
+      "MaxRev.Gdal.WindowsRuntime.Minimal/3.9.1.247": {
         "runtime": {
           "lib/net8.0/MaxRev.Gdal.WindowsRuntime.Minimal.dll": {
-            "assemblyVersion": "3.9.1.244",
-            "fileVersion": "3.9.1.244"
+            "assemblyVersion": "3.9.1.247",
+            "fileVersion": "3.9.1.247"
           }
         },
         "runtimeTargets": {
@@ -1051,6 +1051,11 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
+          "runtimes/win-x64/native/msodbcsql17.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "2017.1710.6.1"
+          },
           "runtimes/win-x64/native/msvcp140.dll": {
             "rid": "win-x64",
             "assetType": "native",
@@ -1234,7 +1239,7 @@
     }
   },
   "libraries": {
-    "OGC.Net.Core/8.2024.8.16": {
+    "OGC.Net.Core/8.2024.8.22": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -1253,19 +1258,19 @@
       "path": "magick.net.core/13.10.0",
       "hashPath": "magick.net.core.13.10.0.nupkg.sha512"
     },
-    "MaxRev.Gdal.Core/3.9.1.244": {
+    "MaxRev.Gdal.Core/3.9.1.247": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-g4zkI/7He18FXtFfl+J42r/Sp8HOGEI0RiAQo2P0x149Q4TWh4MFS0dR/0LyF1ik27gEzIdn8TP9AE3cMlXp4w==",
-      "path": "maxrev.gdal.core/3.9.1.244",
-      "hashPath": "maxrev.gdal.core.3.9.1.244.nupkg.sha512"
+      "sha512": "sha512-BviX1TU7jEb9cjJSrQbmLV+bugZY0vb57zeZqPsl7wYKh3pksJUL+TZFp5Jh8PDZsebJxnsAYfkgoHwsb5X6+Q==",
+      "path": "maxrev.gdal.core/3.9.1.247",
+      "hashPath": "maxrev.gdal.core.3.9.1.247.nupkg.sha512"
     },
-    "MaxRev.Gdal.WindowsRuntime.Minimal/3.9.1.244": {
+    "MaxRev.Gdal.WindowsRuntime.Minimal/3.9.1.247": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-/wW0V4MSLhRCq7wcQ4v/eaCMYIYWwal5YCYMLD99ScfQ6kT5ok3S9SrdepiS9LtQ6vPWLSuWGTWUBHcuLzb2DQ==",
-      "path": "maxrev.gdal.windowsruntime.minimal/3.9.1.244",
-      "hashPath": "maxrev.gdal.windowsruntime.minimal.3.9.1.244.nupkg.sha512"
+      "sha512": "sha512-wLWsMieKa1TrAXyhPk9UsD+rMy1llqrl3Bd3p2j1rEKIRIC1D5KVf15eMFguKGS9D1j5lJUZavXQXs9yM+b3kg==",
+      "path": "maxrev.gdal.windowsruntime.minimal/3.9.1.247",
+      "hashPath": "maxrev.gdal.windowsruntime.minimal.3.9.1.247.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
       "type": "package",
