@@ -2002,8 +2002,8 @@ namespace Geosite
                                     var versionYear = long.Parse(s: versionArray[1]) * 1e4;
                                     var versionMonth = long.Parse(s: versionArray[2]) * 1e2;
                                     var versionDay = long.Parse(s: versionArray[3]);
-                                    //要求【GeositeServer.net】版本号大于等于【8.2024.1.1】
-                                    if (versionMain + versionYear + versionMonth + versionDay >= 820240101) // 8.2024.1.1
+                                    //要求【GeositeServer.net】版本号大于等于【8.2024.8.30】
+                                    if (versionMain + versionYear + versionMonth + versionDay >= 820240830) // 8.2024.8.30
                                     {
                                         if (!int.TryParse(s: server?.Element(name: "Port")?.Value.Trim(),
                                                 result: out var port))
@@ -3255,16 +3255,12 @@ namespace Geosite
                                                 //   <Flag>0</Flag>         //0：未授权；1=已授权
                                                 //   <Days>100</Days>       //可空的整型数：空意味着永久授权；0意味着时间戳已无效；正值是剩余天数；负值是过期天数
                                                 //</License>
-                                                if (int.TryParse(geositeServerLicense.Element("Flag")?.Value,
-                                                        out var flag))
+                                                if (int.TryParse(geositeServerLicense.Element("Flag")?.Value, out var flag))
                                                 {
-                                                    DatabaseLogAdd(
-                                                        input: $"GeositeServer {(flag == 0 ? "not" : "is")} licensed.");
+                                                    DatabaseLogAdd(input: $"GeositeServer {(flag == 0 ? "not" : "is")} licensed.");
                                                     var daysValue = geositeServerLicense.Element("Days")?.Value;
-                                                    if (!string.IsNullOrWhiteSpace(daysValue) &&
-                                                        long.TryParse(daysValue, out var days))
-                                                        DatabaseLogAdd(
-                                                            input: $"GeositeServer license remaining {days} days.");
+                                                    if (!string.IsNullOrWhiteSpace(daysValue) && long.TryParse(daysValue, out var days))
+                                                        DatabaseLogAdd(input: $"GeositeServer license remaining {days} days.");
                                                 }
                                             }
                                         }
