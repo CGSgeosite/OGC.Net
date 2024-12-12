@@ -6,7 +6,7 @@
  *          or raster to PostgreSQL database.
  *
  ******************************************************************************
- * (C) 2019-2023 Geosite Development Team of CGS (R)
+ * (C) 2019-2024 Geosite Development Team of CGS (R)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,11 +27,11 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
+using Geosite.Messager;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
-using Geosite.Messager;
 using System.Text;
+using System.Xml.Linq;
 
 /* csproj 文件增加
  <ItemGroup>
@@ -68,14 +68,14 @@ namespace Geosite
             {
                 //Attach to Console
                 AttachConsole(-1);
-                
+
                 var applicationName = Assembly.GetExecutingAssembly().GetName().Name;
                 (int Left, int Top)? cursorPosition = null;
 
-                var title = $@"{applicationName} for {RuntimeInformation.OSDescription} / {RuntimeInformation.ProcessArchitecture} "; 
+                var title = $@"{applicationName} for {RuntimeInformation.OSDescription} / {RuntimeInformation.ProcessArchitecture} ";
                 var copyright = ((AssemblyCopyrightAttribute)Assembly.GetExecutingAssembly().GetCustomAttribute(typeof(AssemblyCopyrightAttribute))!).Copyright;
                 var splitLine = new string('*', Math.Max(title.Length, copyright.Length));
-                
+
                 Console.WriteLine();
                 Console.WriteLine(splitLine);
                 Console.WriteLine(title);
@@ -119,8 +119,10 @@ namespace Geosite
                                     var isDirectory = Path.GetExtension(outputFile[0]) == string.Empty;
                                     var inputFileCount = inputFile.Count;
 
-                                    if (inputFileCount == 1 && !isDirectory || inputFileCount > 1 && isDirectory) {
-                                        for (var i = 0; i < inputFileCount; i++) {
+                                    if (inputFileCount == 1 && !isDirectory || inputFileCount > 1 && isDirectory)
+                                    {
+                                        for (var i = 0; i < inputFileCount; i++)
+                                        {
                                             var sourceFile = inputFile[i];
                                             var mapgisMpj = new MapGis.MapGisProject();
                                             var localI = i + 1;
@@ -136,9 +138,11 @@ namespace Geosite
                                             string targetFile;
                                             if (!isDirectory)
                                                 targetFile = Path.ChangeExtension(outputFile[0], ".json");
-                                            else {
+                                            else
+                                            {
                                                 var postfix = 0;
-                                                do {
+                                                do
+                                                {
                                                     targetFile = Path.Combine(
                                                         outputFile[0],
                                                         Path.GetFileNameWithoutExtension(sourceFile) + (postfix == 0 ? "" : $"({postfix})") + ".json");
@@ -166,7 +170,8 @@ namespace Geosite
                                     CommandHelper(commandName);
                                     break;
                                 }
-                                if (options != null) {
+                                if (options != null)
+                                {
                                     if (!options.TryGetValue("i", out var inputFile))
                                         options.TryGetValue("input", out inputFile);
                                     if (inputFile == null)
@@ -191,8 +196,10 @@ namespace Geosite
                                     var isDirectory = Path.GetExtension(outputFile[0]) == string.Empty;
                                     var inputFileCount = inputFile.Count;
 
-                                    if (inputFileCount == 1 && !isDirectory || inputFileCount > 1 && isDirectory) {
-                                        for (var i = 0; i < inputFileCount; i++) {
+                                    if (inputFileCount == 1 && !isDirectory || inputFileCount > 1 && isDirectory)
+                                    {
+                                        for (var i = 0; i < inputFileCount; i++)
+                                        {
                                             var sourceFile = inputFile[i];
                                             var localI = i + 1;
                                             var mapgis = new MapGis.MapGisFile();
@@ -209,9 +216,11 @@ namespace Geosite
                                             string targetFile;
                                             if (!isDirectory)
                                                 targetFile = outputFile[0];
-                                            else {
+                                            else
+                                            {
                                                 var postfix = 0;
-                                                do {
+                                                do
+                                                {
                                                     targetFile = Path.Combine(
                                                         outputFile[0],
                                                         Path.GetFileNameWithoutExtension(sourceFile) + (postfix == 0 ? "" : $"({postfix})") + "." + (format != null ? format[0] : "geojson"));
@@ -246,7 +255,8 @@ namespace Geosite
                                     CommandHelper(commandName);
                                     break;
                                 }
-                                if (options != null) {
+                                if (options != null)
+                                {
                                     if (!options.TryGetValue("i", out var inputFile))
                                         options.TryGetValue("input", out inputFile);
                                     if (inputFile == null)
@@ -271,8 +281,10 @@ namespace Geosite
 
                                     var isDirectory = Path.GetExtension(outputFile[0]) == string.Empty;
                                     var inputFileCount = inputFile.Count;
-                                    if (inputFileCount == 1 && !isDirectory || inputFileCount > 1 && isDirectory) {
-                                        for (var i = 0; i < inputFileCount; i++) {
+                                    if (inputFileCount == 1 && !isDirectory || inputFileCount > 1 && isDirectory)
+                                    {
+                                        for (var i = 0; i < inputFileCount; i++)
+                                        {
                                             var sourceFile = inputFile[i];
                                             var localI = i + 1;
                                             var shapeFile = new ShapeFileHelper.ShapeFileReader();
@@ -292,9 +304,11 @@ namespace Geosite
                                             string targetFile;
                                             if (!isDirectory)
                                                 targetFile = outputFile[0];
-                                            else {
+                                            else
+                                            {
                                                 var postfix = 0;
-                                                do {
+                                                do
+                                                {
                                                     targetFile = Path.Combine(
                                                         outputFile[0],
                                                         Path.GetFileNameWithoutExtension(sourceFile) + (postfix == 0 ? "" : $"({postfix})") + "." + (format != null ? format[0] : "geojson"));
@@ -330,7 +344,8 @@ namespace Geosite
                                     CommandHelper(commandName);
                                     break;
                                 }
-                                if (options != null) {
+                                if (options != null)
+                                {
                                     if (!options.TryGetValue("i", out var inputFile))
                                         options.TryGetValue("input", out inputFile);
                                     if (inputFile == null)
@@ -355,11 +370,14 @@ namespace Geosite
 
                                     var isDirectory = Path.GetExtension(outputFile[0]) == string.Empty;
                                     var inputFileCount = inputFile.Count;
-                                    if (inputFileCount == 1 && !isDirectory || inputFileCount > 1 && isDirectory) {
-                                        for (var i = 0; i < inputFileCount; i++) {
+                                    if (inputFileCount == 1 && !isDirectory || inputFileCount > 1 && isDirectory)
+                                    {
+                                        for (var i = 0; i < inputFileCount; i++)
+                                        {
                                             var sourceFile = inputFile[i];
                                             var localI = i + 1;
-                                            var freeTextFields = commandName switch {
+                                            var freeTextFields = commandName switch
+                                            {
                                                 ".txt" => FreeText.TXT.TXT.GetFieldNames(sourceFile),
                                                 ".csv" => FreeText.CSV.CSV.GetFieldNames(sourceFile),
                                                 _ => FreeText.Excel.Excel.GetFieldNames(sourceFile)
@@ -372,7 +390,8 @@ namespace Geosite
                                                 coordinateFieldName?[0];
 
                                             //Polymorphism: assigning derived class objects to base class objects
-                                            FreeText.FreeText freeText = commandName switch {
+                                            FreeText.FreeText freeText = commandName switch
+                                            {
                                                 ".txt" => new FreeText.TXT.TXT(coordinateFieldName: position),
                                                 ".csv" => new FreeText.CSV.CSV(coordinateFieldName: position),
                                                 _ => new FreeText.Excel.Excel(coordinateFieldName: position)
@@ -391,9 +410,11 @@ namespace Geosite
                                             string targetFile;
                                             if (!isDirectory)
                                                 targetFile = outputFile[0];
-                                            else {
+                                            else
+                                            {
                                                 var postfix = 0;
-                                                do {
+                                                do
+                                                {
                                                     targetFile = Path.Combine(
                                                         outputFile[0],
                                                         Path.GetFileNameWithoutExtension(sourceFile) +
